@@ -1,0 +1,8 @@
+/target
+*.profraw
+node_modules
+imgs_archive
+
+build.sh
+version.txt
+.env
