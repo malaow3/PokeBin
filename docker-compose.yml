@@ -1,0 +1,31 @@
+# Setup PSQL Database and the Rust binary
+# Run: docker-compose up -d
+# Run: docker-compose down
+# Run: docker-compose up -d --build
+# Run: docker-compose run --rm web diesel migration run
+
+version: '3.1'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: malaow
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+    networks:
+        - pokebin
+
+  web:
+    build: .
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    networks:
+        - pokebin
+
+networks:
+  pokebin:

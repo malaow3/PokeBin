@@ -1,0 +1,208 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+	min-width: 0;
+}
+
+.content-container {
+	display: flex;
+	flex-direction: column;
+}
+
+.type-normal {
+	color: #a8a878;
+}
+.type-fighting {
+	color: #c03028;
+}
+.type-flying {
+	color: #a890f0;
+}
+.type-poison {
+	color: #a040a0;
+}
+.type-ground {
+	color: #e0c068;
+}
+.type-rock {
+	color: #b8a038;
+}
+.type-bug {
+	color: #a8b820;
+}
+.type-ghost {
+	color: #705898;
+}
+.type-steel {
+	color: #b8b8d0;
+}
+.type-fire {
+	color: #f08030;
+}
+.type-water {
+	color: #6890f0;
+}
+.typegrass {
+	color: #78c850;
+}
+.type-electric {
+	color: #f8d030;
+}
+.type-psychic {
+	color: #f85888;
+}
+.type-ice {
+	color: #98d8d8;
+}
+.type-dragon {
+	color: #7038f8;
+}
+.type-dark {
+	color: #705848;
+}
+.type-fairy {
+	color: #ee99ac;
+}
+
+.gender-m {
+	@apply text-sky-500;
+}
+.gender-f {
+	color: #e82010;
+}
+
+.attr {
+	color: #a0a0a0;
+}
+.stat-hp {
+	color: #ff0000;
+}
+.stat-atk {
+	color: #f08030;
+}
+.stat-def {
+	color: #f8d030;
+}
+.stat-spa {
+	color: #6890f0;
+}
+.stat-spd {
+	color: #78c850;
+}
+.stat-spe {
+	color: #f85888;
+}
+
+article {
+	float: left;
+}
+
+article:nth-child(odd) {
+	clear: left;
+}
+
+article > .paste {
+	width: 350px;
+}
+
+article {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: flex-start;
+}
+
+div.img {
+	position: relative;
+	margin: 15px;
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+
+img.img-pokemon {
+	width: 200px;
+	height: auto;
+}
+
+span.img-item {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 48px; /* Change this to the desired width */
+	height: 48px; /* Change this to the desired height */
+	background-size: 344px 1032px; /* Adjust the background size to 'auto' */
+}
+
+pre {
+	margin: 15px 15px 0;
+	font:
+		14px "M+ 1m",
+		monospace;
+	white-space: pre-wrap;
+}
+
+.paste {
+	margin: 15px 15px 0;
+	font: 14px monospace;
+	line-height: 1.45;
+}
+.apaste {
+	margin: 15px 15px 0;
+	font:
+		15px "M+ 1m",
+		monospace;
+}
+
+/*
+aside {
+	position: fixed;
+	top: 0;
+	right: 0;
+	max-width: 300px;
+	margin: 15px;
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+
+@media (max-width: 750px) {
+	aside {
+		display: none;
+	}
+}
+
+h1 {
+	font-size: x-large;
+}
+
+h2 {
+	font-size: larger;
+}
+
+aside > button {
+	margin: 0 12px;
+	border: 0;
+	background-color: inherit;
+	color: inherit;
+	font: inherit;
+}
+
+aside input[type="checkbox"] {
+	display: none;
+}
+
+aside input[type="checkbox"] + label:after {
+	font: inherit;
+	color: #ff0000;
+	content: " Off";
+}
+
+aside input[type="checkbox"]:checked + label:after {
+	color: #78c850;
+	content: " On";
+}
+*/
