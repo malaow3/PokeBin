@@ -1,2112 +1,6211 @@
-[
-  "master-ball",
-  "ultra-ball",
-  "great-ball",
-  "poke-ball",
-  "safari-ball",
-  "net-ball",
-  "dive-ball",
-  "nest-ball",
-  "repeat-ball",
-  "timer-ball",
-  "luxury-ball",
-  "premier-ball",
-  "dusk-ball",
-  "heal-ball",
-  "quick-ball",
-  "cherish-ball",
-  "potion",
-  "antidote",
-  "burn-heal",
-  "ice-heal",
-  "awakening",
-  "paralyze-heal",
-  "full-restore",
-  "max-potion",
-  "hyper-potion",
-  "super-potion",
-  "full-heal",
-  "revive",
-  "max-revive",
-  "fresh-water",
-  "soda-pop",
-  "lemonade",
-  "moomoo-milk",
-  "energy-powder",
-  "energy-root",
-  "heal-powder",
-  "revival-herb",
-  "ether",
-  "max-ether",
-  "elixir",
-  "max-elixir",
-  "lava-cookie",
-  "berry-juice",
-  "sacred-ash",
-  "hp-up",
-  "protein",
-  "iron",
-  "carbos",
-  "calcium",
-  "rare-candy",
-  "pp-up",
-  "zinc",
-  "pp-max",
-  "old-gateau",
-  "guard-spec",
-  "dire-hit",
-  "x-attack",
-  "x-defense",
-  "x-speed",
-  "x-accuracy",
-  "x-sp-atk",
-  "x-sp-def",
-  "poke-doll",
-  "fluffy-tail",
-  "blue-flute",
-  "yellow-flute",
-  "red-flute",
-  "black-flute",
-  "white-flute",
-  "shoal-salt",
-  "shoal-shell",
-  "red-shard",
-  "blue-shard",
-  "yellow-shard",
-  "green-shard",
-  "super-repel",
-  "max-repel",
-  "escape-rope",
-  "repel",
-  "sun-stone",
-  "moon-stone",
-  "fire-stone",
-  "thunder-stone",
-  "water-stone",
-  "leaf-stone",
-  "tiny-mushroom",
-  "big-mushroom",
-  "pearl",
-  "big-pearl",
-  "stardust",
-  "star-piece",
-  "nugget",
-  "heart-scale",
-  "honey",
-  "growth-mulch",
-  "damp-mulch",
-  "stable-mulch",
-  "gooey-mulch",
-  "root-fossil",
-  "claw-fossil",
-  "helix-fossil",
-  "dome-fossil",
-  "old-amber",
-  "armor-fossil",
-  "skull-fossil",
-  "rare-bone",
-  "shiny-stone",
-  "dusk-stone",
-  "dawn-stone",
-  "oval-stone",
-  "odd-keystone",
-  "adamant-orb",
-  "lustrous-orb",
-  "grass-mail",
-  "flame-mail",
-  "bubble-mail",
-  "bloom-mail",
-  "tunnel-mail",
-  "steel-mail",
-  "heart-mail",
-  "snow-mail",
-  "space-mail",
-  "air-mail",
-  "mosaic-mail",
-  "brick-mail",
-  "cheri-berry",
-  "chesto-berry",
-  "pecha-berry",
-  "rawst-berry",
-  "aspear-berry",
-  "leppa-berry",
-  "oran-berry",
-  "persim-berry",
-  "lum-berry",
-  "sitrus-berry",
-  "figy-berry",
-  "wiki-berry",
-  "mago-berry",
-  "aguav-berry",
-  "iapapa-berry",
-  "razz-berry",
-  "bluk-berry",
-  "nanab-berry",
-  "wepear-berry",
-  "pinap-berry",
-  "pomeg-berry",
-  "kelpsy-berry",
-  "qualot-berry",
-  "hondew-berry",
-  "grepa-berry",
-  "tamato-berry",
-  "cornn-berry",
-  "magost-berry",
-  "rabuta-berry",
-  "nomel-berry",
-  "spelon-berry",
-  "pamtre-berry",
-  "watmel-berry",
-  "durin-berry",
-  "belue-berry",
-  "occa-berry",
-  "passho-berry",
-  "wacan-berry",
-  "rindo-berry",
-  "yache-berry",
-  "chople-berry",
-  "kebia-berry",
-  "shuca-berry",
-  "coba-berry",
-  "payapa-berry",
-  "tanga-berry",
-  "charti-berry",
-  "kasib-berry",
-  "haban-berry",
-  "colbur-berry",
-  "babiri-berry",
-  "chilan-berry",
-  "liechi-berry",
-  "ganlon-berry",
-  "salac-berry",
-  "petaya-berry",
-  "apicot-berry",
-  "lansat-berry",
-  "starf-berry",
-  "enigma-berry",
-  "micle-berry",
-  "custap-berry",
-  "jaboca-berry",
-  "rowap-berry",
-  "bright-powder",
-  "white-herb",
-  "macho-brace",
-  "exp-share",
-  "quick-claw",
-  "soothe-bell",
-  "mental-herb",
-  "choice-band",
-  "kings-rock",
-  "silver-powder",
-  "amulet-coin",
-  "cleanse-tag",
-  "soul-dew",
-  "deep-sea-tooth",
-  "deep-sea-scale",
-  "smoke-ball",
-  "everstone",
-  "focus-band",
-  "lucky-egg",
-  "scope-lens",
-  "metal-coat",
-  "leftovers",
-  "dragon-scale",
-  "light-ball",
-  "soft-sand",
-  "hard-stone",
-  "miracle-seed",
-  "black-glasses",
-  "black-belt",
-  "magnet",
-  "mystic-water",
-  "sharp-beak",
-  "poison-barb",
-  "never-melt-ice",
-  "spell-tag",
-  "twisted-spoon",
-  "charcoal",
-  "dragon-fang",
-  "silk-scarf",
-  "up-grade",
-  "shell-bell",
-  "sea-incense",
-  "lax-incense",
-  "lucky-punch",
-  "metal-powder",
-  "thick-club",
-  "stick",
-  "red-scarf",
-  "blue-scarf",
-  "pink-scarf",
-  "green-scarf",
-  "yellow-scarf",
-  "wide-lens",
-  "muscle-band",
-  "wise-glasses",
-  "expert-belt",
-  "light-clay",
-  "life-orb",
-  "power-herb",
-  "toxic-orb",
-  "flame-orb",
-  "quick-powder",
-  "focus-sash",
-  "zoom-lens",
-  "metronome",
-  "iron-ball",
-  "lagging-tail",
-  "destiny-knot",
-  "black-sludge",
-  "icy-rock",
-  "smooth-rock",
-  "heat-rock",
-  "damp-rock",
-  "grip-claw",
-  "choice-scarf",
-  "sticky-barb",
-  "power-bracer",
-  "power-belt",
-  "power-lens",
-  "power-band",
-  "power-anklet",
-  "power-weight",
-  "shed-shell",
-  "big-root",
-  "choice-specs",
-  "flame-plate",
-  "splash-plate",
-  "zap-plate",
-  "meadow-plate",
-  "icicle-plate",
-  "fist-plate",
-  "toxic-plate",
-  "earth-plate",
-  "sky-plate",
-  "mind-plate",
-  "insect-plate",
-  "stone-plate",
-  "spooky-plate",
-  "draco-plate",
-  "dread-plate",
-  "iron-plate",
-  "odd-incense",
-  "rock-incense",
-  "full-incense",
-  "wave-incense",
-  "rose-incense",
-  "luck-incense",
-  "pure-incense",
-  "protector",
-  "electirizer",
-  "magmarizer",
-  "dubious-disc",
-  "reaper-cloth",
-  "razor-claw",
-  "razor-fang",
-  "tm01",
-  "tm02",
-  "tm03",
-  "tm04",
-  "tm05",
-  "tm06",
-  "tm07",
-  "tm08",
-  "tm09",
-  "tm10",
-  "tm11",
-  "tm12",
-  "tm13",
-  "tm14",
-  "tm15",
-  "tm16",
-  "tm17",
-  "tm18",
-  "tm19",
-  "tm20",
-  "tm21",
-  "tm22",
-  "tm23",
-  "tm24",
-  "tm25",
-  "tm26",
-  "tm27",
-  "tm28",
-  "tm29",
-  "tm30",
-  "tm31",
-  "tm32",
-  "tm33",
-  "tm34",
-  "tm35",
-  "tm36",
-  "tm37",
-  "tm38",
-  "tm39",
-  "tm40",
-  "tm41",
-  "tm42",
-  "tm43",
-  "tm44",
-  "tm45",
-  "tm46",
-  "tm47",
-  "tm48",
-  "tm49",
-  "tm50",
-  "tm51",
-  "tm52",
-  "tm53",
-  "tm54",
-  "tm55",
-  "tm56",
-  "tm57",
-  "tm58",
-  "tm59",
-  "tm60",
-  "tm61",
-  "tm62",
-  "tm63",
-  "tm64",
-  "tm65",
-  "tm66",
-  "tm67",
-  "tm68",
-  "tm69",
-  "tm70",
-  "tm71",
-  "tm72",
-  "tm73",
-  "tm74",
-  "tm75",
-  "tm76",
-  "tm77",
-  "tm78",
-  "tm79",
-  "tm80",
-  "tm81",
-  "tm82",
-  "tm83",
-  "tm84",
-  "tm85",
-  "tm86",
-  "tm87",
-  "tm88",
-  "tm89",
-  "tm90",
-  "tm91",
-  "tm92",
-  "hm01",
-  "hm02",
-  "hm03",
-  "hm04",
-  "hm05",
-  "hm06",
-  "hm07",
-  "hm08",
-  "explorer-kit",
-  "loot-sack",
-  "rule-book",
-  "poke-radar",
-  "point-card",
-  "journal",
-  "seal-case",
-  "fashion-case",
-  "seal-bag",
-  "pal-pad",
-  "works-key",
-  "old-charm",
-  "galactic-key",
-  "red-chain",
-  "town-map",
-  "vs-seeker",
-  "coin-case",
-  "old-rod",
-  "good-rod",
-  "super-rod",
-  "sprayduck",
-  "poffin-case",
-  "bicycle",
-  "suite-key",
-  "oaks-letter",
-  "lunar-wing",
-  "member-card",
-  "azure-flute",
-  "ss-ticket",
-  "contest-pass",
-  "magma-stone",
-  "parcel",
-  "coupon-1",
-  "coupon-2",
-  "coupon-3",
-  "storage-key",
-  "secret-potion",
-  "griseous-orb",
-  "vs-recorder",
-  "gracidea",
-  "secret-key",
-  "apricorn-box",
-  "berry-pots",
-  "squirt-bottle",
-  "lure-ball",
-  "level-ball",
-  "moon-ball",
-  "heavy-ball",
-  "fast-ball",
-  "friend-ball",
-  "love-ball",
-  "park-ball",
-  "sport-ball",
-  "red-apricorn",
-  "blue-apricorn",
-  "yellow-apricorn",
-  "green-apricorn",
-  "pink-apricorn",
-  "white-apricorn",
-  "black-apricorn",
-  "dowsing-machine",
-  "rage-candy-bar",
-  "red-orb",
-  "blue-orb",
-  "jade-orb",
-  "enigma-stone",
-  "unown-report",
-  "blue-card",
-  "slowpoke-tail",
-  "clear-bell",
-  "card-key",
-  "basement-key",
-  "red-scale",
-  "lost-item",
-  "pass",
-  "machine-part",
-  "silver-wing",
-  "rainbow-wing",
-  "mystery-egg",
-  "gb-sounds",
-  "tidal-bell",
-  "data-card-01",
-  "data-card-02",
-  "data-card-03",
-  "data-card-04",
-  "data-card-05",
-  "data-card-06",
-  "data-card-07",
-  "data-card-08",
-  "data-card-09",
-  "data-card-10",
-  "data-card-11",
-  "data-card-12",
-  "data-card-13",
-  "data-card-14",
-  "data-card-15",
-  "data-card-16",
-  "data-card-17",
-  "data-card-18",
-  "data-card-19",
-  "data-card-20",
-  "data-card-21",
-  "data-card-22",
-  "data-card-23",
-  "data-card-24",
-  "data-card-25",
-  "data-card-26",
-  "data-card-27",
-  "lock-capsule",
-  "photo-album",
-  "orange-mail",
-  "harbor-mail",
-  "glitter-mail",
-  "mech-mail",
-  "wood-mail",
-  "wave-mail",
-  "bead-mail",
-  "shadow-mail",
-  "tropic-mail",
-  "dream-mail",
-  "fab-mail",
-  "retro-mail",
-  "mach-bike",
-  "acro-bike",
-  "wailmer-pail",
-  "devon-goods",
-  "soot-sack",
-  "pokeblock-case",
-  "letter",
-  "eon-ticket",
-  "scanner",
-  "go-goggles",
-  "meteorite",
-  "rm-1-key",
-  "rm-2-key",
-  "rm-4-key",
-  "rm-6-key",
-  "devon-scope",
-  "oaks-parcel",
-  "poke-flute",
-  "bike-voucher",
-  "gold-teeth",
-  "lift-key",
-  "silph-scope",
-  "fame-checker",
-  "tm-case",
-  "berry-pouch",
-  "teachy-tv",
-  "tri-pass",
-  "rainbow-pass",
-  "tea",
-  "mysticticket",
-  "auroraticket",
-  "powder-jar",
-  "ruby",
-  "sapphire",
-  "magma-emblem",
-  "old-sea-map",
-  "douse-drive",
-  "shock-drive",
-  "burn-drive",
-  "chill-drive",
-  "sweet-heart",
-  "greet-mail",
-  "favored-mail",
-  "rsvp-mail",
-  "thanks-mail",
-  "inquiry-mail",
-  "like-mail",
-  "reply-mail",
-  "bridge-mail-s",
-  "bridge-mail-d",
-  "bridge-mail-t",
-  "bridge-mail-v",
-  "bridge-mail-m",
-  "prism-scale",
-  "eviolite",
-  "float-stone",
-  "rocky-helmet",
-  "air-balloon",
-  "red-card",
-  "ring-target",
-  "binding-band",
-  "absorb-bulb",
-  "cell-battery",
-  "eject-button",
-  "fire-gem",
-  "water-gem",
-  "electric-gem",
-  "grass-gem",
-  "ice-gem",
-  "fighting-gem",
-  "poison-gem",
-  "ground-gem",
-  "flying-gem",
-  "psychic-gem",
-  "bug-gem",
-  "rock-gem",
-  "ghost-gem",
-  "dark-gem",
-  "steel-gem",
-  "health-wing",
-  "muscle-wing",
-  "resist-wing",
-  "genius-wing",
-  "clever-wing",
-  "swift-wing",
-  "pretty-wing",
-  "cover-fossil",
-  "plume-fossil",
-  "liberty-pass",
-  "pass-orb",
-  "dream-ball",
-  "poke-toy",
-  "prop-case",
-  "dragon-skull",
-  "balm-mushroom",
-  "big-nugget",
-  "pearl-string",
-  "comet-shard",
-  "relic-copper",
-  "relic-silver",
-  "relic-gold",
-  "relic-vase",
-  "relic-band",
-  "relic-statue",
-  "relic-crown",
-  "casteliacone",
-  "dire-hit-2",
-  "x-speed-2",
-  "x-sp-atk-2",
-  "x-sp-def-2",
-  "x-defense-2",
-  "x-attack-2",
-  "x-accuracy-2",
-  "x-speed-3",
-  "x-sp-atk-3",
-  "x-sp-def-3",
-  "x-defense-3",
-  "x-attack-3",
-  "x-accuracy-3",
-  "x-speed-6",
-  "x-sp-atk-6",
-  "x-sp-def-6",
-  "x-defense-6",
-  "x-attack-6",
-  "x-accuracy-6",
-  "ability-urge",
-  "item-drop",
-  "item-urge",
-  "reset-urge",
-  "dire-hit-3",
-  "light-stone",
-  "dark-stone",
-  "tm93",
-  "tm94",
-  "tm95",
-  "xtransceiver",
-  "god-stone",
-  "gram-1",
-  "gram-2",
-  "gram-3",
-  "dragon-gem",
-  "normal-gem",
-  "medal-box",
-  "dna-splicers",
-  "permit",
-  "oval-charm",
-  "shiny-charm",
-  "plasma-card",
-  "grubby-hanky",
-  "colress-machine",
-  "dropped-item",
-  "reveal-glass",
-  "weakness-policy",
-  "assault-vest",
-  "pixie-plate",
-  "ability-capsule",
-  "whipped-dream",
-  "sachet",
-  "luminous-moss",
-  "snowball",
-  "safety-goggles",
-  "rich-mulch",
-  "surprise-mulch",
-  "boost-mulch",
-  "amaze-mulch",
-  "gengarite",
-  "gardevoirite",
-  "ampharosite",
-  "venusaurite",
-  "charizardite-x",
-  "blastoisinite",
-  "mewtwonite-x",
-  "mewtwonite-y",
-  "blazikenite",
-  "medichamite",
-  "houndoominite",
-  "aggronite",
-  "banettite",
-  "tyranitarite",
-  "scizorite",
-  "pinsirite",
-  "aerodactylite",
-  "lucarionite",
-  "abomasite",
-  "kangaskhanite",
-  "gyaradosite",
-  "absolite",
-  "charizardite-y",
-  "alakazite",
-  "heracronite",
-  "mawilite",
-  "manectite",
-  "garchompite",
-  "roseli-berry",
-  "kee-berry",
-  "maranga-berry",
-  "discount-coupon",
-  "strange-souvenir",
-  "lumiose-galette",
-  "jaw-fossil",
-  "sail-fossil",
-  "fairy-gem",
-  "adventure-rules",
-  "elevator-key",
-  "holo-caster",
-  "honor-of-kalos",
-  "intriguing-stone",
-  "lens-case",
-  "looker-ticket",
-  "mega-ring",
-  "power-plant-pass",
-  "profs-letter",
-  "roller-skates",
-  "sprinklotad",
-  "tmv-pass",
-  "tm96",
-  "tm97",
-  "tm98",
-  "tm99",
-  "tm100",
-  "latiasite",
-  "latiosite",
-  "common-stone",
-  "makeup-bag",
-  "travel-trunk",
-  "shalour-sable",
-  "mega-charm",
-  "mega-glove",
-  "devon-parts",
-  "pokeblock-kit",
-  "key-to-room-1",
-  "key-to-room-2",
-  "key-to-room-4",
-  "key-to-room-6",
-  "devon-scuba-gear",
-  "contest-costume--jacket",
-  "magma-suit",
-  "aqua-suit",
-  "pair-of-tickets",
-  "mega-bracelet",
-  "mega-pendant",
-  "mega-glasses",
-  "mega-anchor",
-  "mega-stickpin",
-  "mega-tiara",
-  "mega-anklet",
-  "swampertite",
-  "sceptilite",
-  "sablenite",
-  "altarianite",
-  "galladite",
-  "audinite",
-  "metagrossite",
-  "sharpedonite",
-  "slowbronite",
-  "steelixite",
-  "pidgeotite",
-  "glalitite",
-  "diancite",
-  "prison-bottle",
-  "mega-cuff",
-  "cameruptite",
-  "lopunnite",
-  "salamencite",
-  "beedrillite",
-  "key-stone",
-  "meteorite-shard",
-  "eon-flute",
-  "normalium-z--held",
-  "firium-z--held",
-  "waterium-z--held",
-  "electrium-z--held",
-  "grassium-z--held",
-  "icium-z--held",
-  "fightinium-z--held",
-  "poisonium-z--held",
-  "groundium-z--held",
-  "flyinium-z--held",
-  "psychium-z--held",
-  "buginium-z--held",
-  "rockium-z--held",
-  "ghostium-z--held",
-  "dragonium-z--held",
-  "darkinium-z--held",
-  "steelium-z--held",
-  "fairium-z--held",
-  "pikanium-z--held",
-  "bottle-cap",
-  "gold-bottle-cap",
-  "z-ring",
-  "decidium-z--held",
-  "incinium-z--held",
-  "primarium-z--held",
-  "tapunium-z--held",
-  "marshadium-z--held",
-  "aloraichium-z--held",
-  "snorlium-z--held",
-  "eevium-z--held",
-  "mewnium-z--held",
-  "pikashunium-z--held",
-  "forage-bag",
-  "fishing-rod",
-  "professors-mask",
-  "festival-ticket",
-  "sparkling-stone",
-  "adrenaline-orb",
-  "zygarde-cube",
-  "ice-stone",
-  "ride-pager",
-  "beast-ball",
-  "big-malasada",
-  "red-nectar",
-  "yellow-nectar",
-  "pink-nectar",
-  "purple-nectar",
-  "sun-flute",
-  "moon-flute",
-  "enigmatic-card",
-  "terrain-extender",
-  "protective-pads",
-  "electric-seed",
-  "psychic-seed",
-  "misty-seed",
-  "grassy-seed",
-  "fighting-memory",
-  "flying-memory",
-  "poison-memory",
-  "ground-memory",
-  "rock-memory",
-  "bug-memory",
-  "ghost-memory",
-  "steel-memory",
-  "fire-memory",
-  "water-memory",
-  "grass-memory",
-  "electric-memory",
-  "psychic-memory",
-  "ice-memory",
-  "dragon-memory",
-  "dark-memory",
-  "fairy-memory",
-  "bike--green",
-  "storage-key--galactic-warehouse",
-  "basement-key--goldenrod",
-  "xtransceiver--red",
-  "xtransceiver--yellow",
-  "dna-splicers--merge",
-  "dna-splicers--split",
-  "dropped-item--red",
-  "dropped-item--yellow",
-  "holo-caster--green",
-  "bike--yellow",
-  "holo-caster--red",
-  "basement-key--new-mauville",
-  "storage-key--sea-mauville",
-  "ss-ticket--hoenn",
-  "contest-costume--dress",
-  "meteorite--2",
-  "meteorite--3",
-  "meteorite--4",
-  "normalium-z--bag",
-  "firium-z--bag",
-  "waterium-z--bag",
-  "electrium-z--bag",
-  "grassium-z--bag",
-  "icium-z--bag",
-  "fightinium-z--bag",
-  "poisonium-z--bag",
-  "groundium-z--bag",
-  "flyinium-z--bag",
-  "psychium-z--bag",
-  "buginium-z--bag",
-  "rockium-z--bag",
-  "ghostium-z--bag",
-  "dragonium-z--bag",
-  "darkinium-z--bag",
-  "steelium-z--bag",
-  "fairium-z--bag",
-  "pikanium-z--bag",
-  "decidium-z--bag",
-  "incinium-z--bag",
-  "primarium-z--bag",
-  "tapunium-z--bag",
-  "marshadium-z--bag",
-  "aloraichium-z--bag",
-  "snorlium-z--bag",
-  "eevium-z--bag",
-  "mewnium-z--bag",
-  "pikashunium-z--bag",
-  "solganium-z--held",
-  "lunalium-z--held",
-  "ultranecrozium-z--held",
-  "mimikium-z--held",
-  "lycanium-z--held",
-  "kommonium-z--held",
-  "solganium-z--bag",
-  "lunalium-z--bag",
-  "ultranecrozium-z--bag",
-  "mimikium-z--bag",
-  "lycanium-z--bag",
-  "kommonium-z--bag",
-  "z-power-ring",
-  "pink-petal",
-  "orange-petal",
-  "blue-petal",
-  "red-petal",
-  "green-petal",
-  "yellow-petal",
-  "purple-petal",
-  "rainbow-flower",
-  "surge-badge",
-  "n-solarizer--merge",
-  "n-lunarizer--merge",
-  "n-solarizer--split",
-  "n-lunarizer--split",
-  "ilimas-normalium-z",
-  "left-poke-ball",
-  "roto-hatch",
-  "roto-bargain",
-  "roto-prize-money",
-  "roto-exp-points",
-  "roto-friendship",
-  "roto-encounter",
-  "roto-stealth",
-  "roto-hp-restore",
-  "roto-pp-restore",
-  "roto-boost",
-  "roto-catch",
-  "autograph",
-  "pokemon-box",
-  "medicine-pocket",
-  "candy-jar",
-  "power-up-pocket",
-  "clothing-trunk",
-  "catching-pocket",
-  "battle-pocket",
-  "silver-razz-berry",
-  "golden-razz-berry",
-  "silver-nanab-berry",
-  "golden-nanab-berry",
-  "silver-pinap-berry",
-  "golden-pinap-berry",
-  "secret-key--letsgo",
-  "ss-ticket--letsgo",
-  "parcel--letsgo",
-  "card-key--letsgo",
-  "stretchy-spring",
-  "chalky-stone",
-  "marble",
-  "lone-earring",
-  "beach-glass",
-  "gold-leaf",
-  "silver-leaf",
-  "polished-mud-ball",
-  "tropical-shell",
-  "leaf-letter--pikachu",
-  "leaf-letter--eevee",
-  "small-bouquet",
-  "lure",
-  "super-lure",
-  "max-lure",
-  "pewter-crunchies",
-  "health-candy",
-  "mighty-candy",
-  "tough-candy",
-  "smart-candy",
-  "courage-candy",
-  "quick-candy",
-  "health-candy-l",
-  "mighty-candy-l",
-  "tough-candy-l",
-  "smart-candy-l",
-  "courage-candy-l",
-  "quick-candy-l",
-  "health-candy-xl",
-  "mighty-candy-xl",
-  "tough-candy-xl",
-  "smart-candy-xl",
-  "courage-candy-xl",
-  "quick-candy-xl",
-  "bulbasaur-candy",
-  "charmander-candy",
-  "squirtle-candy",
-  "caterpie-candy",
-  "weedle-candy",
-  "pidgey-candy",
-  "rattata-candy",
-  "spearow-candy",
-  "ekans-candy",
-  "pikachu-candy",
-  "sandshrew-candy",
-  "nidoran-f-candy",
-  "nidoran-m-candy",
-  "clefairy-candy",
-  "vulpix-candy",
-  "jigglypuff-candy",
-  "zubat-candy",
-  "oddish-candy",
-  "paras-candy",
-  "venonat-candy",
-  "diglett-candy",
-  "meowth-candy",
-  "psyduck-candy",
-  "mankey-candy",
-  "growlithe-candy",
-  "poliwag-candy",
-  "abra-candy",
-  "machop-candy",
-  "bellsprout-candy",
-  "tentacool-candy",
-  "geodude-candy",
-  "ponyta-candy",
-  "slowpoke-candy",
-  "magnemite-candy",
-  "farfetchd-candy",
-  "doduo-candy",
-  "seel-candy",
-  "grimer-candy",
-  "shellder-candy",
-  "gastly-candy",
-  "onix-candy",
-  "drowzee-candy",
-  "krabby-candy",
-  "voltorb-candy",
-  "exeggcute-candy",
-  "cubone-candy",
-  "hitmonlee-candy",
-  "hitmonchan-candy",
-  "lickitung-candy",
-  "koffing-candy",
-  "rhyhorn-candy",
-  "chansey-candy",
-  "tangela-candy",
-  "kangaskhan-candy",
-  "horsea-candy",
-  "goldeen-candy",
-  "staryu-candy",
-  "mr-mime-candy",
-  "scyther-candy",
-  "jynx-candy",
-  "electabuzz-candy",
-  "pinsir-candy",
-  "tauros-candy",
-  "magikarp-candy",
-  "lapras-candy",
-  "ditto-candy",
-  "eevee-candy",
-  "porygon-candy",
-  "omanyte-candy",
-  "kabuto-candy",
-  "aerodactyl-candy",
-  "snorlax-candy",
-  "articuno-candy",
-  "zapdos-candy",
-  "moltres-candy",
-  "dratini-candy",
-  "mewtwo-candy",
-  "mew-candy",
-  "meltan-candy",
-  "magmar-candy",
-  "endorsement",
-  "pokemon-box-link",
-  "wishing-star",
-  "dynamax-band",
-  "fishing-rod--galar",
-  "rotom-bike",
-  "sausages",
-  "bobs-food-tin",
-  "bachs-food-tin",
-  "tin-of-beans",
-  "bread",
-  "pasta",
-  "mixed-mushrooms",
-  "smoke-poke-tail",
-  "large-leek",
-  "fancy-apple",
-  "brittle-bones",
-  "pack-of-potatoes",
-  "pungent-root",
-  "salad-mix",
-  "fried-food",
-  "boiled-egg",
-  "camping-gear",
-  "rusted-sword",
-  "rusted-shield",
-  "fossilized-bird",
-  "fossilized-fish",
-  "fossilized-drake",
-  "fossilized-dino",
-  "strawberry-sweet",
-  "love-sweet",
-  "berry-sweet",
-  "clover-sweet",
-  "flower-sweet",
-  "star-sweet",
-  "ribbon-sweet",
-  "sweet-apple",
-  "tart-apple",
-  "throat-spray",
-  "eject-pack",
-  "heavy-duty-boots",
-  "blunder-policy",
-  "room-service",
-  "utility-umbrella",
-  "exp-candy-xs",
-  "exp-candy-s",
-  "exp-candy-m",
-  "exp-candy-l",
-  "exp-candy-xl",
-  "dynamax-candy",
-  "tr00",
-  "tr01",
-  "tr02",
-  "tr03",
-  "tr04",
-  "tr05",
-  "tr06",
-  "tr07",
-  "tr08",
-  "tr09",
-  "tr10",
-  "tr11",
-  "tr12",
-  "tr13",
-  "tr14",
-  "tr15",
-  "tr16",
-  "tr17",
-  "tr18",
-  "tr19",
-  "tr20",
-  "tr21",
-  "tr22",
-  "tr23",
-  "tr24",
-  "tr25",
-  "tr26",
-  "tr27",
-  "tr28",
-  "tr29",
-  "tr30",
-  "tr31",
-  "tr32",
-  "tr33",
-  "tr34",
-  "tr35",
-  "tr36",
-  "tr37",
-  "tr38",
-  "tr39",
-  "tr40",
-  "tr41",
-  "tr42",
-  "tr43",
-  "tr44",
-  "tr45",
-  "tr46",
-  "tr47",
-  "tr48",
-  "tr49",
-  "tr50",
-  "tr51",
-  "tr52",
-  "tr53",
-  "tr54",
-  "tr55",
-  "tr56",
-  "tr57",
-  "tr58",
-  "tr59",
-  "tr60",
-  "tr61",
-  "tr62",
-  "tr63",
-  "tr64",
-  "tr65",
-  "tr66",
-  "tr67",
-  "tr68",
-  "tr69",
-  "tr70",
-  "tr71",
-  "tr72",
-  "tr73",
-  "tr74",
-  "tr75",
-  "tr76",
-  "tr77",
-  "tr78",
-  "tr79",
-  "tr80",
-  "tr81",
-  "tr82",
-  "tr83",
-  "tr84",
-  "tr85",
-  "tr86",
-  "tr87",
-  "tr88",
-  "tr89",
-  "tr90",
-  "tr91",
-  "tr92",
-  "tr93",
-  "tr94",
-  "tr95",
-  "tr96",
-  "tr97",
-  "tr98",
-  "tr99",
-  "tm00",
-  "lonely-mint",
-  "adamant-mint",
-  "naughty-mint",
-  "brave-mint",
-  "bold-mint",
-  "impish-mint",
-  "lax-mint",
-  "relaxed-mint",
-  "modest-mint",
-  "mild-mint",
-  "rash-mint",
-  "quiet-mint",
-  "calm-mint",
-  "gentle-mint",
-  "careful-mint",
-  "sassy-mint",
-  "timid-mint",
-  "hasty-mint",
-  "jolly-mint",
-  "naive-mint",
-  "serious-mint",
-  "wishing-piece",
-  "cracked-pot",
-  "chipped-pot",
-  "hi-tech-earbuds",
-  "fruit-bunch",
-  "moomoo-cheese",
-  "spice-mix",
-  "fresh-cream",
-  "packaged-curry",
-  "coconut-milk",
-  "instant-noodles",
-  "precooked-burger",
-  "gigantamix",
-  "wishing-chip",
-  "rotom-bike--water-mode",
-  "catching-charm",
-  "old-letter",
-  "band-autograph",
-  "sonias-book",
-  "rotom-catalog",
-  "dynamax-crystal-and458",
-  "dynamax-crystal-and15",
-  "dynamax-crystal-and337",
-  "dynamax-crystal-and603",
-  "dynamax-crystal-and390",
-  "dynamax-crystal-sgr6879",
-  "dynamax-crystal-sgr6859",
-  "dynamax-crystal-sgr6913",
-  "dynamax-crystal-sgr7348",
-  "dynamax-crystal-sgr7121",
-  "dynamax-crystal-sgr6746",
-  "dynamax-crystal-sgr7194",
-  "dynamax-crystal-sgr7337",
-  "dynamax-crystal-sgr7343",
-  "dynamax-crystal-sgr6812",
-  "dynamax-crystal-sgr7116",
-  "dynamax-crystal-sgr7264",
-  "dynamax-crystal-sgr7597",
-  "dynamax-crystal-del7882",
-  "dynamax-crystal-del7906",
-  "dynamax-crystal-del7852",
-  "dynamax-crystal-psc596",
-  "dynamax-crystal-psc361",
-  "dynamax-crystal-psc510",
-  "dynamax-crystal-psc437",
-  "dynamax-crystal-psc8773",
-  "dynamax-crystal-lep1865",
-  "dynamax-crystal-lep1829",
-  "dynamax-crystal-boo5340",
-  "dynamax-crystal-boo5506",
-  "dynamax-crystal-boo5435",
-  "dynamax-crystal-boo5602",
-  "dynamax-crystal-boo5733",
-  "dynamax-crystal-boo5235",
-  "dynamax-crystal-boo5351",
-  "dynamax-crystal-hya3748",
-  "dynamax-crystal-hya3903",
-  "dynamax-crystal-hya3418",
-  "dynamax-crystal-hya3482",
-  "dynamax-crystal-hya3845",
-  "dynamax-crystal-eri1084",
-  "dynamax-crystal-eri472",
-  "dynamax-crystal-eri1666",
-  "dynamax-crystal-eri897",
-  "dynamax-crystal-eri1231",
-  "dynamax-crystal-eri874",
-  "dynamax-crystal-eri1298",
-  "dynamax-crystal-eri1325",
-  "dynamax-crystal-eri984",
-  "dynamax-crystal-eri1464",
-  "dynamax-crystal-eri1393",
-  "dynamax-crystal-eri850",
-  "dynamax-crystal-tau1409",
-  "dynamax-crystal-tau1457",
-  "dynamax-crystal-tau1165",
-  "dynamax-crystal-tau1791",
-  "dynamax-crystal-tau1910",
-  "dynamax-crystal-tau1346",
-  "dynamax-crystal-tau1373",
-  "dynamax-crystal-tau1412",
-  "dynamax-crystal-cma2491",
-  "dynamax-crystal-cma2693",
-  "dynamax-crystal-cma2294",
-  "dynamax-crystal-cma2827",
-  "dynamax-crystal-cma2282",
-  "dynamax-crystal-cma2618",
-  "dynamax-crystal-cma2657",
-  "dynamax-crystal-cma2646",
-  "dynamax-crystal-uma4905",
-  "dynamax-crystal-uma4301",
-  "dynamax-crystal-uma5191",
-  "dynamax-crystal-uma5054",
-  "dynamax-crystal-uma4295",
-  "dynamax-crystal-uma4660",
-  "dynamax-crystal-uma4554",
-  "dynamax-crystal-uma4069",
-  "dynamax-crystal-uma3569",
-  "dynamax-crystal-uma3323",
-  "dynamax-crystal-uma4033",
-  "dynamax-crystal-uma4377",
-  "dynamax-crystal-uma4375",
-  "dynamax-crystal-uma4518",
-  "dynamax-crystal-uma3594",
-  "dynamax-crystal-vir5056",
-  "dynamax-crystal-vir4825",
-  "dynamax-crystal-vir4932",
-  "dynamax-crystal-vir4540",
-  "dynamax-crystal-vir4689",
-  "dynamax-crystal-vir5338",
-  "dynamax-crystal-vir4910",
-  "dynamax-crystal-vir5315",
-  "dynamax-crystal-vir5359",
-  "dynamax-crystal-vir5409",
-  "dynamax-crystal-vir5107",
-  "dynamax-crystal-ari617",
-  "dynamax-crystal-ari553",
-  "dynamax-crystal-ari546",
-  "dynamax-crystal-ari951",
-  "dynamax-crystal-ori1713",
-  "dynamax-crystal-ori2061",
-  "dynamax-crystal-ori1790",
-  "dynamax-crystal-ori1903",
-  "dynamax-crystal-ori1948",
-  "dynamax-crystal-ori2004",
-  "dynamax-crystal-ori1852",
-  "dynamax-crystal-ori1879",
-  "dynamax-crystal-ori1899",
-  "dynamax-crystal-ori1543",
-  "dynamax-crystal-cas21",
-  "dynamax-crystal-cas168",
-  "dynamax-crystal-cas403",
-  "dynamax-crystal-cas153",
-  "dynamax-crystal-cas542",
-  "dynamax-crystal-cas219",
-  "dynamax-crystal-cas265",
-  "dynamax-crystal-cnc3572",
-  "dynamax-crystal-cnc3208",
-  "dynamax-crystal-cnc3461",
-  "dynamax-crystal-cnc3449",
-  "dynamax-crystal-cnc3429",
-  "dynamax-crystal-cnc3627",
-  "dynamax-crystal-cnc3268",
-  "dynamax-crystal-cnc3249",
-  "dynamax-crystal-com4968",
-  "dynamax-crystal-crv4757",
-  "dynamax-crystal-crv4623",
-  "dynamax-crystal-crv4662",
-  "dynamax-crystal-crv4786",
-  "dynamax-crystal-aur1708",
-  "dynamax-crystal-aur2088",
-  "dynamax-crystal-aur1605",
-  "dynamax-crystal-aur2095",
-  "dynamax-crystal-aur1577",
-  "dynamax-crystal-aur1641",
-  "dynamax-crystal-aur1612",
-  "dynamax-crystal-pav7790",
-  "dynamax-crystal-cet911",
-  "dynamax-crystal-cet681",
-  "dynamax-crystal-cet188",
-  "dynamax-crystal-cet539",
-  "dynamax-crystal-cet804",
-  "dynamax-crystal-cep8974",
-  "dynamax-crystal-cep8162",
-  "dynamax-crystal-cep8238",
-  "dynamax-crystal-cep8417",
-  "dynamax-crystal-cen5267",
-  "dynamax-crystal-cen5288",
-  "dynamax-crystal-cen551",
-  "dynamax-crystal-cen5459",
-  "dynamax-crystal-cen5460",
-  "dynamax-crystal-cmi2943",
-  "dynamax-crystal-cmi2845",
-  "dynamax-crystal-equ8131",
-  "dynamax-crystal-vul7405",
-  "dynamax-crystal-umi424",
-  "dynamax-crystal-umi5563",
-  "dynamax-crystal-umi5735",
-  "dynamax-crystal-umi6789",
-  "dynamax-crystal-crt4287",
-  "dynamax-crystal-lyr7001",
-  "dynamax-crystal-lyr7178",
-  "dynamax-crystal-lyr7106",
-  "dynamax-crystal-lyr7298",
-  "dynamax-crystal-ara6585",
-  "dynamax-crystal-sco6134",
-  "dynamax-crystal-sco6527",
-  "dynamax-crystal-sco6553",
-  "dynamax-crystal-sco5953",
-  "dynamax-crystal-sco5984",
-  "dynamax-crystal-sco6508",
-  "dynamax-crystal-sco6084",
-  "dynamax-crystal-sco5944",
-  "dynamax-crystal-sco6630",
-  "dynamax-crystal-sco6027",
-  "dynamax-crystal-sco6247",
-  "dynamax-crystal-sco6252",
-  "dynamax-crystal-sco5928",
-  "dynamax-crystal-sco6241",
-  "dynamax-crystal-sco6165",
-  "dynamax-crystal-tri544",
-  "dynamax-crystal-leo3982",
-  "dynamax-crystal-leo4534",
-  "dynamax-crystal-leo4357",
-  "dynamax-crystal-leo4057",
-  "dynamax-crystal-leo4359",
-  "dynamax-crystal-leo4031",
-  "dynamax-crystal-leo3852",
-  "dynamax-crystal-leo3905",
-  "dynamax-crystal-leo3773",
-  "dynamax-crystal-gru8425",
-  "dynamax-crystal-gru8636",
-  "dynamax-crystal-gru8353",
-  "dynamax-crystal-lib5685",
-  "dynamax-crystal-lib5531",
-  "dynamax-crystal-lib5787",
-  "dynamax-crystal-lib5603",
-  "dynamax-crystal-pup3165",
-  "dynamax-crystal-pup3185",
-  "dynamax-crystal-pup3045",
-  "dynamax-crystal-cyg7924",
-  "dynamax-crystal-cyg7417",
-  "dynamax-crystal-cyg7796",
-  "dynamax-crystal-cyg8301",
-  "dynamax-crystal-cyg7949",
-  "dynamax-crystal-cyg7528",
-  "dynamax-crystal-oct7228",
-  "dynamax-crystal-col1956",
-  "dynamax-crystal-col2040",
-  "dynamax-crystal-col2177",
-  "dynamax-crystal-gem2990",
-  "dynamax-crystal-gem2891",
-  "dynamax-crystal-gem2421",
-  "dynamax-crystal-gem2473",
-  "dynamax-crystal-gem2216",
-  "dynamax-crystal-gem2777",
-  "dynamax-crystal-gem2650",
-  "dynamax-crystal-gem2286",
-  "dynamax-crystal-gem2484",
-  "dynamax-crystal-gem2930",
-  "dynamax-crystal-peg8775",
-  "dynamax-crystal-peg8781",
-  "dynamax-crystal-peg39",
-  "dynamax-crystal-peg8308",
-  "dynamax-crystal-peg8650",
-  "dynamax-crystal-peg8634",
-  "dynamax-crystal-peg8684",
-  "dynamax-crystal-peg8450",
-  "dynamax-crystal-peg8880",
-  "dynamax-crystal-peg8905",
-  "dynamax-crystal-oph6556",
-  "dynamax-crystal-oph6378",
-  "dynamax-crystal-oph6603",
-  "dynamax-crystal-oph6149",
-  "dynamax-crystal-oph6056",
-  "dynamax-crystal-oph6075",
-  "dynamax-crystal-ser5854",
-  "dynamax-crystal-ser7141",
-  "dynamax-crystal-ser5879",
-  "dynamax-crystal-her6406",
-  "dynamax-crystal-her6148",
-  "dynamax-crystal-her6410",
-  "dynamax-crystal-her6526",
-  "dynamax-crystal-her6117",
-  "dynamax-crystal-her6008",
-  "dynamax-crystal-per936",
-  "dynamax-crystal-per1017",
-  "dynamax-crystal-per1131",
-  "dynamax-crystal-per1228",
-  "dynamax-crystal-per834",
-  "dynamax-crystal-per941",
-  "dynamax-crystal-phe99",
-  "dynamax-crystal-phe338",
-  "dynamax-crystal-vel3634",
-  "dynamax-crystal-vel3485",
-  "dynamax-crystal-vel3734",
-  "dynamax-crystal-aqr8232",
-  "dynamax-crystal-aqr8414",
-  "dynamax-crystal-aqr8709",
-  "dynamax-crystal-aqr8518",
-  "dynamax-crystal-aqr7950",
-  "dynamax-crystal-aqr8499",
-  "dynamax-crystal-aqr8610",
-  "dynamax-crystal-aqr8264",
-  "dynamax-crystal-cru4853",
-  "dynamax-crystal-cru4730",
-  "dynamax-crystal-cru4763",
-  "dynamax-crystal-cru4700",
-  "dynamax-crystal-cru4656",
-  "dynamax-crystal-psa8728",
-  "dynamax-crystal-tra6217",
-  "dynamax-crystal-cap7776",
-  "dynamax-crystal-cap7754",
-  "dynamax-crystal-cap8278",
-  "dynamax-crystal-cap8322",
-  "dynamax-crystal-cap7773",
-  "dynamax-crystal-sge7479",
-  "dynamax-crystal-car2326",
-  "dynamax-crystal-car3685",
-  "dynamax-crystal-car3307",
-  "dynamax-crystal-car3699",
-  "dynamax-crystal-dra5744",
-  "dynamax-crystal-dra5291",
-  "dynamax-crystal-dra6705",
-  "dynamax-crystal-dra6536",
-  "dynamax-crystal-dra7310",
-  "dynamax-crystal-dra6688",
-  "dynamax-crystal-dra4434",
-  "dynamax-crystal-dra6370",
-  "dynamax-crystal-dra7462",
-  "dynamax-crystal-dra6396",
-  "dynamax-crystal-dra6132",
-  "dynamax-crystal-dra6636",
-  "dynamax-crystal-cvn4915",
-  "dynamax-crystal-cvn4785",
-  "dynamax-crystal-cvn4846",
-  "dynamax-crystal-aql7595",
-  "dynamax-crystal-aql7557",
-  "dynamax-crystal-aql7525",
-  "dynamax-crystal-aql7602",
-  "dynamax-crystal-aql7235",
-  "max-honey",
-  "max-mushrooms",
-  "galarica-twig",
-  "galarica-cuff",
-  "style-card",
-  "armor-pass",
-  "rotom-bike--sparkling-white",
-  "rotom-bike--glistening-black",
-  "exp-charm",
-  "armorite-ore",
-  "mark-charm",
-  "reins-of-unity--merge",
-  "reins-of-unity--split",
-  "galarica-wreath",
-  "legendary-clue-1",
-  "legendary-clue-2",
-  "legendary-clue-3",
-  "legendary-clue-question",
-  "crown-pass",
-  "wooden-crown",
-  "radiant-petal",
-  "white-mane-hair",
-  "black-mane-hair",
-  "iceroot-carrot",
-  "shaderoot-carrot",
-  "dynite-ore",
-  "carrot-seeds",
-  "ability-patch",
-  "reins-of-unity",
-  "adamant-crystal",
-  "lustrous-globe",
-  "griseous-core",
-  "blank-plate",
-  "strange-ball",
-  "legend-plate",
-  "rotom-phone",
-  "sandwich",
-  "koraidon’s-poké-ball",
-  "miraidon’s-poké-ball",
-  "tera-orb",
-  "scarlet-book",
-  "violet-book",
-  "kofu’s-wallet",
-  "tiny-bamboo-shoot",
-  "big-bamboo-shoot",
-  "scroll-of-darkness",
-  "scroll-of-waters",
-  "malicious-armor",
-  "normal-tera-shard",
-  "fire-tera-shard",
-  "water-tera-shard",
-  "electric-tera-shard",
-  "grass-tera-shard",
-  "ice-tera-shard",
-  "fighting-tera-shard",
-  "poison-tera-shard",
-  "ground-tera-shard",
-  "flying-tera-shard",
-  "psychic-tera-shard",
-  "bug-tera-shard",
-  "rock-tera-shard",
-  "ghost-tera-shard",
-  "dragon-tera-shard",
-  "dark-tera-shard",
-  "steel-tera-shard",
-  "fairy-tera-shard",
-  "booster-energy",
-  "ability-shield",
-  "clear-amulet",
-  "mirror-herb",
-  "punching-glove",
-  "covert-cloak",
-  "loaded-dice",
-  "baguette",
-  "mayonnaise",
-  "ketchup",
-  "mustard",
-  "butter",
-  "peanut-butter",
-  "chili-sauce",
-  "salt",
-  "pepper",
-  "yogurt",
-  "whipped-cream",
-  "cream-cheese",
-  "jam",
-  "marmalade",
-  "olive-oil",
-  "vinegar",
-  "sweet-herba-mystica",
-  "salty-herba-mystica",
-  "sour-herba-mystica",
-  "bitter-herba-mystica",
-  "spicy-herba-mystica",
-  "lettuce",
-  "tomato",
-  "cherry-tomatoes",
-  "cucumber",
-  "pickle",
-  "onion",
-  "red-onion",
-  "green-bell-pepper",
-  "red-bell-pepper",
-  "yellow-bell-pepper",
-  "avocado",
-  "bacon",
-  "ham",
-  "prosciutto",
-  "chorizo",
-  "herbed-sausage",
-  "hamburger",
-  "klawf-stick",
-  "smoked-fillet",
-  "fried-fillet",
-  "egg",
-  "potato-tortilla",
-  "tofu",
-  "rice",
-  "noodles",
-  "potato-salad",
-  "cheese",
-  "banana",
-  "strawberry",
-  "apple",
-  "kiwi",
-  "pineapple",
-  "jalapeño",
-  "horseradish",
-  "curry-powder",
-  "wasabi",
-  "watercress",
-  "basil",
-  "venonat-fang",
-  "diglett-dirt",
-  "meowth-fur",
-  "psyduck-down",
-  "mankey-fur",
-  "growlithe-fur",
-  "slowpoke-claw",
-  "magnemite-screw",
-  "grimer-toxin",
-  "shellder-pearl",
-  "gastly-gas",
-  "drowzee-fur",
-  "voltorb-sparks",
-  "scyther-claw",
-  "tauros-hair",
-  "magikarp-scales",
-  "ditto-goo",
-  "eevee-fur",
-  "dratini-scales",
-  "pichu-fur",
-  "igglybuff-fluff",
-  "mareep-wool",
-  "hoppip-leaf",
-  "sunkern-leaf",
-  "murkrow-bauble",
-  "misdreavus-tears",
-  "girafarig-fur",
-  "pineco-husk",
-  "dunsparce-scales",
-  "qwilfish-spines",
-  "heracross-claw",
-  "sneasel-claw",
-  "teddiursa-claw",
-  "delibird-parcel",
-  "houndour-fang",
-  "phanpy-nail",
-  "stantler-hair",
-  "larvitar-claw",
-  "wingull-feather",
-  "ralts-dust",
-  "surskit-syrup",
-  "shroomish-spores",
-  "slakoth-fur",
-  "makuhita-sweat",
-  "azurill-fur",
-  "sableye-gem",
-  "meditite-sweat",
-  "gulpin-mucus",
-  "numel-lava",
-  "torkoal-coal",
-  "spoink-pearl",
-  "cacnea-needle",
-  "swablu-fluff",
-  "zangoose-claw",
-  "seviper-fang",
-  "barboach-slime",
-  "shuppet-scrap",
-  "tropius-leaf",
-  "snorunt-fur",
-  "luvdisc-scales",
-  "bagon-scales",
-  "starly-feather",
-  "kricketot-shell",
-  "shinx-fang",
-  "combee-honey",
-  "pachirisu-fur",
-  "buizel-fur",
-  "shellos-mucus",
-  "drifloon-gas",
-  "stunky-fur",
-  "bronzor-fragment",
-  "bonsly-tears",
-  "happiny-dust",
-  "spiritomb-fragment",
-  "gible-scales",
-  "riolu-fur",
-  "hippopotas-sand",
-  "croagunk-poison",
-  "finneon-scales",
-  "snover-berries",
-  "rotom-sparks",
-  "petilil-leaf",
-  "basculin-fang",
-  "sandile-claw",
-  "zorua-fur",
-  "gothita-eyelash",
-  "deerling-hair",
-  "foongus-spores",
-  "alomomola-mucus",
-  "tynamo-slime",
-  "axew-scales",
-  "cubchoo-fur",
-  "cryogonal-ice",
-  "pawniard-blade",
-  "rufflet-feather",
-  "deino-scales",
-  "larvesta-fuzz",
-  "fletchling-feather",
-  "scatterbug-powder",
-  "litleo-tuft",
-  "flabébé-pollen",
-  "skiddo-leaf",
-  "skrelp-kelp",
-  "clauncher-claw",
-  "hawlucha-down",
-  "dedenne-fur",
-  "goomy-goo",
-  "klefki-key",
-  "bergmite-ice",
-  "noibat-fur",
-  "yungoos-fur",
-  "crabrawler-shell",
-  "oricorio-feather",
-  "rockruff-rock",
-  "mareanie-spike",
-  "mudbray-mud",
-  "fomantis-leaf",
-  "salandit-gas",
-  "bounsweet-sweat",
-  "oranguru-fur",
-  "passimian-fur",
-  "sandygast-sand",
-  "komala-claw",
-  "mimikyu-scrap",
-  "bruxish-tooth",
-  "chewtle-claw",
-  "skwovet-fur",
-  "arrokuda-scales",
-  "rookidee-feather",
-  "toxel-sparks",
-  "falinks-sweat",
-  "cufant-tarnish",
-  "rolycoly-coal",
-  "silicobra-sand",
-  "indeedee-fur",
-  "pincurchin-spines",
-  "snom-thread",
-  "impidimp-hair",
-  "applin-juice",
-  "sinistea-chip",
-  "hatenna-dust",
-  "stonjourner-stone",
-  "eiscue-down",
-  "dreepy-powder",
-  "lechonk-hair",
-  "tarountula-thread",
-  "nymble-claw",
-  "rellor-mud",
-  "greavard-wax",
-  "flittle-down",
-  "wiglett-sand",
-  "dondozo-whisker",
-  "veluza-fillet",
-  "finizen-mucus",
-  "smoliv-oil",
-  "capsakid-seed",
-  "tadbulb-mucus",
-  "varoom-fume",
-  "orthworm-tarnish",
-  "tandemaus-fur",
-  "cetoddle-grease",
-  "frigibax-scales",
-  "tatsugiri-scales",
-  "cyclizar-scales",
-  "pawmi-fur",
-  "wattrel-feather",
-  "bombirdier-feather",
-  "squawkabilly-feather",
-  "flamigo-down",
-  "klawf-claw",
-  "nacli-salt",
-  "glimmet-crystal",
-  "shroodle-ink",
-  "fidough-fur",
-  "maschiff-fang",
-  "bramblin-twig",
-  "gimmighoul-coin",
-  "tinkatink-hair",
-  "charcadet-soot",
-  "toedscool-flaps",
-  "wooper-slime",
-  "tm100",
-  "tm101",
-  "tm102",
-  "tm103",
-  "tm104",
-  "tm105",
-  "tm106",
-  "tm107",
-  "tm108",
-  "tm109",
-  "tm110",
-  "tm111",
-  "tm112",
-  "tm113",
-  "tm114",
-  "tm115",
-  "tm116",
-  "tm117",
-  "tm118",
-  "tm119",
-  "tm120",
-  "tm121",
-  "tm122",
-  "tm123",
-  "tm124",
-  "tm125",
-  "tm126",
-  "tm127",
-  "tm128",
-  "tm129",
-  "tm130",
-  "tm131",
-  "tm132",
-  "tm133",
-  "tm134",
-  "tm135",
-  "tm136",
-  "tm137",
-  "tm138",
-  "tm139",
-  "tm140",
-  "tm141",
-  "tm142",
-  "tm143",
-  "tm144",
-  "tm145",
-  "tm146",
-  "tm147",
-  "tm148",
-  "tm149",
-  "tm150",
-  "tm151",
-  "tm152",
-  "tm153",
-  "tm154",
-  "tm155",
-  "tm156",
-  "tm157",
-  "tm158",
-  "tm159",
-  "tm160",
-  "tm161",
-  "tm162",
-  "tm163",
-  "tm164",
-  "tm165",
-  "tm166",
-  "tm167",
-  "tm168",
-  "tm169",
-  "tm170",
-  "tm171",
-  "picnic-set",
-  "academy-bottle",
-  "academy-bottle",
-  "polka-dot-bottle",
-  "striped-bottle",
-  "diamond-bottle",
-  "academy-cup",
-  "academy-cup",
-  "striped-cup",
-  "polka-dot-cup",
-  "flower-pattern-cup",
-  "academy-tablecloth",
-  "academy-tablecloth",
-  "whimsical-tablecloth",
-  "leafy-tablecloth",
-  "spooky-tablecloth",
-  "academy-ball",
-  "academy-ball",
-  "marill-ball",
-  "yarn-ball",
-  "cyber-ball",
-  "gold-pick",
-  "silver-pick",
-  "red-flag-pick",
-  "blue-flag-pick",
-  "pika-pika-pick",
-  "winking-pika-pick",
-  "vee-vee-pick",
-  "smiling-vee-pick",
-  "blue-poké-ball-pick",
-  "auspicious-armor",
-  "leader’s-crest",
-  "pink-bottle",
-  "blue-bottle",
-  "yellow-bottle",
-  "steel-bottle-(r)",
-  "steel-bottle-(y)",
-  "steel-bottle-(b)",
-  "silver-bottle",
-  "barred-cup",
-  "diamond-pattern-cup",
-  "fire-pattern-cup",
-  "pink-cup",
-  "blue-cup",
-  "yellow-cup",
-  "pikachu-cup",
-  "eevee-cup",
-  "slowpoke-cup",
-  "silver-cup",
-  "exercise-ball",
-  "plaid-tablecloth-(y)",
-  "plaid-tablecloth-(b)",
-  "plaid-tablecloth-(r)",
-  "b&w-grass-tablecloth",
-  "battle-tablecloth",
-  "monstrous-tablecloth",
-  "striped-tablecloth",
-  "diamond-tablecloth",
-  "polka-dot-tablecloth",
-  "lilac-tablecloth",
-  "mint-tablecloth",
-  "peach-tablecloth",
-  "yellow-tablecloth",
-  "blue-tablecloth",
-  "pink-tablecloth",
-  "gold-bottle",
-  "bronze-bottle",
-  "gold-cup",
-  "bronze-cup",
-  "green-poké-ball-pick",
-  "red-poké-ball-pick",
-  "party-sparkler-pick",
-  "heroic-sword-pick",
-  "magical-star-pick",
-  "magical-heart-pick",
-  "parasol-pick",
-  "blue-sky-flower-pick",
-  "sunset-flower-pick",
-  "sunrise-flower-pick",
-  "blue-dish",
-  "green-dish",
-  "orange-dish",
-  "red-dish",
-  "white-dish",
-  "yellow-dish",
-  "roto-stick",
-  "teal-style-card",
-  "teak-mask",
-  "glimmering-charm",
-  "cyrstal-cluster",
-  "fairy-feather",
-  "wellspring-mask",
-  "hearthflame-mask",
-  "cornerstone-mask",
-  "syrupy-apple",
-  "unremarkable-teacup",
-  "masterpiece-teacup",
-  "health-mochi",
-  "muscle-mochi",
-  "resist-mochi",
-  "genius-mochi",
-  "clever-mochi",
-  "swift-mochi",
-  "fresh-start-mochi",
-  "ekans-fang",
-  "sandshrew-claw",
-  "cleffa-fur",
-  "vulpix-fur",
-  "poliwag-slime",
-  "bellsprout-vine",
-  "geodude-fragment",
-  "koffing-gas",
-  "munchlax-fang",
-  "sentret-fur",
-  "hoothoot-feather",
-  "spinarak-thread",
-  "aipom-hair",
-  "yanma-spike",
-  "gligar-fang",
-  "slugma-lava",
-  "swinub-hair",
-  "poochyena-fang",
-  "lotad-leaf",
-  "seedot-stem",
-  "nosepass-fragment",
-  "volbeat-fluid",
-  "illumise-fluid",
-  "corphish-shell",
-  "feebas-scales",
-  "duskull-fragment",
-  "chingling-fragment",
-  "timburr-sweat",
-  "sewaddle-leaf",
-  "ducklett-feather",
-  "litwick-soot",
-  "mienfoo-claw",
-  "vullaby-feather",
-  "carbink-jewel",
-  "phantump-twig",
-  "grubbin-thread",
-  "cutiefly-powder",
-  "jangmo-o-scales",
-  "cramorant-down",
-  "morpeko-snack",
-  "poltchageist-powder",
-  "black-augurite",
-  "peat-block"
-]
+{
+  "abilityshield": {
+    "desc": "Holder's Ability cannot be changed by any effect.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 9,
+    "ignoreKlutz": true,
+    "name": "Ability Shield",
+    "num": 1881,
+    "spritenum": 746
+  },
+  "abomasite": {
+    "desc": "If held by an Abomasnow, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Abomasnow"
+    ],
+    "megaEvolves": "Abomasnow",
+    "megaStone": "Abomasnow-Mega",
+    "name": "Abomasite",
+    "num": 674,
+    "spritenum": 575
+  },
+  "absolite": {
+    "desc": "If held by an Absol, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Absol"
+    ],
+    "megaEvolves": "Absol",
+    "megaStone": "Absol-Mega",
+    "name": "Absolite",
+    "num": 677,
+    "spritenum": 576
+  },
+  "absorbbulb": {
+    "boosts": {
+      "spa": 1
+    },
+    "desc": "Raises holder's Sp. Atk by 1 stage if hit by a Water-type attack. Single use.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 5,
+    "name": "Absorb Bulb",
+    "num": 545,
+    "spritenum": 2
+  },
+  "adamantcrystal": {
+    "desc": "If held by a Dialga, its Steel- and Dragon-type attacks have 1.2x power.",
+    "forcedForme": "Dialga-Origin",
+    "gen": 8,
+    "itemUser": [
+      "Dialga-Origin"
+    ],
+    "name": "Adamant Crystal",
+    "num": 1777,
+    "onBasePowerPriority": 15,
+    "spritenum": 741
+  },
+  "adamantorb": {
+    "desc": "If held by a Dialga, its Steel- and Dragon-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 60
+    },
+    "gen": 4,
+    "itemUser": [
+      "Dialga"
+    ],
+    "name": "Adamant Orb",
+    "num": 135,
+    "onBasePowerPriority": 15,
+    "spritenum": 4
+  },
+  "adrenalineorb": {
+    "boosts": {
+      "spe": 1
+    },
+    "desc": "Raises holder's Speed by 1 stage if it gets affected by Intimidate. Single use.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 7,
+    "name": "Adrenaline Orb",
+    "num": 846,
+    "spritenum": 660
+  },
+  "aerodactylite": {
+    "desc": "If held by an Aerodactyl, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Aerodactyl"
+    ],
+    "megaEvolves": "Aerodactyl",
+    "megaStone": "Aerodactyl-Mega",
+    "name": "Aerodactylite",
+    "num": 672,
+    "spritenum": 577
+  },
+  "aggronite": {
+    "desc": "If held by an Aggron, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Aggron"
+    ],
+    "megaEvolves": "Aggron",
+    "megaStone": "Aggron-Mega",
+    "name": "Aggronite",
+    "num": 667,
+    "spritenum": 578
+  },
+  "aguavberry": {
+    "desc": "Restores 1/3 max HP at 1/4 max HP or less; confuses if -SpD Nature. Single use.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Aguav Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Dragon"
+    },
+    "num": 162,
+    "spritenum": 5
+  },
+  "airballoon": {
+    "desc": "Holder is immune to Ground-type attacks. Pops when holder is hit.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 5,
+    "name": "Air Balloon",
+    "num": 541,
+    "spritenum": 6
+  },
+  "alakazite": {
+    "desc": "If held by an Alakazam, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Alakazam"
+    ],
+    "megaEvolves": "Alakazam",
+    "megaStone": "Alakazam-Mega",
+    "name": "Alakazite",
+    "num": 679,
+    "spritenum": 579
+  },
+  "aloraichiumz": {
+    "desc": "If held by an Alolan Raichu with Thunderbolt, it can use Stoked Sparksurfer.",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Raichu-Alola"
+    ],
+    "name": "Aloraichium Z",
+    "num": 803,
+    "onTakeItem": false,
+    "spritenum": 655,
+    "zMove": "Stoked Sparksurfer",
+    "zMoveFrom": "Thunderbolt"
+  },
+  "altarianite": {
+    "desc": "If held by an Altaria, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Altaria"
+    ],
+    "megaEvolves": "Altaria",
+    "megaStone": "Altaria-Mega",
+    "name": "Altarianite",
+    "num": 755,
+    "spritenum": 615
+  },
+  "ampharosite": {
+    "desc": "If held by an Ampharos, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Ampharos"
+    ],
+    "megaEvolves": "Ampharos",
+    "megaStone": "Ampharos-Mega",
+    "name": "Ampharosite",
+    "num": 658,
+    "spritenum": 580
+  },
+  "apicotberry": {
+    "desc": "Raises holder's Sp. Def by 1 stage when at 1/4 max HP or less. Single use.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Apicot Berry",
+    "naturalGift": {
+      "basePower": 100,
+      "type": "Ground"
+    },
+    "num": 205,
+    "spritenum": 10
+  },
+  "armorfossil": {
+    "desc": "Can be revived into Shieldon.",
+    "fling": {
+      "basePower": 100
+    },
+    "gen": 4,
+    "isNonstandard": "Past",
+    "name": "Armor Fossil",
+    "num": 104,
+    "spritenum": 12
+  },
+  "aspearberry": {
+    "desc": "Holder is cured if it is frozen. Single use.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Aspear Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Ice"
+    },
+    "num": 153,
+    "spritenum": 13
+  },
+  "assaultvest": {
+    "desc": "Holder's Sp. Def is 1.5x, but it can only select damaging moves.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 6,
+    "name": "Assault Vest",
+    "num": 640,
+    "onModifySpDPriority": 1,
+    "spritenum": 581
+  },
+  "audinite": {
+    "desc": "If held by an Audino, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Audino"
+    ],
+    "megaEvolves": "Audino",
+    "megaStone": "Audino-Mega",
+    "name": "Audinite",
+    "num": 757,
+    "spritenum": 617
+  },
+  "auspiciousarmor": {
+    "desc": "Evolves Charcadet into Armarouge when used.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 9,
+    "name": "Auspicious Armor",
+    "num": 2344,
+    "spritenum": 753
+  },
+  "babiriberry": {
+    "desc": "Halves damage taken from a supereffective Steel-type attack. Single use.",
+    "gen": 4,
+    "isBerry": true,
+    "name": "Babiri Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Steel"
+    },
+    "num": 199,
+    "spritenum": 17
+  },
+  "banettite": {
+    "desc": "If held by a Banette, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Banette"
+    ],
+    "megaEvolves": "Banette",
+    "megaStone": "Banette-Mega",
+    "name": "Banettite",
+    "num": 668,
+    "spritenum": 582
+  },
+  "beastball": {
+    "desc": "A special Poke Ball designed to catch Ultra Beasts.",
+    "gen": 7,
+    "isPokeball": true,
+    "name": "Beast Ball",
+    "num": 851,
+    "spritenum": 661
+  },
+  "beedrillite": {
+    "desc": "If held by a Beedrill, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Beedrill"
+    ],
+    "megaEvolves": "Beedrill",
+    "megaStone": "Beedrill-Mega",
+    "name": "Beedrillite",
+    "num": 770,
+    "spritenum": 628
+  },
+  "belueberry": {
+    "desc": "Cannot be eaten by the holder. No effect when eaten with Bug Bite or Pluck.",
+    "gen": 3,
+    "isBerry": true,
+    "isNonstandard": "Past",
+    "name": "Belue Berry",
+    "naturalGift": {
+      "basePower": 100,
+      "type": "Electric"
+    },
+    "num": 183,
+    "onEat": false,
+    "spritenum": 21
+  },
+  "berry": {
+    "desc": "(Gen 2) Restores 10 HP when at 1/2 max HP or less. Single use.",
+    "gen": 2,
+    "isBerry": true,
+    "isNonstandard": "Past",
+    "name": "Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Poison"
+    },
+    "num": 155,
+    "onResidualOrder": 5,
+    "spritenum": 319
+  },
+  "berryjuice": {
+    "desc": "Restores 20 HP when at 1/2 max HP or less. Single use.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 2,
+    "isNonstandard": "Past",
+    "name": "Berry Juice",
+    "num": 43,
+    "spritenum": 22
+  },
+  "berrysweet": {
+    "desc": "Evolves Milcery into Alcremie when held and spun around.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "name": "Berry Sweet",
+    "num": 1111,
+    "spritenum": 706
+  },
+  "berserkgene": {
+    "boosts": {
+      "atk": 2
+    },
+    "desc": "(Gen 2) On switch-in, raises holder's Attack by 2 and confuses it. Single use.",
+    "gen": 2,
+    "isNonstandard": "Past",
+    "name": "Berserk Gene",
+    "num": 0,
+    "spritenum": 388
+  },
+  "bignugget": {
+    "desc": "A big nugget of pure gold that gives off a lustrous gleam.",
+    "fling": {
+      "basePower": 130
+    },
+    "gen": 5,
+    "name": "Big Nugget",
+    "num": 581,
+    "spritenum": 27
+  },
+  "bigroot": {
+    "desc": "Holder gains 1.3x HP from draining/Aqua Ring/Ingrain/Leech Seed/Strength Sap.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 4,
+    "name": "Big Root",
+    "num": 296,
+    "onTryHealPriority": 1,
+    "spritenum": 29
+  },
+  "bindingband": {
+    "desc": "Holder's partial-trapping moves deal 1/6 max HP per turn instead of 1/8.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 5,
+    "name": "Binding Band",
+    "num": 544,
+    "spritenum": 31
+  },
+  "bitterberry": {
+    "desc": "(Gen 2) Holder is cured if it is confused. Single use.",
+    "gen": 2,
+    "isBerry": true,
+    "isNonstandard": "Past",
+    "name": "Bitter Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Ground"
+    },
+    "num": 156,
+    "spritenum": 334
+  },
+  "blackbelt": {
+    "desc": "Holder's Fighting-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 2,
+    "name": "Black Belt",
+    "num": 241,
+    "onBasePowerPriority": 15,
+    "spritenum": 32
+  },
+  "blackglasses": {
+    "desc": "Holder's Dark-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 2,
+    "name": "Black Glasses",
+    "num": 240,
+    "onBasePowerPriority": 15,
+    "spritenum": 35
+  },
+  "blacksludge": {
+    "desc": "Each turn, if holder is a Poison type, restores 1/16 max HP; loses 1/8 if not.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 4,
+    "name": "Black Sludge",
+    "num": 281,
+    "onResidualOrder": 5,
+    "onResidualSubOrder": 4,
+    "spritenum": 34
+  },
+  "blastoisinite": {
+    "desc": "If held by a Blastoise, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Blastoise"
+    ],
+    "megaEvolves": "Blastoise",
+    "megaStone": "Blastoise-Mega",
+    "name": "Blastoisinite",
+    "num": 661,
+    "spritenum": 583
+  },
+  "blazikenite": {
+    "desc": "If held by a Blaziken, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Blaziken"
+    ],
+    "megaEvolves": "Blaziken",
+    "megaStone": "Blaziken-Mega",
+    "name": "Blazikenite",
+    "num": 664,
+    "spritenum": 584
+  },
+  "blueorb": {
+    "desc": "If held by a Kyogre, this item triggers its Primal Reversion in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Kyogre"
+    ],
+    "name": "Blue Orb",
+    "num": 535,
+    "spritenum": 41
+  },
+  "blukberry": {
+    "desc": "Cannot be eaten by the holder. No effect when eaten with Bug Bite or Pluck.",
+    "gen": 3,
+    "isBerry": true,
+    "isNonstandard": "Past",
+    "name": "Bluk Berry",
+    "naturalGift": {
+      "basePower": 90,
+      "type": "Fire"
+    },
+    "num": 165,
+    "onEat": false,
+    "spritenum": 44
+  },
+  "blunderpolicy": {
+    "desc": "If the holder misses due to accuracy, its Speed is raised by 2 stages. Single use.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 8,
+    "name": "Blunder Policy",
+    "num": 1121,
+    "spritenum": 716
+  },
+  "boosterenergy": {
+    "desc": "Activates the Protosynthesis or Quark Drive Abilities. Single use.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 9,
+    "name": "Booster Energy",
+    "num": 1880,
+    "spritenum": 745
+  },
+  "bottlecap": {
+    "desc": "Used for Hyper Training. One of a Pokemon's stats is calculated with an IV of 31.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 7,
+    "name": "Bottle Cap",
+    "num": 795,
+    "spritenum": 696
+  },
+  "brightpowder": {
+    "desc": "The accuracy of attacks against the holder is 0.9x.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 2,
+    "name": "Bright Powder",
+    "num": 213,
+    "onModifyAccuracyPriority": -2,
+    "spritenum": 51
+  },
+  "buggem": {
+    "desc": "Holder's first successful Bug-type attack will have 1.3x power. Single use.",
+    "gen": 5,
+    "isGem": true,
+    "isNonstandard": "Past",
+    "name": "Bug Gem",
+    "num": 558,
+    "spritenum": 53
+  },
+  "buginiumz": {
+    "desc": "If holder has a Bug move, this item allows it to use a Bug Z-Move.",
+    "forcedForme": "Arceus-Bug",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "name": "Buginium Z",
+    "num": 787,
+    "onPlate": "Bug",
+    "onTakeItem": false,
+    "spritenum": 642,
+    "zMove": true,
+    "zMoveType": "Bug"
+  },
+  "bugmemory": {
+    "desc": "Holder's Multi-Attack is Bug type.",
+    "forcedForme": "Silvally-Bug",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Silvally-Bug"
+    ],
+    "name": "Bug Memory",
+    "num": 909,
+    "onMemory": "Bug",
+    "spritenum": 673
+  },
+  "burndrive": {
+    "desc": "Holder's Techno Blast is Fire type.",
+    "forcedForme": "Genesect-Burn",
+    "gen": 5,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Genesect-Burn"
+    ],
+    "name": "Burn Drive",
+    "num": 118,
+    "onDrive": "Fire",
+    "spritenum": 54
+  },
+  "burntberry": {
+    "desc": "(Gen 2) Holder is cured if it is frozen. Single use.",
+    "gen": 2,
+    "isBerry": true,
+    "isNonstandard": "Past",
+    "name": "Burnt Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Ice"
+    },
+    "num": 153,
+    "spritenum": 13
+  },
+  "cameruptite": {
+    "desc": "If held by a Camerupt, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Camerupt"
+    ],
+    "megaEvolves": "Camerupt",
+    "megaStone": "Camerupt-Mega",
+    "name": "Cameruptite",
+    "num": 767,
+    "spritenum": 625
+  },
+  "cellbattery": {
+    "boosts": {
+      "atk": 1
+    },
+    "desc": "Raises holder's Attack by 1 if hit by an Electric-type attack. Single use.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 5,
+    "name": "Cell Battery",
+    "num": 546,
+    "spritenum": 60
+  },
+  "charcoal": {
+    "desc": "Holder's Fire-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 2,
+    "name": "Charcoal",
+    "num": 249,
+    "onBasePowerPriority": 15,
+    "spritenum": 61
+  },
+  "charizarditex": {
+    "desc": "If held by a Charizard, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Charizard"
+    ],
+    "megaEvolves": "Charizard",
+    "megaStone": "Charizard-Mega-X",
+    "name": "Charizardite X",
+    "num": 660,
+    "spritenum": 585
+  },
+  "charizarditey": {
+    "desc": "If held by a Charizard, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Charizard"
+    ],
+    "megaEvolves": "Charizard",
+    "megaStone": "Charizard-Mega-Y",
+    "name": "Charizardite Y",
+    "num": 678,
+    "spritenum": 586
+  },
+  "chartiberry": {
+    "desc": "Halves damage taken from a supereffective Rock-type attack. Single use.",
+    "gen": 4,
+    "isBerry": true,
+    "name": "Charti Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Rock"
+    },
+    "num": 195,
+    "spritenum": 62
+  },
+  "cheriberry": {
+    "desc": "Holder cures itself if it is paralyzed. Single use.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Cheri Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Fire"
+    },
+    "num": 149,
+    "spritenum": 63
+  },
+  "cherishball": {
+    "desc": "A rare Poke Ball that has been crafted to commemorate an occasion.",
+    "gen": 4,
+    "isNonstandard": "Unobtainable",
+    "isPokeball": true,
+    "name": "Cherish Ball",
+    "num": 16,
+    "spritenum": 64
+  },
+  "chestoberry": {
+    "desc": "Holder wakes up if it is asleep. Single use.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Chesto Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Water"
+    },
+    "num": 150,
+    "spritenum": 65
+  },
+  "chilanberry": {
+    "desc": "Halves damage taken from a Normal-type attack. Single use.",
+    "gen": 4,
+    "isBerry": true,
+    "name": "Chilan Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Normal"
+    },
+    "num": 200,
+    "spritenum": 66
+  },
+  "chilldrive": {
+    "desc": "Holder's Techno Blast is Ice type.",
+    "forcedForme": "Genesect-Chill",
+    "gen": 5,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Genesect-Chill"
+    ],
+    "name": "Chill Drive",
+    "num": 119,
+    "onDrive": "Ice",
+    "spritenum": 67
+  },
+  "chippedpot": {
+    "desc": "Evolves Sinistea-Antique into Polteageist-Antique when used.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 8,
+    "name": "Chipped Pot",
+    "num": 1254,
+    "spritenum": 720
+  },
+  "choiceband": {
+    "desc": "Holder's Attack is 1.5x, but it can only select the first move it executes.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 3,
+    "isChoice": true,
+    "name": "Choice Band",
+    "num": 220,
+    "onModifyAtkPriority": 1,
+    "spritenum": 68
+  },
+  "choicescarf": {
+    "desc": "Holder's Speed is 1.5x, but it can only select the first move it executes.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 4,
+    "isChoice": true,
+    "name": "Choice Scarf",
+    "num": 287,
+    "spritenum": 69
+  },
+  "choicespecs": {
+    "desc": "Holder's Sp. Atk is 1.5x, but it can only select the first move it executes.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 4,
+    "isChoice": true,
+    "name": "Choice Specs",
+    "num": 297,
+    "onModifySpAPriority": 1,
+    "spritenum": 70
+  },
+  "chopleberry": {
+    "desc": "Halves damage taken from a supereffective Fighting-type attack. Single use.",
+    "gen": 4,
+    "isBerry": true,
+    "name": "Chople Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Fighting"
+    },
+    "num": 189,
+    "spritenum": 71
+  },
+  "clawfossil": {
+    "desc": "Can be revived into Anorith.",
+    "fling": {
+      "basePower": 100
+    },
+    "gen": 3,
+    "isNonstandard": "Past",
+    "name": "Claw Fossil",
+    "num": 100,
+    "spritenum": 72
+  },
+  "clearamulet": {
+    "desc": "Prevents other Pokemon from lowering the holder's stat stages.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 9,
+    "name": "Clear Amulet",
+    "num": 1882,
+    "spritenum": 747
+  },
+  "cloversweet": {
+    "desc": "Evolves Milcery into Alcremie when held and spun around.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "name": "Clover Sweet",
+    "num": 1112,
+    "spritenum": 707
+  },
+  "cobaberry": {
+    "desc": "Halves damage taken from a supereffective Flying-type attack. Single use.",
+    "gen": 4,
+    "isBerry": true,
+    "name": "Coba Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Flying"
+    },
+    "num": 192,
+    "spritenum": 76
+  },
+  "colburberry": {
+    "desc": "Halves damage taken from a supereffective Dark-type attack. Single use.",
+    "gen": 4,
+    "isBerry": true,
+    "name": "Colbur Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Dark"
+    },
+    "num": 198,
+    "spritenum": 78
+  },
+  "cornerstonemask": {
+    "desc": "Ogerpon-Cornerstone: 1.2x power attacks; Terastallize to gain Embody Aspect.",
+    "fling": {
+      "basePower": 60
+    },
+    "forcedForme": "Ogerpon-Cornerstone",
+    "gen": 9,
+    "itemUser": [
+      "Ogerpon-Cornerstone"
+    ],
+    "name": "Cornerstone Mask",
+    "num": 2406,
+    "onBasePowerPriority": 15,
+    "spritenum": 758
+  },
+  "cornnberry": {
+    "desc": "Cannot be eaten by the holder. No effect when eaten with Bug Bite or Pluck.",
+    "gen": 3,
+    "isBerry": true,
+    "isNonstandard": "Past",
+    "name": "Cornn Berry",
+    "naturalGift": {
+      "basePower": 90,
+      "type": "Bug"
+    },
+    "num": 175,
+    "onEat": false,
+    "spritenum": 81
+  },
+  "coverfossil": {
+    "desc": "Can be revived into Tirtouga.",
+    "fling": {
+      "basePower": 100
+    },
+    "gen": 5,
+    "isNonstandard": "Past",
+    "name": "Cover Fossil",
+    "num": 572,
+    "spritenum": 85
+  },
+  "covertcloak": {
+    "desc": "Holder is not affected by the secondary effect of another Pokemon's attack.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 9,
+    "name": "Covert Cloak",
+    "num": 1885,
+    "spritenum": 750
+  },
+  "crackedpot": {
+    "desc": "Evolves Sinistea into Polteageist when used.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 8,
+    "name": "Cracked Pot",
+    "num": 1253,
+    "spritenum": 719
+  },
+  "crucibellite": {
+    "desc": "If held by a Crucibelle, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "CAP",
+    "itemUser": [
+      "Crucibelle"
+    ],
+    "megaEvolves": "Crucibelle",
+    "megaStone": "Crucibelle-Mega",
+    "name": "Crucibellite",
+    "num": -1,
+    "spritenum": 577
+  },
+  "custapberry": {
+    "desc": "Holder moves first in its priority bracket when at 1/4 max HP or less. Single use.",
+    "gen": 4,
+    "isBerry": true,
+    "name": "Custap Berry",
+    "naturalGift": {
+      "basePower": 100,
+      "type": "Ghost"
+    },
+    "num": 210,
+    "onFractionalPriorityPriority": -2,
+    "spritenum": 86
+  },
+  "damprock": {
+    "desc": "Holder's use of Rain Dance lasts 8 turns instead of 5.",
+    "fling": {
+      "basePower": 60
+    },
+    "gen": 4,
+    "name": "Damp Rock",
+    "num": 285,
+    "spritenum": 88
+  },
+  "darkgem": {
+    "desc": "Holder's first successful Dark-type attack will have 1.3x power. Single use.",
+    "gen": 5,
+    "isGem": true,
+    "isNonstandard": "Past",
+    "name": "Dark Gem",
+    "num": 562,
+    "spritenum": 89
+  },
+  "darkiniumz": {
+    "desc": "If holder has a Dark move, this item allows it to use a Dark Z-Move.",
+    "forcedForme": "Arceus-Dark",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "name": "Darkinium Z",
+    "num": 791,
+    "onPlate": "Dark",
+    "onTakeItem": false,
+    "spritenum": 646,
+    "zMove": true,
+    "zMoveType": "Dark"
+  },
+  "darkmemory": {
+    "desc": "Holder's Multi-Attack is Dark type.",
+    "forcedForme": "Silvally-Dark",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Silvally-Dark"
+    ],
+    "name": "Dark Memory",
+    "num": 919,
+    "onMemory": "Dark",
+    "spritenum": 683
+  },
+  "dawnstone": {
+    "desc": "Evolves male Kirlia into Gallade and female Snorunt into Froslass when used.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 4,
+    "name": "Dawn Stone",
+    "num": 109,
+    "shortDesc": "Evolves certain species of Pokemon when used.",
+    "spritenum": 92
+  },
+  "decidiumz": {
+    "desc": "If held by a Decidueye with Spirit Shackle, it can use Sinister Arrow Raid.",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Decidueye"
+    ],
+    "name": "Decidium Z",
+    "num": 798,
+    "onTakeItem": false,
+    "spritenum": 650,
+    "zMove": "Sinister Arrow Raid",
+    "zMoveFrom": "Spirit Shackle"
+  },
+  "deepseascale": {
+    "desc": "If held by a Clamperl, its Sp. Def is doubled. Evolves Clamperl into Gorebyss when traded.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 3,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Clamperl"
+    ],
+    "name": "Deep Sea Scale",
+    "num": 227,
+    "onModifySpDPriority": 2,
+    "shortDesc": "If held by a Clamperl, its Sp. Def is doubled.",
+    "spritenum": 93
+  },
+  "deepseatooth": {
+    "desc": "If held by a Clamperl, its Sp. Atk is doubled. Evolves Clamperl into Huntail when traded.",
+    "fling": {
+      "basePower": 90
+    },
+    "gen": 3,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Clamperl"
+    ],
+    "name": "Deep Sea Tooth",
+    "num": 226,
+    "onModifySpAPriority": 1,
+    "shortDesc": "If held by a Clamperl, its Sp. Atk is doubled.",
+    "spritenum": 94
+  },
+  "destinyknot": {
+    "desc": "If holder becomes infatuated, the other Pokemon also becomes infatuated.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 4,
+    "name": "Destiny Knot",
+    "num": 280,
+    "onAttractPriority": -100,
+    "spritenum": 95
+  },
+  "diancite": {
+    "desc": "If held by a Diancie, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Diancie"
+    ],
+    "megaEvolves": "Diancie",
+    "megaStone": "Diancie-Mega",
+    "name": "Diancite",
+    "num": 764,
+    "spritenum": 624
+  },
+  "diveball": {
+    "desc": "A Poke Ball that works especially well on Pokemon that live underwater.",
+    "gen": 3,
+    "isPokeball": true,
+    "name": "Dive Ball",
+    "num": 7,
+    "spritenum": 101
+  },
+  "domefossil": {
+    "desc": "Can be revived into Kabuto.",
+    "fling": {
+      "basePower": 100
+    },
+    "gen": 3,
+    "isNonstandard": "Past",
+    "name": "Dome Fossil",
+    "num": 102,
+    "spritenum": 102
+  },
+  "dousedrive": {
+    "desc": "Holder's Techno Blast is Water type.",
+    "forcedForme": "Genesect-Douse",
+    "gen": 5,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Genesect-Douse"
+    ],
+    "name": "Douse Drive",
+    "num": 116,
+    "onDrive": "Water",
+    "spritenum": 103
+  },
+  "dracoplate": {
+    "desc": "Holder's Dragon-type attacks have 1.2x power. Judgment is Dragon type.",
+    "forcedForme": "Arceus-Dragon",
+    "gen": 4,
+    "name": "Draco Plate",
+    "num": 311,
+    "onBasePowerPriority": 15,
+    "onPlate": "Dragon",
+    "spritenum": 105
+  },
+  "dragonfang": {
+    "desc": "Holder's Dragon-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 70
+    },
+    "gen": 2,
+    "name": "Dragon Fang",
+    "num": 250,
+    "onBasePowerPriority": 15,
+    "spritenum": 106
+  },
+  "dragongem": {
+    "desc": "Holder's first successful Dragon-type attack will have 1.3x power. Single use.",
+    "gen": 5,
+    "isGem": true,
+    "isNonstandard": "Past",
+    "name": "Dragon Gem",
+    "num": 561,
+    "spritenum": 107
+  },
+  "dragoniumz": {
+    "desc": "If holder has a Dragon move, this item allows it to use a Dragon Z-Move.",
+    "forcedForme": "Arceus-Dragon",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "name": "Dragonium Z",
+    "num": 790,
+    "onPlate": "Dragon",
+    "onTakeItem": false,
+    "spritenum": 645,
+    "zMove": true,
+    "zMoveType": "Dragon"
+  },
+  "dragonmemory": {
+    "desc": "Holder's Multi-Attack is Dragon type.",
+    "forcedForme": "Silvally-Dragon",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Silvally-Dragon"
+    ],
+    "name": "Dragon Memory",
+    "num": 918,
+    "onMemory": "Dragon",
+    "spritenum": 682
+  },
+  "dragonscale": {
+    "desc": "Evolves Seadra into Kingdra when traded.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 2,
+    "name": "Dragon Scale",
+    "num": 235,
+    "spritenum": 108
+  },
+  "dreadplate": {
+    "desc": "Holder's Dark-type attacks have 1.2x power. Judgment is Dark type.",
+    "forcedForme": "Arceus-Dark",
+    "gen": 4,
+    "name": "Dread Plate",
+    "num": 312,
+    "onBasePowerPriority": 15,
+    "onPlate": "Dark",
+    "spritenum": 110
+  },
+  "dreamball": {
+    "desc": "A Poke Ball that makes it easier to catch wild Pokémon while they're asleep.",
+    "gen": 5,
+    "isPokeball": true,
+    "name": "Dream Ball",
+    "num": 576,
+    "spritenum": 111
+  },
+  "dubiousdisc": {
+    "desc": "Evolves Porygon2 into Porygon-Z when traded.",
+    "fling": {
+      "basePower": 50
+    },
+    "gen": 4,
+    "name": "Dubious Disc",
+    "num": 324,
+    "spritenum": 113
+  },
+  "durinberry": {
+    "desc": "Cannot be eaten by the holder. No effect when eaten with Bug Bite or Pluck.",
+    "gen": 3,
+    "isBerry": true,
+    "isNonstandard": "Past",
+    "name": "Durin Berry",
+    "naturalGift": {
+      "basePower": 100,
+      "type": "Water"
+    },
+    "num": 182,
+    "onEat": false,
+    "spritenum": 114
+  },
+  "duskball": {
+    "desc": "A Poke Ball that makes it easier to catch wild Pokemon at night or in caves.",
+    "gen": 4,
+    "isPokeball": true,
+    "name": "Dusk Ball",
+    "num": 13,
+    "spritenum": 115
+  },
+  "duskstone": {
+    "desc": "Evolves Murkrow into Honchkrow, Misdreavus into Mismagius, Lampent into Chandelure, and Doublade into Aegislash when used.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 4,
+    "name": "Dusk Stone",
+    "num": 108,
+    "shortDesc": "Evolves certain species of Pokemon when used.",
+    "spritenum": 116
+  },
+  "earthplate": {
+    "desc": "Holder's Ground-type attacks have 1.2x power. Judgment is Ground type.",
+    "forcedForme": "Arceus-Ground",
+    "gen": 4,
+    "name": "Earth Plate",
+    "num": 305,
+    "onBasePowerPriority": 15,
+    "onPlate": "Ground",
+    "spritenum": 117
+  },
+  "eeviumz": {
+    "desc": "If held by an Eevee with Last Resort, it can use Extreme Evoboost.",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Eevee"
+    ],
+    "name": "Eevium Z",
+    "num": 805,
+    "onTakeItem": false,
+    "spritenum": 657,
+    "zMove": "Extreme Evoboost",
+    "zMoveFrom": "Last Resort"
+  },
+  "ejectbutton": {
+    "desc": "If holder survives a hit, it immediately switches out to a chosen ally. Single use.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 5,
+    "name": "Eject Button",
+    "num": 547,
+    "onAfterMoveSecondaryPriority": 2,
+    "spritenum": 118
+  },
+  "ejectpack": {
+    "desc": "If the holder's stat stages are lowered, it switches to a chosen ally. Single use.",
+    "fling": {
+      "basePower": 50
+    },
+    "gen": 8,
+    "name": "Eject Pack",
+    "num": 1119,
+    "spritenum": 714
+  },
+  "electirizer": {
+    "desc": "Evolves Electabuzz into Electivire when traded.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 4,
+    "name": "Electirizer",
+    "num": 322,
+    "spritenum": 119
+  },
+  "electricgem": {
+    "desc": "Holder's first successful Electric-type attack will have 1.3x power. Single use.",
+    "gen": 5,
+    "isGem": true,
+    "isNonstandard": "Past",
+    "name": "Electric Gem",
+    "num": 550,
+    "spritenum": 120
+  },
+  "electricmemory": {
+    "desc": "Holder's Multi-Attack is Electric type.",
+    "forcedForme": "Silvally-Electric",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Silvally-Electric"
+    ],
+    "name": "Electric Memory",
+    "num": 915,
+    "onMemory": "Electric",
+    "spritenum": 679
+  },
+  "electricseed": {
+    "boosts": {
+      "def": 1
+    },
+    "desc": "If the terrain is Electric Terrain, raises holder's Defense by 1 stage. Single use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 7,
+    "name": "Electric Seed",
+    "num": 881,
+    "spritenum": 664
+  },
+  "electriumz": {
+    "desc": "If holder has an Electric move, this item allows it to use an Electric Z-Move.",
+    "forcedForme": "Arceus-Electric",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "name": "Electrium Z",
+    "num": 779,
+    "onPlate": "Electric",
+    "onTakeItem": false,
+    "spritenum": 634,
+    "zMove": true,
+    "zMoveType": "Electric"
+  },
+  "enigmaberry": {
+    "desc": "Restores 1/4 max HP after holder is hit by a supereffective move. Single use.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Enigma Berry",
+    "naturalGift": {
+      "basePower": 100,
+      "type": "Bug"
+    },
+    "num": 208,
+    "spritenum": 124
+  },
+  "eviolite": {
+    "desc": "If holder's species can evolve, its Defense and Sp. Def are 1.5x.",
+    "fling": {
+      "basePower": 40
+    },
+    "gen": 5,
+    "name": "Eviolite",
+    "num": 538,
+    "onModifyDefPriority": 2,
+    "onModifySpDPriority": 2,
+    "spritenum": 130
+  },
+  "expertbelt": {
+    "desc": "Holder's attacks that are super effective against the target do 1.2x damage.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 4,
+    "name": "Expert Belt",
+    "num": 268,
+    "spritenum": 132
+  },
+  "fairiumz": {
+    "desc": "If holder has a Fairy move, this item allows it to use a Fairy Z-Move.",
+    "forcedForme": "Arceus-Fairy",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "name": "Fairium Z",
+    "num": 793,
+    "onPlate": "Fairy",
+    "onTakeItem": false,
+    "spritenum": 648,
+    "zMove": true,
+    "zMoveType": "Fairy"
+  },
+  "fairyfeather": {
+    "desc": "Holder's Fairy-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 9,
+    "name": "Fairy Feather",
+    "num": 2401,
+    "onBasePowerPriority": 15,
+    "spritenum": 754
+  },
+  "fairygem": {
+    "desc": "Holder's first successful Fairy-type attack will have 1.3x power. Single use.",
+    "gen": 6,
+    "isGem": true,
+    "isNonstandard": "Past",
+    "name": "Fairy Gem",
+    "num": 715,
+    "spritenum": 611
+  },
+  "fairymemory": {
+    "desc": "Holder's Multi-Attack is Fairy type.",
+    "forcedForme": "Silvally-Fairy",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Silvally-Fairy"
+    ],
+    "name": "Fairy Memory",
+    "num": 920,
+    "onMemory": "Fairy",
+    "spritenum": 684
+  },
+  "fastball": {
+    "desc": "A Poke Ball that makes it easier to catch Pokemon which are quick to run away.",
+    "gen": 2,
+    "isPokeball": true,
+    "name": "Fast Ball",
+    "num": 492,
+    "spritenum": 137
+  },
+  "fightinggem": {
+    "desc": "Holder's first successful Fighting-type attack will have 1.3x power. Single use.",
+    "gen": 5,
+    "isGem": true,
+    "isNonstandard": "Past",
+    "name": "Fighting Gem",
+    "num": 553,
+    "spritenum": 139
+  },
+  "fightingmemory": {
+    "desc": "Holder's Multi-Attack is Fighting type.",
+    "forcedForme": "Silvally-Fighting",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Silvally-Fighting"
+    ],
+    "name": "Fighting Memory",
+    "num": 904,
+    "onMemory": "Fighting",
+    "spritenum": 668
+  },
+  "fightiniumz": {
+    "desc": "If holder has a Fighting move, this item allows it to use a Fighting Z-Move.",
+    "forcedForme": "Arceus-Fighting",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "name": "Fightinium Z",
+    "num": 782,
+    "onPlate": "Fighting",
+    "onTakeItem": false,
+    "spritenum": 637,
+    "zMove": true,
+    "zMoveType": "Fighting"
+  },
+  "figyberry": {
+    "desc": "Restores 1/3 max HP at 1/4 max HP or less; confuses if -Atk Nature. Single use.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Figy Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Bug"
+    },
+    "num": 159,
+    "spritenum": 140
+  },
+  "firegem": {
+    "desc": "Holder's first successful Fire-type attack will have 1.3x power. Single use.",
+    "gen": 5,
+    "isGem": true,
+    "isNonstandard": "Past",
+    "name": "Fire Gem",
+    "num": 548,
+    "spritenum": 141
+  },
+  "firememory": {
+    "desc": "Holder's Multi-Attack is Fire type.",
+    "forcedForme": "Silvally-Fire",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Silvally-Fire"
+    ],
+    "name": "Fire Memory",
+    "num": 912,
+    "onMemory": "Fire",
+    "spritenum": 676
+  },
+  "firestone": {
+    "desc": "Evolves Vulpix into Ninetales, Growlithe into Arcanine, Eevee into Flareon, and Pansear into Simisear when used.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 1,
+    "name": "Fire Stone",
+    "num": 82,
+    "shortDesc": "Evolves certain species of Pokemon when used.",
+    "spritenum": 142
+  },
+  "firiumz": {
+    "desc": "If holder has a Fire move, this item allows it to use a Fire Z-Move.",
+    "forcedForme": "Arceus-Fire",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "name": "Firium Z",
+    "num": 777,
+    "onPlate": "Fire",
+    "onTakeItem": false,
+    "spritenum": 632,
+    "zMove": true,
+    "zMoveType": "Fire"
+  },
+  "fistplate": {
+    "desc": "Holder's Fighting-type attacks have 1.2x power. Judgment is Fighting type.",
+    "forcedForme": "Arceus-Fighting",
+    "gen": 4,
+    "name": "Fist Plate",
+    "num": 303,
+    "onBasePowerPriority": 15,
+    "onPlate": "Fighting",
+    "spritenum": 143
+  },
+  "flameorb": {
+    "desc": "At the end of every turn, this item attempts to burn the holder.",
+    "fling": {
+      "basePower": 30,
+      "status": "brn"
+    },
+    "gen": 4,
+    "name": "Flame Orb",
+    "num": 273,
+    "onResidualOrder": 28,
+    "onResidualSubOrder": 3,
+    "spritenum": 145
+  },
+  "flameplate": {
+    "desc": "Holder's Fire-type attacks have 1.2x power. Judgment is Fire type.",
+    "forcedForme": "Arceus-Fire",
+    "gen": 4,
+    "name": "Flame Plate",
+    "num": 298,
+    "onBasePowerPriority": 15,
+    "onPlate": "Fire",
+    "spritenum": 146
+  },
+  "floatstone": {
+    "desc": "Holder's weight is halved.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 5,
+    "name": "Float Stone",
+    "num": 539,
+    "spritenum": 147
+  },
+  "flowersweet": {
+    "desc": "Evolves Milcery into Alcremie when held and spun around.",
+    "fling": {
+      "basePower": 0
+    },
+    "gen": 8,
+    "name": "Flower Sweet",
+    "num": 1113,
+    "spritenum": 708
+  },
+  "flyinggem": {
+    "desc": "Holder's first successful Flying-type attack will have 1.3x power. Single use.",
+    "gen": 5,
+    "isGem": true,
+    "isNonstandard": "Past",
+    "name": "Flying Gem",
+    "num": 556,
+    "spritenum": 149
+  },
+  "flyingmemory": {
+    "desc": "Holder's Multi-Attack is Flying type.",
+    "forcedForme": "Silvally-Flying",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Silvally-Flying"
+    ],
+    "name": "Flying Memory",
+    "num": 905,
+    "onMemory": "Flying",
+    "spritenum": 669
+  },
+  "flyiniumz": {
+    "desc": "If holder has a Flying move, this item allows it to use a Flying Z-Move.",
+    "forcedForme": "Arceus-Flying",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "name": "Flyinium Z",
+    "num": 785,
+    "onPlate": "Flying",
+    "onTakeItem": false,
+    "spritenum": 640,
+    "zMove": true,
+    "zMoveType": "Flying"
+  },
+  "focusband": {
+    "desc": "Holder has a 10% chance to survive an attack that would KO it with 1 HP.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 2,
+    "name": "Focus Band",
+    "num": 230,
+    "onDamagePriority": -40,
+    "spritenum": 150
+  },
+  "focussash": {
+    "desc": "If holder's HP is full, will survive an attack that would KO it with 1 HP. Single use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 4,
+    "name": "Focus Sash",
+    "num": 275,
+    "onDamagePriority": -40,
+    "spritenum": 151
+  },
+  "fossilizedbird": {
+    "desc": "Can revive into Dracozolt with Fossilized Drake or Arctozolt with Fossilized Dino.",
+    "fling": {
+      "basePower": 100
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "Fossilized Bird",
+    "num": 1105,
+    "spritenum": 700
+  },
+  "fossilizeddino": {
+    "desc": "Can revive into Arctovish with Fossilized Fish or Arctozolt with Fossilized Bird.",
+    "fling": {
+      "basePower": 100
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "Fossilized Dino",
+    "num": 1108,
+    "spritenum": 703
+  },
+  "fossilizeddrake": {
+    "desc": "Can revive into Dracozolt with Fossilized Bird or Dracovish with Fossilized Fish.",
+    "fling": {
+      "basePower": 100
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "Fossilized Drake",
+    "num": 1107,
+    "spritenum": 702
+  },
+  "fossilizedfish": {
+    "desc": "Can revive into Dracovish with Fossilized Drake or Arctovish with Fossilized Dino.",
+    "fling": {
+      "basePower": 100
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "Fossilized Fish",
+    "num": 1106,
+    "spritenum": 701
+  },
+  "friendball": {
+    "desc": "A Poke Ball that makes caught Pokemon more friendly.",
+    "gen": 2,
+    "isPokeball": true,
+    "name": "Friend Ball",
+    "num": 497,
+    "spritenum": 153
+  },
+  "fullincense": {
+    "desc": "Holder moves last in its priority bracket.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 4,
+    "isNonstandard": "Past",
+    "name": "Full Incense",
+    "num": 316,
+    "onFractionalPriority": -0.1,
+    "spritenum": 155
+  },
+  "galaricacuff": {
+    "desc": "Evolves Galarian Slowpoke into Galarian Slowbro when used.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 8,
+    "isNonstandard": "Unobtainable",
+    "name": "Galarica Cuff",
+    "num": 1582,
+    "spritenum": 739
+  },
+  "galaricawreath": {
+    "desc": "Evolves Galarian Slowpoke into Galarian Slowking when used.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 8,
+    "isNonstandard": "Unobtainable",
+    "name": "Galarica Wreath",
+    "num": 1592,
+    "spritenum": 740
+  },
+  "galladite": {
+    "desc": "If held by a Gallade, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Gallade"
+    ],
+    "megaEvolves": "Gallade",
+    "megaStone": "Gallade-Mega",
+    "name": "Galladite",
+    "num": 756,
+    "spritenum": 616
+  },
+  "ganlonberry": {
+    "desc": "Raises holder's Defense by 1 stage when at 1/4 max HP or less. Single use.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Ganlon Berry",
+    "naturalGift": {
+      "basePower": 100,
+      "type": "Ice"
+    },
+    "num": 202,
+    "spritenum": 158
+  },
+  "garchompite": {
+    "desc": "If held by a Garchomp, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Garchomp"
+    ],
+    "megaEvolves": "Garchomp",
+    "megaStone": "Garchomp-Mega",
+    "name": "Garchompite",
+    "num": 683,
+    "spritenum": 589
+  },
+  "gardevoirite": {
+    "desc": "If held by a Gardevoir, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Gardevoir"
+    ],
+    "megaEvolves": "Gardevoir",
+    "megaStone": "Gardevoir-Mega",
+    "name": "Gardevoirite",
+    "num": 657,
+    "spritenum": 587
+  },
+  "gengarite": {
+    "desc": "If held by a Gengar, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Gengar"
+    ],
+    "megaEvolves": "Gengar",
+    "megaStone": "Gengar-Mega",
+    "name": "Gengarite",
+    "num": 656,
+    "spritenum": 588
+  },
+  "ghostgem": {
+    "desc": "Holder's first successful Ghost-type attack will have 1.3x power. Single use.",
+    "gen": 5,
+    "isGem": true,
+    "isNonstandard": "Past",
+    "name": "Ghost Gem",
+    "num": 560,
+    "spritenum": 161
+  },
+  "ghostiumz": {
+    "desc": "If holder has a Ghost move, this item allows it to use a Ghost Z-Move.",
+    "forcedForme": "Arceus-Ghost",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "name": "Ghostium Z",
+    "num": 789,
+    "onPlate": "Ghost",
+    "onTakeItem": false,
+    "spritenum": 644,
+    "zMove": true,
+    "zMoveType": "Ghost"
+  },
+  "ghostmemory": {
+    "desc": "Holder's Multi-Attack is Ghost type.",
+    "forcedForme": "Silvally-Ghost",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Silvally-Ghost"
+    ],
+    "name": "Ghost Memory",
+    "num": 910,
+    "onMemory": "Ghost",
+    "spritenum": 674
+  },
+  "glalitite": {
+    "desc": "If held by a Glalie, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Glalie"
+    ],
+    "megaEvolves": "Glalie",
+    "megaStone": "Glalie-Mega",
+    "name": "Glalitite",
+    "num": 763,
+    "spritenum": 623
+  },
+  "goldberry": {
+    "desc": "(Gen 2) Restores 30 HP when at 1/2 max HP or less. Single use.",
+    "gen": 2,
+    "isBerry": true,
+    "isNonstandard": "Past",
+    "name": "Gold Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Psychic"
+    },
+    "num": 158,
+    "onResidualOrder": 5,
+    "spritenum": 448
+  },
+  "goldbottlecap": {
+    "desc": "Used for Hyper Training. All of a Pokemon's stats are calculated with an IV of 31.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 7,
+    "name": "Gold Bottle Cap",
+    "num": 796,
+    "spritenum": 697
+  },
+  "grassgem": {
+    "desc": "Holder's first successful Grass-type attack will have 1.3x power. Single use.",
+    "gen": 5,
+    "isGem": true,
+    "isNonstandard": "Past",
+    "name": "Grass Gem",
+    "num": 551,
+    "spritenum": 172
+  },
+  "grassiumz": {
+    "desc": "If holder has a Grass move, this item allows it to use a Grass Z-Move.",
+    "forcedForme": "Arceus-Grass",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "name": "Grassium Z",
+    "num": 780,
+    "onPlate": "Grass",
+    "onTakeItem": false,
+    "spritenum": 635,
+    "zMove": true,
+    "zMoveType": "Grass"
+  },
+  "grassmemory": {
+    "desc": "Holder's Multi-Attack is Grass type.",
+    "forcedForme": "Silvally-Grass",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Silvally-Grass"
+    ],
+    "name": "Grass Memory",
+    "num": 914,
+    "onMemory": "Grass",
+    "spritenum": 678
+  },
+  "grassyseed": {
+    "boosts": {
+      "def": 1
+    },
+    "desc": "If the terrain is Grassy Terrain, raises holder's Defense by 1 stage. Single use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 7,
+    "name": "Grassy Seed",
+    "num": 884,
+    "spritenum": 667
+  },
+  "greatball": {
+    "desc": "A high-performance Ball that provides a higher catch rate than a Poke Ball.",
+    "gen": 1,
+    "isPokeball": true,
+    "name": "Great Ball",
+    "num": 3,
+    "spritenum": 174
+  },
+  "grepaberry": {
+    "desc": "Cannot be eaten by the holder. No effect when eaten with Bug Bite or Pluck.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Grepa Berry",
+    "naturalGift": {
+      "basePower": 90,
+      "type": "Flying"
+    },
+    "num": 173,
+    "onEat": false,
+    "spritenum": 178
+  },
+  "gripclaw": {
+    "desc": "Holder's partial-trapping moves always last 7 turns.",
+    "fling": {
+      "basePower": 90
+    },
+    "gen": 4,
+    "name": "Grip Claw",
+    "num": 286,
+    "spritenum": 179
+  },
+  "griseouscore": {
+    "desc": "If held by a Giratina, its Ghost- and Dragon-type attacks have 1.2x power.",
+    "forcedForme": "Giratina-Origin",
+    "gen": 8,
+    "itemUser": [
+      "Giratina-Origin"
+    ],
+    "name": "Griseous Core",
+    "num": 1779,
+    "onBasePowerPriority": 15,
+    "spritenum": 743
+  },
+  "griseousorb": {
+    "desc": "If held by a Giratina, its Ghost- and Dragon-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 60
+    },
+    "gen": 4,
+    "itemUser": [
+      "Giratina"
+    ],
+    "name": "Griseous Orb",
+    "num": 112,
+    "onBasePowerPriority": 15,
+    "spritenum": 180
+  },
+  "groundgem": {
+    "desc": "Holder's first successful Ground-type attack will have 1.3x power. Single use.",
+    "gen": 5,
+    "isGem": true,
+    "isNonstandard": "Past",
+    "name": "Ground Gem",
+    "num": 555,
+    "spritenum": 182
+  },
+  "groundiumz": {
+    "desc": "If holder has a Ground move, this item allows it to use a Ground Z-Move.",
+    "forcedForme": "Arceus-Ground",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "name": "Groundium Z",
+    "num": 784,
+    "onPlate": "Ground",
+    "onTakeItem": false,
+    "spritenum": 639,
+    "zMove": true,
+    "zMoveType": "Ground"
+  },
+  "groundmemory": {
+    "desc": "Holder's Multi-Attack is Ground type.",
+    "forcedForme": "Silvally-Ground",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Silvally-Ground"
+    ],
+    "name": "Ground Memory",
+    "num": 907,
+    "onMemory": "Ground",
+    "spritenum": 671
+  },
+  "gyaradosite": {
+    "desc": "If held by a Gyarados, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Gyarados"
+    ],
+    "megaEvolves": "Gyarados",
+    "megaStone": "Gyarados-Mega",
+    "name": "Gyaradosite",
+    "num": 676,
+    "spritenum": 589
+  },
+  "habanberry": {
+    "desc": "Halves damage taken from a supereffective Dragon-type attack. Single use.",
+    "gen": 4,
+    "isBerry": true,
+    "name": "Haban Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Dragon"
+    },
+    "num": 197,
+    "spritenum": 185
+  },
+  "hardstone": {
+    "desc": "Holder's Rock-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 100
+    },
+    "gen": 2,
+    "name": "Hard Stone",
+    "num": 238,
+    "onBasePowerPriority": 15,
+    "spritenum": 187
+  },
+  "healball": {
+    "desc": "A remedial Poke Ball that restores the caught Pokemon's HP and status problem.",
+    "gen": 4,
+    "isPokeball": true,
+    "name": "Heal Ball",
+    "num": 14,
+    "spritenum": 188
+  },
+  "hearthflamemask": {
+    "desc": "Ogerpon-Hearthflame: 1.2x power attacks; Terastallize to gain Embody Aspect.",
+    "fling": {
+      "basePower": 60
+    },
+    "forcedForme": "Ogerpon-Hearthflame",
+    "gen": 9,
+    "itemUser": [
+      "Ogerpon-Hearthflame"
+    ],
+    "name": "Hearthflame Mask",
+    "num": 2408,
+    "onBasePowerPriority": 15,
+    "spritenum": 760
+  },
+  "heatrock": {
+    "desc": "Holder's use of Sunny Day lasts 8 turns instead of 5.",
+    "fling": {
+      "basePower": 60
+    },
+    "gen": 4,
+    "name": "Heat Rock",
+    "num": 284,
+    "spritenum": 193
+  },
+  "heavyball": {
+    "desc": "A Poke Ball for catching very heavy Pokemon.",
+    "gen": 2,
+    "isPokeball": true,
+    "name": "Heavy Ball",
+    "num": 495,
+    "spritenum": 194
+  },
+  "heavydutyboots": {
+    "desc": "When switching in, the holder is unaffected by hazards on its side of the field.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 8,
+    "name": "Heavy-Duty Boots",
+    "num": 1120,
+    "spritenum": 715
+  },
+  "helixfossil": {
+    "desc": "Can be revived into Omanyte.",
+    "fling": {
+      "basePower": 100
+    },
+    "gen": 3,
+    "isNonstandard": "Past",
+    "name": "Helix Fossil",
+    "num": 101,
+    "spritenum": 195
+  },
+  "heracronite": {
+    "desc": "If held by a Heracross, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Heracross"
+    ],
+    "megaEvolves": "Heracross",
+    "megaStone": "Heracross-Mega",
+    "name": "Heracronite",
+    "num": 680,
+    "spritenum": 590
+  },
+  "hondewberry": {
+    "desc": "Cannot be eaten by the holder. No effect when eaten with Bug Bite or Pluck.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Hondew Berry",
+    "naturalGift": {
+      "basePower": 90,
+      "type": "Ground"
+    },
+    "num": 172,
+    "onEat": false,
+    "spritenum": 213
+  },
+  "houndoominite": {
+    "desc": "If held by a Houndoom, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Houndoom"
+    ],
+    "megaEvolves": "Houndoom",
+    "megaStone": "Houndoom-Mega",
+    "name": "Houndoominite",
+    "num": 666,
+    "spritenum": 591
+  },
+  "iapapaberry": {
+    "desc": "Restores 1/3 max HP at 1/4 max HP or less; confuses if -Def Nature. Single use.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Iapapa Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Dark"
+    },
+    "num": 163,
+    "spritenum": 217
+  },
+  "iceberry": {
+    "desc": "(Gen 2) Holder is cured if it is burned. Single use.",
+    "gen": 2,
+    "isBerry": true,
+    "isNonstandard": "Past",
+    "name": "Ice Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Grass"
+    },
+    "num": 152,
+    "spritenum": 381
+  },
+  "icegem": {
+    "desc": "Holder's first successful Ice-type attack will have 1.3x power. Single use.",
+    "gen": 5,
+    "isGem": true,
+    "isNonstandard": "Past",
+    "name": "Ice Gem",
+    "num": 552,
+    "spritenum": 218
+  },
+  "icememory": {
+    "desc": "Holder's Multi-Attack is Ice type.",
+    "forcedForme": "Silvally-Ice",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Silvally-Ice"
+    ],
+    "name": "Ice Memory",
+    "num": 917,
+    "onMemory": "Ice",
+    "spritenum": 681
+  },
+  "icestone": {
+    "desc": "Evolves Alolan Sandshrew into Alolan Sandslash, Alolan Vulpix into Alolan Ninetales, Eevee into Glaceon, and Galarian Darumaka into Galarian Darmanitan when used.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 7,
+    "name": "Ice Stone",
+    "num": 849,
+    "shortDesc": "Evolves certain species of Pokemon when used.",
+    "spritenum": 693
+  },
+  "icicleplate": {
+    "desc": "Holder's Ice-type attacks have 1.2x power. Judgment is Ice type.",
+    "forcedForme": "Arceus-Ice",
+    "gen": 4,
+    "name": "Icicle Plate",
+    "num": 302,
+    "onBasePowerPriority": 15,
+    "onPlate": "Ice",
+    "spritenum": 220
+  },
+  "iciumz": {
+    "desc": "If holder has an Ice move, this item allows it to use an Ice Z-Move.",
+    "forcedForme": "Arceus-Ice",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "name": "Icium Z",
+    "num": 781,
+    "onPlate": "Ice",
+    "onTakeItem": false,
+    "spritenum": 636,
+    "zMove": true,
+    "zMoveType": "Ice"
+  },
+  "icyrock": {
+    "desc": "Holder's use of Hail lasts 8 turns instead of 5.",
+    "fling": {
+      "basePower": 40
+    },
+    "gen": 4,
+    "name": "Icy Rock",
+    "num": 282,
+    "spritenum": 221
+  },
+  "inciniumz": {
+    "desc": "If held by an Incineroar with Darkest Lariat, it can use Malicious Moonsault.",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Incineroar"
+    ],
+    "name": "Incinium Z",
+    "num": 799,
+    "onTakeItem": false,
+    "spritenum": 651,
+    "zMove": "Malicious Moonsault",
+    "zMoveFrom": "Darkest Lariat"
+  },
+  "insectplate": {
+    "desc": "Holder's Bug-type attacks have 1.2x power. Judgment is Bug type.",
+    "forcedForme": "Arceus-Bug",
+    "gen": 4,
+    "name": "Insect Plate",
+    "num": 308,
+    "onBasePowerPriority": 15,
+    "onPlate": "Bug",
+    "spritenum": 223
+  },
+  "ironball": {
+    "desc": "Holder is grounded, Speed halved. If Flying type, takes neutral Ground damage.",
+    "fling": {
+      "basePower": 130
+    },
+    "gen": 4,
+    "name": "Iron Ball",
+    "num": 278,
+    "spritenum": 224
+  },
+  "ironplate": {
+    "desc": "Holder's Steel-type attacks have 1.2x power. Judgment is Steel type.",
+    "forcedForme": "Arceus-Steel",
+    "gen": 4,
+    "name": "Iron Plate",
+    "num": 313,
+    "onBasePowerPriority": 15,
+    "onPlate": "Steel",
+    "spritenum": 225
+  },
+  "jabocaberry": {
+    "desc": "If holder is hit by a physical move, attacker loses 1/8 of its max HP. Single use.",
+    "gen": 4,
+    "isBerry": true,
+    "name": "Jaboca Berry",
+    "naturalGift": {
+      "basePower": 100,
+      "type": "Dragon"
+    },
+    "num": 211,
+    "spritenum": 230
+  },
+  "jawfossil": {
+    "desc": "Can be revived into Tyrunt.",
+    "fling": {
+      "basePower": 100
+    },
+    "gen": 6,
+    "isNonstandard": "Past",
+    "name": "Jaw Fossil",
+    "num": 710,
+    "spritenum": 694
+  },
+  "kangaskhanite": {
+    "desc": "If held by a Kangaskhan, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Kangaskhan"
+    ],
+    "megaEvolves": "Kangaskhan",
+    "megaStone": "Kangaskhan-Mega",
+    "name": "Kangaskhanite",
+    "num": 675,
+    "spritenum": 592
+  },
+  "kasibberry": {
+    "desc": "Halves damage taken from a supereffective Ghost-type attack. Single use.",
+    "gen": 4,
+    "isBerry": true,
+    "name": "Kasib Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Ghost"
+    },
+    "num": 196,
+    "spritenum": 233
+  },
+  "kebiaberry": {
+    "desc": "Halves damage taken from a supereffective Poison-type attack. Single use.",
+    "gen": 4,
+    "isBerry": true,
+    "name": "Kebia Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Poison"
+    },
+    "num": 190,
+    "spritenum": 234
+  },
+  "keeberry": {
+    "desc": "Raises holder's Defense by 1 stage after it is hit by a physical attack. Single use.",
+    "gen": 6,
+    "isBerry": true,
+    "name": "Kee Berry",
+    "naturalGift": {
+      "basePower": 100,
+      "type": "Fairy"
+    },
+    "num": 687,
+    "spritenum": 593
+  },
+  "kelpsyberry": {
+    "desc": "Cannot be eaten by the holder. No effect when eaten with Bug Bite or Pluck.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Kelpsy Berry",
+    "naturalGift": {
+      "basePower": 90,
+      "type": "Fighting"
+    },
+    "num": 170,
+    "onEat": false,
+    "spritenum": 235
+  },
+  "kingsrock": {
+    "desc": "Holder's attacks without a chance to make the target flinch gain a 10% chance to make the target flinch. Evolves Poliwhirl into Politoed and Slowpoke into Slowking when traded.",
+    "fling": {
+      "basePower": 30,
+      "volatileStatus": "flinch"
+    },
+    "gen": 2,
+    "name": "King's Rock",
+    "num": 221,
+    "onModifyMovePriority": -1,
+    "shortDesc": "Holder's attacks without a chance to flinch gain a 10% chance to flinch.",
+    "spritenum": 236
+  },
+  "kommoniumz": {
+    "desc": "If held by a Kommo-o with Clanging Scales, it can use Clangorous Soulblaze.",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Kommo-o",
+      "Kommo-o-Totem"
+    ],
+    "name": "Kommonium Z",
+    "num": 926,
+    "onTakeItem": false,
+    "spritenum": 690,
+    "zMove": "Clangorous Soulblaze",
+    "zMoveFrom": "Clanging Scales"
+  },
+  "laggingtail": {
+    "desc": "Holder moves last in its priority bracket.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 4,
+    "name": "Lagging Tail",
+    "num": 279,
+    "onFractionalPriority": -0.1,
+    "spritenum": 237
+  },
+  "lansatberry": {
+    "desc": "Holder gains the Focus Energy effect when at 1/4 max HP or less. Single use.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Lansat Berry",
+    "naturalGift": {
+      "basePower": 100,
+      "type": "Flying"
+    },
+    "num": 206,
+    "spritenum": 238
+  },
+  "latiasite": {
+    "desc": "If held by a Latias, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Latias"
+    ],
+    "megaEvolves": "Latias",
+    "megaStone": "Latias-Mega",
+    "name": "Latiasite",
+    "num": 684,
+    "spritenum": 629
+  },
+  "latiosite": {
+    "desc": "If held by a Latios, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Latios"
+    ],
+    "megaEvolves": "Latios",
+    "megaStone": "Latios-Mega",
+    "name": "Latiosite",
+    "num": 685,
+    "spritenum": 630
+  },
+  "laxincense": {
+    "desc": "The accuracy of attacks against the holder is 0.9x.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 3,
+    "isNonstandard": "Past",
+    "name": "Lax Incense",
+    "num": 255,
+    "onModifyAccuracyPriority": -2,
+    "spritenum": 240
+  },
+  "leafstone": {
+    "desc": "Evolves Gloom into Vileplume, Weepinbell into Victreebel, Exeggcute into Exeggutor or Alolan Exeggutor, Eevee into Leafeon, Nuzleaf into Shiftry, and Pansage into Simisage when used.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 1,
+    "name": "Leaf Stone",
+    "num": 85,
+    "shortDesc": "Evolves certain species of Pokemon when used.",
+    "spritenum": 241
+  },
+  "leek": {
+    "desc": "If held by a Farfetch’d or Sirfetch’d, its critical hit ratio is raised by 2 stages.",
+    "fling": {
+      "basePower": 60
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Farfetch’d",
+      "Farfetch’d-Galar",
+      "Sirfetch’d"
+    ],
+    "name": "Leek",
+    "num": 259,
+    "spritenum": 475
+  },
+  "leftovers": {
+    "desc": "At the end of every turn, holder restores 1/16 of its max HP.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 2,
+    "name": "Leftovers",
+    "num": 234,
+    "onResidualOrder": 5,
+    "onResidualSubOrder": 4,
+    "spritenum": 242
+  },
+  "leppaberry": {
+    "desc": "Restores 10 PP to the first of the holder's moves to reach 0 PP. Single use.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Leppa Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Fighting"
+    },
+    "num": 154,
+    "spritenum": 244
+  },
+  "levelball": {
+    "desc": "A Poke Ball for catching Pokemon that are a lower level than your own.",
+    "gen": 2,
+    "isPokeball": true,
+    "name": "Level Ball",
+    "num": 493,
+    "spritenum": 246
+  },
+  "liechiberry": {
+    "desc": "Raises holder's Attack by 1 stage when at 1/4 max HP or less. Single use.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Liechi Berry",
+    "naturalGift": {
+      "basePower": 100,
+      "type": "Grass"
+    },
+    "num": 201,
+    "spritenum": 248
+  },
+  "lifeorb": {
+    "desc": "Holder's attacks do 1.3x damage, and it loses 1/10 its max HP after the attack.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 4,
+    "name": "Life Orb",
+    "num": 270,
+    "spritenum": 249
+  },
+  "lightball": {
+    "desc": "If held by a Pikachu, its Attack and Sp. Atk are doubled.",
+    "fling": {
+      "basePower": 30,
+      "status": "par"
+    },
+    "gen": 2,
+    "itemUser": [
+      "Pikachu",
+      "Pikachu-Cosplay",
+      "Pikachu-Rock-Star",
+      "Pikachu-Belle",
+      "Pikachu-Pop-Star",
+      "Pikachu-PhD",
+      "Pikachu-Libre",
+      "Pikachu-Original",
+      "Pikachu-Hoenn",
+      "Pikachu-Sinnoh",
+      "Pikachu-Unova",
+      "Pikachu-Kalos",
+      "Pikachu-Alola",
+      "Pikachu-Partner",
+      "Pikachu-Starter",
+      "Pikachu-World"
+    ],
+    "name": "Light Ball",
+    "num": 236,
+    "onModifyAtkPriority": 1,
+    "onModifySpAPriority": 1,
+    "spritenum": 251
+  },
+  "lightclay": {
+    "desc": "Holder's use of Aurora Veil, Light Screen, or Reflect lasts 8 turns instead of 5.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 4,
+    "name": "Light Clay",
+    "num": 269,
+    "spritenum": 252
+  },
+  "loadeddice": {
+    "desc": "Holder's moves that hit 2-5 times hit 4-5 times; Population Bomb hits 4-10 times.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 9,
+    "name": "Loaded Dice",
+    "num": 1886,
+    "spritenum": 751
+  },
+  "lopunnite": {
+    "desc": "If held by a Lopunny, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Lopunny"
+    ],
+    "megaEvolves": "Lopunny",
+    "megaStone": "Lopunny-Mega",
+    "name": "Lopunnite",
+    "num": 768,
+    "spritenum": 626
+  },
+  "loveball": {
+    "desc": "Poke Ball for catching Pokemon that are the opposite gender of your Pokemon.",
+    "gen": 2,
+    "isPokeball": true,
+    "name": "Love Ball",
+    "num": 496,
+    "spritenum": 258
+  },
+  "lovesweet": {
+    "desc": "Evolves Milcery into Alcremie when held and spun around.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "name": "Love Sweet",
+    "num": 1110,
+    "spritenum": 705
+  },
+  "lucarionite": {
+    "desc": "If held by a Lucario, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Lucario"
+    ],
+    "megaEvolves": "Lucario",
+    "megaStone": "Lucario-Mega",
+    "name": "Lucarionite",
+    "num": 673,
+    "spritenum": 594
+  },
+  "luckypunch": {
+    "desc": "If held by a Chansey, its critical hit ratio is raised by 2 stages.",
+    "fling": {
+      "basePower": 40
+    },
+    "gen": 2,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Chansey"
+    ],
+    "name": "Lucky Punch",
+    "num": 256,
+    "spritenum": 261
+  },
+  "lumberry": {
+    "desc": "Holder cures itself if it has a non-volatile status or is confused. Single use.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Lum Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Flying"
+    },
+    "num": 157,
+    "onAfterSetStatusPriority": -1,
+    "spritenum": 262
+  },
+  "luminousmoss": {
+    "boosts": {
+      "spd": 1
+    },
+    "desc": "Raises holder's Sp. Def by 1 stage if hit by a Water-type attack. Single use.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 6,
+    "name": "Luminous Moss",
+    "num": 648,
+    "spritenum": 595
+  },
+  "lunaliumz": {
+    "desc": "Lunala or Dawn Wings Necrozma with Moongeist Beam can use a special Z-Move.",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Lunala",
+      "Necrozma-Dawn-Wings"
+    ],
+    "name": "Lunalium Z",
+    "num": 922,
+    "onTakeItem": false,
+    "spritenum": 686,
+    "zMove": "Menacing Moonraze Maelstrom",
+    "zMoveFrom": "Moongeist Beam"
+  },
+  "lureball": {
+    "desc": "A Poke Ball for catching Pokemon hooked by a Rod when fishing.",
+    "gen": 2,
+    "isPokeball": true,
+    "name": "Lure Ball",
+    "num": 494,
+    "spritenum": 264
+  },
+  "lustrousglobe": {
+    "desc": "If held by a Palkia, its Water- and Dragon-type attacks have 1.2x power.",
+    "forcedForme": "Palkia-Origin",
+    "gen": 8,
+    "itemUser": [
+      "Palkia-Origin"
+    ],
+    "name": "Lustrous Globe",
+    "num": 1778,
+    "onBasePowerPriority": 15,
+    "spritenum": 742
+  },
+  "lustrousorb": {
+    "desc": "If held by a Palkia, its Water- and Dragon-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 60
+    },
+    "gen": 4,
+    "itemUser": [
+      "Palkia"
+    ],
+    "name": "Lustrous Orb",
+    "num": 136,
+    "onBasePowerPriority": 15,
+    "spritenum": 265
+  },
+  "luxuryball": {
+    "desc": "A comfortable Poke Ball that makes a caught wild Pokemon quickly grow friendly.",
+    "gen": 3,
+    "isPokeball": true,
+    "name": "Luxury Ball",
+    "num": 11,
+    "spritenum": 266
+  },
+  "lycaniumz": {
+    "desc": "If held by a Lycanroc forme with Stone Edge, it can use Splintered Stormshards.",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Lycanroc",
+      "Lycanroc-Midnight",
+      "Lycanroc-Dusk"
+    ],
+    "name": "Lycanium Z",
+    "num": 925,
+    "onTakeItem": false,
+    "spritenum": 689,
+    "zMove": "Splintered Stormshards",
+    "zMoveFrom": "Stone Edge"
+  },
+  "machobrace": {
+    "desc": "Holder's Speed is halved. The Klutz Ability does not ignore this effect.",
+    "fling": {
+      "basePower": 60
+    },
+    "gen": 3,
+    "ignoreKlutz": true,
+    "isNonstandard": "Past",
+    "name": "Macho Brace",
+    "num": 215,
+    "spritenum": 269
+  },
+  "magmarizer": {
+    "desc": "Evolves Magmar into Magmortar when traded.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 4,
+    "name": "Magmarizer",
+    "num": 323,
+    "spritenum": 272
+  },
+  "magnet": {
+    "desc": "Holder's Electric-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 2,
+    "name": "Magnet",
+    "num": 242,
+    "onBasePowerPriority": 15,
+    "spritenum": 273
+  },
+  "magoberry": {
+    "desc": "Restores 1/3 max HP at 1/4 max HP or less; confuses if -Spe Nature. Single use.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Mago Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Ghost"
+    },
+    "num": 161,
+    "spritenum": 274
+  },
+  "magostberry": {
+    "desc": "Cannot be eaten by the holder. No effect when eaten with Bug Bite or Pluck.",
+    "gen": 3,
+    "isBerry": true,
+    "isNonstandard": "Past",
+    "name": "Magost Berry",
+    "naturalGift": {
+      "basePower": 90,
+      "type": "Rock"
+    },
+    "num": 176,
+    "onEat": false,
+    "spritenum": 275
+  },
+  "mail": {
+    "desc": "Cannot be given to or taken from a Pokemon, except by Covet/Knock Off/Thief.",
+    "gen": 2,
+    "isNonstandard": "Past",
+    "name": "Mail",
+    "num": 137,
+    "spritenum": 403
+  },
+  "maliciousarmor": {
+    "desc": "Evolves Charcadet into Ceruledge when used.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 9,
+    "name": "Malicious Armor",
+    "num": 1861,
+    "spritenum": 744
+  },
+  "manectite": {
+    "desc": "If held by a Manectric, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Manectric"
+    ],
+    "megaEvolves": "Manectric",
+    "megaStone": "Manectric-Mega",
+    "name": "Manectite",
+    "num": 682,
+    "spritenum": 596
+  },
+  "marangaberry": {
+    "desc": "Raises holder's Sp. Def by 1 stage after it is hit by a special attack. Single use.",
+    "gen": 6,
+    "isBerry": true,
+    "name": "Maranga Berry",
+    "naturalGift": {
+      "basePower": 100,
+      "type": "Dark"
+    },
+    "num": 688,
+    "spritenum": 597
+  },
+  "marshadiumz": {
+    "desc": "If held by Marshadow with Spectral Thief, it can use Soul-Stealing 7-Star Strike.",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Marshadow"
+    ],
+    "name": "Marshadium Z",
+    "num": 802,
+    "onTakeItem": false,
+    "spritenum": 654,
+    "zMove": "Soul-Stealing 7-Star Strike",
+    "zMoveFrom": "Spectral Thief"
+  },
+  "masterball": {
+    "desc": "The best Ball with the ultimate performance. It will catch any wild Pokemon.",
+    "gen": 1,
+    "isPokeball": true,
+    "name": "Master Ball",
+    "num": 1,
+    "spritenum": 276
+  },
+  "masterpieceteacup": {
+    "desc": "Evolves Poltchageist-Artisan into Sinistcha-Masterpiece when used.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 9,
+    "name": "Masterpiece Teacup",
+    "num": 2404,
+    "spritenum": 757
+  },
+  "mawilite": {
+    "desc": "If held by a Mawile, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Mawile"
+    ],
+    "megaEvolves": "Mawile",
+    "megaStone": "Mawile-Mega",
+    "name": "Mawilite",
+    "num": 681,
+    "spritenum": 598
+  },
+  "meadowplate": {
+    "desc": "Holder's Grass-type attacks have 1.2x power. Judgment is Grass type.",
+    "forcedForme": "Arceus-Grass",
+    "gen": 4,
+    "name": "Meadow Plate",
+    "num": 301,
+    "onBasePowerPriority": 15,
+    "onPlate": "Grass",
+    "spritenum": 282
+  },
+  "medichamite": {
+    "desc": "If held by a Medicham, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Medicham"
+    ],
+    "megaEvolves": "Medicham",
+    "megaStone": "Medicham-Mega",
+    "name": "Medichamite",
+    "num": 665,
+    "spritenum": 599
+  },
+  "mentalherb": {
+    "desc": "Cures holder of Attract, Disable, Encore, Heal Block, Taunt, Torment. Single use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 3,
+    "name": "Mental Herb",
+    "num": 219,
+    "spritenum": 285
+  },
+  "metagrossite": {
+    "desc": "If held by a Metagross, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Metagross"
+    ],
+    "megaEvolves": "Metagross",
+    "megaStone": "Metagross-Mega",
+    "name": "Metagrossite",
+    "num": 758,
+    "spritenum": 618
+  },
+  "metalalloy": {
+    "desc": "Evolves Duraludon into Archaludon when used.",
+    "gen": 9,
+    "name": "Metal Alloy",
+    "num": 2482,
+    "spritenum": 761
+  },
+  "metalcoat": {
+    "desc": "Holder's Steel-type attacks have 1.2x power. Evolves Onix into Steelix and Scyther into Scizor when traded.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 2,
+    "name": "Metal Coat",
+    "num": 233,
+    "onBasePowerPriority": 15,
+    "shortDesc": "Holder's Steel-type attacks have 1.2x power.",
+    "spritenum": 286
+  },
+  "metalpowder": {
+    "desc": "If held by a Ditto that hasn't Transformed, its Defense is doubled.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 2,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Ditto"
+    ],
+    "name": "Metal Powder",
+    "num": 257,
+    "onModifyDefPriority": 2,
+    "spritenum": 287
+  },
+  "metronome": {
+    "condition": {
+      "onTryMovePriority": -2
+    },
+    "desc": "Damage of moves used on consecutive turns is increased. Max 2x after 5 turns.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 4,
+    "name": "Metronome",
+    "num": 277,
+    "spritenum": 289
+  },
+  "mewniumz": {
+    "desc": "If held by a Mew with Psychic, it can use Genesis Supernova.",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Mew"
+    ],
+    "name": "Mewnium Z",
+    "num": 806,
+    "onTakeItem": false,
+    "spritenum": 658,
+    "zMove": "Genesis Supernova",
+    "zMoveFrom": "Psychic"
+  },
+  "mewtwonitex": {
+    "desc": "If held by a Mewtwo, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Mewtwo"
+    ],
+    "megaEvolves": "Mewtwo",
+    "megaStone": "Mewtwo-Mega-X",
+    "name": "Mewtwonite X",
+    "num": 662,
+    "spritenum": 600
+  },
+  "mewtwonitey": {
+    "desc": "If held by a Mewtwo, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Mewtwo"
+    ],
+    "megaEvolves": "Mewtwo",
+    "megaStone": "Mewtwo-Mega-Y",
+    "name": "Mewtwonite Y",
+    "num": 663,
+    "spritenum": 601
+  },
+  "micleberry": {
+    "condition": {
+      "duration": 2
+    },
+    "desc": "Holder's next move has 1.2x accuracy when at 1/4 max HP or less. Single use.",
+    "gen": 4,
+    "isBerry": true,
+    "name": "Micle Berry",
+    "naturalGift": {
+      "basePower": 100,
+      "type": "Rock"
+    },
+    "num": 209,
+    "spritenum": 290
+  },
+  "mimikiumz": {
+    "desc": "If held by a Mimikyu with Play Rough, it can use Let's Snuggle Forever.",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Mimikyu",
+      "Mimikyu-Busted",
+      "Mimikyu-Totem",
+      "Mimikyu-Busted-Totem"
+    ],
+    "name": "Mimikium Z",
+    "num": 924,
+    "onTakeItem": false,
+    "spritenum": 688,
+    "zMove": "Let's Snuggle Forever",
+    "zMoveFrom": "Play Rough"
+  },
+  "mindplate": {
+    "desc": "Holder's Psychic-type attacks have 1.2x power. Judgment is Psychic type.",
+    "forcedForme": "Arceus-Psychic",
+    "gen": 4,
+    "name": "Mind Plate",
+    "num": 307,
+    "onBasePowerPriority": 15,
+    "onPlate": "Psychic",
+    "spritenum": 291
+  },
+  "mintberry": {
+    "desc": "(Gen 2) Holder wakes up if it is asleep. Single use.",
+    "gen": 2,
+    "isBerry": true,
+    "isNonstandard": "Past",
+    "name": "Mint Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Water"
+    },
+    "num": 150,
+    "spritenum": 65
+  },
+  "miracleberry": {
+    "desc": "(Gen 2) Holder cures itself if it is confused or has a status condition. Single use.",
+    "gen": 2,
+    "isBerry": true,
+    "isNonstandard": "Past",
+    "name": "Miracle Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Flying"
+    },
+    "num": 157,
+    "spritenum": 262
+  },
+  "miracleseed": {
+    "desc": "Holder's Grass-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 2,
+    "name": "Miracle Seed",
+    "num": 239,
+    "onBasePowerPriority": 15,
+    "spritenum": 292
+  },
+  "mirrorherb": {
+    "desc": "When an opposing Pokemon raises a stat stage, the holder copies it. Single use.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 9,
+    "name": "Mirror Herb",
+    "num": 1883,
+    "spritenum": 748
+  },
+  "mistyseed": {
+    "boosts": {
+      "spd": 1
+    },
+    "desc": "If the terrain is Misty Terrain, raises holder's Sp. Def by 1 stage. Single use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 7,
+    "name": "Misty Seed",
+    "num": 883,
+    "spritenum": 666
+  },
+  "moonball": {
+    "desc": "A Poke Ball for catching Pokemon that evolve using the Moon Stone.",
+    "gen": 2,
+    "isPokeball": true,
+    "name": "Moon Ball",
+    "num": 498,
+    "spritenum": 294
+  },
+  "moonstone": {
+    "desc": "Evolves Nidorina into Nidoqueen, Nidorino into Nidoking, Clefairy into Clefable, Jigglypuff into Wigglytuff, Skitty into Delcatty, and Munna into Musharna when used.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 1,
+    "name": "Moon Stone",
+    "num": 81,
+    "shortDesc": "Evolves certain species of Pokemon when used.",
+    "spritenum": 295
+  },
+  "muscleband": {
+    "desc": "Holder's physical attacks have 1.1x power.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 4,
+    "name": "Muscle Band",
+    "num": 266,
+    "onBasePowerPriority": 16,
+    "spritenum": 297
+  },
+  "mysteryberry": {
+    "desc": "(Gen 2) Restores 5 PP to the first of the holder's moves to reach 0 PP. Single use.",
+    "gen": 2,
+    "isBerry": true,
+    "isNonstandard": "Past",
+    "name": "Mystery Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Fighting"
+    },
+    "num": 154,
+    "spritenum": 244
+  },
+  "mysticwater": {
+    "desc": "Holder's Water-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 2,
+    "name": "Mystic Water",
+    "num": 243,
+    "onBasePowerPriority": 15,
+    "spritenum": 300
+  },
+  "nanabberry": {
+    "desc": "Cannot be eaten by the holder. No effect when eaten with Bug Bite or Pluck.",
+    "gen": 3,
+    "isBerry": true,
+    "isNonstandard": "Past",
+    "name": "Nanab Berry",
+    "naturalGift": {
+      "basePower": 90,
+      "type": "Water"
+    },
+    "num": 166,
+    "onEat": false,
+    "spritenum": 302
+  },
+  "nestball": {
+    "desc": "A Poke Ball that works especially well on weaker Pokemon in the wild.",
+    "gen": 3,
+    "isPokeball": true,
+    "name": "Nest Ball",
+    "num": 8,
+    "spritenum": 303
+  },
+  "netball": {
+    "desc": "A Poke Ball that works especially well on Water- and Bug-type Pokemon.",
+    "gen": 3,
+    "isPokeball": true,
+    "name": "Net Ball",
+    "num": 6,
+    "spritenum": 304
+  },
+  "nevermeltice": {
+    "desc": "Holder's Ice-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 2,
+    "name": "Never-Melt Ice",
+    "num": 246,
+    "onBasePowerPriority": 15,
+    "spritenum": 305
+  },
+  "nomelberry": {
+    "desc": "Cannot be eaten by the holder. No effect when eaten with Bug Bite or Pluck.",
+    "gen": 3,
+    "isBerry": true,
+    "isNonstandard": "Past",
+    "name": "Nomel Berry",
+    "naturalGift": {
+      "basePower": 90,
+      "type": "Dragon"
+    },
+    "num": 178,
+    "onEat": false,
+    "spritenum": 306
+  },
+  "normalgem": {
+    "desc": "Holder's first successful Normal-type attack will have 1.3x power. Single use.",
+    "gen": 5,
+    "isGem": true,
+    "name": "Normal Gem",
+    "num": 564,
+    "spritenum": 307
+  },
+  "normaliumz": {
+    "desc": "If holder has a Normal move, this item allows it to use a Normal Z-Move.",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "name": "Normalium Z",
+    "num": 776,
+    "onTakeItem": false,
+    "spritenum": 631,
+    "zMove": true,
+    "zMoveType": "Normal"
+  },
+  "occaberry": {
+    "desc": "Halves damage taken from a supereffective Fire-type attack. Single use.",
+    "gen": 4,
+    "isBerry": true,
+    "name": "Occa Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Fire"
+    },
+    "num": 184,
+    "spritenum": 311
+  },
+  "oddincense": {
+    "desc": "Holder's Psychic-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 4,
+    "isNonstandard": "Past",
+    "name": "Odd Incense",
+    "num": 314,
+    "onBasePowerPriority": 15,
+    "spritenum": 312
+  },
+  "oldamber": {
+    "desc": "Can be revived into Aerodactyl.",
+    "fling": {
+      "basePower": 100
+    },
+    "gen": 3,
+    "isNonstandard": "Past",
+    "name": "Old Amber",
+    "num": 103,
+    "spritenum": 314
+  },
+  "oranberry": {
+    "desc": "Restores 10 HP when at 1/2 max HP or less. Single use.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Oran Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Poison"
+    },
+    "num": 155,
+    "spritenum": 319
+  },
+  "ovalstone": {
+    "desc": "Evolves Happiny into Chansey when held and leveled up during the day.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 4,
+    "name": "Oval Stone",
+    "num": 110,
+    "spritenum": 321
+  },
+  "pamtreberry": {
+    "desc": "Cannot be eaten by the holder. No effect when eaten with Bug Bite or Pluck.",
+    "gen": 3,
+    "isBerry": true,
+    "isNonstandard": "Past",
+    "name": "Pamtre Berry",
+    "naturalGift": {
+      "basePower": 90,
+      "type": "Steel"
+    },
+    "num": 180,
+    "onEat": false,
+    "spritenum": 323
+  },
+  "parkball": {
+    "desc": "A special Poke Ball for the Pal Park.",
+    "gen": 4,
+    "isNonstandard": "Unobtainable",
+    "isPokeball": true,
+    "name": "Park Ball",
+    "num": 500,
+    "spritenum": 325
+  },
+  "passhoberry": {
+    "desc": "Halves damage taken from a supereffective Water-type attack. Single use.",
+    "gen": 4,
+    "isBerry": true,
+    "name": "Passho Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Water"
+    },
+    "num": 185,
+    "spritenum": 329
+  },
+  "payapaberry": {
+    "desc": "Halves damage taken from a supereffective Psychic-type attack. Single use.",
+    "gen": 4,
+    "isBerry": true,
+    "name": "Payapa Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Psychic"
+    },
+    "num": 193,
+    "spritenum": 330
+  },
+  "pechaberry": {
+    "desc": "Holder is cured if it is poisoned. Single use.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Pecha Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Electric"
+    },
+    "num": 151,
+    "spritenum": 333
+  },
+  "persimberry": {
+    "desc": "Holder is cured if it is confused. Single use.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Persim Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Ground"
+    },
+    "num": 156,
+    "spritenum": 334
+  },
+  "petayaberry": {
+    "desc": "Raises holder's Sp. Atk by 1 stage when at 1/4 max HP or less. Single use.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Petaya Berry",
+    "naturalGift": {
+      "basePower": 100,
+      "type": "Poison"
+    },
+    "num": 204,
+    "spritenum": 335
+  },
+  "pidgeotite": {
+    "desc": "If held by a Pidgeot, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Pidgeot"
+    ],
+    "megaEvolves": "Pidgeot",
+    "megaStone": "Pidgeot-Mega",
+    "name": "Pidgeotite",
+    "num": 762,
+    "spritenum": 622
+  },
+  "pikaniumz": {
+    "desc": "If held by a Pikachu with Volt Tackle, it can use Catastropika.",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Pikachu"
+    ],
+    "name": "Pikanium Z",
+    "num": 794,
+    "onTakeItem": false,
+    "spritenum": 649,
+    "zMove": "Catastropika",
+    "zMoveFrom": "Volt Tackle"
+  },
+  "pikashuniumz": {
+    "desc": "If held by cap Pikachu with Thunderbolt, it can use 10,000,000 Volt Thunderbolt.",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Pikachu-Original",
+      "Pikachu-Hoenn",
+      "Pikachu-Sinnoh",
+      "Pikachu-Unova",
+      "Pikachu-Kalos",
+      "Pikachu-Alola",
+      "Pikachu-Partner"
+    ],
+    "name": "Pikashunium Z",
+    "num": 836,
+    "onTakeItem": false,
+    "spritenum": 659,
+    "zMove": "10,000,000 Volt Thunderbolt",
+    "zMoveFrom": "Thunderbolt"
+  },
+  "pinapberry": {
+    "desc": "Cannot be eaten by the holder. No effect when eaten with Bug Bite or Pluck.",
+    "gen": 3,
+    "isBerry": true,
+    "isNonstandard": "Past",
+    "name": "Pinap Berry",
+    "naturalGift": {
+      "basePower": 90,
+      "type": "Grass"
+    },
+    "num": 168,
+    "onEat": false,
+    "spritenum": 337
+  },
+  "pinkbow": {
+    "desc": "(Gen 2) Holder's Normal-type attacks have 1.1x power.",
+    "gen": 2,
+    "isNonstandard": "Past",
+    "name": "Pink Bow",
+    "num": 251,
+    "spritenum": 444
+  },
+  "pinsirite": {
+    "desc": "If held by a Pinsir, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Pinsir"
+    ],
+    "megaEvolves": "Pinsir",
+    "megaStone": "Pinsir-Mega",
+    "name": "Pinsirite",
+    "num": 671,
+    "spritenum": 602
+  },
+  "pixieplate": {
+    "desc": "Holder's Fairy-type attacks have 1.2x power. Judgment is Fairy type.",
+    "forcedForme": "Arceus-Fairy",
+    "gen": 6,
+    "name": "Pixie Plate",
+    "num": 644,
+    "onBasePowerPriority": 15,
+    "onPlate": "Fairy",
+    "spritenum": 610
+  },
+  "plumefossil": {
+    "desc": "Can be revived into Archen.",
+    "fling": {
+      "basePower": 100
+    },
+    "gen": 5,
+    "isNonstandard": "Past",
+    "name": "Plume Fossil",
+    "num": 573,
+    "spritenum": 339
+  },
+  "poisonbarb": {
+    "desc": "Holder's Poison-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 70,
+      "status": "psn"
+    },
+    "gen": 2,
+    "name": "Poison Barb",
+    "num": 245,
+    "onBasePowerPriority": 15,
+    "spritenum": 343
+  },
+  "poisongem": {
+    "desc": "Holder's first successful Poison-type attack will have 1.3x power. Single use.",
+    "gen": 5,
+    "isGem": true,
+    "isNonstandard": "Past",
+    "name": "Poison Gem",
+    "num": 554,
+    "spritenum": 344
+  },
+  "poisoniumz": {
+    "desc": "If holder has a Poison move, this item allows it to use a Poison Z-Move.",
+    "forcedForme": "Arceus-Poison",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "name": "Poisonium Z",
+    "num": 783,
+    "onPlate": "Poison",
+    "onTakeItem": false,
+    "spritenum": 638,
+    "zMove": true,
+    "zMoveType": "Poison"
+  },
+  "poisonmemory": {
+    "desc": "Holder's Multi-Attack is Poison type.",
+    "forcedForme": "Silvally-Poison",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Silvally-Poison"
+    ],
+    "name": "Poison Memory",
+    "num": 906,
+    "onMemory": "Poison",
+    "spritenum": 670
+  },
+  "pokeball": {
+    "desc": "A device for catching wild Pokemon. It is designed as a capsule system.",
+    "gen": 1,
+    "isPokeball": true,
+    "name": "Poke Ball",
+    "num": 4,
+    "spritenum": 345
+  },
+  "polkadotbow": {
+    "desc": "(Gen 2) Holder's Normal-type attacks have 1.1x power.",
+    "gen": 2,
+    "isNonstandard": "Past",
+    "name": "Polkadot Bow",
+    "num": 251,
+    "spritenum": 444
+  },
+  "pomegberry": {
+    "desc": "Cannot be eaten by the holder. No effect when eaten with Bug Bite or Pluck.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Pomeg Berry",
+    "naturalGift": {
+      "basePower": 90,
+      "type": "Ice"
+    },
+    "num": 169,
+    "onEat": false,
+    "spritenum": 351
+  },
+  "poweranklet": {
+    "desc": "Holder's Speed is halved. The Klutz Ability does not ignore this effect.",
+    "fling": {
+      "basePower": 70
+    },
+    "gen": 4,
+    "ignoreKlutz": true,
+    "name": "Power Anklet",
+    "num": 293,
+    "spritenum": 354
+  },
+  "powerband": {
+    "desc": "Holder's Speed is halved. The Klutz Ability does not ignore this effect.",
+    "fling": {
+      "basePower": 70
+    },
+    "gen": 4,
+    "ignoreKlutz": true,
+    "name": "Power Band",
+    "num": 292,
+    "spritenum": 355
+  },
+  "powerbelt": {
+    "desc": "Holder's Speed is halved. The Klutz Ability does not ignore this effect.",
+    "fling": {
+      "basePower": 70
+    },
+    "gen": 4,
+    "ignoreKlutz": true,
+    "name": "Power Belt",
+    "num": 290,
+    "spritenum": 356
+  },
+  "powerbracer": {
+    "desc": "Holder's Speed is halved. The Klutz Ability does not ignore this effect.",
+    "fling": {
+      "basePower": 70
+    },
+    "gen": 4,
+    "ignoreKlutz": true,
+    "name": "Power Bracer",
+    "num": 289,
+    "spritenum": 357
+  },
+  "powerherb": {
+    "desc": "Holder's two-turn moves complete in one turn (except Sky Drop). Single use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 4,
+    "name": "Power Herb",
+    "num": 271,
+    "spritenum": 358
+  },
+  "powerlens": {
+    "desc": "Holder's Speed is halved. The Klutz Ability does not ignore this effect.",
+    "fling": {
+      "basePower": 70
+    },
+    "gen": 4,
+    "ignoreKlutz": true,
+    "name": "Power Lens",
+    "num": 291,
+    "spritenum": 359
+  },
+  "powerweight": {
+    "desc": "Holder's Speed is halved. The Klutz Ability does not ignore this effect.",
+    "fling": {
+      "basePower": 70
+    },
+    "gen": 4,
+    "ignoreKlutz": true,
+    "name": "Power Weight",
+    "num": 294,
+    "spritenum": 360
+  },
+  "premierball": {
+    "desc": "A rare Poke Ball that has been crafted to commemorate an event.",
+    "gen": 3,
+    "isPokeball": true,
+    "name": "Premier Ball",
+    "num": 12,
+    "spritenum": 363
+  },
+  "primariumz": {
+    "desc": "If held by a Primarina with Sparkling Aria, it can use Oceanic Operetta.",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Primarina"
+    ],
+    "name": "Primarium Z",
+    "num": 800,
+    "onTakeItem": false,
+    "spritenum": 652,
+    "zMove": "Oceanic Operetta",
+    "zMoveFrom": "Sparkling Aria"
+  },
+  "prismscale": {
+    "desc": "Evolves Feebas into Milotic when traded.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 5,
+    "name": "Prism Scale",
+    "num": 537,
+    "spritenum": 365
+  },
+  "protectivepads": {
+    "desc": "Holder's moves are protected from adverse contact effects, except Pickpocket.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 7,
+    "name": "Protective Pads",
+    "num": 880,
+    "spritenum": 663
+  },
+  "protector": {
+    "desc": "Evolves Rhydon into Rhyperior when traded.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 4,
+    "name": "Protector",
+    "num": 321,
+    "spritenum": 367
+  },
+  "przcureberry": {
+    "desc": "(Gen 2) Holder cures itself if it is paralyzed. Single use.",
+    "gen": 2,
+    "isBerry": true,
+    "isNonstandard": "Past",
+    "name": "PRZ Cure Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Fire"
+    },
+    "num": 149,
+    "spritenum": 63
+  },
+  "psncureberry": {
+    "desc": "(Gen 2) Holder is cured if it is poisoned. Single use.",
+    "gen": 2,
+    "isBerry": true,
+    "isNonstandard": "Past",
+    "name": "PSN Cure Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Electric"
+    },
+    "num": 151,
+    "spritenum": 333
+  },
+  "psychicgem": {
+    "desc": "Holder's first successful Psychic-type attack will have 1.3x power. Single use.",
+    "gen": 5,
+    "isGem": true,
+    "isNonstandard": "Past",
+    "name": "Psychic Gem",
+    "num": 557,
+    "spritenum": 369
+  },
+  "psychicmemory": {
+    "desc": "Holder's Multi-Attack is Psychic type.",
+    "forcedForme": "Silvally-Psychic",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Silvally-Psychic"
+    ],
+    "name": "Psychic Memory",
+    "num": 916,
+    "onMemory": "Psychic",
+    "spritenum": 680
+  },
+  "psychicseed": {
+    "boosts": {
+      "spd": 1
+    },
+    "desc": "If the terrain is Psychic Terrain, raises holder's Sp. Def by 1 stage. Single use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 7,
+    "name": "Psychic Seed",
+    "num": 882,
+    "spritenum": 665
+  },
+  "psychiumz": {
+    "desc": "If holder has a Psychic move, this item allows it to use a Psychic Z-Move.",
+    "forcedForme": "Arceus-Psychic",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "name": "Psychium Z",
+    "num": 786,
+    "onPlate": "Psychic",
+    "onTakeItem": false,
+    "spritenum": 641,
+    "zMove": true,
+    "zMoveType": "Psychic"
+  },
+  "punchingglove": {
+    "desc": "Holder's punch-based attacks have 1.1x power and do not make contact.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 9,
+    "name": "Punching Glove",
+    "num": 1884,
+    "onBasePowerPriority": 23,
+    "onModifyMovePriority": 1,
+    "spritenum": 749
+  },
+  "qualotberry": {
+    "desc": "Cannot be eaten by the holder. No effect when eaten with Bug Bite or Pluck.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Qualot Berry",
+    "naturalGift": {
+      "basePower": 90,
+      "type": "Poison"
+    },
+    "num": 171,
+    "onEat": false,
+    "spritenum": 371
+  },
+  "quickball": {
+    "desc": "A Poke Ball that provides a better catch rate at the start of a wild encounter.",
+    "gen": 4,
+    "isPokeball": true,
+    "name": "Quick Ball",
+    "num": 15,
+    "spritenum": 372
+  },
+  "quickclaw": {
+    "desc": "Each turn, holder has a 20% chance to move first in its priority bracket.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 2,
+    "name": "Quick Claw",
+    "num": 217,
+    "onFractionalPriorityPriority": -2,
+    "spritenum": 373
+  },
+  "quickpowder": {
+    "desc": "If held by a Ditto that hasn't Transformed, its Speed is doubled.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 4,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Ditto"
+    ],
+    "name": "Quick Powder",
+    "num": 274,
+    "spritenum": 374
+  },
+  "rabutaberry": {
+    "desc": "Cannot be eaten by the holder. No effect when eaten with Bug Bite or Pluck.",
+    "gen": 3,
+    "isBerry": true,
+    "isNonstandard": "Past",
+    "name": "Rabuta Berry",
+    "naturalGift": {
+      "basePower": 90,
+      "type": "Ghost"
+    },
+    "num": 177,
+    "onEat": false,
+    "spritenum": 375
+  },
+  "rarebone": {
+    "desc": "No competitive use other than when used with Fling.",
+    "fling": {
+      "basePower": 100
+    },
+    "gen": 4,
+    "name": "Rare Bone",
+    "num": 106,
+    "spritenum": 379
+  },
+  "rawstberry": {
+    "desc": "Holder is cured if it is burned. Single use.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Rawst Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Grass"
+    },
+    "num": 152,
+    "spritenum": 381
+  },
+  "razorclaw": {
+    "desc": "Holder's critical hit ratio is raised by 1 stage. Evolves Sneasel into Weavile when held and leveled up during the night.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 4,
+    "name": "Razor Claw",
+    "num": 326,
+    "shortDesc": "Holder's critical hit ratio is raised by 1 stage.",
+    "spritenum": 382
+  },
+  "razorfang": {
+    "desc": "Holder's attacks without a chance to make the target flinch gain a 10% chance to make the target flinch. Evolves Gligar into Gliscor when held and leveled up during the night.",
+    "fling": {
+      "basePower": 30,
+      "volatileStatus": "flinch"
+    },
+    "gen": 4,
+    "name": "Razor Fang",
+    "num": 327,
+    "onModifyMovePriority": -1,
+    "shortDesc": "Holder's attacks without a chance to flinch gain a 10% chance to flinch.",
+    "spritenum": 383
+  },
+  "razzberry": {
+    "desc": "Cannot be eaten by the holder. No effect when eaten with Bug Bite or Pluck.",
+    "gen": 3,
+    "isBerry": true,
+    "isNonstandard": "Past",
+    "name": "Razz Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Steel"
+    },
+    "num": 164,
+    "onEat": false,
+    "spritenum": 384
+  },
+  "reapercloth": {
+    "desc": "Evolves Dusclops into Dusknoir when traded.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 4,
+    "name": "Reaper Cloth",
+    "num": 325,
+    "spritenum": 385
+  },
+  "redcard": {
+    "desc": "If holder survives a hit, attacker is forced to switch to a random ally. Single use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 5,
+    "name": "Red Card",
+    "num": 542,
+    "spritenum": 387
+  },
+  "redorb": {
+    "desc": "If held by a Groudon, this item triggers its Primal Reversion in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Groudon"
+    ],
+    "name": "Red Orb",
+    "num": 534,
+    "spritenum": 390
+  },
+  "repeatball": {
+    "desc": "A Poke Ball that works well on Pokemon species that were previously caught.",
+    "gen": 3,
+    "isPokeball": true,
+    "name": "Repeat Ball",
+    "num": 9,
+    "spritenum": 401
+  },
+  "ribbonsweet": {
+    "desc": "Evolves Milcery into Alcremie when held and spun around.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "name": "Ribbon Sweet",
+    "num": 1115,
+    "spritenum": 710
+  },
+  "rindoberry": {
+    "desc": "Halves damage taken from a supereffective Grass-type attack. Single use.",
+    "gen": 4,
+    "isBerry": true,
+    "name": "Rindo Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Grass"
+    },
+    "num": 187,
+    "spritenum": 409
+  },
+  "ringtarget": {
+    "desc": "The holder's type immunities granted solely by its typing are negated.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 5,
+    "name": "Ring Target",
+    "num": 543,
+    "onNegateImmunity": false,
+    "spritenum": 410
+  },
+  "rockgem": {
+    "desc": "Holder's first successful Rock-type attack will have 1.3x power. Single use.",
+    "gen": 5,
+    "isGem": true,
+    "isNonstandard": "Past",
+    "name": "Rock Gem",
+    "num": 559,
+    "spritenum": 415
+  },
+  "rockincense": {
+    "desc": "Holder's Rock-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 4,
+    "isNonstandard": "Past",
+    "name": "Rock Incense",
+    "num": 315,
+    "onBasePowerPriority": 15,
+    "spritenum": 416
+  },
+  "rockiumz": {
+    "desc": "If holder has a Rock move, this item allows it to use a Rock Z-Move.",
+    "forcedForme": "Arceus-Rock",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "name": "Rockium Z",
+    "num": 788,
+    "onPlate": "Rock",
+    "onTakeItem": false,
+    "spritenum": 643,
+    "zMove": true,
+    "zMoveType": "Rock"
+  },
+  "rockmemory": {
+    "desc": "Holder's Multi-Attack is Rock type.",
+    "forcedForme": "Silvally-Rock",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Silvally-Rock"
+    ],
+    "name": "Rock Memory",
+    "num": 908,
+    "onMemory": "Rock",
+    "spritenum": 672
+  },
+  "rockyhelmet": {
+    "desc": "If holder is hit by a contact move, the attacker loses 1/6 of its max HP.",
+    "fling": {
+      "basePower": 60
+    },
+    "gen": 5,
+    "name": "Rocky Helmet",
+    "num": 540,
+    "onDamagingHitOrder": 2,
+    "spritenum": 417
+  },
+  "roomservice": {
+    "boosts": {
+      "spe": -1
+    },
+    "desc": "If Trick Room is active, the holder's Speed is lowered by 1 stage. Single use.",
+    "fling": {
+      "basePower": 100
+    },
+    "gen": 8,
+    "name": "Room Service",
+    "num": 1122,
+    "spritenum": 717
+  },
+  "rootfossil": {
+    "desc": "Can be revived into Lileep.",
+    "fling": {
+      "basePower": 100
+    },
+    "gen": 3,
+    "isNonstandard": "Past",
+    "name": "Root Fossil",
+    "num": 99,
+    "spritenum": 418
+  },
+  "roseincense": {
+    "desc": "Holder's Grass-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 4,
+    "isNonstandard": "Past",
+    "name": "Rose Incense",
+    "num": 318,
+    "onBasePowerPriority": 15,
+    "spritenum": 419
+  },
+  "roseliberry": {
+    "desc": "Halves damage taken from a supereffective Fairy-type attack. Single use.",
+    "gen": 6,
+    "isBerry": true,
+    "name": "Roseli Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Fairy"
+    },
+    "num": 686,
+    "spritenum": 603
+  },
+  "rowapberry": {
+    "desc": "If holder is hit by a special move, attacker loses 1/8 of its max HP. Single use.",
+    "gen": 4,
+    "isBerry": true,
+    "name": "Rowap Berry",
+    "naturalGift": {
+      "basePower": 100,
+      "type": "Dark"
+    },
+    "num": 212,
+    "spritenum": 420
+  },
+  "rustedshield": {
+    "desc": "If held by a Zamazenta, this item changes its forme to Crowned Shield.",
+    "gen": 8,
+    "itemUser": [
+      "Zamazenta-Crowned"
+    ],
+    "name": "Rusted Shield",
+    "num": 1104,
+    "spritenum": 699
+  },
+  "rustedsword": {
+    "desc": "If held by a Zacian, this item changes its forme to Crowned Sword.",
+    "gen": 8,
+    "itemUser": [
+      "Zacian-Crowned"
+    ],
+    "name": "Rusted Sword",
+    "num": 1103,
+    "spritenum": 698
+  },
+  "sablenite": {
+    "desc": "If held by a Sableye, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Sableye"
+    ],
+    "megaEvolves": "Sableye",
+    "megaStone": "Sableye-Mega",
+    "name": "Sablenite",
+    "num": 754,
+    "spritenum": 614
+  },
+  "sachet": {
+    "desc": "Evolves Spritzee into Aromatisse when traded.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 6,
+    "isNonstandard": "Past",
+    "name": "Sachet",
+    "num": 647,
+    "spritenum": 691
+  },
+  "safariball": {
+    "desc": "A special Poke Ball that is used only in the Safari Zone and Great Marsh.",
+    "gen": 1,
+    "isNonstandard": "Unobtainable",
+    "isPokeball": true,
+    "name": "Safari Ball",
+    "num": 5,
+    "spritenum": 425
+  },
+  "safetygoggles": {
+    "desc": "Holder is immune to powder moves and damage from Sandstorm or Hail.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 6,
+    "name": "Safety Goggles",
+    "num": 650,
+    "spritenum": 604
+  },
+  "sailfossil": {
+    "desc": "Can be revived into Amaura.",
+    "fling": {
+      "basePower": 100
+    },
+    "gen": 6,
+    "isNonstandard": "Past",
+    "name": "Sail Fossil",
+    "num": 711,
+    "spritenum": 695
+  },
+  "salacberry": {
+    "desc": "Raises holder's Speed by 1 stage when at 1/4 max HP or less. Single use.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Salac Berry",
+    "naturalGift": {
+      "basePower": 100,
+      "type": "Fighting"
+    },
+    "num": 203,
+    "spritenum": 426
+  },
+  "salamencite": {
+    "desc": "If held by a Salamence, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Salamence"
+    ],
+    "megaEvolves": "Salamence",
+    "megaStone": "Salamence-Mega",
+    "name": "Salamencite",
+    "num": 769,
+    "spritenum": 627
+  },
+  "sceptilite": {
+    "desc": "If held by a Sceptile, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Sceptile"
+    ],
+    "megaEvolves": "Sceptile",
+    "megaStone": "Sceptile-Mega",
+    "name": "Sceptilite",
+    "num": 753,
+    "spritenum": 613
+  },
+  "scizorite": {
+    "desc": "If held by a Scizor, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Scizor"
+    ],
+    "megaEvolves": "Scizor",
+    "megaStone": "Scizor-Mega",
+    "name": "Scizorite",
+    "num": 670,
+    "spritenum": 605
+  },
+  "scopelens": {
+    "desc": "Holder's critical hit ratio is raised by 1 stage.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 2,
+    "name": "Scope Lens",
+    "num": 232,
+    "spritenum": 429
+  },
+  "seaincense": {
+    "desc": "Holder's Water-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 3,
+    "isNonstandard": "Past",
+    "name": "Sea Incense",
+    "num": 254,
+    "onBasePowerPriority": 15,
+    "spritenum": 430
+  },
+  "sharpbeak": {
+    "desc": "Holder's Flying-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 50
+    },
+    "gen": 2,
+    "name": "Sharp Beak",
+    "num": 244,
+    "onBasePowerPriority": 15,
+    "spritenum": 436
+  },
+  "sharpedonite": {
+    "desc": "If held by a Sharpedo, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Sharpedo"
+    ],
+    "megaEvolves": "Sharpedo",
+    "megaStone": "Sharpedo-Mega",
+    "name": "Sharpedonite",
+    "num": 759,
+    "spritenum": 619
+  },
+  "shedshell": {
+    "desc": "Holder may switch out even when trapped by another Pokemon, or by Ingrain.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 4,
+    "name": "Shed Shell",
+    "num": 295,
+    "onTrapPokemonPriority": -10,
+    "spritenum": 437
+  },
+  "shellbell": {
+    "desc": "After an attack, holder gains 1/8 of the damage in HP dealt to other Pokemon.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 3,
+    "name": "Shell Bell",
+    "num": 253,
+    "onAfterMoveSecondarySelfPriority": -1,
+    "spritenum": 438
+  },
+  "shinystone": {
+    "desc": "Evolves Togetic into Togekiss, Roselia into Roserade, Minccino into Cinccino, and Floette into Florges when used.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 4,
+    "name": "Shiny Stone",
+    "num": 107,
+    "shortDesc": "Evolves certain species of Pokemon when used.",
+    "spritenum": 439
+  },
+  "shockdrive": {
+    "desc": "Holder's Techno Blast is Electric type.",
+    "forcedForme": "Genesect-Shock",
+    "gen": 5,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Genesect-Shock"
+    ],
+    "name": "Shock Drive",
+    "num": 117,
+    "onDrive": "Electric",
+    "spritenum": 442
+  },
+  "shucaberry": {
+    "desc": "Halves damage taken from a supereffective Ground-type attack. Single use.",
+    "gen": 4,
+    "isBerry": true,
+    "name": "Shuca Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Ground"
+    },
+    "num": 191,
+    "spritenum": 443
+  },
+  "silkscarf": {
+    "desc": "Holder's Normal-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 3,
+    "name": "Silk Scarf",
+    "num": 251,
+    "onBasePowerPriority": 15,
+    "spritenum": 444
+  },
+  "silverpowder": {
+    "desc": "Holder's Bug-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 2,
+    "name": "Silver Powder",
+    "num": 222,
+    "onBasePowerPriority": 15,
+    "spritenum": 447
+  },
+  "sitrusberry": {
+    "desc": "Restores 1/4 max HP when at 1/2 max HP or less. Single use.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Sitrus Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Psychic"
+    },
+    "num": 158,
+    "spritenum": 448
+  },
+  "skullfossil": {
+    "desc": "Can be revived into Cranidos.",
+    "fling": {
+      "basePower": 100
+    },
+    "gen": 4,
+    "isNonstandard": "Past",
+    "name": "Skull Fossil",
+    "num": 105,
+    "spritenum": 449
+  },
+  "skyplate": {
+    "desc": "Holder's Flying-type attacks have 1.2x power. Judgment is Flying type.",
+    "forcedForme": "Arceus-Flying",
+    "gen": 4,
+    "name": "Sky Plate",
+    "num": 306,
+    "onBasePowerPriority": 15,
+    "onPlate": "Flying",
+    "spritenum": 450
+  },
+  "slowbronite": {
+    "desc": "If held by a Slowbro, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Slowbro"
+    ],
+    "megaEvolves": "Slowbro",
+    "megaStone": "Slowbro-Mega",
+    "name": "Slowbronite",
+    "num": 760,
+    "spritenum": 620
+  },
+  "smoothrock": {
+    "desc": "Holder's use of Sandstorm lasts 8 turns instead of 5.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 4,
+    "name": "Smooth Rock",
+    "num": 283,
+    "spritenum": 453
+  },
+  "snorliumz": {
+    "desc": "If held by a Snorlax with Giga Impact, it can use Pulverizing Pancake.",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Snorlax"
+    ],
+    "name": "Snorlium Z",
+    "num": 804,
+    "onTakeItem": false,
+    "spritenum": 656,
+    "zMove": "Pulverizing Pancake",
+    "zMoveFrom": "Giga Impact"
+  },
+  "snowball": {
+    "boosts": {
+      "atk": 1
+    },
+    "desc": "Raises holder's Attack by 1 if hit by an Ice-type attack. Single use.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 6,
+    "name": "Snowball",
+    "num": 649,
+    "spritenum": 606
+  },
+  "softsand": {
+    "desc": "Holder's Ground-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 2,
+    "name": "Soft Sand",
+    "num": 237,
+    "onBasePowerPriority": 15,
+    "spritenum": 456
+  },
+  "solganiumz": {
+    "desc": "Solgaleo or Dusk Mane Necrozma with Sunsteel Strike can use a special Z-Move.",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Solgaleo",
+      "Necrozma-Dusk-Mane"
+    ],
+    "name": "Solganium Z",
+    "num": 921,
+    "onTakeItem": false,
+    "spritenum": 685,
+    "zMove": "Searing Sunraze Smash",
+    "zMoveFrom": "Sunsteel Strike"
+  },
+  "souldew": {
+    "desc": "If held by a Latias/Latios, its Dragon- and Psychic-type moves have 1.2x power.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 3,
+    "itemUser": [
+      "Latios",
+      "Latias"
+    ],
+    "name": "Soul Dew",
+    "num": 225,
+    "onBasePowerPriority": 15,
+    "spritenum": 459
+  },
+  "spelltag": {
+    "desc": "Holder's Ghost-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 2,
+    "name": "Spell Tag",
+    "num": 247,
+    "onBasePowerPriority": 15,
+    "spritenum": 461
+  },
+  "spelonberry": {
+    "desc": "Cannot be eaten by the holder. No effect when eaten with Bug Bite or Pluck.",
+    "gen": 3,
+    "isBerry": true,
+    "isNonstandard": "Past",
+    "name": "Spelon Berry",
+    "naturalGift": {
+      "basePower": 90,
+      "type": "Dark"
+    },
+    "num": 179,
+    "onEat": false,
+    "spritenum": 462
+  },
+  "splashplate": {
+    "desc": "Holder's Water-type attacks have 1.2x power. Judgment is Water type.",
+    "forcedForme": "Arceus-Water",
+    "gen": 4,
+    "name": "Splash Plate",
+    "num": 299,
+    "onBasePowerPriority": 15,
+    "onPlate": "Water",
+    "spritenum": 463
+  },
+  "spookyplate": {
+    "desc": "Holder's Ghost-type attacks have 1.2x power. Judgment is Ghost type.",
+    "forcedForme": "Arceus-Ghost",
+    "gen": 4,
+    "name": "Spooky Plate",
+    "num": 310,
+    "onBasePowerPriority": 15,
+    "onPlate": "Ghost",
+    "spritenum": 464
+  },
+  "sportball": {
+    "desc": "A special Poke Ball for the Bug-Catching Contest.",
+    "gen": 2,
+    "isNonstandard": "Unobtainable",
+    "isPokeball": true,
+    "name": "Sport Ball",
+    "num": 499,
+    "spritenum": 465
+  },
+  "starfberry": {
+    "desc": "Raises a random stat by 2 when at 1/4 max HP or less (not acc/eva). Single use.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Starf Berry",
+    "naturalGift": {
+      "basePower": 100,
+      "type": "Psychic"
+    },
+    "num": 207,
+    "spritenum": 472
+  },
+  "starsweet": {
+    "desc": "Evolves Milcery into Alcremie when held and spun around.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "name": "Star Sweet",
+    "num": 1114,
+    "spritenum": 709
+  },
+  "steelgem": {
+    "desc": "Holder's first successful Steel-type attack will have 1.3x power. Single use.",
+    "gen": 5,
+    "isGem": true,
+    "isNonstandard": "Past",
+    "name": "Steel Gem",
+    "num": 563,
+    "spritenum": 473
+  },
+  "steeliumz": {
+    "desc": "If holder has a Steel move, this item allows it to use a Steel Z-Move.",
+    "forcedForme": "Arceus-Steel",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "name": "Steelium Z",
+    "num": 792,
+    "onPlate": "Steel",
+    "onTakeItem": false,
+    "spritenum": 647,
+    "zMove": true,
+    "zMoveType": "Steel"
+  },
+  "steelixite": {
+    "desc": "If held by a Steelix, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Steelix"
+    ],
+    "megaEvolves": "Steelix",
+    "megaStone": "Steelix-Mega",
+    "name": "Steelixite",
+    "num": 761,
+    "spritenum": 621
+  },
+  "steelmemory": {
+    "desc": "Holder's Multi-Attack is Steel type.",
+    "forcedForme": "Silvally-Steel",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Silvally-Steel"
+    ],
+    "name": "Steel Memory",
+    "num": 911,
+    "onMemory": "Steel",
+    "spritenum": 675
+  },
+  "stick": {
+    "desc": "If held by a Farfetch’d, its critical hit ratio is raised by 2 stages.",
+    "fling": {
+      "basePower": 60
+    },
+    "gen": 2,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Farfetch’d"
+    ],
+    "name": "Stick",
+    "num": 259,
+    "spritenum": 475
+  },
+  "stickybarb": {
+    "desc": "Each turn, holder loses 1/8 max HP. An attacker making contact can receive it.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 4,
+    "name": "Sticky Barb",
+    "num": 288,
+    "onResidualOrder": 28,
+    "onResidualSubOrder": 3,
+    "spritenum": 476
+  },
+  "stoneplate": {
+    "desc": "Holder's Rock-type attacks have 1.2x power. Judgment is Rock type.",
+    "forcedForme": "Arceus-Rock",
+    "gen": 4,
+    "name": "Stone Plate",
+    "num": 309,
+    "onBasePowerPriority": 15,
+    "onPlate": "Rock",
+    "spritenum": 477
+  },
+  "strangeball": {
+    "gen": 8,
+    "isNonstandard": "Unobtainable",
+    "isPokeball": true,
+    "name": "Strange Ball",
+    "num": 1785,
+    "spritenum": 308
+  },
+  "strawberrysweet": {
+    "desc": "Evolves Milcery into Alcremie when held and spun around.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "name": "Strawberry Sweet",
+    "num": 1109,
+    "spritenum": 704
+  },
+  "sunstone": {
+    "desc": "Evolves Gloom into Bellossom, Sunkern into Sunflora, Cottonee into Whimsicott, Petilil into Lilligant, and Helioptile into Heliolisk when used.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 2,
+    "name": "Sun Stone",
+    "num": 80,
+    "shortDesc": "Evolves certain species of Pokemon when used.",
+    "spritenum": 480
+  },
+  "swampertite": {
+    "desc": "If held by a Swampert, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Swampert"
+    ],
+    "megaEvolves": "Swampert",
+    "megaStone": "Swampert-Mega",
+    "name": "Swampertite",
+    "num": 752,
+    "spritenum": 612
+  },
+  "sweetapple": {
+    "desc": "Evolves Applin into Appletun when used.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 8,
+    "name": "Sweet Apple",
+    "num": 1116,
+    "spritenum": 711
+  },
+  "syrupyapple": {
+    "desc": "Evolves Applin into Dipplin when used.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 9,
+    "name": "Syrupy Apple",
+    "num": 2402,
+    "spritenum": 755
+  },
+  "tamatoberry": {
+    "desc": "Cannot be eaten by the holder. No effect when eaten with Bug Bite or Pluck.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Tamato Berry",
+    "naturalGift": {
+      "basePower": 90,
+      "type": "Psychic"
+    },
+    "num": 174,
+    "onEat": false,
+    "spritenum": 486
+  },
+  "tangaberry": {
+    "desc": "Halves damage taken from a supereffective Bug-type attack. Single use.",
+    "gen": 4,
+    "isBerry": true,
+    "name": "Tanga Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Bug"
+    },
+    "num": 194,
+    "spritenum": 487
+  },
+  "tapuniumz": {
+    "desc": "If held by a Tapu with Nature's Madness, it can use Guardian of Alola.",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Tapu Koko",
+      "Tapu Lele",
+      "Tapu Bulu",
+      "Tapu Fini"
+    ],
+    "name": "Tapunium Z",
+    "num": 801,
+    "onTakeItem": false,
+    "spritenum": 653,
+    "zMove": "Guardian of Alola",
+    "zMoveFrom": "Nature's Madness"
+  },
+  "tartapple": {
+    "desc": "Evolves Applin into Flapple when used.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 8,
+    "name": "Tart Apple",
+    "num": 1117,
+    "spritenum": 712
+  },
+  "terrainextender": {
+    "desc": "Holder's use of Electric/Grassy/Misty/Psychic Terrain lasts 8 turns instead of 5.",
+    "fling": {
+      "basePower": 60
+    },
+    "gen": 7,
+    "name": "Terrain Extender",
+    "num": 879,
+    "spritenum": 662
+  },
+  "thickclub": {
+    "desc": "If held by a Cubone or a Marowak, its Attack is doubled.",
+    "fling": {
+      "basePower": 90
+    },
+    "gen": 2,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Marowak",
+      "Marowak-Alola",
+      "Marowak-Alola-Totem",
+      "Cubone"
+    ],
+    "name": "Thick Club",
+    "num": 258,
+    "onModifyAtkPriority": 1,
+    "spritenum": 491
+  },
+  "throatspray": {
+    "boosts": {
+      "spa": 1
+    },
+    "desc": "Raises holder's Special Attack by 1 stage after it uses a sound move. Single use.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 8,
+    "name": "Throat Spray",
+    "num": 1118,
+    "spritenum": 713
+  },
+  "thunderstone": {
+    "desc": "Evolves Pikachu into Raichu or Alolan Raichu, Eevee into Jolteon, Eelektrik into Eelektross, and Charjabug into Vikavolt when used.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 1,
+    "name": "Thunder Stone",
+    "num": 83,
+    "shortDesc": "Evolves certain species of Pokemon when used.",
+    "spritenum": 492
+  },
+  "timerball": {
+    "desc": "A Poke Ball that becomes better the more turns there are in a battle.",
+    "gen": 3,
+    "isPokeball": true,
+    "name": "Timer Ball",
+    "num": 10,
+    "spritenum": 494
+  },
+  "toxicorb": {
+    "desc": "At the end of every turn, this item attempts to badly poison the holder.",
+    "fling": {
+      "basePower": 30,
+      "status": "tox"
+    },
+    "gen": 4,
+    "name": "Toxic Orb",
+    "num": 272,
+    "onResidualOrder": 28,
+    "onResidualSubOrder": 3,
+    "spritenum": 515
+  },
+  "toxicplate": {
+    "desc": "Holder's Poison-type attacks have 1.2x power. Judgment is Poison type.",
+    "forcedForme": "Arceus-Poison",
+    "gen": 4,
+    "name": "Toxic Plate",
+    "num": 304,
+    "onBasePowerPriority": 15,
+    "onPlate": "Poison",
+    "spritenum": 516
+  },
+  "tr00": {
+    "desc": "Teaches certain Pokemon the move Swords Dance. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR00",
+    "num": 1130,
+    "spritenum": 721
+  },
+  "tr01": {
+    "desc": "Teaches certain Pokemon the move Body Slam. One use.",
+    "fling": {
+      "basePower": 85
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR01",
+    "num": 1131,
+    "spritenum": 721
+  },
+  "tr02": {
+    "desc": "Teaches certain Pokemon the move Flamethrower. One use.",
+    "fling": {
+      "basePower": 90
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR02",
+    "num": 1132,
+    "spritenum": 730
+  },
+  "tr03": {
+    "desc": "Teaches certain Pokemon the move Hydro Pump. One use.",
+    "fling": {
+      "basePower": 110
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR03",
+    "num": 1133,
+    "spritenum": 731
+  },
+  "tr04": {
+    "desc": "Teaches certain Pokemon the move Surf. One use.",
+    "fling": {
+      "basePower": 90
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR04",
+    "num": 1134,
+    "spritenum": 731
+  },
+  "tr05": {
+    "desc": "Teaches certain Pokemon the move Ice Beam. One use.",
+    "fling": {
+      "basePower": 90
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR05",
+    "num": 1135,
+    "spritenum": 735
+  },
+  "tr06": {
+    "desc": "Teaches certain Pokemon the move Blizzard. One use.",
+    "fling": {
+      "basePower": 110
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR06",
+    "num": 1136,
+    "spritenum": 735
+  },
+  "tr07": {
+    "desc": "Teaches certain Pokemon the move Low Kick. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR07",
+    "num": 1137,
+    "spritenum": 722
+  },
+  "tr08": {
+    "desc": "Teaches certain Pokemon the move Thunderbolt. One use.",
+    "fling": {
+      "basePower": 90
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR08",
+    "num": 1138,
+    "spritenum": 733
+  },
+  "tr09": {
+    "desc": "Teaches certain Pokemon the move Thunder. One use.",
+    "fling": {
+      "basePower": 110
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR09",
+    "num": 1139,
+    "spritenum": 733
+  },
+  "tr10": {
+    "desc": "Teaches certain Pokemon the move Earthquake. One use.",
+    "fling": {
+      "basePower": 100
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR10",
+    "num": 1140,
+    "spritenum": 725
+  },
+  "tr11": {
+    "desc": "Teaches certain Pokemon the move Psychic. One use.",
+    "fling": {
+      "basePower": 90
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR11",
+    "num": 1141,
+    "spritenum": 734
+  },
+  "tr12": {
+    "desc": "Teaches certain Pokemon the move Agility. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR12",
+    "num": 1142,
+    "spritenum": 734
+  },
+  "tr13": {
+    "desc": "Teaches certain Pokemon the move Focus Energy. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR13",
+    "num": 1143,
+    "spritenum": 721
+  },
+  "tr14": {
+    "desc": "Teaches certain Pokemon the move Metronome. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR14",
+    "num": 1144,
+    "spritenum": 721
+  },
+  "tr15": {
+    "desc": "Teaches certain Pokemon the move Fire Blast. One use.",
+    "fling": {
+      "basePower": 110
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR15",
+    "num": 1145,
+    "spritenum": 730
+  },
+  "tr16": {
+    "desc": "Teaches certain Pokemon the move Waterfall. One use.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR16",
+    "num": 1146,
+    "spritenum": 731
+  },
+  "tr17": {
+    "desc": "Teaches certain Pokemon the move Amnesia. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR17",
+    "num": 1147,
+    "spritenum": 734
+  },
+  "tr18": {
+    "desc": "Teaches certain Pokemon the move Leech Life. One use.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR18",
+    "num": 1148,
+    "spritenum": 727
+  },
+  "tr19": {
+    "desc": "Teaches certain Pokemon the move Tri Attack. One use.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR19",
+    "num": 1149,
+    "spritenum": 721
+  },
+  "tr20": {
+    "desc": "Teaches certain Pokemon the move Substitute. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR20",
+    "num": 1150,
+    "spritenum": 721
+  },
+  "tr21": {
+    "desc": "Teaches certain Pokemon the move Reversal. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR21",
+    "num": 1151,
+    "spritenum": 722
+  },
+  "tr22": {
+    "desc": "Teaches certain Pokemon the move Sludge Bomb. One use.",
+    "fling": {
+      "basePower": 90
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR22",
+    "num": 1152,
+    "spritenum": 724
+  },
+  "tr23": {
+    "desc": "Teaches certain Pokemon the move Spikes. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR23",
+    "num": 1153,
+    "spritenum": 725
+  },
+  "tr24": {
+    "desc": "Teaches certain Pokemon the move Outrage. One use.",
+    "fling": {
+      "basePower": 120
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR24",
+    "num": 1154,
+    "spritenum": 736
+  },
+  "tr25": {
+    "desc": "Teaches certain Pokemon the move Psyshock. One use.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR25",
+    "num": 1155,
+    "spritenum": 734
+  },
+  "tr26": {
+    "desc": "Teaches certain Pokemon the move Endure. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR26",
+    "num": 1156,
+    "spritenum": 721
+  },
+  "tr27": {
+    "desc": "Teaches certain Pokemon the move Sleep Talk. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR27",
+    "num": 1157,
+    "spritenum": 721
+  },
+  "tr28": {
+    "desc": "Teaches certain Pokemon the move Megahorn. One use.",
+    "fling": {
+      "basePower": 120
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR28",
+    "num": 1158,
+    "spritenum": 727
+  },
+  "tr29": {
+    "desc": "Teaches certain Pokemon the move Baton Pass. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR29",
+    "num": 1159,
+    "spritenum": 721
+  },
+  "tr30": {
+    "desc": "Teaches certain Pokemon the move Encore. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR30",
+    "num": 1160,
+    "spritenum": 721
+  },
+  "tr31": {
+    "desc": "Teaches certain Pokemon the move Iron Tail. One use.",
+    "fling": {
+      "basePower": 100
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR31",
+    "num": 1161,
+    "spritenum": 729
+  },
+  "tr32": {
+    "desc": "Teaches certain Pokemon the move Crunch. One use.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR32",
+    "num": 1162,
+    "spritenum": 737
+  },
+  "tr33": {
+    "desc": "Teaches certain Pokemon the move Shadow Ball. One use.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR33",
+    "num": 1163,
+    "spritenum": 728
+  },
+  "tr34": {
+    "desc": "Teaches certain Pokemon the move Future Sight. One use.",
+    "fling": {
+      "basePower": 120
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR34",
+    "num": 1164,
+    "spritenum": 734
+  },
+  "tr35": {
+    "desc": "Teaches certain Pokemon the move Uproar. One use.",
+    "fling": {
+      "basePower": 90
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR35",
+    "num": 1165,
+    "spritenum": 721
+  },
+  "tr36": {
+    "desc": "Teaches certain Pokemon the move Heat Wave. One use.",
+    "fling": {
+      "basePower": 95
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR36",
+    "num": 1166,
+    "spritenum": 730
+  },
+  "tr37": {
+    "desc": "Teaches certain Pokemon the move Taunt. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR37",
+    "num": 1167,
+    "spritenum": 737
+  },
+  "tr38": {
+    "desc": "Teaches certain Pokemon the move Trick. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR38",
+    "num": 1168,
+    "spritenum": 734
+  },
+  "tr39": {
+    "desc": "Teaches certain Pokemon the move Superpower. One use.",
+    "fling": {
+      "basePower": 120
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR39",
+    "num": 1169,
+    "spritenum": 722
+  },
+  "tr40": {
+    "desc": "Teaches certain Pokemon the move Skill Swap. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR40",
+    "num": 1170,
+    "spritenum": 734
+  },
+  "tr41": {
+    "desc": "Teaches certain Pokemon the move Blaze Kick. One use.",
+    "fling": {
+      "basePower": 85
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR41",
+    "num": 1171,
+    "spritenum": 730
+  },
+  "tr42": {
+    "desc": "Teaches certain Pokemon the move Hyper Voice. One use.",
+    "fling": {
+      "basePower": 90
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR42",
+    "num": 1172,
+    "spritenum": 721
+  },
+  "tr43": {
+    "desc": "Teaches certain Pokemon the move Overheat. One use.",
+    "fling": {
+      "basePower": 130
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR43",
+    "num": 1173,
+    "spritenum": 730
+  },
+  "tr44": {
+    "desc": "Teaches certain Pokemon the move Cosmic Power. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR44",
+    "num": 1174,
+    "spritenum": 734
+  },
+  "tr45": {
+    "desc": "Teaches certain Pokemon the move Muddy Water. One use.",
+    "fling": {
+      "basePower": 90
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR45",
+    "num": 1175,
+    "spritenum": 731
+  },
+  "tr46": {
+    "desc": "Teaches certain Pokemon the move Iron Defense. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR46",
+    "num": 1176,
+    "spritenum": 729
+  },
+  "tr47": {
+    "desc": "Teaches certain Pokemon the move Dragon Claw. One use.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR47",
+    "num": 1177,
+    "spritenum": 736
+  },
+  "tr48": {
+    "desc": "Teaches certain Pokemon the move Bulk Up. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR48",
+    "num": 1178,
+    "spritenum": 722
+  },
+  "tr49": {
+    "desc": "Teaches certain Pokemon the move Calm Mind. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR49",
+    "num": 1179,
+    "spritenum": 734
+  },
+  "tr50": {
+    "desc": "Teaches certain Pokemon the move Leaf Blade. One use.",
+    "fling": {
+      "basePower": 90
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR50",
+    "num": 1180,
+    "spritenum": 732
+  },
+  "tr51": {
+    "desc": "Teaches certain Pokemon the move Dragon Dance. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR51",
+    "num": 1181,
+    "spritenum": 736
+  },
+  "tr52": {
+    "desc": "Teaches certain Pokemon the move Gyro Ball. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR52",
+    "num": 1182,
+    "spritenum": 729
+  },
+  "tr53": {
+    "desc": "Teaches certain Pokemon the move Close Combat. One use.",
+    "fling": {
+      "basePower": 120
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR53",
+    "num": 1183,
+    "spritenum": 722
+  },
+  "tr54": {
+    "desc": "Teaches certain Pokemon the move Toxic Spikes. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR54",
+    "num": 1184,
+    "spritenum": 724
+  },
+  "tr55": {
+    "desc": "Teaches certain Pokemon the move Flare Blitz. One use.",
+    "fling": {
+      "basePower": 120
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR55",
+    "num": 1185,
+    "spritenum": 730
+  },
+  "tr56": {
+    "desc": "Teaches certain Pokemon the move Aura Sphere. One use.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR56",
+    "num": 1186,
+    "spritenum": 722
+  },
+  "tr57": {
+    "desc": "Teaches certain Pokemon the move Poison Jab. One use.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR57",
+    "num": 1187,
+    "spritenum": 724
+  },
+  "tr58": {
+    "desc": "Teaches certain Pokemon the move Dark Pulse. One use.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR58",
+    "num": 1188,
+    "spritenum": 737
+  },
+  "tr59": {
+    "desc": "Teaches certain Pokemon the move Seed Bomb. One use.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR59",
+    "num": 1189,
+    "spritenum": 732
+  },
+  "tr60": {
+    "desc": "Teaches certain Pokemon the move X-Scissor. One use.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR60",
+    "num": 1190,
+    "spritenum": 727
+  },
+  "tr61": {
+    "desc": "Teaches certain Pokemon the move Bug Buzz. One use.",
+    "fling": {
+      "basePower": 90
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR61",
+    "num": 1191,
+    "spritenum": 727
+  },
+  "tr62": {
+    "desc": "Teaches certain Pokemon the move Dragon Pulse. One use.",
+    "fling": {
+      "basePower": 85
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR62",
+    "num": 1192,
+    "spritenum": 736
+  },
+  "tr63": {
+    "desc": "Teaches certain Pokemon the move Power Gem. One use.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR63",
+    "num": 1193,
+    "spritenum": 726
+  },
+  "tr64": {
+    "desc": "Teaches certain Pokemon the move Focus Blast. One use.",
+    "fling": {
+      "basePower": 120
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR64",
+    "num": 1194,
+    "spritenum": 722
+  },
+  "tr65": {
+    "desc": "Teaches certain Pokemon the move Energy Ball. One use.",
+    "fling": {
+      "basePower": 90
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR65",
+    "num": 1195,
+    "spritenum": 732
+  },
+  "tr66": {
+    "desc": "Teaches certain Pokemon the move Brave Bird. One use.",
+    "fling": {
+      "basePower": 120
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR66",
+    "num": 1196,
+    "spritenum": 723
+  },
+  "tr67": {
+    "desc": "Teaches certain Pokemon the move Earth Power. One use.",
+    "fling": {
+      "basePower": 90
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR67",
+    "num": 1197,
+    "spritenum": 725
+  },
+  "tr68": {
+    "desc": "Teaches certain Pokemon the move Nasty Plot. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR68",
+    "num": 1198,
+    "spritenum": 737
+  },
+  "tr69": {
+    "desc": "Teaches certain Pokemon the move Zen Headbutt. One use.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR69",
+    "num": 1199,
+    "spritenum": 734
+  },
+  "tr70": {
+    "desc": "Teaches certain Pokemon the move Flash Cannon. One use.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR70",
+    "num": 1200,
+    "spritenum": 729
+  },
+  "tr71": {
+    "desc": "Teaches certain Pokemon the move Leaf Storm. One use.",
+    "fling": {
+      "basePower": 130
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR71",
+    "num": 1201,
+    "spritenum": 732
+  },
+  "tr72": {
+    "desc": "Teaches certain Pokemon the move Power Whip. One use.",
+    "fling": {
+      "basePower": 120
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR72",
+    "num": 1202,
+    "spritenum": 732
+  },
+  "tr73": {
+    "desc": "Teaches certain Pokemon the move Gunk Shot. One use.",
+    "fling": {
+      "basePower": 120
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR73",
+    "num": 1203,
+    "spritenum": 724
+  },
+  "tr74": {
+    "desc": "Teaches certain Pokemon the move Iron Head. One use.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR74",
+    "num": 1204,
+    "spritenum": 729
+  },
+  "tr75": {
+    "desc": "Teaches certain Pokemon the move Stone Edge. One use.",
+    "fling": {
+      "basePower": 100
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR75",
+    "num": 1205,
+    "spritenum": 726
+  },
+  "tr76": {
+    "desc": "Teaches certain Pokemon the move Stealth Rock. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR76",
+    "num": 1206,
+    "spritenum": 726
+  },
+  "tr77": {
+    "desc": "Teaches certain Pokemon the move Grass Knot. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR77",
+    "num": 1207,
+    "spritenum": 732
+  },
+  "tr78": {
+    "desc": "Teaches certain Pokemon the move Sludge Wave. One use.",
+    "fling": {
+      "basePower": 95
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR78",
+    "num": 1208,
+    "spritenum": 724
+  },
+  "tr79": {
+    "desc": "Teaches certain Pokemon the move Heavy Slam. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR79",
+    "num": 1209,
+    "spritenum": 729
+  },
+  "tr80": {
+    "desc": "Teaches certain Pokemon the move Electro Ball. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR80",
+    "num": 1210,
+    "spritenum": 733
+  },
+  "tr81": {
+    "desc": "Teaches certain Pokemon the move Foul Play. One use.",
+    "fling": {
+      "basePower": 95
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR81",
+    "num": 1211,
+    "spritenum": 737
+  },
+  "tr82": {
+    "desc": "Teaches certain Pokemon the move Stored Power. One use.",
+    "fling": {
+      "basePower": 20
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR82",
+    "num": 1212,
+    "spritenum": 734
+  },
+  "tr83": {
+    "desc": "Teaches certain Pokemon the move Ally Switch. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR83",
+    "num": 1213,
+    "spritenum": 734
+  },
+  "tr84": {
+    "desc": "Teaches certain Pokemon the move Scald. One use.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR84",
+    "num": 1214,
+    "spritenum": 731
+  },
+  "tr85": {
+    "desc": "Teaches certain Pokemon the move Work Up. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR85",
+    "num": 1215,
+    "spritenum": 721
+  },
+  "tr86": {
+    "desc": "Teaches certain Pokemon the move Wild Charge. One use.",
+    "fling": {
+      "basePower": 90
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR86",
+    "num": 1216,
+    "spritenum": 733
+  },
+  "tr87": {
+    "desc": "Teaches certain Pokemon the move Drill Run. One use.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR87",
+    "num": 1217,
+    "spritenum": 725
+  },
+  "tr88": {
+    "desc": "Teaches certain Pokemon the move Heat Crash. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR88",
+    "num": 1218,
+    "spritenum": 730
+  },
+  "tr89": {
+    "desc": "Teaches certain Pokemon the move Hurricane. One use.",
+    "fling": {
+      "basePower": 110
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR89",
+    "num": 1219,
+    "spritenum": 723
+  },
+  "tr90": {
+    "desc": "Teaches certain Pokemon the move Play Rough. One use.",
+    "fling": {
+      "basePower": 90
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR90",
+    "num": 1220,
+    "spritenum": 738
+  },
+  "tr91": {
+    "desc": "Teaches certain Pokemon the move Venom Drench. One use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR91",
+    "num": 1221,
+    "spritenum": 724
+  },
+  "tr92": {
+    "desc": "Teaches certain Pokemon the move Dazzling Gleam. One use.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR92",
+    "num": 1222,
+    "spritenum": 738
+  },
+  "tr93": {
+    "desc": "Teaches certain Pokemon the move Darkest Lariat. One use.",
+    "fling": {
+      "basePower": 85
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR93",
+    "num": 1223,
+    "spritenum": 737
+  },
+  "tr94": {
+    "desc": "Teaches certain Pokemon the move High Horsepower. One use.",
+    "fling": {
+      "basePower": 95
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR94",
+    "num": 1224,
+    "spritenum": 725
+  },
+  "tr95": {
+    "desc": "Teaches certain Pokemon the move Throat Chop. One use.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR95",
+    "num": 1225,
+    "spritenum": 737
+  },
+  "tr96": {
+    "desc": "Teaches certain Pokemon the move Pollen Puff. One use.",
+    "fling": {
+      "basePower": 90
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR96",
+    "num": 1226,
+    "spritenum": 727
+  },
+  "tr97": {
+    "desc": "Teaches certain Pokemon the move Psychic Fangs. One use.",
+    "fling": {
+      "basePower": 85
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR97",
+    "num": 1227,
+    "spritenum": 734
+  },
+  "tr98": {
+    "desc": "Teaches certain Pokemon the move Liquidation. One use.",
+    "fling": {
+      "basePower": 85
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR98",
+    "num": 1228,
+    "spritenum": 731
+  },
+  "tr99": {
+    "desc": "Teaches certain Pokemon the move Body Press. One use.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 8,
+    "isNonstandard": "Past",
+    "name": "TR99",
+    "num": 1229,
+    "spritenum": 722
+  },
+  "twistedspoon": {
+    "desc": "Holder's Psychic-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 2,
+    "name": "Twisted Spoon",
+    "num": 248,
+    "onBasePowerPriority": 15,
+    "spritenum": 520
+  },
+  "tyranitarite": {
+    "desc": "If held by a Tyranitar, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Tyranitar"
+    ],
+    "megaEvolves": "Tyranitar",
+    "megaStone": "Tyranitar-Mega",
+    "name": "Tyranitarite",
+    "num": 669,
+    "spritenum": 607
+  },
+  "ultraball": {
+    "desc": "An ultra-performance Ball that provides a higher catch rate than a Great Ball.",
+    "gen": 1,
+    "isPokeball": true,
+    "name": "Ultra Ball",
+    "num": 2,
+    "spritenum": 521
+  },
+  "ultranecroziumz": {
+    "desc": "Dusk Mane/Dawn Wings Necrozma: Ultra Burst, then Z-Move w/ Photon Geyser.",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Necrozma-Ultra"
+    ],
+    "name": "Ultranecrozium Z",
+    "num": 923,
+    "onTakeItem": false,
+    "spritenum": 687,
+    "zMove": "Light That Burns the Sky",
+    "zMoveFrom": "Photon Geyser"
+  },
+  "unremarkableteacup": {
+    "desc": "Evolves Poltchageist into Sinistcha when used.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 9,
+    "name": "Unremarkable Teacup",
+    "num": 2403,
+    "spritenum": 756
+  },
+  "upgrade": {
+    "desc": "Evolves Porygon into Porygon2 when traded.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 2,
+    "name": "Up-Grade",
+    "num": 252,
+    "spritenum": 523
+  },
+  "utilityumbrella": {
+    "desc": "The holder ignores rain- and sun-based effects. Damage and accuracy calculations from attacks used by the holder are affected by rain and sun, but not attacks used against the holder.",
+    "fling": {
+      "basePower": 60
+    },
+    "gen": 8,
+    "name": "Utility Umbrella",
+    "num": 1123,
+    "shortDesc": "The holder ignores rain- and sun-based effects.",
+    "spritenum": 718
+  },
+  "venusaurite": {
+    "desc": "If held by a Venusaur, this item allows it to Mega Evolve in battle.",
+    "gen": 6,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Venusaur"
+    ],
+    "megaEvolves": "Venusaur",
+    "megaStone": "Venusaur-Mega",
+    "name": "Venusaurite",
+    "num": 659,
+    "spritenum": 608
+  },
+  "vilevial": {
+    "desc": "If held by a Venomicon, its Poison- and Flying-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 60
+    },
+    "forcedForme": "Venomicon-Epilogue",
+    "gen": 8,
+    "isNonstandard": "CAP",
+    "itemUser": [
+      "Venomicon-Epilogue"
+    ],
+    "name": "Vile Vial",
+    "num": -2,
+    "onBasePowerPriority": 15,
+    "spritenum": 752
+  },
+  "wacanberry": {
+    "desc": "Halves damage taken from a supereffective Electric-type attack. Single use.",
+    "gen": 4,
+    "isBerry": true,
+    "name": "Wacan Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Electric"
+    },
+    "num": 186,
+    "spritenum": 526
+  },
+  "watergem": {
+    "desc": "Holder's first successful Water-type attack will have 1.3x power. Single use.",
+    "gen": 5,
+    "isGem": true,
+    "isNonstandard": "Past",
+    "name": "Water Gem",
+    "num": 549,
+    "spritenum": 528
+  },
+  "wateriumz": {
+    "desc": "If holder has a Water move, this item allows it to use a Water Z-Move.",
+    "forcedForme": "Arceus-Water",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "name": "Waterium Z",
+    "num": 778,
+    "onPlate": "Water",
+    "onTakeItem": false,
+    "spritenum": 633,
+    "zMove": true,
+    "zMoveType": "Water"
+  },
+  "watermemory": {
+    "desc": "Holder's Multi-Attack is Water type.",
+    "forcedForme": "Silvally-Water",
+    "gen": 7,
+    "isNonstandard": "Past",
+    "itemUser": [
+      "Silvally-Water"
+    ],
+    "name": "Water Memory",
+    "num": 913,
+    "onMemory": "Water",
+    "spritenum": 677
+  },
+  "waterstone": {
+    "desc": "Evolves Poliwhirl into Poliwrath, Shellder into Cloyster, Staryu into Starmie, Eevee into Vaporeon, Lombre into Ludicolo, and Panpour into Simipour when used.",
+    "fling": {
+      "basePower": 30
+    },
+    "gen": 1,
+    "name": "Water Stone",
+    "num": 84,
+    "shortDesc": "Evolves certain species of Pokemon when used.",
+    "spritenum": 529
+  },
+  "watmelberry": {
+    "desc": "Cannot be eaten by the holder. No effect when eaten with Bug Bite or Pluck.",
+    "gen": 3,
+    "isBerry": true,
+    "isNonstandard": "Past",
+    "name": "Watmel Berry",
+    "naturalGift": {
+      "basePower": 100,
+      "type": "Fire"
+    },
+    "num": 181,
+    "onEat": false,
+    "spritenum": 530
+  },
+  "waveincense": {
+    "desc": "Holder's Water-type attacks have 1.2x power.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 4,
+    "isNonstandard": "Past",
+    "name": "Wave Incense",
+    "num": 317,
+    "onBasePowerPriority": 15,
+    "spritenum": 531
+  },
+  "weaknesspolicy": {
+    "boosts": {
+      "atk": 2,
+      "spa": 2
+    },
+    "desc": "If holder is hit super effectively, raises Attack, Sp. Atk by 2 stages. Single use.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 6,
+    "name": "Weakness Policy",
+    "num": 639,
+    "spritenum": 609
+  },
+  "wellspringmask": {
+    "desc": "Ogerpon-Wellspring: 1.2x power attacks; Terastallize to gain Embody Aspect.",
+    "fling": {
+      "basePower": 60
+    },
+    "forcedForme": "Ogerpon-Wellspring",
+    "gen": 9,
+    "itemUser": [
+      "Ogerpon-Wellspring"
+    ],
+    "name": "Wellspring Mask",
+    "num": 2407,
+    "onBasePowerPriority": 15,
+    "spritenum": 759
+  },
+  "wepearberry": {
+    "desc": "Cannot be eaten by the holder. No effect when eaten with Bug Bite or Pluck.",
+    "gen": 3,
+    "isBerry": true,
+    "isNonstandard": "Past",
+    "name": "Wepear Berry",
+    "naturalGift": {
+      "basePower": 90,
+      "type": "Electric"
+    },
+    "num": 167,
+    "onEat": false,
+    "spritenum": 533
+  },
+  "whippeddream": {
+    "desc": "Evolves Swirlix into Slurpuff when traded.",
+    "fling": {
+      "basePower": 80
+    },
+    "gen": 6,
+    "isNonstandard": "Past",
+    "name": "Whipped Dream",
+    "num": 646,
+    "spritenum": 692
+  },
+  "whiteherb": {
+    "desc": "Restores all lowered stat stages to 0 when one is less than 0. Single use.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 3,
+    "name": "White Herb",
+    "num": 214,
+    "spritenum": 535
+  },
+  "widelens": {
+    "desc": "The accuracy of attacks by the holder is 1.1x.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 4,
+    "name": "Wide Lens",
+    "num": 265,
+    "onSourceModifyAccuracyPriority": -2,
+    "spritenum": 537
+  },
+  "wikiberry": {
+    "desc": "Restores 1/3 max HP at 1/4 max HP or less; confuses if -SpA Nature. Single use.",
+    "gen": 3,
+    "isBerry": true,
+    "name": "Wiki Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Rock"
+    },
+    "num": 160,
+    "spritenum": 538
+  },
+  "wiseglasses": {
+    "desc": "Holder's special attacks have 1.1x power.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 4,
+    "name": "Wise Glasses",
+    "num": 267,
+    "onBasePowerPriority": 16,
+    "spritenum": 539
+  },
+  "yacheberry": {
+    "desc": "Halves damage taken from a supereffective Ice-type attack. Single use.",
+    "gen": 4,
+    "isBerry": true,
+    "name": "Yache Berry",
+    "naturalGift": {
+      "basePower": 80,
+      "type": "Ice"
+    },
+    "num": 188,
+    "spritenum": 567
+  },
+  "zapplate": {
+    "desc": "Holder's Electric-type attacks have 1.2x power. Judgment is Electric type.",
+    "forcedForme": "Arceus-Electric",
+    "gen": 4,
+    "name": "Zap Plate",
+    "num": 300,
+    "onBasePowerPriority": 15,
+    "onPlate": "Electric",
+    "spritenum": 572
+  },
+  "zoomlens": {
+    "desc": "The accuracy of attacks by the holder is 1.2x if it moves after its target.",
+    "fling": {
+      "basePower": 10
+    },
+    "gen": 4,
+    "name": "Zoom Lens",
+    "num": 276,
+    "onSourceModifyAccuracyPriority": -2,
+    "spritenum": 574
+  }
+}
