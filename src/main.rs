@@ -37,7 +37,6 @@ struct Args {
 #[derive(clap::Subcommand, Debug)]
 enum Command {
     Img,
-    Items,
 }
 
 #[tokio::main]
@@ -49,36 +48,6 @@ async fn main() {
 
     match args.command {
         Some(Command::Img) => run_img().await,
-        Some(Command::Items) => {
-            // Read the contents of the JavaScript file (replace with your file path)
-            let js_code = std::fs::read_to_string("data/items.js").unwrap();
-
-            // Split on "=" and remove the first element
-            let js_code = js_code.split('=').collect::<Vec<&str>>()[1].trim();
-            // Remove the last character
-            let js_code = js_code[0..js_code.len() - 1].trim();
-
-            // Define a regular expression pattern to match keys without double quotes
-            let pattern = r#"(?:[,{]\s*)(\w+)\s*:"#;
-
-            // Replace matched keys with quotes around them
-            let adjusted_js_code = fancy_regex::Regex::new(pattern)
-                .unwrap()
-                .replace_all(js_code, |caps: &fancy_regex::Captures| {
-                    format!("{}\"{}\":", &caps[1], &caps[2])
-                })
-                .to_string();
-
-            // Parse the modified data as JSON in Rust
-            let parsed_json: Value = serde_json::from_str(&adjusted_js_code).unwrap();
-
-            // Now you have the data as a JSON Value
-            println!("{:#?}", parsed_json);
-
-            // Write it to a file
-            let items_json = serde_json::to_string_pretty(&parsed_json).unwrap();
-            std::fs::write("items.json", items_json).unwrap();
-        }
         None => run_main().await,
     }
 }
