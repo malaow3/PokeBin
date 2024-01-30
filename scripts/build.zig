@@ -15,20 +15,6 @@ pub fn build(b: *std.Build) void {
     // set a preferred release mode, allowing the user to decide how to optimize.
     const optimize = b.standardOptimizeOption(.{});
 
-    const lib = b.addStaticLibrary(.{
-        .name = "scripts",
-        // In this case the main source file is merely a path, however, in more
-        // complicated build scripts, this could be a generated file.
-        .root_source_file = .{ .path = "src/root.zig" },
-        .target = target,
-        .optimize = optimize,
-    });
-
-    // This declares intent for the library to be installed into the standard
-    // location when the user invokes the "install" step (the default step when
-    // running `zig build`).
-    b.installArtifact(lib);
-
     const exe = b.addExecutable(.{
         .name = "scripts",
         .root_source_file = .{ .path = "src/main.zig" },
@@ -63,4 +49,21 @@ pub fn build(b: *std.Build) void {
     // This will evaluate the `run` step rather than the default, which is "install".
     const run_step = b.step("run", "Run the app");
     run_step.dependOn(&run_cmd.step);
+
+    // Add download-imgs step
+    // Second executable
+    const exe2 = b.addExecutable(.{
+        .name = "download-imgs",
+        .root_source_file = .{ .path = "src/download-imgs.zig" },
+        .target = target,
+        .optimize = optimize,
+    });
+    b.installArtifact(exe2);
+    const run_cmd2 = b.addRunArtifact(exe2);
+    run_cmd2.step.dependOn(b.getInstallStep());
+    if (b.args) |args| {
+        run_cmd2.addArgs(args);
+    }
+    const run_step2 = b.step("download-run", "Run the download-imgs app");
+    run_step2.dependOn(&run_cmd2.step);
 }
