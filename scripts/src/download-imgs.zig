@@ -4,7 +4,8 @@ const http = std.http;
 
 const ThreadData = struct {
     post: std.json.Value,
-    result: []const u8,
+    // String for the JSON.
+    result: []u8,
 };
 
 pub fn main() !void {
@@ -14,6 +15,7 @@ pub fn main() !void {
 
     var client = http.Client{ .allocator = allocator };
     defer client.deinit();
+    errdefer client.deinit();
 
     var headers = http.Headers{ .allocator = allocator };
     defer headers.deinit();
@@ -45,6 +47,10 @@ pub fn main() !void {
 
     const results = tree.value.object.get("results").?.array.items;
 
+    // Join all threads and collect results.
+    var species_details = std.ArrayList(std.json.Parsed(std.json.Value)).init(allocator);
+    defer species_details.deinit();
+
     for (results) |post| {
         // Allocate new thread data.
         const data = allocator.create(ThreadData) catch |err| {
@@ -54,35 +60,75 @@ pub fn main() !void {
         };
         data.* = ThreadData{ .post = post, .result = "" };
         try threadDataList.append(data);
-        const thread = try std.Thread.spawn(.{}, printPost, .{threadDataList.getLast()});
+        const thread = try std.Thread.spawn(.{}, printPost, .{ threadDataList.getLast(), allocator });
         try threadList.append(thread);
-    }
 
-    // Join all threads and collect results.
-    var urls = std.ArrayList([]const u8).init(allocator);
-    defer urls.deinit();
+        // If the theadlist length == 10 then join all threads and collect results.
+        if (threadList.items.len == 10) {
+            for (threadList.items) |t| {
+                t.join();
+            }
+
+            for (threadDataList.items) |d| {
+                if (!std.mem.eql(u8, d.result, "")) {
+                    const json = try std.json.parseFromSlice(std.json.Value, allocator, d.result, .{});
+                    try species_details.append(json);
+                }
+                allocator.free(d.result);
+                allocator.destroy(d);
+            }
+
+            // Clear out the threadlist and threadDataList
+            threadList.shrinkAndFree(0);
+            threadDataList.shrinkAndFree(0);
+        }
+    }
 
     for (threadList.items) |thread| {
         thread.join();
     }
 
     for (threadDataList.items) |data| {
-        try urls.append(data.result);
+        if (!std.mem.eql(u8, data.result, "")) {
+            const json = try std.json.parseFromSlice(std.json.Value, allocator, data.result, .{});
+            try species_details.append(json);
+        }
+        allocator.free(data.result);
         allocator.destroy(data);
     }
 
     // Use urls here
-    for (urls.items) |url| {
-        print("URL: {s}\n", .{url});
+    for (species_details.items) |details| {
+        try std.json.stringify(details.value, .{}, std.io.getStdOut().writer());
+        details.deinit();
     }
 }
 
-fn printPost(data: *ThreadData) void {
-    const name = data.post.object.get("name").?.string;
-    print("{s}\n", .{
-        name,
-    });
+fn printPost(data: *ThreadData, allocator: std.mem.Allocator) !void {
     const url = data.post.object.get("url").?.string;
 
-    data.result = url;
+    if (std.mem.eql(u8, url, "https://pokeapi.co/api/v2/pokemon-species/1/")) {
+        var client = http.Client{ .allocator = allocator };
+        defer client.deinit();
+
+        var headers = http.Headers{ .allocator = allocator };
+        defer headers.deinit();
+
+        const uri = try std.Uri.parse(url);
+
+        var req = try client.open(.GET, uri, headers, .{});
+        defer req.deinit();
+        try req.send(.{});
+        try req.wait();
+
+        // Default to maximum u64.
+        const content_length: u64 = std.math.maxInt(u64);
+        var rdr = req.reader();
+        const body = try rdr.readAllAlloc(allocator, content_length);
+        defer allocator.free(body);
+
+        // Copy the body into the result
+        data.result = try allocator.alloc(u8, body.len);
+        std.mem.copyForwards(u8, data.result, body);
+    }
 }
