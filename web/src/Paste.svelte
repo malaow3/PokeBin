@@ -400,7 +400,7 @@
 		role="note"
 	>
 		{#if paste_data}
-			{#if paste_data.title != "" && paste_data.title !== null}
+			{#if paste_data.title != "" && paste_data.title !== null && paste_data.title != undefined}
 				<h1
 					class="mx-10 text-pink-500 text-4xl"
 					style="user-select:none"
@@ -409,14 +409,24 @@
 					{paste_data.title}
 				</h1>
 			{/if}
-			{#if paste_data.author != "" && paste_data.author !== null}
+			{#if paste_data.author != "" && paste_data.author !== null && paste_data.author != undefined}
 				<p class="mx-10 text-base" style="user-select:none" id="author">
-					by: {paste_data.author}
+					By: {paste_data.author}
 				</p>
 			{/if}
-			{#if paste_data.format != "" && paste_data.format !== null}
+			{#if paste_data.format != "" && paste_data.format !== null && paste_data.format != undefined}
 				<p class="mx-10 text-base" style="user-select:none" id="author">
 					Format: {paste_data.format}
+				</p>
+			{/if}
+			{#if paste_data.rental != "" && paste_data.rental !== null && paste_data.rental != undefined}
+				<p class="mx-10 text-base" style="user-select:none" id="author">
+					Rental: {paste_data.rental}
+				</p>
+			{/if}
+			{#if paste_data.notes != "" && paste_data.notes !== null && paste_data.notes != undefined}
+				<p class="mx-10 text-base" style="user-select:none" id="author">
+					{paste_data.notes}
 				</p>
 			{/if}
 		{/if}

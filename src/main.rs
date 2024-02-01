@@ -108,7 +108,7 @@ async fn run_main() {
     let mut map: HashMap<String, utils::Mon> = serde_json::from_reader(file).unwrap();
     helpers::verify_map(&mut map);
 
-    let item_file = std::fs::File::open("battleItems.json").unwrap();
+    let item_file = std::fs::File::open("items.json").unwrap();
     let item_map: HashMap<String, Value> = serde_json::from_reader(item_file).unwrap();
 
     let move_file = std::fs::File::open("moves.json").unwrap();
@@ -242,7 +242,7 @@ async fn get_paste_json(State(state): State<AppState>, Path(id): Path<String>) -
     };
 
     // Get the paste from the database.
-    let paste = match db::get_paste(&state.db_pool, decode_id).await {
+    let mut paste = match db::get_paste(&state.db_pool, decode_id).await {
         Ok(paste) => paste,
         Err(_) => {
             // Redirect to the home page.
@@ -250,11 +250,14 @@ async fn get_paste_json(State(state): State<AppState>, Path(id): Path<String>) -
         }
     };
 
+    if !paste.format.is_empty() {
+        paste.notes = format!("Format: {}\n{}", paste.format, paste.notes);
+    }
+
     Json(json!({
         "title": paste.title,
         "author": paste.author,
         "notes": paste.notes,
-        "rental": paste.rental,
         "paste": paste.paste
     }))
     .into_response()
@@ -503,6 +506,7 @@ async fn get_paste_json_detailed(
         "author": paste.author,
         "notes": paste.notes,
         "rental": paste.rental,
+        "format": paste.format,
         "sets": contents
     }))
     .into_response()
