@@ -15,29 +15,43 @@
 			return;
 		}
 
+		// First update the style
+		if (value) {
+			element.setAttribute("style", "user-select: text !important");
+		} else {
+			element.setAttribute("style", "user-select: auto !important");
+		}
+
+		// Set the style to be selectable for ALL children recursively
 		let children = element.children;
 
-		if (value) {
-			// Set the style to be unselectable
+		let children_list = [];
 
-			for (let i = 0; i < children.length; i++) {
-				if (children[i].tagName === "PRE") {
-					continue;
-				}
-				children[i].setAttribute(
-					"style",
-					"user-select: auto !important",
-				);
+		for (let i = 0; i < children.length; i++) {
+			if (children[i].tagName === "PRE") {
+				continue;
 			}
-		} else {
-			for (let i = 0; i < children.length; i++) {
-				if (children[i].tagName === "PRE") {
-					continue;
+			children_list.push(children[i]);
+		}
+		while (children_list.length > 0) {
+			let child = children_list.pop();
+			if (child === null || child === undefined) {
+				break;
+			}
+
+			// Add all children to the list
+			for (let i = 0; i < child.children.length; i++) {
+				children_list.push(child.children[i]);
+			}
+			if (value) {
+				// Set the style to be unselectable
+				for (let i = 0; i < children.length; i++) {
+					child.setAttribute("style", "user-select: auto !important");
 				}
-				children[i].setAttribute(
-					"style",
-					"user-select: none !important",
-				);
+			} else {
+				for (let i = 0; i < children.length; i++) {
+					child.setAttribute("style", "user-select: none !important");
+				}
 			}
 		}
 	}
@@ -52,6 +66,7 @@
 		type1: string;
 	};
 	type Mon = {
+		nickname: string;
 		name: string;
 		type1: string;
 		item: string;
@@ -148,7 +163,7 @@
 </script>
 
 <head>
-	{#if paste_data !== null && paste_data.title !== null}
+	{#if paste_data !== null && paste_data.title !== null && paste_data.title !== ""}
 		<title>{paste_data?.title}</title>
 	{:else}
 		<title>Untitled</title>
@@ -178,9 +193,16 @@
 
 						<div class="paste">
 							{#if set_item.mon !== null}
-								<span class="type-{set_item.mon.type1}"
-									>{set_item.mon.name}</span
-								>
+								{#if set_item.mon.nickname !== null && set_item.mon.nickname !== ""}
+									<span>{set_item.mon.nickname} (</span><span
+										class="type-{set_item.mon.type1}"
+										>{set_item.mon.name}</span
+									><span>)</span>
+								{:else}
+									<span class="type-{set_item.mon.type1}"
+										>{set_item.mon.name}</span
+									>
+								{/if}
 								{#if set_item.mon.gender !== null && set_item.mon.gender !== ""}
 									<span>(</span><span
 										class="gender-{set_item.mon.gender}"
@@ -376,6 +398,7 @@
 									</span><span>{move.name}</span>
 									<br />
 								{/each}
+								<br />
 							{/if}
 						</div>
 					</article>
@@ -389,47 +412,54 @@
 			{/each}
 		{/if}
 	</main>
-	<Newline />
 
 	<div
-		id="title"
-		on:mouseover={() => setSelectable(true, "title")}
-		on:focus={() => setSelectable(true, "title")}
-		on:mouseout={() => setSelectable(false, "title")}
-		on:blur={() => setSelectable(false, "title")}
+		class="side-content"
+		id="sidebar"
+		on:mouseover={() => setSelectable(true, "sidebar")}
+		on:focus={() => setSelectable(true, "sidebar")}
+		on:mouseout={() => setSelectable(false, "sidebar")}
+		on:blur={() => setSelectable(false, "sidebar")}
 		role="note"
+		style="user-select: none"
 	>
-		{#if paste_data}
-			{#if paste_data.title != "" && paste_data.title !== null && paste_data.title != undefined}
-				<h1
-					class="mx-10 text-pink-500 text-4xl"
-					style="user-select:none"
-					id="title"
-				>
-					{paste_data.title}
-				</h1>
+		<div id="metadata">
+			{#if paste_data}
+				<div class="metadata">
+					{#if paste_data.title != "" && paste_data.title !== null && paste_data.title != undefined}
+						<h1 class="mx-10 text-pink-500 text-2xl" id="title">
+							{paste_data.title}
+						</h1>
+					{/if}
+					{#if paste_data.author != "" && paste_data.author !== null && paste_data.author != undefined}
+						<p class="mx-10 text-base" id="author">
+							By: {paste_data.author}
+						</p>
+					{/if}
+					{#if paste_data.format != "" && paste_data.format !== null && paste_data.format != undefined}
+						<p class="mx-10 text-base" id="format">
+							Format: {paste_data.format}
+						</p>
+					{/if}
+					{#if paste_data.rental != "" && paste_data.rental !== null && paste_data.rental != undefined}
+						<p class="mx-10 text-base" id="rental">
+							Rental: {paste_data.rental}
+						</p>
+					{/if}
+					{#if paste_data.notes != "" && paste_data.notes !== null && paste_data.notes != undefined}
+						<p
+							class="mx-10 text-base"
+							style="user-select:none"
+							id="notes"
+						>
+							{@html paste_data.notes.replace(/\n/g, "<br>")}
+						</p>
+					{/if}
+				</div>
 			{/if}
-			{#if paste_data.author != "" && paste_data.author !== null && paste_data.author != undefined}
-				<p class="mx-10 text-base" style="user-select:none" id="author">
-					By: {paste_data.author}
-				</p>
-			{/if}
-			{#if paste_data.format != "" && paste_data.format !== null && paste_data.format != undefined}
-				<p class="mx-10 text-base" style="user-select:none" id="author">
-					Format: {paste_data.format}
-				</p>
-			{/if}
-			{#if paste_data.rental != "" && paste_data.rental !== null && paste_data.rental != undefined}
-				<p class="mx-10 text-base" style="user-select:none" id="author">
-					Rental: {paste_data.rental}
-				</p>
-			{/if}
-			{#if paste_data.notes != "" && paste_data.notes !== null && paste_data.notes != undefined}
-				<p class="mx-10 text-base" style="user-select:none" id="author">
-					{paste_data.notes}
-				</p>
-			{/if}
-		{/if}
-		<Newline />
+			<div class="placeholder mx-10">
+				<p>placeholder</p>
+			</div>
+		</div>
 	</div>
 </div>

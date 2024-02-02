@@ -4,72 +4,6 @@
 
 	// TODO: Update post to be standard form instead of JSON post.
 
-	async function handleInput(event: { preventDefault: () => void }) {
-		// Prevent the default behavior of the form submit
-		event.preventDefault();
-		// Submit the form.
-
-		const paste_element: HTMLInputElement | null = document.getElementById(
-			"paste",
-		) as HTMLInputElement | null;
-		const title_element: HTMLInputElement | null = document.getElementById(
-			"title",
-		) as HTMLInputElement | null;
-		const author_element: HTMLInputElement | null = document.getElementById(
-			"author",
-		) as HTMLInputElement | null;
-		const notes_element: HTMLInputElement | null = document.getElementById(
-			"notes",
-		) as HTMLInputElement | null;
-		const rental_element: HTMLInputElement | null = document.getElementById(
-			"rental",
-		) as HTMLInputElement | null;
-		const format_element: HTMLInputElement | null = document.getElementById(
-			"format",
-		) as HTMLInputElement | null;
-
-		if (
-			paste_element === null ||
-			title_element === null ||
-			author_element === null ||
-			notes_element === null ||
-			rental_element === null ||
-			format_element === null
-		) {
-			return false;
-		}
-
-		const paste = paste_element.value;
-		if (paste === "") {
-			return false;
-		}
-		const title = title_element.value;
-		const author = author_element.value;
-		const notes = notes_element.value;
-		const rental = rental_element.value;
-		const format = format_element.value;
-
-		const data = {
-			paste,
-			title,
-			author,
-			notes,
-			rental,
-			format,
-		};
-
-		try {
-			const response = await axios.post("/create", data);
-			let response_data = response.data;
-			let id = response_data.id;
-			// Redirect to the id.
-			window.location.href = "/" + id;
-			return;
-		} catch (e) {
-			console.error(e);
-		}
-	}
-
 	// On mount!
 	onMount(() => {
 		let notes = document.getElementById("notes");
@@ -94,7 +28,7 @@
 </script>
 
 <main>
-	<form on:submit={handleInput} method="post">
+	<form action="/create" method="post">
 		<textarea
 			id="paste"
 			name="paste"

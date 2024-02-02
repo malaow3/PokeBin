@@ -10,10 +10,11 @@ use lazy_static::lazy_static;
 use std::{collections::HashMap, sync::Arc};
 use templates::HtmlTemplate;
 use tokio_util::io::ReaderStream;
+use utils::encode_id;
 use utils::Move;
 
 use axum::{
-    extract::{self, Path, State},
+    extract::{Path, State},
     http::StatusCode,
     routing::{get, post},
     Json,
@@ -180,34 +181,53 @@ async fn run_main() {
     axum::serve(listener, app).await.unwrap();
 }
 
+#[derive(serde::Deserialize, Debug)]
+struct Payload {
+    title: String,
+    author: String,
+    notes: String,
+    rental: String,
+    paste: String,
+    format: String,
+}
+
 async fn create_paste(
     State(state): State<AppState>,
-    extract::Json(payload): extract::Json<Value>,
-) -> Result<Json<serde_json::Value>, (StatusCode, String)> {
-    // TODO: make this a proper post form vs. JSON
-    let title = payload["title"].as_str().unwrap_or("");
-    let author = payload["author"].as_str().unwrap_or("");
-    let notes = payload["notes"].as_str().unwrap_or("");
-    let rental = payload["rental"].as_str().unwrap_or("");
-    let paste = payload["paste"].as_str().unwrap_or("");
-    let format = payload["format"].as_str().unwrap_or("");
+    // Form data
+    axum::Form(payload): axum::Form<Payload>,
+) -> Response {
+    let title = payload.title.trim();
+    let author = payload.author.trim();
+    let notes = payload.notes.trim();
+    let rental = payload.rental.trim();
+    let paste = payload.paste.trim();
+    let format = payload.format.trim();
+
+    // Remove "\r" from the end of the string
+    let title = title.replace('\r', "");
+    let author = author.replace('\r', "");
+    let notes = notes.replace('\r', "");
+    let rental = rental.replace('\r', "");
+    let paste = paste.replace('\r', "");
+    let format = format.replace('\r', "");
 
     let id = match db::create_paste(
         title.trim(),
         author.trim(),
         notes.trim(),
-        rental,
+        &rental,
         paste.trim(),
         format.trim(),
         &state.db_pool,
     )
     .await
     {
-        Ok(id) => id,
-        Err(e) => return Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
+        Ok(id) => encode_id(id, &state.cipher),
+        Err(e) => return (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
     };
 
-    Ok(Json(json!({"id": utils::encode_id(id, &state.cipher)})))
+    // Redirect to the paste page.
+    axum::response::Redirect::to(&format!("/{id}")).into_response()
 }
 
 async fn get_paste(State(state): State<AppState>, Path(id): Path<String>) -> Response {
@@ -292,6 +312,7 @@ struct Set {
     spa_iv: Option<u32>,
     spd_iv: Option<u32>,
     spe_iv: Option<u32>,
+    nickname: String,
 }
 
 async fn get_paste_json_detailed(
@@ -351,6 +372,8 @@ async fn get_paste_json_detailed(
             if let Some((search_name, mon)) = mon {
                 setmon.search_name = search_name;
                 setmon.type1 = mon.type1;
+                let nickname = m.get(1).unwrap().as_str();
+                setmon.nickname = nickname[0..nickname.len() - 1].to_string();
             }
         } else if let Some(name) = m.get(4) {
             // Get the pokemon data.
