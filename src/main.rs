@@ -398,6 +398,7 @@ async fn get_paste_json_detailed(
         if let Some(item) = m.get(9) {
             setmon.item = item.as_str().to_string();
             let search_item = item.as_str().replace(' ', "").to_lowercase();
+            let search_item = search_item.as_str().replace('-', "").to_lowercase();
             setmon.item_img = helpers::get_item_image(&state.item_map, &search_item);
         }
 

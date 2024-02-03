@@ -7,7 +7,7 @@ p {
 }
 
 /* Mobile styles */
-@media (max-width: 768px) {
+@media (max-width: 1158px) {
   body {
     font-size: 10px; /* Smaller font size for mobile */
   }
@@ -17,14 +17,15 @@ p {
     flex-direction: column-reverse; /* side-content above main */
   }
   
-  img.img-pokemon {
-    width: 100px; /* Smaller images for mobile */
-    height: 100px;
-  }
+
+	.side-content{
+		display: flex;
+		flex-direction: column;
+	}
 }
 
 /* Desktop and larger tablets */
-@media (min-width: 769px) {
+@media (min-width: 1159px) {
   body {
     font-size: 12px; /* Regular font size for larger devices */
   }
@@ -34,11 +35,16 @@ p {
     flex-direction: column; /* main above side-content */
   }
 
-  img.img-pokemon {
-    width: 12vw;
-    height: auto;
-  }
 }
+
+img.img-pokemon {
+	/* width: 12vw; */
+	/* min-width: 150px; */
+	height: auto;
+	/* max-width: 250px; */
+	width: 150px;
+}
+
 body {
 	margin: 0;
 	background-color: black !important;
@@ -56,6 +62,19 @@ img.img-pokemon {
 main, .side-content {
   margin: 0;
 }
+
+.extra  {
+	width: 200px;
+	font-size: 14px;
+}
+
+.side-content {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 20px;
+}
+
 * {
   min-width: 0;
 }
@@ -157,8 +176,9 @@ article:nth-child(odd) {
 }
 
 article > .paste {
-  width: 400px;
-  margin: 12px 12px 0;
+  min-width: 380px;
+  width: 25vw;
+  margin: 10px 10px 0;
   font: 14px monospace;
   line-height: 1.45;
 }

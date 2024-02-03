@@ -1,10 +1,15 @@
 <script lang="ts">
 	import axios from "axios";
 	import { onMount } from "svelte";
-	import Newline from "./newline.svelte";
 
 	// PASTE_ID prop
 	let pasteId: string;
+
+	let showNotes = false;
+
+	function toggleNotes() {
+		showNotes = !showNotes;
+	}
 
 	let selectable = false; // Initially, the title is selectable
 	function setSelectable(value: boolean, id: string) {
@@ -394,7 +399,7 @@
 								<!-- Moves -->
 								{#each set_item.mon.moves as move}
 									<span class="type-{move.type1}"
-										>—
+										>-
 									</span><span>{move.name}</span>
 									<br />
 								{/each}
@@ -412,6 +417,7 @@
 			{/each}
 		{/if}
 	</main>
+	<br />
 
 	<div
 		class="side-content"
@@ -447,19 +453,39 @@
 						</p>
 					{/if}
 					{#if paste_data.notes != "" && paste_data.notes !== null && paste_data.notes != undefined}
-						<p
-							class="mx-10 text-base"
-							style="user-select:none"
-							id="notes"
+						<button
+							on:click={toggleNotes}
+							class="mx-10 toggle-notes"
 						>
-							{@html paste_data.notes.replace(/\n/g, "<br>")}
-						</p>
+							{showNotes ? "Hide notes" : "Show notes"}
+						</button>
+						{#if showNotes}
+							<p
+								class="mx-10 text-base"
+								style="user-select:none"
+								id="notes"
+							>
+								{@html paste_data.notes.replace(/\n/g, "<br>")}
+							</p>
+						{/if}
 					{/if}
 				</div>
 			{/if}
-			<div class="placeholder mx-10">
-				<p>placeholder</p>
-			</div>
+		</div>
+		<div class="extra mx-10">
+			<p>placeholder content</p>
 		</div>
 	</div>
 </div>
+
+<style lang="postcss">
+	.toggle-notes {
+		background: #333;
+		color: white;
+		border: none;
+		padding: 10px;
+		cursor: pointer;
+		user-select: none !important;
+		border-radius: 3px;
+	}
+</style>
