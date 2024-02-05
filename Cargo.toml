@@ -12,6 +12,7 @@ axum = "0.7.3"
 blowfish = "0.9.1"
 chrono = "0.4.31"
 clap = { version = "4.4.12", features = ["derive"] }
+deku = "0.16.0"
 dotenv = "0.15.0"
 fancy-regex = "0.13.0"
 futures = "0.3.30"

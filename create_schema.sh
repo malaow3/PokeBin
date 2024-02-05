@@ -33,6 +33,14 @@ CREATE TABLE IF NOT EXISTS pastes (
 # Execute the SQL command
 echo $CREATE_TABLE_SQL | psql $DATABASE_URL
 
+CREATE_TABLE_SQL="
+CREATE TABLE IF NOT EXISTS pastes_comp (
+    id BIGSERIAL PRIMARY KEY,
+	data BYTEA NOT NULL
+);"
+
+# Execute the SQL command
+echo $CREATE_TABLE_SQL | psql $DATABASE_URL
 # Check for success or failure
 if [ $? -eq 0 ]; then
     echo "Database schema created successfully."

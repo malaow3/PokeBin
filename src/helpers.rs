@@ -176,12 +176,10 @@ pub fn get_image(map: &HashMap<String, Mon>, pokemon: &str, shiny: bool, female:
 }
 
 pub fn get_item_image(map: &HashMap<String, serde_json::Value>, item: &str) -> String {
-    let search_item = item.to_lowercase().replace(' ', "");
-
     let early_return = "background: transparent url(\"https://play.pokemonshowdown.com/sprites/pokemonicons-sheet.png?v16\") -360px -2580px no-repeat".to_string();
 
-    if map.contains_key(&search_item) {
-        let sprite_num = match map[&search_item]["spritenum"].as_u64() {
+    if map.contains_key(item) {
+        let sprite_num = match map[item]["spritenum"].as_u64() {
             Some(num) => num,
             None => return early_return,
         };

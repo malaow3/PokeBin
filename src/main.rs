@@ -77,7 +77,13 @@ async fn main() {
             println!("{:#?}", parsed_json);
 
             // Write it to a file
-            let items_json = serde_json::to_string_pretty(&parsed_json).unwrap();
+            let mut new_items = HashMap::new();
+            for (_k, v) in parsed_json.as_object().unwrap() {
+                new_items.insert(v["name"].as_str().unwrap().to_string(), v);
+            }
+
+            let items_json = serde_json::to_string_pretty(&new_items).unwrap();
+
             std::fs::write("items.json", items_json).unwrap();
         }
         None => run_main().await,
@@ -252,7 +258,6 @@ async fn get_paste(State(state): State<AppState>, Path(id): Path<String>) -> Res
 }
 
 async fn get_paste_json(State(state): State<AppState>, Path(id): Path<String>) -> Response {
-    // TODO: match the response from pokepaste so this can be a drop-in replacemnent for
     let decode_id = match utils::decode_id(&id, &state.cipher) {
         Ok(id) => id,
         Err(_) => {
@@ -271,14 +276,19 @@ async fn get_paste_json(State(state): State<AppState>, Path(id): Path<String>) -
     };
 
     if !paste.format.is_empty() {
-        paste.notes = format!("Format: {}\n{}", paste.format, paste.notes);
+        paste.notes = format!(
+            "Format: {}\n{}",
+            String::from_utf8_lossy(&paste.format),
+            String::from_utf8_lossy(&paste.notes)
+        )
+        .into();
     }
 
     Json(json!({
-        "title": paste.title,
-        "author": paste.author,
-        "notes": paste.notes,
-        "paste": paste.paste
+        "title": String::from_utf8_lossy(&paste.title),
+        "author": String::from_utf8_lossy(&paste.author),
+        "notes": String::from_utf8_lossy(&paste.notes),
+        "paste": String::from_utf8_lossy(&paste.paste),
     }))
     .into_response()
 }
@@ -337,8 +347,8 @@ async fn get_paste_json_detailed(
     };
 
     // Split the paste on 2+ newlines.
-    let sets = paste
-        .paste
+    let paste_string = String::from_utf8_lossy(&paste.paste);
+    let sets = paste_string
         .split("\n\n")
         .filter_map(|s| {
             if s.is_empty() {
@@ -397,9 +407,7 @@ async fn get_paste_json_detailed(
 
         if let Some(item) = m.get(9) {
             setmon.item = item.as_str().to_string();
-            let search_item = item.as_str().replace(' ', "").to_lowercase();
-            let search_item = search_item.as_str().replace('-', "").to_lowercase();
-            setmon.item_img = helpers::get_item_image(&state.item_map, &search_item);
+            setmon.item_img = helpers::get_item_image(&state.item_map, &setmon.item);
         }
 
         // Get the image for the mon.
@@ -526,11 +534,11 @@ async fn get_paste_json_detailed(
     }
 
     Json(json!({
-        "title": paste.title,
-        "author": paste.author,
-        "notes": paste.notes,
-        "rental": paste.rental,
-        "format": paste.format,
+        "title": String::from_utf8_lossy(&paste.title),
+        "author": String::from_utf8_lossy(&paste.author),
+        "notes": String::from_utf8_lossy(&paste.notes),
+        "rental": String::from_utf8_lossy(&paste.rental),
+        "format": String::from_utf8_lossy(&paste.format),
         "sets": contents
     }))
     .into_response()
