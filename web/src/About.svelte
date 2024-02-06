@@ -4,7 +4,7 @@
 		<h1 class="text-4xl font-bold mb-4">About PokeBin</h1>
 		<p class="text-lg mb-4">
 			PokeBin was created as an alternative to PokePaste. As a developer,
-			I did this for two reasons
+			I did this for three reasons
 			<br />
 		</p>
 		<ul class="ml-10">
