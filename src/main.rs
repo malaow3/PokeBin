@@ -132,10 +132,10 @@ async fn run_main() {
 
     let cors = CorsLayer::new()
         .allow_origin(Any)
-        .allow_methods([http::Method::GET, http::Method::POST]);
+        .allow_methods([http::Method::GET, http::Method::POST])
+        .allow_headers(Any);
 
     let app = axum::Router::new()
-        .layer(cors)
         .route("/create", post(create_paste))
         .route(
             "/get-img/:mon/:shiny/:female",
@@ -185,6 +185,7 @@ async fn run_main() {
         )
         .fallback_service(axum::routing::get_service(ServeDir::new("./web/dist")))
         // Serve the images in the home folder.
+        .layer(cors)
         .with_state(state);
 
     let app = utils::add_logging(app);

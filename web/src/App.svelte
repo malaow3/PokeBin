@@ -1,8 +1,5 @@
 <script lang="ts">
-	import axios from "axios";
 	import { onMount } from "svelte";
-
-	// TODO: Update post to be standard form instead of JSON post.
 
 	// On mount!
 	onMount(() => {

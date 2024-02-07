@@ -1,4 +1,3 @@
-<!-- Sample About page using TailwindCSS -->
 <div class="container mx-auto px-4">
 	<div class="max-w-3xl mx-auto py-2">
 		<h1 class="text-4xl font-bold mb-4">About PokeBin</h1>
