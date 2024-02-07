@@ -1962,6 +1962,7 @@ dependencies = [
  "futures-util",
  "generic-array 1.0.0",
  "hex",
+ "http 1.0.0",
  "lazy_static",
  "log",
  "phf 0.11.2",

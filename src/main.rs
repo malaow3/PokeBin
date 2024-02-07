@@ -25,6 +25,7 @@ use download_images::run_img;
 use log::{info, LevelFilter};
 use serde_json::{json, Value};
 
+use tower_http::cors::{Any, CorsLayer};
 use tower_http::services::ServeDir;
 
 use crate::utils::Mon;
@@ -129,7 +130,12 @@ async fn run_main() {
         item_map: Arc::new(item_map),
     };
 
+    let cors = CorsLayer::new()
+        .allow_origin(Any)
+        .allow_methods([http::Method::GET, http::Method::POST]);
+
     let app = axum::Router::new()
+        .layer(cors)
         .route("/create", post(create_paste))
         .route(
             "/get-img/:mon/:shiny/:female",
