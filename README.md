@@ -91,3 +91,14 @@ If you want to contribute, feel free to fork the repo and send a PR with your ch
 
 Unfortunately, there isn't a strict set of tests / linting guidelines. I might be a bit picky on a review, but over time I hope to get the repo to a state where 
 contributing is easy and there is enough feedback baked into the tests/linting/static analysis that if things pass it should have no problem getting merged!
+
+# Notes
+This project is not affiliated with, maintained, authorized, endorsed, or sponsored by the Pokémon Company, Nintendo, or any of its affiliates or subsidiaries.
+All Pokémon images, names, and related media are intellectual property of their respective owners. This application is intended for educational, development,
+and informational purposes only.
+
+The use of any trademarks, copyright materials, or intellectual property by this project is done under fair use or with permission, and does not imply
+any association with or endorsement by their respective owners. This project does not claim any ownership over any of the Pokémon franchise materials used within.
+
+If you are the rightful owner of any content used in this project and believe that your copyright has been infringed, please contact us directly
+to discuss the removal of such content or any other concerns.
