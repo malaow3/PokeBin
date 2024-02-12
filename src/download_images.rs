@@ -176,36 +176,6 @@ pub async fn run_img() {
             error!("Error writing to file: {}", e);
         }
     }
-
-    let items_url = "https://pokeapi.co/api/v2/item?limit=10000";
-    let items = client
-        .get(items_url)
-        .send()
-        .await
-        .unwrap()
-        .json::<serde_json::Value>()
-        .await
-        .unwrap();
-    let mut items_names = vec![];
-    for item in items["results"].as_array().unwrap() {
-        let name = item["name"].as_str().unwrap();
-        items_names.push(name.to_string());
-    }
-
-    // Write the hashmap to a file.
-    let file = match std::fs::File::create("items.json") {
-        Ok(file) => file,
-        Err(e) => {
-            panic!("Error creating file: {}", e);
-        }
-    };
-
-    match serde_json::to_writer_pretty(&file, &items_names) {
-        Ok(_) => {}
-        Err(e) => {
-            panic!("Error writing to file: {}", e);
-        }
-    }
 }
 
 async fn get_species_details(

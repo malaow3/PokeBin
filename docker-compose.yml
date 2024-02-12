@@ -1,9 +1,3 @@
-# Setup PSQL Database and the Rust binary
-# Run: docker-compose up -d
-# Run: docker-compose down
-# Run: docker-compose up -d --build
-# Run: docker-compose run --rm web diesel migration run
-
 version: '3.1'
 
 services:

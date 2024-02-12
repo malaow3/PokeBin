@@ -22,16 +22,6 @@ pub fn search_like<T: Clone>(map: &HashMap<String, T>, pattern: &str) -> Option<
         return Some((pattern.to_string(), map[pattern].clone()));
     }
 
-    // let regex_pattern = format!("(?i)^{}$", pattern.replace('%', ".*").replace('_', "."));
-    // println!("{}", regex_pattern);
-    // let re = Regex::new(&regex_pattern).unwrap();
-    //
-    // for (key, value) in map.iter() {
-    //     if re.is_match(key) {
-    //         return Some(value.clone());
-    //     }
-    // }
-
     // Check a secondary match
     let regex_pattern = format!("(?i)^{}", pattern.replace('%', ".*").replace('_', "."));
     let re = Regex::new(&regex_pattern).unwrap();
