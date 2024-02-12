@@ -80,6 +80,7 @@ I'm going to excluded things like routine maitenance. I'll be adding new mons / 
 - Accounts: associating pastes to an account so that they can be later reviewed without hoping you saved the link. Maybe there is a way to link a Showdown account? TBD.
     - This can also let a paste be deleted if it's requested by the owner of the paste.
 - Import / Export from Showdown -- this obviously requires a change on Showdown's platform -- I am willing to make those contributions if this site gains enough traction.
+- Move to Redis? I don't think Postgres is strictly necessary, and a simple kv db should suffice.
 - Native for mobile? Instead of a PWA or mobile-responsive website, building a native app could be pretty neat.
 - Timed-deletion: You can mark a paste to be deleted after a specific amount of time.
 
