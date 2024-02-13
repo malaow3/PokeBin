@@ -3,22 +3,24 @@
 @tailwind utilities;
 
 p {
-   word-wrap: break-word;
+	word-wrap: break-word;
 }
 
 /* Mobile styles */
 @media (max-width: 1158px) {
-  body {
-    font-size: 10px; /* Smaller font size for mobile */
-  }
+	body {
+		font-size: 10px;
+		/* Smaller font size for mobile */
+	}
 
-  .content-container {
-    display: flex;
-    flex-direction: column-reverse; /* side-content above main */
-  }
-  
+	.content-container {
+		display: flex;
+		flex-direction: column-reverse;
+		/* side-content above main */
+	}
 
-	.side-content{
+
+	.side-content {
 		display: flex;
 		flex-direction: column;
 	}
@@ -26,14 +28,16 @@ p {
 
 /* Desktop and larger tablets */
 @media (min-width: 1159px) {
-  body {
-    font-size: 12px; /* Regular font size for larger devices */
-  }
+	body {
+		font-size: 12px;
+		/* Regular font size for larger devices */
+	}
 
-  .content-container {
-    display: flex;
-    flex-direction: column; /* main above side-content */
-  }
+	.content-container {
+		display: flex;
+		flex-direction: column;
+		/* main above side-content */
+	}
 
 }
 
@@ -56,154 +60,183 @@ body {
 
 /* Common styles for all devices */
 img.img-pokemon {
-  height: auto;
+	height: auto;
 }
 
-main, .side-content {
-  margin: 0;
+main,
+.side-content {
+	margin: 0;
 }
 
-.extra  {
+.extra {
 	width: 200px;
 	font-size: 14px;
 }
 
 .side-content {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 20px;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	gap: 20px;
 }
 
 * {
-  min-width: 0;
+	min-width: 0;
 }
 
 .type-normal {
-  color: #a8a878;
+	color: #a8a878;
 }
+
 .type-fighting {
-  color: #c03028;
+	color: #c03028;
 }
+
 .type-flying {
-  color: #a890f0;
+	color: #a890f0;
 }
+
 .type-poison {
-  color: #a040a0;
+	color: #a040a0;
 }
+
 .type-ground {
-  color: #e0c068;
+	color: #e0c068;
 }
+
 .type-rock {
-  color: #b8a038;
+	color: #b8a038;
 }
+
 .type-bug {
-  color: #a8b820;
+	color: #a8b820;
 }
+
 .type-ghost {
-  color: #705898;
+	color: #705898;
 }
+
 .type-steel {
-  color: #b8b8d0;
+	color: #b8b8d0;
 }
+
 .type-fire {
-  color: #f08030;
+	color: #f08030;
 }
+
 .type-water {
-  color: #6890f0;
+	color: #6890f0;
 }
+
 .type-grass {
-  color: #78c850;
+	color: #78c850;
 }
+
 .type-electric {
-  color: #f8d030;
+	color: #f8d030;
 }
+
 .type-psychic {
-  color: #f85888;
+	color: #f85888;
 }
+
 .type-ice {
-  color: #98d8d8;
+	color: #98d8d8;
 }
+
 .type-dragon {
-  color: #7038f8;
+	color: #7038f8;
 }
+
 .type-dark {
-  color: #705848;
+	color: #705848;
 }
+
 .type-fairy {
-  color: #ee99ac;
+	color: #ee99ac;
 }
 
 .gender-m {
-  @apply text-sky-500;
+	@apply text-sky-500;
 }
+
 .gender-f {
-  color: #e82010;
+	color: #e82010;
 }
 
 .attr {
-  color: #a0a0a0;
-}
-.stat-hp {
-  color: #ff0000;
-}
-.stat-atk {
-  color: #f08030;
-}
-.stat-def {
-  color: #f8d030;
-}
-.stat-spa {
-  color: #6890f0;
-}
-.stat-spd {
-  color: #78c850;
-}
-.stat-spe {
-  color: #f85888;
+	color: #a0a0a0;
 }
 
-main, .side-content{
+.stat-hp {
+	color: #ff0000;
+}
+
+.stat-atk {
+	color: #f08030;
+}
+
+.stat-def {
+	color: #f8d030;
+}
+
+.stat-spa {
+	color: #6890f0;
+}
+
+.stat-spd {
+	color: #78c850;
+}
+
+.stat-spe {
+	color: #f85888;
+}
+
+main,
+.side-content {
 	margin: 0
 }
 
 article {
-  float: left;
+	float: left;
 }
 
 article:nth-child(odd) {
-  clear: left;
+	clear: left;
 }
 
-article > .paste {
-  min-width: 380px;
-  width: 25vw;
-  margin: 10px 10px 0;
-  font: 14px monospace;
-  line-height: 1.45;
+article>.paste {
+	min-width: 400px;
+	width: 25vw;
+	/* margin: 10px 10px 0; */
+	font: 14px monospace;
+	line-height: 1.45;
 }
 
 article {
-  display: flex;
-  flex-flow: row wrap;
-  align-items: flex-start;
-  margin: 0;
+	display: flex;
+	flex-flow: row wrap;
+	align-items: flex-start;
+	margin: 0;
 }
 
 div.img {
-  position: relative;
-  margin: 15px;
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+	position: relative;
+	margin: 15px;
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
 }
 
 span.img-item {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 48px; /* Change this to the desired width */
-  height: 48px; /* Change this to the desired height */
-  background-size: 344px 1032px; /* Adjust the background size to 'auto' */
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 48px;
+	/* Change this to the desired width */
+	height: 48px;
+	/* Change this to the desired height */
+	background-size: 344px 1032px;
+	/* Adjust the background size to 'auto' */
 }
