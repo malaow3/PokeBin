@@ -208,7 +208,7 @@ article:nth-child(odd) {
 article>.paste {
 	min-width: 400px;
 	width: 25vw;
-	/* margin: 10px 10px 0; */
+	margin: 10px 10px 0;
 	font: 14px monospace;
 	line-height: 1.45;
 }
