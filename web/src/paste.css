@@ -15,7 +15,7 @@ p {
 
 	.content-container {
 		display: flex;
-		flex-direction: column-reverse;
+		flex-direction: column;
 		/* side-content above main */
 	}
 
@@ -35,7 +35,8 @@ p {
 
 	.content-container {
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
+		flex-wrap: wrap;
 		/* main above side-content */
 	}
 

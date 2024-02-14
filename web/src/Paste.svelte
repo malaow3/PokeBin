@@ -195,8 +195,8 @@
 </head>
 
 <!--Wait for paste_data.sets to exist-->
-<div class="content-container">
-	<main>
+<div>
+	<main class="content-container">
 		{#if paste_data !== undefined && paste_data !== null}
 			{#each paste_data.sets as set_item}
 				{#if set_item.mon !== null}
