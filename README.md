@@ -77,11 +77,29 @@ There are a couple of "planned" features that I hope to add to PokeBin -- time p
 
 I'm going to excluded things like routine maitenance. I'll be adding new mons / items / etc. in the future as they come out.
 
+In order of prority:
+
+- Password protecting -- Many people, understandably, are concerned about the ability for myself to view the paste contents.
+While I have no intention of doing that, I totally understand the desire to have a paste be encrypted. I am not immediately sure
+what the "right" solution here is -- and I want it to be something that doesn't hamper integration with Showdown imports / exports.
+If you (the person reading this) have any suggestions, please let me know by creating an open feature request!
+
+- Icon - Having no favicon is boring. I will add one.
+
+- Update design - There is a minor inconsistency with the display for mobile vs. desktop. Improving the overall design on mobile
+is also important, truthfully it looks pretty poor right now 😭.
+
+- Import / Export from Showdown -- this obviously requires a change on Showdown's platform -- I am willing to make those contributions if this site gains enough traction.
+
+- Move to Redis? I don't think Postgres is strictly necessary, and a simple kv db should suffice.
+
+- Rewrite it in Go? I wrote this in Rust for the learning experience, maybe Go is better for OSS contributions. This is still on the table.
+
 - Accounts: associating pastes to an account so that they can be later reviewed without hoping you saved the link. Maybe there is a way to link a Showdown account? TBD.
     - This can also let a paste be deleted if it's requested by the owner of the paste.
-- Import / Export from Showdown -- this obviously requires a change on Showdown's platform -- I am willing to make those contributions if this site gains enough traction.
-- Move to Redis? I don't think Postgres is strictly necessary, and a simple kv db should suffice.
+
 - Native for mobile? Instead of a PWA or mobile-responsive website, building a native app could be pretty neat.
+
 - Timed-deletion: You can mark a paste to be deleted after a specific amount of time.
 
 
