@@ -27,7 +27,7 @@
 		</p>
 		<br />
 		This is entirely a passion-project, but once again I want to thank you for
-		checking out <span class="text-pink-700">Poke</span><span
+		checking out <span class="text-pink-600">Poke</span><span
 			class="text-pink-50">Bin</span
 		>
 		💖
