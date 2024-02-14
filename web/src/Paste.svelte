@@ -1,6 +1,7 @@
 <script lang="ts">
 	import axios from "axios";
 	import { onMount } from "svelte";
+	import DOMPurify from "dompurify";
 
 	// PASTE_ID prop
 	let pasteId: string;
@@ -33,9 +34,9 @@
 		let children_list = [];
 
 		for (let i = 0; i < children.length; i++) {
-			if (children[i].tagName === "PRE") {
-				continue;
-			}
+			// if (children[i].tagName === "PRE") {
+			// 	continue;
+			// }
 			children_list.push(children[i]);
 		}
 		while (children_list.length > 0) {
@@ -116,10 +117,22 @@
 			paste_data = response.data;
 			console.log(paste_data);
 			if (paste_data !== null) {
+				paste_data.title = DOMPurify.sanitize(paste_data.title);
+				paste_data.author = DOMPurify.sanitize(paste_data.author);
+				paste_data.notes = DOMPurify.sanitize(paste_data.notes);
+				paste_data.rental = DOMPurify.sanitize(paste_data.rental);
+				paste_data.format = DOMPurify.sanitize(paste_data.format);
+
 				for (let poke in paste_data.sets) {
 					let mon = paste_data.sets[poke].mon;
 
 					if (mon !== null) {
+						mon.nickname = DOMPurify.sanitize(mon.nickname);
+						mon.name = DOMPurify.sanitize(mon.name);
+						mon.type1 = DOMPurify.sanitize(mon.type1);
+						mon.item = DOMPurify.sanitize(mon.item);
+						mon.other = mon.other.map((x) => DOMPurify.sanitize(x));
+
 						if (mon.hp != 0) {
 							mon.last_stat = "hp";
 						}
@@ -158,6 +171,12 @@
 						if (mon.spe_iv != null) {
 							mon.last_stat_iv = "spe";
 						}
+					} else if (paste_data.sets[poke].text !== null) {
+						// Make sure paste_data.sets[poke].text is not null
+						paste_data.sets[poke].text = DOMPurify.sanitize(
+							// @ts-ignore
+							paste_data.sets[poke].text,
+						);
 					}
 				}
 			}
