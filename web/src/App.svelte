@@ -36,7 +36,7 @@
 		<div id="sidebar">
 			<br />
 			<div class="text-4xl mt-2" style="padding: 0 !important;">
-				<span class="text-pink-700">Poke</span><span
+				<span class="text-pink-600">Poke</span><span
 					class="text-pink-50">Bin</span
 				>
 			</div>
