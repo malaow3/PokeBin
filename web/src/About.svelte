@@ -1,6 +1,11 @@
-<div class="container mx-auto px-4">
+<div class="container mx-auto px-4" style="color: white">
 	<div class="max-w-3xl mx-auto py-2">
-		<h1 class="text-4xl font-bold mb-4">About PokeBin</h1>
+		<h1 class="text-4xl font-bold mb-4">
+			About
+			<span class="text-pink-600">Poke</span><span style="color: #f7cae2"
+				>Bin</span
+			>
+		</h1>
 		<p class="text-lg mb-4">
 			PokeBin was created as an alternative to PokePaste. As a developer,
 			I did this for three reasons
@@ -27,8 +32,9 @@
 		</p>
 		<br />
 		This is entirely a passion-project, but once again I want to thank you for
-		checking out <span class="text-pink-600">Poke</span><span
-			class="text-pink-50">Bin</span
+		checking out
+		<span class="text-pink-600">Poke</span><span style="color: #f7cae2"
+			>Bin</span
 		>
 		💖
 

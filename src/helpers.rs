@@ -23,7 +23,7 @@ pub fn search_like<T: Clone>(map: &HashMap<String, T>, pattern: &str) -> Option<
     }
 
     // Check a secondary match
-    let regex_pattern = format!("(?i)^{}", pattern.replace('%', ".*").replace('_', "."));
+    let regex_pattern = format!("(?i)^{}.*", pattern.replace('_', "."));
     let re = Regex::new(&regex_pattern).unwrap();
     for (key, value) in map.iter() {
         if re.is_match(key) {
@@ -75,13 +75,12 @@ pub fn get_image(map: &HashMap<String, Mon>, pokemon: &str, shiny: bool, female:
             .to_string();
         if shiny {
             return format!("home/shiny/869-{}.png", random_decoration);
-        } else {
-            let flavor = match pokemon {
-                "alcremie" => "vanilla-cream".to_string(),
-                _ => pokemon.split('-').collect::<Vec<&str>>()[1..].join("-"),
-            };
-            return format!("home/869-{}-{}.png", flavor, random_decoration);
         }
+        let flavor = match pokemon {
+            "alcremie" => "vanilla-cream".to_string(),
+            _ => pokemon.split('-').collect::<Vec<&str>>()[1..].join("-"),
+        };
+        return format!("home/869-{}-{}.png", flavor, random_decoration);
     }
 
     if map.contains_key(pokemon) {
@@ -162,11 +161,11 @@ pub fn get_image(map: &HashMap<String, Mon>, pokemon: &str, shiny: bool, female:
     let mut egg_path = PathBuf::from("home");
     egg_path.push("0.png");
 
-    return egg_path.to_str().unwrap().to_string();
+    egg_path.to_str().unwrap().to_string()
 }
 
 pub fn get_item_image(map: &HashMap<String, serde_json::Value>, item: &str) -> String {
-    let early_return = "background: transparent url(\"https://play.pokemonshowdown.com/sprites/pokemonicons-sheet.png?v16\") -360px -2580px no-repeat".to_string();
+    let early_return = "background: transparent url(\"assets/missing\") no-repeat; height: 64px !important; width: 64px!important; background-position: 5px 10px".to_string();
 
     if map.contains_key(item) {
         let sprite_num = match map[item]["spritenum"].as_u64() {
