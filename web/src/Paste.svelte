@@ -1,12 +1,21 @@
 <script lang="ts">
+	import { match } from "ts-pattern";
 	import axios from "axios";
 	import { onMount } from "svelte";
 	import DOMPurify from "dompurify";
+	import {
+		decryptMessage,
+		search_like,
+		get_item_image,
+		get_image,
+	} from "./helpers";
 
 	// PASTE_ID prop
 	let pasteId: string;
 
 	let showNotes = false;
+
+	let loaded = false;
 
 	function toggleNotes() {
 		showNotes = !showNotes;
@@ -96,6 +105,35 @@
 		moves: Move[];
 		gender: string;
 	};
+
+	function newMon(): Mon {
+		return {
+			nickname: "",
+			name: "",
+			type1: "",
+			item: "",
+			other: [],
+			hp: 0,
+			atk: 0,
+			def: 0,
+			spa: 0,
+			spd: 0,
+			spe: 0,
+			last_stat: "",
+			image: "",
+			item_img: "",
+			hp_iv: null,
+			atk_iv: null,
+			def_iv: null,
+			spa_iv: null,
+			spd_iv: null,
+			spe_iv: null,
+			last_stat_iv: null,
+			moves: [],
+			gender: "",
+		};
+	}
+
 	type PasteData = {
 		title: string;
 		author: string;
@@ -103,6 +141,10 @@
 		rental: string;
 		format: string;
 		sets: Set[];
+		encrypted_data: string;
+		mons: Object;
+		items: Object;
+		moves: Object;
 	};
 
 	let paste_data: PasteData | null = null;
@@ -117,6 +159,256 @@
 			paste_data = response.data;
 			console.log(paste_data);
 			if (paste_data !== null) {
+				if (
+					paste_data.encrypted_data !== null &&
+					paste_data.encrypted_data !== undefined
+				) {
+					// HANDLE ENCRYPTED DATA
+					console.log("Decrypting data");
+					// Get user input via popup.
+					let done = false;
+					let data = "";
+					let promptMsg = "Enter password";
+					while (!done) {
+						let passkey = prompt(promptMsg, "");
+
+						while (passkey == null || passkey == "") {
+							promptMsg = "Enter password";
+							passkey = prompt(promptMsg, "");
+						}
+						let decrypted = await decryptMessage(
+							passkey as string,
+							paste_data.encrypted_data,
+						);
+						match(decrypted)
+							.with({ type: "error" }, async () => {
+								promptMsg = "Invalid password";
+							})
+							.with({ type: "ok" }, ({ unwrap }) => {
+								data = unwrap();
+								done = true;
+							});
+					}
+
+					let content = data.split("\n-----\n");
+					let metadata = JSON.parse(content[0]);
+					data = content[1];
+
+					paste_data.title = metadata.title;
+					paste_data.author = metadata.author;
+					paste_data.notes = metadata.notes;
+					paste_data.rental = metadata.rental;
+					paste_data.format = metadata.format;
+
+					// This section is essentially the same logic in main.rs ported over to be handled on the client side.
+					let sets = data
+						.split("\n\n")
+						.map((x) => x.trim())
+						.filter((x) => x !== "");
+					console.log(sets);
+					paste_data.sets = [];
+
+					const mons = new Map(Object.entries(paste_data.mons));
+					const items = new Map(Object.entries(paste_data.items));
+					const moves = new Map(Object.entries(paste_data.moves));
+
+					const RE_HEAD =
+						/^(?:(.* \()([A-Z][a-z0-9:']+\.?(?:[- ][A-Za-z][a-z0-9:']*\.?)*)(\))|([A-Z][a-z0-9:']+\.?(?:[- ][A-Za-z][a-z0-9:']*\.?)*))(?:( \()([MF])(\)))?(?:( @ )([A-Z][a-z0-9:']*(?:[- ][A-Z][a-z0-9:']*)*))?( *)$/;
+					const RE_MOVE =
+						/^(-)( ([A-Z][a-z\']*(?:[- ][A-Za-z][a-z\']*)*)(?: \[([A-Z][a-z]+)\])?(?: \/ [A-Z][a-z\']*(?:[- ][A-Za-z][a-z\']*)*)* *)$/;
+					const RE_STAT =
+						/^(\d+ HP)?( \/ )?(\d+ Atk)?( \/ )?(\d+ Def)?( \/ )?(\d+ SpA)?( \/ )?(\d+ SpD)?( \/ )?(\d+ Spe)?( *)$/;
+
+					for (let i = 0; i < sets.length; i++) {
+						let set = sets[i].trim();
+						let lines = set.split("\n");
+						let captures = lines[0].match(RE_HEAD);
+
+						if (captures === null) {
+							paste_data.sets.push({
+								mon: null,
+								text: set,
+							});
+							continue;
+						}
+
+						let set_mon = newMon();
+						let search_name = "";
+
+						if (captures[2]) {
+							let name = captures[2];
+							search_name = name
+								.toLowerCase()
+								.replaceAll(" ", "-");
+							let mon = search_like(mons, search_name);
+							set_mon.name = name;
+							if (mon.isSome()) {
+								let result = mon.unwrap();
+								console.log(result);
+								search_name = result[0];
+								set_mon.type1 = result[1].type1;
+								set_mon.nickname = captures[1];
+							}
+						} else if (captures[4]) {
+							search_name = captures[4]
+								.toLowerCase()
+								.replaceAll(" ", "-");
+							let mon = search_like(mons, search_name);
+							set_mon.name = captures[4];
+							if (mon.isSome()) {
+								let result = mon.unwrap();
+								console.log(result);
+								search_name = result[0];
+								set_mon.type1 = result[1].type1;
+							}
+						}
+
+						if (captures[6]) {
+							let gender = captures[6];
+							switch (gender) {
+								case "M":
+									set_mon.gender = "m";
+									break;
+								case "F":
+									set_mon.gender = "f";
+									break;
+								default:
+									break;
+							}
+						}
+
+						if (captures[9]) {
+							set_mon.item = captures[9];
+							set_mon.item_img = get_item_image(
+								items,
+								captures[9],
+							);
+						}
+
+						let is_female = set_mon.gender == "f";
+						let is_shiny = set.match("Shiny: Yes") != null;
+						console.log(search_name);
+						let image = get_image(
+							mons,
+							search_name,
+							is_shiny,
+							is_female,
+						);
+						set_mon.image = image;
+
+						for (let i = 1; i < lines.length; i++) {
+							let line = lines[i];
+							let moves_captures = line.trim().match(RE_MOVE);
+							if (moves_captures) {
+								if (moves_captures[3]) {
+									let move_name = moves_captures[3];
+									let move_search = move_name
+										.replace(" ", "-")
+										.toLowerCase();
+									let move_result = search_like(
+										moves,
+										move_search,
+									);
+
+									if (move_result.isSome()) {
+										let result = move_result.unwrap();
+										let move_object: Move = result[1];
+										set_mon.moves.push({
+											type1: move_object.type1,
+											name: move_name,
+										});
+									} else {
+										set_mon.moves.push({
+											type1: "",
+											name: move_name,
+										});
+									}
+								}
+							} else if (line.startsWith("EVs: ")) {
+								let evs = line.split(":");
+								let captures = evs[1].trim().match(RE_STAT);
+								if (captures) {
+									if (captures[1]) {
+										set_mon.hp = parseInt(
+											captures[1].split(" ")[0],
+										);
+									}
+									if (captures[3]) {
+										set_mon.atk = parseInt(
+											captures[3].split(" ")[0],
+										);
+									}
+									if (captures[5]) {
+										set_mon.def = parseInt(
+											captures[5].split(" ")[0],
+										);
+									}
+									if (captures[7]) {
+										set_mon.spa = parseInt(
+											captures[7].split(" ")[0],
+										);
+									}
+									if (captures[9]) {
+										set_mon.spd = parseInt(
+											captures[9].split(" ")[0],
+										);
+									}
+									if (captures[11]) {
+										set_mon.spe = parseInt(
+											captures[11].split(" ")[0],
+										);
+									}
+								} else {
+									set_mon.other.push(line);
+								}
+							} else if (line.startsWith("IVs: ")) {
+								let ivs = line.split(":");
+								let captures = ivs[1].trim().match(RE_STAT);
+								if (captures) {
+									if (captures[1]) {
+										set_mon.hp_iv = parseInt(
+											captures[1].split(" ")[0],
+										);
+									}
+									if (captures[3]) {
+										set_mon.atk_iv = parseInt(
+											captures[3].split(" ")[0],
+										);
+									}
+									if (captures[5]) {
+										set_mon.def_iv = parseInt(
+											captures[5].split(" ")[0],
+										);
+									}
+									if (captures[7]) {
+										set_mon.spa_iv = parseInt(
+											captures[7].split(" ")[0],
+										);
+									}
+									if (captures[9]) {
+										set_mon.spd_iv = parseInt(
+											captures[9].split(" ")[0],
+										);
+									}
+									if (captures[11]) {
+										set_mon.spe_iv = parseInt(
+											captures[11].split(" ")[0],
+										);
+									}
+								} else {
+									set_mon.other.push(line);
+								}
+							} else {
+								set_mon.other.push(line);
+							}
+						}
+						paste_data.sets.push({
+							mon: set_mon,
+							text: null,
+						});
+					}
+				}
+				console.log(paste_data);
 				paste_data.title = DOMPurify.sanitize(paste_data.title);
 				paste_data.author = DOMPurify.sanitize(paste_data.author);
 				paste_data.notes = DOMPurify.sanitize(paste_data.notes);
@@ -183,319 +475,339 @@
 		} catch (e) {
 			console.log(e);
 		}
+		loaded = true;
 	});
 </script>
 
 <head>
-	{#if paste_data !== null && paste_data.title !== null && paste_data.title !== ""}
-		<title>{paste_data?.title}</title>
-	{:else}
+	{#if paste_data === null || !loaded}
 		<title>Untitled</title>
+	{:else}
+		<title>{paste_data?.title}</title>
 	{/if}
 </head>
 
 <!--Wait for paste_data.sets to exist-->
-<div class="content-container">
-	<main>
-		{#if paste_data !== undefined && paste_data !== null}
-			{#each paste_data.sets as set_item}
-				{#if set_item.mon !== null}
-					<article>
-						<div class="img">
-							{#if set_item.mon.image !== null && set_item.mon.item !== ""}
-								<span
-									class="img-item"
-									style={set_item.mon.item_img}
+{#if loaded}
+	<div class="content-container">
+		<main>
+			{#if paste_data !== undefined && paste_data !== null}
+				{#each paste_data.sets as set_item}
+					{#if set_item.mon !== null}
+						<article>
+							<div class="img">
+								{#if set_item.mon.image !== null && set_item.mon.item !== ""}
+									{#if set_item.mon.item_img.includes("img.pokemondb.net")}
+										<span
+											class="img-item"
+											style={set_item.mon.item_img +
+												"; height: 128px !important; width: 120px !important; background-position: 30px 40px; background-repeat: no-repeat"}
+										/>
+									{:else}
+										<span
+											class="img-item"
+											style={set_item.mon.item_img}
+										/>
+									{/if}
+								{/if}
+								<img
+									class="img-pokemon"
+									src={set_item.mon.image}
+									alt={set_item.mon.name}
 								/>
-							{/if}
-							<img
-								class="img-pokemon"
-								src="/{set_item.mon.image}"
-								alt={set_item.mon.name}
-							/>
-						</div>
+							</div>
 
-						<div class="paste">
-							{#if set_item.mon !== null}
-								{#if set_item.mon.nickname !== null && set_item.mon.nickname !== ""}
-									<span>{set_item.mon.nickname} (</span><span
-										class="type-{set_item.mon.type1}"
-										>{set_item.mon.name}</span
-									><span>)</span>
-								{:else}
-									<span class="type-{set_item.mon.type1}"
-										>{set_item.mon.name}</span
-									>
+							<div class="paste">
+								{#if set_item.mon !== null}
+									{#if set_item.mon.nickname !== null && set_item.mon.nickname !== ""}
+										<span>{set_item.mon.nickname} (</span
+										><span class="type-{set_item.mon.type1}"
+											>{set_item.mon.name}</span
+										><span>)</span>
+									{:else}
+										<span class="type-{set_item.mon.type1}"
+											>{set_item.mon.name}</span
+										>
+									{/if}
+									{#if set_item.mon.gender !== null && set_item.mon.gender !== ""}
+										<span>(</span><span
+											class="gender-{set_item.mon.gender}"
+										>
+											{set_item.mon.gender.toUpperCase()}</span
+										><span>)</span>
+									{/if}
+									{#if set_item.mon.item !== null && set_item.mon.item !== ""}
+										<span
+											>{@html `@ ${set_item.mon.item.trim()}`}</span
+										>
+									{/if}
+									<br />
+
+									<!-- Ability -->
+									{#each set_item.mon.other.filter( (x) => x.startsWith("Ability:"), ) as ability}
+										<span class="attr">Ability:</span>
+										<span
+											>{@html `${ability
+												.trim()
+												.replace(
+													"Ability:",
+													"",
+												)}`}</span
+										>
+										<br />
+									{/each}
+
+									<!-- Level -->
+									{#each set_item.mon.other.filter( (x) => x.startsWith("Level:"), ) as level}
+										<span class="attr">Level:</span>
+										<span
+											>{@html `${level
+												.trim()
+												.replace("Level:", "")}`}</span
+										>
+										<br />
+									{/each}
+
+									<!-- Shiny -->
+									{#each set_item.mon.other.filter( (x) => x.startsWith("Shiny:"), ) as shiny}
+										<span class="attr">Shiny:</span>
+										<span
+											>{@html `${shiny
+												.trim()
+												.replace("Shiny:", "")}`}</span
+										>
+										<br />
+									{/each}
+
+									<!-- Hidden Power Type -->
+									{#each set_item.mon.other.filter( (x) => x.startsWith("Hidden Power:"), ) as hidden_power}
+										<span class="attr">Hidden Power:</span>
+										<span
+											class="type-{hidden_power
+												.trim()
+												.replace('Hidden Power: ', '')
+												.toLowerCase()}"
+											>{@html `${hidden_power
+												.trim()
+												.replace(
+													"Hidden Power:",
+													"",
+												)}`}</span
+										>
+										<br />
+									{/each}
+
+									<!-- Tera type -->
+									{#each set_item.mon.other.filter( (x) => x.startsWith("Tera Type:"), ) as tera_type}
+										<span class="attr">Tera Type:</span>
+										<span
+											class="type-{tera_type
+												.trim()
+												.replace('Tera Type: ', '')
+												.toLowerCase()}"
+											>{@html `${tera_type
+												.trim()
+												.replace(
+													"Tera Type:",
+													"",
+												)}`}</span
+										>
+										<br />
+									{/each}
+
+									<!-- EVs -->
+									{#if set_item.mon !== null && (set_item.mon.hp != 0 || set_item.mon.atk != 0 || set_item.mon.def != 0 || set_item.mon.spa != 0 || set_item.mon.spd != 0 || set_item.mon.spe != 0)}
+										<span class="attr">EVs:</span>
+										{#if set_item.mon.hp != 0}
+											<span class="stat-hp"
+												>{set_item.mon.hp} HP</span
+											>
+											{#if set_item.mon.last_stat != "hp"}
+												<span> / </span>
+											{/if}
+										{/if}
+										{#if set_item.mon.atk != 0}
+											<span class="stat-atk"
+												>{set_item.mon.atk} Atk</span
+											>
+											{#if set_item.mon.last_stat != "atk"}
+												<span> / </span>
+											{/if}
+										{/if}
+										{#if set_item.mon.def != 0}
+											<span class="stat-def"
+												>{set_item.mon.def} Def</span
+											>
+											{#if set_item.mon.last_stat != "def"}
+												<span> / </span>
+											{/if}
+										{/if}
+										{#if set_item.mon.spa != 0}
+											<span class="stat-spa"
+												>{set_item.mon.spa} Spa</span
+											>
+											{#if set_item.mon.last_stat != "spa"}
+												<span> / </span>
+											{/if}
+										{/if}
+										{#if set_item.mon.spd != 0}
+											<span class="stat-spd"
+												>{set_item.mon.spd} Spd</span
+											>
+											{#if set_item.mon.last_stat != "spd"}
+												<span> / </span>
+											{/if}
+										{/if}
+										{#if set_item.mon.spe != 0}
+											<span class="stat-spe"
+												>{set_item.mon.spe} Spe</span
+											>
+										{/if}
+										<br />
+									{/if}
+
+									<!-- Nature -->
+									{#each set_item.mon.other.filter( (x) => x.includes("Nature"), ) as nature}
+										<span>{@html `${nature}`}</span>
+										<br />
+									{/each}
+
+									<!-- IVs-->
+									{#if set_item.mon !== null && set_item.mon.last_stat_iv !== null}
+										<span class="attr">IVs:</span>
+										{#if set_item.mon.hp_iv !== null}
+											<span class="stat-hp"
+												>{set_item.mon.hp_iv} HP</span
+											>
+											{#if set_item.mon.last_stat_iv != "hp"}
+												<span> / </span>
+											{/if}
+										{/if}
+										{#if set_item.mon.atk_iv !== null}
+											<span class="stat-atk"
+												>{set_item.mon.atk_iv} Atk</span
+											>
+											{#if set_item.mon.last_stat_iv != "atk"}
+												<span> / </span>
+											{/if}
+										{/if}
+										{#if set_item.mon.def_iv !== null}
+											<span class="stat-def"
+												>{set_item.mon.def_iv} Def</span
+											>
+											{#if set_item.mon.last_stat_iv != "def"}
+												<span> / </span>
+											{/if}
+										{/if}
+										{#if set_item.mon.spa_iv !== null}
+											<span class="stat-spa"
+												>{set_item.mon.spa_iv} SpA</span
+											>
+											{#if set_item.mon.last_stat_iv != "spa"}
+												<span> / </span>
+											{/if}
+										{/if}
+										{#if set_item.mon.spd_iv !== null}
+											<span class="stat-spd"
+												>{set_item.mon.spd_iv} SpD</span
+											>
+											{#if set_item.mon.last_stat_iv != "spd"}
+												<span> / </span>
+											{/if}
+										{/if}
+										{#if set_item.mon.spe_iv !== null}
+											<span class="stat-spe"
+												>{set_item.mon.spe_iv} Spe</span
+											>
+										{/if}
+										<br />
+									{/if}
+
+									<!-- Moves -->
+									{#each set_item.mon.moves as move}
+										<span class="type-{move.type1}"
+											>-
+										</span><span>{move.name}</span>
+										<br />
+									{/each}
+									<br />
 								{/if}
-								{#if set_item.mon.gender !== null && set_item.mon.gender !== ""}
-									<span>(</span><span
-										class="gender-{set_item.mon.gender}"
-									>
-										{set_item.mon.gender.toUpperCase()}</span
-									><span>)</span>
-								{/if}
-								{#if set_item.mon.item !== null && set_item.mon.item !== ""}
-									<span
-										>{@html `@ ${set_item.mon.item.trim()}`}</span
-									>
-								{/if}
-								<br />
-
-								<!-- Ability -->
-								{#each set_item.mon.other.filter( (x) => x.startsWith("Ability:"), ) as ability}
-									<span class="attr">Ability:</span>
-									<span
-										>{@html `${ability
-											.trim()
-											.replace("Ability:", "")}`}</span
-									>
-									<br />
-								{/each}
-
-								<!-- Level -->
-								{#each set_item.mon.other.filter( (x) => x.startsWith("Level:"), ) as level}
-									<span class="attr">Level:</span>
-									<span
-										>{@html `${level
-											.trim()
-											.replace("Level:", "")}`}</span
-									>
-									<br />
-								{/each}
-
-								<!-- Shiny -->
-								{#each set_item.mon.other.filter( (x) => x.startsWith("Shiny:"), ) as shiny}
-									<span class="attr">Shiny:</span>
-									<span
-										>{@html `${shiny
-											.trim()
-											.replace("Shiny:", "")}`}</span
-									>
-									<br />
-								{/each}
-
-								<!-- Hidden Power Type -->
-								{#each set_item.mon.other.filter( (x) => x.startsWith("Hidden Power:"), ) as hidden_power}
-									<span class="attr">Hidden Power:</span>
-									<span
-										class="type-{hidden_power
-											.trim()
-											.replace('Hidden Power: ', '')
-											.toLowerCase()}"
-										>{@html `${hidden_power
-											.trim()
-											.replace(
-												"Hidden Power:",
-												"",
-											)}`}</span
-									>
-									<br />
-								{/each}
-
-								<!-- Tera type -->
-								{#each set_item.mon.other.filter( (x) => x.startsWith("Tera Type:"), ) as tera_type}
-									<span class="attr">Tera Type:</span>
-									<span
-										class="type-{tera_type
-											.trim()
-											.replace('Tera Type: ', '')
-											.toLowerCase()}"
-										>{@html `${tera_type
-											.trim()
-											.replace("Tera Type:", "")}`}</span
-									>
-									<br />
-								{/each}
-
-								<!-- EVs -->
-								{#if set_item.mon !== null && (set_item.mon.hp != 0 || set_item.mon.atk != 0 || set_item.mon.def != 0 || set_item.mon.spa != 0 || set_item.mon.spd != 0 || set_item.mon.spe != 0)}
-									<span class="attr">EVs:</span>
-									{#if set_item.mon.hp != 0}
-										<span class="stat-hp"
-											>{set_item.mon.hp} HP</span
-										>
-										{#if set_item.mon.last_stat != "hp"}
-											<span> / </span>
-										{/if}
-									{/if}
-									{#if set_item.mon.atk != 0}
-										<span class="stat-atk"
-											>{set_item.mon.atk} Atk</span
-										>
-										{#if set_item.mon.last_stat != "atk"}
-											<span> / </span>
-										{/if}
-									{/if}
-									{#if set_item.mon.def != 0}
-										<span class="stat-def"
-											>{set_item.mon.def} Def</span
-										>
-										{#if set_item.mon.last_stat != "def"}
-											<span> / </span>
-										{/if}
-									{/if}
-									{#if set_item.mon.spa != 0}
-										<span class="stat-spa"
-											>{set_item.mon.spa} Spa</span
-										>
-										{#if set_item.mon.last_stat != "spa"}
-											<span> / </span>
-										{/if}
-									{/if}
-									{#if set_item.mon.spd != 0}
-										<span class="stat-spd"
-											>{set_item.mon.spd} Spd</span
-										>
-										{#if set_item.mon.last_stat != "spd"}
-											<span> / </span>
-										{/if}
-									{/if}
-									{#if set_item.mon.spe != 0}
-										<span class="stat-spe"
-											>{set_item.mon.spe} Spe</span
-										>
-									{/if}
-									<br />
-								{/if}
-
-								<!-- Nature -->
-								{#each set_item.mon.other.filter( (x) => x.includes("Nature"), ) as nature}
-									<span>{@html `${nature}`}</span>
-									<br />
-								{/each}
-
-								<!-- IVs-->
-								{#if set_item.mon !== null && set_item.mon.last_stat_iv !== null}
-									<span class="attr">IVs:</span>
-									{#if set_item.mon.hp_iv !== null}
-										<span class="stat-hp"
-											>{set_item.mon.hp_iv} HP</span
-										>
-										{#if set_item.mon.last_stat_iv != "hp"}
-											<span> / </span>
-										{/if}
-									{/if}
-									{#if set_item.mon.atk_iv !== null}
-										<span class="stat-atk"
-											>{set_item.mon.atk_iv} Atk</span
-										>
-										{#if set_item.mon.last_stat_iv != "atk"}
-											<span> / </span>
-										{/if}
-									{/if}
-									{#if set_item.mon.def_iv !== null}
-										<span class="stat-def"
-											>{set_item.mon.def_iv} Def</span
-										>
-										{#if set_item.mon.last_stat_iv != "def"}
-											<span> / </span>
-										{/if}
-									{/if}
-									{#if set_item.mon.spa_iv !== null}
-										<span class="stat-spa"
-											>{set_item.mon.spa_iv} SpA</span
-										>
-										{#if set_item.mon.last_stat_iv != "spa"}
-											<span> / </span>
-										{/if}
-									{/if}
-									{#if set_item.mon.spd_iv !== null}
-										<span class="stat-spd"
-											>{set_item.mon.spd_iv} SpD</span
-										>
-										{#if set_item.mon.last_stat_iv != "spd"}
-											<span> / </span>
-										{/if}
-									{/if}
-									{#if set_item.mon.spe_iv !== null}
-										<span class="stat-spe"
-											>{set_item.mon.spe_iv} Spe</span
-										>
-									{/if}
-									<br />
-								{/if}
-
-								<!-- Moves -->
-								{#each set_item.mon.moves as move}
-									<span class="type-{move.type1}"
-										>-
-									</span><span>{move.name}</span>
-									<br />
-								{/each}
-								<br />
-							{/if}
-						</div>
-					</article>
-				{:else}
-					<article>
-						<pre>
+							</div>
+						</article>
+					{:else}
+						<article>
+							<pre>
 					{set_item.text}
 				</pre>
-					</article>
-				{/if}
-			{/each}
-		{/if}
-	</main>
-	<br />
+						</article>
+					{/if}
+				{/each}
+			{/if}
+		</main>
+		<br />
 
-	<div
-		class="side-content"
-		id="sidebar"
-		on:mouseover={() => setSelectable(true, "sidebar")}
-		on:focus={() => setSelectable(true, "sidebar")}
-		on:mouseout={() => setSelectable(false, "sidebar")}
-		on:blur={() => setSelectable(false, "sidebar")}
-		role="note"
-		style="user-select: none"
-	>
-		<div id="metadata">
-			{#if paste_data}
-				<div class="metadata">
-					{#if paste_data.title != "" && paste_data.title !== null && paste_data.title != undefined}
-						<h1 class="mx-10 text-pink-500 text-2xl" id="title">
-							{paste_data.title}
-						</h1>
-					{/if}
-					{#if paste_data.author != "" && paste_data.author !== null && paste_data.author != undefined}
-						<p class="mx-10 text-base" id="author">
-							By: {paste_data.author}
-						</p>
-					{/if}
-					{#if paste_data.format != "" && paste_data.format !== null && paste_data.format != undefined}
-						<p class="mx-10 text-base" id="format">
-							Format: {paste_data.format}
-						</p>
-					{/if}
-					{#if paste_data.rental != "" && paste_data.rental !== null && paste_data.rental != undefined}
-						<p class="mx-10 text-base" id="rental">
-							Rental: {paste_data.rental}
-						</p>
-					{/if}
-					{#if paste_data.notes != "" && paste_data.notes !== null && paste_data.notes != undefined}
-						<button
-							on:click={toggleNotes}
-							class="mx-10 toggle-notes"
-						>
-							{showNotes ? "Hide notes" : "Show notes"}
-						</button>
-						{#if showNotes}
-							<p
-								class="mx-10 text-base"
-								style="user-select:none"
-								id="notes"
-							>
-								{@html paste_data.notes.replace(/\n/g, "<br>")}
+		<div
+			class="side-content"
+			id="sidebar"
+			on:mouseover={() => setSelectable(true, "sidebar")}
+			on:focus={() => setSelectable(true, "sidebar")}
+			on:mouseout={() => setSelectable(false, "sidebar")}
+			on:blur={() => setSelectable(false, "sidebar")}
+			role="note"
+			style="user-select: none"
+		>
+			<div id="metadata">
+				{#if paste_data !== null}
+					<div class="metadata">
+						{#if paste_data.title != "" && paste_data.title !== null && paste_data.title != undefined}
+							<h1 class="mx-10 text-pink-500 text-2xl" id="title">
+								{paste_data.title}
+							</h1>
+						{/if}
+						{#if paste_data.author != "" && paste_data.author !== null && paste_data.author != undefined}
+							<p class="mx-10 text-base" id="author">
+								By: {paste_data.author}
 							</p>
 						{/if}
-					{/if}
-				</div>
-			{/if}
-		</div>
-		<div class="extra mx-10">
-			<p>placeholder content</p>
+						{#if paste_data.format != "" && paste_data.format !== null && paste_data.format != undefined}
+							<p class="mx-10 text-base" id="format">
+								Format: {paste_data.format}
+							</p>
+						{/if}
+						{#if paste_data.rental != "" && paste_data.rental !== null && paste_data.rental != undefined}
+							<p class="mx-10 text-base" id="rental">
+								Rental: {paste_data.rental}
+							</p>
+						{/if}
+						{#if paste_data.notes != "" && paste_data.notes !== null && paste_data.notes != undefined}
+							<button
+								on:click={toggleNotes}
+								class="mx-10 toggle-notes"
+							>
+								{showNotes ? "Hide notes" : "Show notes"}
+							</button>
+							{#if showNotes}
+								<p
+									class="mx-10 text-base"
+									style="user-select:none"
+									id="notes"
+								>
+									{@html paste_data.notes.replace(
+										/\n/g,
+										"<br>",
+									)}
+								</p>
+							{/if}
+						{/if}
+					</div>
+				{/if}
+			</div>
+			<div class="extra mx-10">
+				<p>placeholder content</p>
+			</div>
 		</div>
 	</div>
-</div>
+{/if}
 
 <style lang="postcss">
 	.toggle-notes {

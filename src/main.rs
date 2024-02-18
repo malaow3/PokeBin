@@ -183,6 +183,24 @@ async fn run_main() {
                 Ok(body)
             }),
         )
+        .route(
+            "/assets/missing",
+            // Serve the image file
+            get(|| async move {
+                let file = match tokio::fs::File::open("web/dist/missing.png").await {
+                    Ok(file) => file,
+                    Err(err) => {
+                        return Err((StatusCode::NOT_FOUND, format!("File not found: {}", err)))
+                    }
+                };
+                // convert the `AsyncRead` into a `Stream`
+                let stream = ReaderStream::new(file);
+                // convert the `Stream` into an `axum::body::HttpBody`
+                let body = axum::body::Body::from_stream(stream);
+
+                Ok(body)
+            }),
+        )
         .fallback_service(axum::routing::get_service(ServeDir::new("./web/dist")))
         // Serve the images in the home folder.
         .layer(cors)
@@ -202,6 +220,7 @@ struct Payload {
     rental: String,
     paste: String,
     format: String,
+    encrypted_data: String,
 }
 
 async fn create_paste(
@@ -215,6 +234,7 @@ async fn create_paste(
     let rental = payload.rental.trim();
     let paste = payload.paste.trim();
     let format = payload.format.trim();
+    let encrypted_data = payload.encrypted_data.trim();
 
     // Remove "\r" from the end of the string
     let title = title.replace('\r', "");
@@ -223,18 +243,31 @@ async fn create_paste(
     let rental = rental.replace('\r', "");
     let paste = paste.replace('\r', "");
     let format = format.replace('\r', "");
+    let encrypted_data = encrypted_data.replace('\r', "");
 
-    let id = match db::create_paste(
-        title.trim(),
-        author.trim(),
-        notes.trim(),
-        &rental,
-        paste.trim(),
-        format.trim(),
-        &state.db_pool,
-    )
-    .await
-    {
+    if payload.encrypted_data.is_empty() {
+        let id = match db::create_paste(
+            title.trim(),
+            author.trim(),
+            notes.trim(),
+            &rental,
+            paste.trim(),
+            format.trim(),
+            &state.db_pool,
+        )
+        .await
+        {
+            Ok(id) => encode_id(id, &state.cipher),
+            Err(e) => return (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
+        };
+
+        // Redirect to the paste page.
+        return axum::response::Redirect::to(&format!("/{id}")).into_response();
+    }
+
+    info!("Encrypted data received");
+
+    let id = match db::create_paste_encrypted(encrypted_data.trim(), &state.db_pool).await {
         Ok(id) => encode_id(id, &state.cipher),
         Err(e) => return (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
     };
@@ -243,23 +276,7 @@ async fn create_paste(
     axum::response::Redirect::to(&format!("/{id}")).into_response()
 }
 
-async fn get_paste(State(state): State<AppState>, Path(id): Path<String>) -> Response {
-    let decode_id = match utils::decode_id(&id, &state.cipher) {
-        Ok(id) => id,
-        Err(_) => {
-            // Redirect to the home page.
-            return axum::response::Redirect::to("/").into_response();
-        }
-    };
-    // Get the paste from the database.
-    match db::get_paste(&state.db_pool, decode_id).await {
-        Ok(paste) => paste,
-        Err(_) => {
-            // Redirect to the home page.
-            return axum::response::Redirect::to("/").into_response();
-        }
-    };
-
+async fn get_paste(State(_state): State<AppState>, Path(id): Path<String>) -> Response {
     let template = templates::PasteTemplate { paste: id };
     HtmlTemplate(template).into_response()
 }
@@ -274,11 +291,25 @@ async fn get_paste_json(State(state): State<AppState>, Path(id): Path<String>) -
     };
 
     // Get the paste from the database.
-    let mut paste = match db::get_paste(&state.db_pool, decode_id).await {
+    let paste = match db::get_paste(&state.db_pool, decode_id).await {
         Ok(paste) => paste,
         Err(_) => {
             // Redirect to the home page.
             return axum::response::Redirect::to("/").into_response();
+        }
+    };
+
+    let mut paste = match paste {
+        db::DBResult::Paste(p) => p,
+        db::DBResult::EncryptedPaste(e) => {
+            // Early return the JSON.
+            return Json(json!({
+                "encrypted_data": e,
+                "mons": state.mon_map,
+                "items": state.item_map,
+                "moves": state.move_map,
+            }))
+            .into_response();
         }
     };
 
@@ -346,10 +377,24 @@ async fn get_paste_json_detailed(
 
     // Get the paste from the database.
     let paste = match db::get_paste(&state.db_pool, decode_id).await {
-        Ok(paste) => paste,
+        Ok(p) => p,
         Err(_) => {
             // Redirect to the home page.
             return axum::response::Redirect::to("/").into_response();
+        }
+    };
+
+    let paste = match paste {
+        db::DBResult::Paste(p) => p,
+        db::DBResult::EncryptedPaste(e) => {
+            // Early return the JSON.
+            return Json(json!({
+                "encrypted_data": e,
+                "mons": state.mon_map,
+                "items": state.item_map,
+                "moves": state.move_map,
+            }))
+            .into_response();
         }
     };
 

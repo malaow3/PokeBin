@@ -1,103 +1,341 @@
 <script lang="ts">
 	import { onMount } from "svelte";
+	import { encryptMessage } from "./helpers";
+
+	function resizeNotes() {
+		const footer = document.getElementById("footer");
+		const notes = document.getElementById("notes");
+		const topOb = document.getElementById("top");
+		const belowNotes = document.getElementById("belowNotes");
+		const notesLabel = document.getElementById("notesLabel");
+
+		if (
+			notes === null ||
+			footer === null ||
+			topOb === null ||
+			belowNotes === null ||
+			notesLabel === null
+		) {
+			return;
+		}
+
+		let labelHeight = notesLabel.clientHeight;
+
+		const availableHeight =
+			window.innerHeight -
+			topOb.clientHeight -
+			belowNotes.clientHeight -
+			footer.clientHeight -
+			labelHeight -
+			10;
+
+		if (notes.clientHeight > availableHeight) {
+			notes.style.height = availableHeight + "px";
+		}
+	}
 
 	// On mount!
 	onMount(() => {
 		let notes = document.getElementById("notes");
 
 		if (notes !== null) {
-			notes.addEventListener("mouseup", function () {
-				// Set maximum height to 65% of the window height
-
-				// Make sure there is at least 200px of space at the bottom.
-				let maxHeight = window.innerHeight * 0.6;
-				const footerspace = 400;
-				if (maxHeight > window.innerHeight - footerspace) {
-					maxHeight = window.innerHeight - footerspace;
-				}
-
-				if (this.clientHeight > maxHeight) {
-					this.style.height = maxHeight + "px";
-				}
-			});
+			// Cast notes to NOT null.
+			notes.addEventListener("touchend", resizeNotes);
+			notes.addEventListener("mouseup", resizeNotes);
 		}
 	});
+
+	async function handleForm(e: any) {
+		e.preventDefault();
+		let paste = document.getElementById("paste") as HTMLTextAreaElement;
+		if (paste === null) {
+			return;
+		}
+
+		let form = document.getElementById("form") as HTMLFormElement;
+
+		if (paste.value === "") {
+			alert("Paste cannot be empty!");
+			return;
+		}
+
+		let password = document.getElementById("password") as HTMLInputElement;
+		if (password === null) {
+			return;
+		}
+
+		if (password.value === "") {
+			form.submit();
+			return;
+		}
+
+		let password_value = password.value;
+		// AES encrypt the paste
+		let content = paste.value;
+
+		let title = document.getElementById("title") as HTMLInputElement;
+		let author = document.getElementById("author") as HTMLInputElement;
+		let notes = document.getElementById("notes") as HTMLTextAreaElement;
+		let format = document.getElementById("format") as HTMLInputElement;
+		let rental = document.getElementById("rental") as HTMLInputElement;
+
+		let jsondata = {
+			title: title.value,
+			author: author.value,
+			notes: notes.value,
+			format: format.value,
+			rental: rental.value,
+		};
+
+		content = JSON.stringify(jsondata) + "\n-----\n" + content;
+
+		// AES encrypt the paste
+		let data = await encryptMessage(password_value, content);
+		// Submit the form removing the password
+		paste.value = "";
+
+		// Add a new input.
+		let hidden_input = document.getElementById(
+			"encryptedData",
+		) as HTMLInputElement;
+		if (hidden_input === null) {
+			return;
+		}
+		hidden_input.value = data;
+
+		form.submit();
+	}
 </script>
 
 <main>
-	<form action="/create" method="post">
+	<form
+		on:submit={(e) => {
+			return handleForm(e);
+		}}
+		action="/create"
+		method="post"
+		id="form"
+		class="flex flex-wrap"
+	>
+		<!-- Paste input -->
 		<textarea
 			id="paste"
 			name="paste"
 			placeholder="Paste your tournament winning team here!"
-			style="resize: none"
+			class="bg-black"
+			style="width: 50vw; height: 100vh; resize: none"
 		></textarea>
-		<img style="display:none" id="img" src="" alt="" />
-		<div id="sidebar">
-			<br />
-			<div class="text-4xl mt-2" style="padding: 0 !important;">
-				<span class="text-pink-600">Poke</span><span
-					class="text-pink-50">Bin</span
-				>
-			</div>
-			<br />
-			<br />
-			<label class="text-base"
-				>Title<input type="text" name="title" id="title" /></label
-			>
-			<label class="text-base"
-				>Author<input type="text" name="author" id="author" /></label
-			>
-			<label class="text-base"
-				>Rental<input
-					type="text"
-					name="rental"
-					minlength="6"
-					maxlength="6"
-					id="rental"
-				/></label
-			>
-			<label class="text-base"
-				>Format<input type="text" name="format" id="format" /></label
-			>
-			<label class="text-base"
-				>Notes<textarea id="notes" name="notes" rows="10"
-				></textarea></label
-			>
-			<button
-				type="submit"
-				class="bg-blue-500 hover:bg-blue-700 text-white font-black text-base py-2 px-4 rounded mt-2"
-			>
-				Submit Paste!
-			</button>
-			<br />
-			<br />
 
+		<!-- Sidebar -->
+		<div
+			id="right"
+			class="flex flex-wrap"
+			style="width: 50vw; height: 100vh;"
+		>
+			<div id="sidebar" class="w-full">
+				<div id="top" class="w-full">
+					<!-- Title Section -->
+					<div
+						class="text-4xl mt-2 mb-2"
+						style="padding: 0 !important;"
+					>
+						<span class="text-pink-600">Poke</span><span
+							style="color: #f7cae2">Bin</span
+						>
+						<br />
+					</div>
+
+					<!-- Title -->
+					<div class="form-field">
+						<label for="title" class="form-label">Title</label>
+						<input
+							type="text"
+							name="title"
+							id="title"
+							autocomplete="off"
+							class="form-input"
+						/>
+					</div>
+
+					<!--Author-->
+					<div class="form-field">
+						<label for="author" class="form-label">Author</label>
+						<input
+							type="text"
+							name="author"
+							id="author"
+							autocomplete="off"
+							class="form-input"
+						/>
+					</div>
+
+					<!--Rental-->
+					<div class="form-field">
+						<label for="rental" class="form-label">Rental</label>
+						<input
+							type="text"
+							name="rental"
+							id="rental"
+							autocomplete="off"
+							class="form-input"
+							minlength="6"
+							maxlength="6"
+						/>
+					</div>
+
+					<!--Format-->
+					<div class="form-field">
+						<label for="format" class="form-label">Format</label>
+						<input
+							type="text"
+							name="format"
+							id="format"
+							autocomplete="off"
+							class="form-input"
+						/>
+					</div>
+				</div>
+
+				<!-- Notes Section -->
+				<div class="form-field">
+					<label for="notes" class="form-label" id="notesLabel"
+						>Notes</label
+					>
+					<textarea
+						id="notes"
+						name="notes"
+						autocomplete="off"
+						class="form-input"
+						rows="3"
+					></textarea>
+				</div>
+				<div id="belowNotes">
+					<!-- Password Section -->
+					<div class="form-field">
+						<label for="password" class="form-label">Password</label
+						>
+						<input
+							type="text"
+							name="password"
+							id="password"
+							autocomplete="off"
+							class="form-input"
+						/>
+					</div>
+					<input
+						type="text"
+						hidden
+						name="encrypted_data"
+						id="encryptedData"
+					/>
+					<!-- Submit Button -->
+					<div class="w-full">
+						<button
+							type="submit"
+							class="bg-indigo-700 hover:bg-indigo-800 text-white font-black text-base py-2 px-4 rounded mt-2"
+							style="margin-left: 20%; width: 80%"
+						>
+							Submit Paste!
+						</button>
+					</div>
+				</div>
+			</div>
 			<!-- Footer pinned to the bottom -->
-			<div class="text-center mt-auto py-4">
+			<div
+				class="text-center mt-auto py-8 w-full flex justify-center items-center"
+				id="footer"
+			>
 				<!-- Stylized about button link -->
-				<a href="/about"
-					>About <span class="text-pink-700">Poke</span><span
-						class="text-pink-50">Bin</span
-					></a
-				>
-				<br />
-				<p>Made with ❤️</p>
+				<div>
+					<a href="/about" class="text-pink-700 hover:text-pink-500">
+						About PokeBin
+					</a>
+					<br />
+					<p>Made with ❤️</p>
+				</div>
 			</div>
 		</div>
 	</form>
-	<img alt="" style="display: none" id="img" src="" />
 </main>
 
-<style>
-	form {
+<style lang="postcss">
+	#footer {
 		display: flex;
-		flex-flow: row wrap;
+		justify-content: center; /* Center content horizontally */
+		align-items: center; /* Center content vertically */
+		text-align: center; /* Ensure text within is centered */
+		margin-top: auto; /* Push footer to the bottom */
+		width: 100%; /* Make footer full width */
+	}
+
+	.form-field {
+		display: flex;
+		flex-direction: column;
+		margin-bottom: 5px;
+	}
+
+	.form-label {
+		@apply text-base;
+	}
+
+	.form-input {
+		width: 100%;
+		@apply text-base;
+		border-radius: 0.25rem;
+		border: 1px solid #ccc;
+	}
+
+	@media (min-width: 768px) {
+		.form-field {
+			flex-direction: row;
+			align-items: center;
+		}
+
+		.form-label {
+			width: 20%;
+			margin-bottom: 0;
+			text-align: right;
+			padding-right: 1rem;
+		}
+
+		.form-input {
+			width: 80%;
+		}
+	}
+
+	@media (max-width: 767px) {
+		button {
+			width: 100% !important;
+			margin-left: 0 !important;
+		}
+	}
+
+	#right {
+		flex: 0 1 auto;
+		/* width: 325px; */
+		width: 50vw;
+		padding: 0 12px;
+		box-sizing: border-box;
+		font:
+			12px "M+ 1c",
+			sans-serif;
+		display: inline-flex;
+		/* flex-direction: column; */
+		background-color: #121419;
+		color: white;
+	}
+
+	#right label {
+		color: white;
+	}
+	#right textarea {
+		color: white;
+		background-color: #2b2a33;
+		border-color: #383d4c;
 	}
 
 	form > textarea[name="paste"] {
 		flex: 1 1 auto;
-		/* width: 600px; */
 		width: 50vw;
 		height: 100vh;
 		margin: 0;
@@ -111,49 +349,9 @@
 			monospace;
 	}
 
-	form > div#sidebar {
-		flex: 0 1 auto;
-		/* width: 325px; */
-		width: 50vw;
-		padding: 0 12px;
-		box-sizing: border-box;
-		font:
-			12px "M+ 1c",
-			sans-serif;
-		display: flex;
-		flex-direction: column;
-		background: #222;
-		color: white;
-	}
-
-	form div label {
-		display: block;
-		text-align: right;
-		margin: 3px 0;
-		width: 100%;
-	}
-
-	form div input[type="text"],
-	form div textarea {
-		width: 85%;
-		margin: 0 0 0 6px;
-		border: 0;
-		padding: 3px;
-		background-color: #ccc;
-		font: inherit;
-		border-radius: 2px;
-		color: black;
-	}
-
-	form div textarea {
-		vertical-align: middle;
-	}
-
-	form div button[type="submit"] {
-		margin-left: 15%;
-		width: 85%;
-		border: 0;
-		padding: 6px;
-		text-align: center;
+	input {
+		color: white !important;
+		border-color: #383d4c !important;
+		background-color: #2b2a33;
 	}
 </style>

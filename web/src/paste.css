@@ -237,6 +237,6 @@ span.img-item {
 	/* Change this to the desired width */
 	height: 48px;
 	/* Change this to the desired height */
-	background-size: 344px 1032px;
+	/* background-size: 344px 1032px; */
 	/* Adjust the background size to 'auto' */
 }

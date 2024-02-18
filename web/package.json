@@ -25,6 +25,8 @@
   "dependencies": {
     "@types/dompurify": "^3.0.5",
     "axios": "^1.6.5",
-    "dompurify": "^3.0.8"
+    "bakutils-catcher": "^2.0.0",
+    "dompurify": "^3.0.8",
+    "ts-pattern": "^5.0.8"
   }
 }

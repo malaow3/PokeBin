@@ -36,15 +36,34 @@ pub struct Paste {
     pub format: Vec<u8>,
 }
 
-pub async fn get_paste(db_pool: &sqlx::PgPool, id: i64) -> Result<Paste, anyhow::Error> {
-    let row = sqlx::query!("SELECT data FROM pastes_comp WHERE id = $1", id)
+pub enum DBResult {
+    Paste(Paste),
+    EncryptedPaste(String),
+}
+
+pub async fn get_paste(db_pool: &sqlx::PgPool, id: i64) -> Result<DBResult, anyhow::Error> {
+    let row = sqlx::query!("SELECT data, encrypted FROM pastes_comp WHERE id = $1", id)
         .fetch_one(db_pool)
         .await?;
 
     let data = row.data;
+    let encrypted = row.encrypted;
 
-    let (_, paste) = Paste::from_bytes((&data, 0)).unwrap();
-    Ok(paste)
+    if !encrypted {
+        let (_, paste) = Paste::from_bytes((&data, 0)).unwrap();
+        return Ok(DBResult::Paste(paste));
+    }
+
+    let encrypted_string = match String::from_utf8(data) {
+        Ok(s) => s,
+        Err(e) => {
+            return Err(anyhow::Error::msg(format!(
+                "Could not convert bytes to string: {:?}",
+                e
+            )))
+        }
+    };
+    Ok(DBResult::EncryptedPaste(encrypted_string))
 }
 
 pub async fn create_paste(
@@ -78,8 +97,24 @@ pub async fn create_paste(
     };
 
     let paste_id = sqlx::query!(
-        "INSERT INTO pastes_comp (data) VALUES ($1) RETURNING id",
+        "INSERT INTO pastes_comp (data, encrypted) VALUES ($1, FALSE) RETURNING id",
         paste.to_bytes().unwrap()
+    )
+    .fetch_one(db_pool)
+    .await?
+    .id;
+
+    Ok(paste_id)
+}
+
+pub async fn create_paste_encrypted(
+    encrypted_data: &str,
+    db_pool: &sqlx::PgPool,
+) -> Result<i64, anyhow::Error> {
+    let data_bytes_array = encrypted_data.bytes().collect::<Vec<u8>>();
+    let paste_id = sqlx::query!(
+        "INSERT INTO pastes_comp (data, encrypted) VALUES ($1, TRUE) RETURNING id",
+        data_bytes_array.as_slice()
     )
     .fetch_one(db_pool)
     .await?
