@@ -79,19 +79,12 @@ I'm going to excluded things like routine maitenance. I'll be adding new mons / 
 
 In order of prority:
 
-- Password protecting -- Many people, understandably, are concerned about the ability for myself to view the paste contents.
-While I have no intention of doing that, I totally understand the desire to have a paste be encrypted. I am not immediately sure
-what the "right" solution here is -- and I want it to be something that doesn't hamper integration with Showdown imports / exports.
-If you (the person reading this) have any suggestions, please let me know by creating an open feature request!
+- Import / Export from Showdown -- this obviously requires a change on Showdown's platform -- I am willing to make those contributions if this site gains enough traction.
 
-- Icon - Having no favicon is boring. I will add one.
+- Update service provider. Right now I host via AWS and the costs for that seem a little higher than I'd like. Maybe I can find a better hosting provider to cut the monthly expenses.
 
 - Update design - There is a minor inconsistency with the display for mobile vs. desktop. Improving the overall design on mobile
 is also important, truthfully it looks pretty poor right now 😭.
-
-- Import / Export from Showdown -- this obviously requires a change on Showdown's platform -- I am willing to make those contributions if this site gains enough traction.
-
-- Move to Redis? I don't think Postgres is strictly necessary, and a simple kv db should suffice.
 
 - Rewrite it in Go? I wrote this in Rust for the learning experience, maybe Go is better for OSS contributions. This is still on the table.
 
