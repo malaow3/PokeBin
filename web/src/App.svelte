@@ -136,12 +136,17 @@
 				<div id="top" class="w-full">
 					<!-- Title Section -->
 					<div
-						class="text-4xl mt-2 mb-2"
+						class="text-4xl mt-2 mb-2 flex flex-row"
 						style="padding: 0 !important;"
 					>
 						<span class="text-pink-600">Poke</span><span
 							style="color: #f7cae2">Bin</span
-						>
+						><img
+							class="ml-1"
+							src="/assets/favicon/android-chrome-192x192.png"
+							style="height: 50px; width: 50px; scale: 1.0"
+							alt="It's Spheal!"
+						/>
 						<br />
 					</div>
 

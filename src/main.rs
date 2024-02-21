@@ -157,6 +157,10 @@ async fn run_main() {
         )
         // Serve the about.html file
         .nest_service(
+            "/assets/favicon",
+            axum::routing::get_service(ServeDir::new("./web/dist/favicon")),
+        )
+        .nest_service(
             "/about",
             axum::routing::get_service(ServeDir::new("./web/dist/about.html")),
         )
