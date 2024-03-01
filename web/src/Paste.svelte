@@ -482,6 +482,8 @@
 <head>
 	{#if paste_data === null || !loaded}
 		<title>Untitled</title>
+	{:else if paste_data?.title == ""}
+		<title>Untitled</title>
 	{:else}
 		<title>{paste_data?.title}</title>
 	{/if}
