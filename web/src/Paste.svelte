@@ -9,6 +9,7 @@
 		get_item_image,
 		get_image,
 	} from "./helpers";
+	import Toast from "./toast.svelte";
 
 	// PASTE_ID prop
 	let pasteId: string;
@@ -16,6 +17,8 @@
 	let showNotes = false;
 
 	let loaded = false;
+
+	let showToast = false;
 
 	function toggleNotes() {
 		showNotes = !showNotes;
@@ -477,6 +480,23 @@
 		}
 		loaded = true;
 	});
+
+	async function copyPaste() {
+		console.log("Copying paste to clipboard");
+		const main = document.getElementsByTagName("main")[0];
+
+		// Get the paste data.
+		const data = main.innerText;
+		// Copy the data to the clipboard.
+		await navigator.clipboard.writeText(data);
+
+		showToast = true;
+
+		// Reset showToast after 3 seconds.
+		setTimeout(() => {
+			showToast = false;
+		}, 3000);
+	}
 </script>
 
 <head>
@@ -492,6 +512,73 @@
 <!--Wait for paste_data.sets to exist-->
 {#if loaded}
 	<div class="content-container">
+		<div
+			class="side-content"
+			id="sidebar"
+			on:mouseover={() => setSelectable(true, "sidebar")}
+			on:focus={() => setSelectable(true, "sidebar")}
+			on:mouseout={() => setSelectable(false, "sidebar")}
+			on:blur={() => setSelectable(false, "sidebar")}
+			role="note"
+			style="user-select: none"
+		>
+			<div id="metadata">
+				{#if paste_data !== null}
+					<div class="metadata">
+						{#if paste_data.title != "" && paste_data.title !== null && paste_data.title != undefined}
+							<h1 class="mx-10 text-pink-500 text-2xl" id="title">
+								{paste_data.title}
+							</h1>
+						{/if}
+						{#if paste_data.author != "" && paste_data.author !== null && paste_data.author != undefined}
+							<p class="mx-10 text-base" id="author">
+								By: {paste_data.author}
+							</p>
+						{/if}
+						{#if paste_data.format != "" && paste_data.format !== null && paste_data.format != undefined}
+							<p class="mx-10 text-base" id="format">
+								Format: {paste_data.format}
+							</p>
+						{/if}
+						{#if paste_data.rental != "" && paste_data.rental !== null && paste_data.rental != undefined}
+							<p class="mx-10 text-base" id="rental">
+								Rental: {paste_data.rental}
+							</p>
+						{/if}
+						{#if paste_data.notes != "" && paste_data.notes !== null && paste_data.notes != undefined}
+							<button
+								on:click={toggleNotes}
+								class="mx-10 toggle-notes"
+							>
+								{showNotes ? "Hide notes" : "Show notes"}
+							</button>
+							{#if showNotes}
+								<p
+									class="mx-10 text-base"
+									style="user-select:none"
+									id="notes"
+								>
+									{@html paste_data.notes.replace(
+										/\n/g,
+										"<br>",
+									)}
+								</p>
+							{/if}
+						{/if}
+					</div>
+				{/if}
+			</div>
+			<div class="extra mx-10">
+				<p>placeholder content</p>
+				<button
+					type="submit"
+					on:click={copyPaste}
+					class="bg-indigo-700 hover:bg-indigo-800 text-white font-bold text-sm py-1 px-4 rounded mt-2"
+					>Copy paste</button
+				>
+			</div>
+		</div>
+		<br />
 		<main>
 			{#if paste_data !== undefined && paste_data !== null}
 				{#each paste_data.sets as set_item}
@@ -746,70 +833,9 @@
 				{/each}
 			{/if}
 		</main>
-		<br />
-
-		<div
-			class="side-content"
-			id="sidebar"
-			on:mouseover={() => setSelectable(true, "sidebar")}
-			on:focus={() => setSelectable(true, "sidebar")}
-			on:mouseout={() => setSelectable(false, "sidebar")}
-			on:blur={() => setSelectable(false, "sidebar")}
-			role="note"
-			style="user-select: none"
-		>
-			<div id="metadata">
-				{#if paste_data !== null}
-					<div class="metadata">
-						{#if paste_data.title != "" && paste_data.title !== null && paste_data.title != undefined}
-							<h1 class="mx-10 text-pink-500 text-2xl" id="title">
-								{paste_data.title}
-							</h1>
-						{/if}
-						{#if paste_data.author != "" && paste_data.author !== null && paste_data.author != undefined}
-							<p class="mx-10 text-base" id="author">
-								By: {paste_data.author}
-							</p>
-						{/if}
-						{#if paste_data.format != "" && paste_data.format !== null && paste_data.format != undefined}
-							<p class="mx-10 text-base" id="format">
-								Format: {paste_data.format}
-							</p>
-						{/if}
-						{#if paste_data.rental != "" && paste_data.rental !== null && paste_data.rental != undefined}
-							<p class="mx-10 text-base" id="rental">
-								Rental: {paste_data.rental}
-							</p>
-						{/if}
-						{#if paste_data.notes != "" && paste_data.notes !== null && paste_data.notes != undefined}
-							<button
-								on:click={toggleNotes}
-								class="mx-10 toggle-notes"
-							>
-								{showNotes ? "Hide notes" : "Show notes"}
-							</button>
-							{#if showNotes}
-								<p
-									class="mx-10 text-base"
-									style="user-select:none"
-									id="notes"
-								>
-									{@html paste_data.notes.replace(
-										/\n/g,
-										"<br>",
-									)}
-								</p>
-							{/if}
-						{/if}
-					</div>
-				{/if}
-			</div>
-			<div class="extra mx-10">
-				<p>placeholder content</p>
-			</div>
-		</div>
 	</div>
 {/if}
+<Toast message="Paste copied!" show={showToast} />
 
 <style lang="postcss">
 	.toggle-notes {
