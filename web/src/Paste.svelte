@@ -570,10 +570,11 @@
 			</div>
 			<div class="extra mx-10">
 				<p>placeholder content</p>
+				<br />
 				<button
 					type="submit"
 					on:click={copyPaste}
-					class="bg-indigo-700 hover:bg-indigo-800 text-white font-bold text-sm py-1 px-4 rounded mt-2"
+					class="bg-pink-600 hover:bg-pink-800 text-white font-bold text-sm py-1 px-4 rounded"
 					>Copy paste</button
 				>
 			</div>
