@@ -46,21 +46,21 @@ pub fn search_like<T: Clone>(map: &HashMap<String, T>, pattern: &str) -> Option<
     None
 }
 
-pub fn verify_map(map: &mut HashMap<String, Mon>) {
-    // Confirm that for every item in the map, there is a corresponding image.
-    let mut remove_keys = Vec::new();
-    for (key, value) in map.iter() {
-        let path = PathBuf::from(format!("home/{}.png", value.id));
-        if !path.exists() {
-            // Remove the item from the map
-            remove_keys.push(key.clone());
-        }
-    }
-
-    for key in remove_keys {
-        map.remove(&key);
-    }
-}
+// pub fn verify_map(map: &mut HashMap<String, Mon>) {
+//     // Confirm that for every item in the map, there is a corresponding image.
+//     let mut remove_keys = Vec::new();
+//     for (key, value) in map.iter() {
+//         let path = PathBuf::from(format!("home/{}.png", value.id));
+//         if !path.exists() {
+//             // Remove the item from the map
+//             remove_keys.push(key.clone());
+//         }
+//     }
+//
+//     for key in remove_keys {
+//         map.remove(&key);
+//     }
+// }
 
 pub fn get_image(map: &HashMap<String, Mon>, pokemon: &str, shiny: bool, female: bool) -> String {
     // First, see if the pokemon is in the map.

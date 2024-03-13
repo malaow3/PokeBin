@@ -1,3 +1,4 @@
+cargo-features = ["codegen-backend"]
 [package]
 name = "pokebin"
 version = "0.1.0"
@@ -52,7 +53,15 @@ tower-http = { version = "0.5.0", features = ["trace", "fs", "cors"] }
 tracing = "0.1.40"
 trunkrs = "0.2.7"
 typenum = "1.17.0"
+utapi-rs = "0.1.2"
 
 [dev-dependencies]
 h2 = "0.4.2"
 mio = "0.8.11"
+
+[profile.release]
+lto = "off"
+codegen-units = 1
+panic = "abort"
+opt-level = 3
+codegen-backend = "cranelift"

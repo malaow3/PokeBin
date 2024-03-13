@@ -143,6 +143,7 @@
 		notes: string;
 		rental: string;
 		format: string;
+		paste: string;
 		sets: Set[];
 		encrypted_data: string;
 		mons: Object;
@@ -158,16 +159,17 @@
 
 		// make a http request to get the paste
 		try {
+			let other_data_response = await axios.get("/other-data-info");
+			let other_data = other_data_response.data;
 			let response = await axios.get("/detailed/" + pasteId);
 			paste_data = response.data;
-			console.log(paste_data);
 			if (paste_data !== null) {
 				if (
 					paste_data.encrypted_data !== null &&
 					paste_data.encrypted_data !== undefined
 				) {
 					// HANDLE ENCRYPTED DATA
-					console.log("Decrypting data");
+
 					// Get user input via popup.
 					let done = false;
 					let data = "";
@@ -195,223 +197,224 @@
 
 					let content = data.split("\n-----\n");
 					let metadata = JSON.parse(content[0]);
-					data = content[1];
+					paste_data.paste = content[1];
 
 					paste_data.title = metadata.title;
 					paste_data.author = metadata.author;
 					paste_data.notes = metadata.notes;
 					paste_data.rental = metadata.rental;
 					paste_data.format = metadata.format;
+				}
 
-					// This section is essentially the same logic in main.rs ported over to be handled on the client side.
-					let sets = data
-						.split("\n\n")
-						.map((x) => x.trim())
-						.filter((x) => x !== "");
-					console.log(sets);
-					paste_data.sets = [];
+				// This section is essentially the same logic in main.rs ported over to be handled on the client side.
+				let sets = paste_data.paste
+					.split("\n\n")
+					.map((x) => x.trim())
+					.filter((x) => x !== "");
+				paste_data.sets = [];
 
-					const mons = new Map(Object.entries(paste_data.mons));
-					const items = new Map(Object.entries(paste_data.items));
-					const moves = new Map(Object.entries(paste_data.moves));
+				const mons: Map<string, Mon> = new Map(
+					Object.entries(other_data.mons),
+				);
+				const items: Map<string, Object> = new Map(
+					Object.entries(other_data.items),
+				);
+				const moves: Map<string, Move> = new Map(
+					Object.entries(other_data.moves),
+				);
+				const files: Map<string, string> = new Map(
+					Object.entries(other_data.files),
+				);
 
-					const RE_HEAD =
-						/^(?:(.* \()([A-Z][a-z0-9:']+\.?(?:[- ][A-Za-z][a-z0-9:']*\.?)*)(\))|([A-Z][a-z0-9:']+\.?(?:[- ][A-Za-z][a-z0-9:']*\.?)*))(?:( \()([MF])(\)))?(?:( @ )([A-Z][a-z0-9:']*(?:[- ][A-Z][a-z0-9:']*)*))?( *)$/;
-					const RE_MOVE =
-						/^(-)( ([A-Z][a-z\']*(?:[- ][A-Za-z][a-z\']*)*)(?: \[([A-Z][a-z]+)\])?(?: \/ [A-Z][a-z\']*(?:[- ][A-Za-z][a-z\']*)*)* *)$/;
-					const RE_STAT =
-						/^(\d+ HP)?( \/ )?(\d+ Atk)?( \/ )?(\d+ Def)?( \/ )?(\d+ SpA)?( \/ )?(\d+ SpD)?( \/ )?(\d+ Spe)?( *)$/;
+				const RE_HEAD =
+					/^(?:(.* \()([A-Z][a-z0-9:']+\.?(?:[- ][A-Za-z][a-z0-9:']*\.?)*)(\))|([A-Z][a-z0-9:']+\.?(?:[- ][A-Za-z][a-z0-9:']*\.?)*))(?:( \()([MF])(\)))?(?:( @ )([A-Z][a-z0-9:']*(?:[- ][A-Z][a-z0-9:']*)*))?( *)$/;
+				const RE_MOVE =
+					/^(-)( ([A-Z][a-z\']*(?:[- ][A-Za-z][a-z\']*)*)(?: \[([A-Z][a-z]+)\])?(?: \/ [A-Z][a-z\']*(?:[- ][A-Za-z][a-z\']*)*)* *)$/;
+				const RE_STAT =
+					/^(\d+ HP)?( \/ )?(\d+ Atk)?( \/ )?(\d+ Def)?( \/ )?(\d+ SpA)?( \/ )?(\d+ SpD)?( \/ )?(\d+ Spe)?( *)$/;
 
-					for (let i = 0; i < sets.length; i++) {
-						let set = sets[i].trim();
-						let lines = set.split("\n");
-						let captures = lines[0].match(RE_HEAD);
+				for (let i = 0; i < sets.length; i++) {
+					let set = sets[i].trim();
+					let lines = set.split("\n");
+					let captures = lines[0].match(RE_HEAD);
 
-						if (captures === null) {
-							paste_data.sets.push({
-								mon: null,
-								text: set,
-							});
-							continue;
+					if (captures === null) {
+						paste_data.sets.push({
+							mon: null,
+							text: set,
+						});
+						continue;
+					}
+
+					let set_mon = newMon();
+					let search_name = "";
+
+					if (captures[2]) {
+						let name = captures[2];
+						search_name = name.toLowerCase().replaceAll(" ", "-");
+						let mon = search_like(mons, search_name);
+						set_mon.name = name;
+						if (mon.isSome()) {
+							let result = mon.unwrap();
+							search_name = result[0];
+							set_mon.type1 = result[1].type1;
+							set_mon.nickname = captures[1];
 						}
+					} else if (captures[4]) {
+						search_name = captures[4]
+							.toLowerCase()
+							.replaceAll(" ", "-");
+						let mon = search_like(mons, search_name);
+						set_mon.name = captures[4];
+						if (mon.isSome()) {
+							let result = mon.unwrap();
+							search_name = result[0];
+							set_mon.type1 = result[1].type1;
+						}
+					}
 
-						let set_mon = newMon();
-						let search_name = "";
+					if (captures[6]) {
+						let gender = captures[6];
+						switch (gender) {
+							case "M":
+								set_mon.gender = "m";
+								break;
+							case "F":
+								set_mon.gender = "f";
+								break;
+							default:
+								break;
+						}
+					}
 
-						if (captures[2]) {
-							let name = captures[2];
-							search_name = name
-								.toLowerCase()
-								.replaceAll(" ", "-");
-							let mon = search_like(mons, search_name);
-							set_mon.name = name;
-							if (mon.isSome()) {
-								let result = mon.unwrap();
-								console.log(result);
-								search_name = result[0];
-								set_mon.type1 = result[1].type1;
-								set_mon.nickname = captures[1];
+					if (captures[9]) {
+						set_mon.item = captures[9];
+						set_mon.item_img = get_item_image(items, captures[9]);
+					}
+
+					let is_female = set_mon.gender == "f";
+					let is_shiny = set.match("Shiny: Yes") != null;
+					// Time the image request.
+					let image = get_image(
+						mons,
+						search_name,
+						is_shiny,
+						is_female,
+						files,
+					);
+					set_mon.image = image;
+
+					for (let i = 1; i < lines.length; i++) {
+						let line = lines[i];
+						let moves_captures = line.trim().match(RE_MOVE);
+						if (moves_captures) {
+							if (moves_captures[3]) {
+								let move_name = moves_captures[3];
+								let move_search = move_name
+									.replace(" ", "-")
+									.toLowerCase();
+								let move_result = search_like(
+									moves,
+									move_search,
+								);
+
+								if (move_result.isSome()) {
+									let result = move_result.unwrap();
+									let move_object: Move = result[1];
+									set_mon.moves.push({
+										type1: move_object.type1,
+										name: move_name,
+									});
+								} else {
+									set_mon.moves.push({
+										type1: "",
+										name: move_name,
+									});
+								}
 							}
-						} else if (captures[4]) {
-							search_name = captures[4]
-								.toLowerCase()
-								.replaceAll(" ", "-");
-							let mon = search_like(mons, search_name);
-							set_mon.name = captures[4];
-							if (mon.isSome()) {
-								let result = mon.unwrap();
-								console.log(result);
-								search_name = result[0];
-								set_mon.type1 = result[1].type1;
-							}
-						}
-
-						if (captures[6]) {
-							let gender = captures[6];
-							switch (gender) {
-								case "M":
-									set_mon.gender = "m";
-									break;
-								case "F":
-									set_mon.gender = "f";
-									break;
-								default:
-									break;
-							}
-						}
-
-						if (captures[9]) {
-							set_mon.item = captures[9];
-							set_mon.item_img = get_item_image(
-								items,
-								captures[9],
-							);
-						}
-
-						let is_female = set_mon.gender == "f";
-						let is_shiny = set.match("Shiny: Yes") != null;
-						console.log(search_name);
-						let image = get_image(
-							mons,
-							search_name,
-							is_shiny,
-							is_female,
-						);
-						set_mon.image = image;
-
-						for (let i = 1; i < lines.length; i++) {
-							let line = lines[i];
-							let moves_captures = line.trim().match(RE_MOVE);
-							if (moves_captures) {
-								if (moves_captures[3]) {
-									let move_name = moves_captures[3];
-									let move_search = move_name
-										.replace(" ", "-")
-										.toLowerCase();
-									let move_result = search_like(
-										moves,
-										move_search,
+						} else if (line.startsWith("EVs: ")) {
+							let evs = line.split(":");
+							let captures = evs[1].trim().match(RE_STAT);
+							if (captures) {
+								if (captures[1]) {
+									set_mon.hp = parseInt(
+										captures[1].split(" ")[0],
 									);
-
-									if (move_result.isSome()) {
-										let result = move_result.unwrap();
-										let move_object: Move = result[1];
-										set_mon.moves.push({
-											type1: move_object.type1,
-											name: move_name,
-										});
-									} else {
-										set_mon.moves.push({
-											type1: "",
-											name: move_name,
-										});
-									}
 								}
-							} else if (line.startsWith("EVs: ")) {
-								let evs = line.split(":");
-								let captures = evs[1].trim().match(RE_STAT);
-								if (captures) {
-									if (captures[1]) {
-										set_mon.hp = parseInt(
-											captures[1].split(" ")[0],
-										);
-									}
-									if (captures[3]) {
-										set_mon.atk = parseInt(
-											captures[3].split(" ")[0],
-										);
-									}
-									if (captures[5]) {
-										set_mon.def = parseInt(
-											captures[5].split(" ")[0],
-										);
-									}
-									if (captures[7]) {
-										set_mon.spa = parseInt(
-											captures[7].split(" ")[0],
-										);
-									}
-									if (captures[9]) {
-										set_mon.spd = parseInt(
-											captures[9].split(" ")[0],
-										);
-									}
-									if (captures[11]) {
-										set_mon.spe = parseInt(
-											captures[11].split(" ")[0],
-										);
-									}
-								} else {
-									set_mon.other.push(line);
+								if (captures[3]) {
+									set_mon.atk = parseInt(
+										captures[3].split(" ")[0],
+									);
 								}
-							} else if (line.startsWith("IVs: ")) {
-								let ivs = line.split(":");
-								let captures = ivs[1].trim().match(RE_STAT);
-								if (captures) {
-									if (captures[1]) {
-										set_mon.hp_iv = parseInt(
-											captures[1].split(" ")[0],
-										);
-									}
-									if (captures[3]) {
-										set_mon.atk_iv = parseInt(
-											captures[3].split(" ")[0],
-										);
-									}
-									if (captures[5]) {
-										set_mon.def_iv = parseInt(
-											captures[5].split(" ")[0],
-										);
-									}
-									if (captures[7]) {
-										set_mon.spa_iv = parseInt(
-											captures[7].split(" ")[0],
-										);
-									}
-									if (captures[9]) {
-										set_mon.spd_iv = parseInt(
-											captures[9].split(" ")[0],
-										);
-									}
-									if (captures[11]) {
-										set_mon.spe_iv = parseInt(
-											captures[11].split(" ")[0],
-										);
-									}
-								} else {
-									set_mon.other.push(line);
+								if (captures[5]) {
+									set_mon.def = parseInt(
+										captures[5].split(" ")[0],
+									);
+								}
+								if (captures[7]) {
+									set_mon.spa = parseInt(
+										captures[7].split(" ")[0],
+									);
+								}
+								if (captures[9]) {
+									set_mon.spd = parseInt(
+										captures[9].split(" ")[0],
+									);
+								}
+								if (captures[11]) {
+									set_mon.spe = parseInt(
+										captures[11].split(" ")[0],
+									);
 								}
 							} else {
 								set_mon.other.push(line);
 							}
+						} else if (line.startsWith("IVs: ")) {
+							let ivs = line.split(":");
+							let captures = ivs[1].trim().match(RE_STAT);
+							if (captures) {
+								if (captures[1]) {
+									set_mon.hp_iv = parseInt(
+										captures[1].split(" ")[0],
+									);
+								}
+								if (captures[3]) {
+									set_mon.atk_iv = parseInt(
+										captures[3].split(" ")[0],
+									);
+								}
+								if (captures[5]) {
+									set_mon.def_iv = parseInt(
+										captures[5].split(" ")[0],
+									);
+								}
+								if (captures[7]) {
+									set_mon.spa_iv = parseInt(
+										captures[7].split(" ")[0],
+									);
+								}
+								if (captures[9]) {
+									set_mon.spd_iv = parseInt(
+										captures[9].split(" ")[0],
+									);
+								}
+								if (captures[11]) {
+									set_mon.spe_iv = parseInt(
+										captures[11].split(" ")[0],
+									);
+								}
+							} else {
+								set_mon.other.push(line);
+							}
+						} else {
+							set_mon.other.push(line);
 						}
-						paste_data.sets.push({
-							mon: set_mon,
-							text: null,
-						});
 					}
+					paste_data.sets.push({
+						mon: set_mon,
+						text: null,
+					});
 				}
-				console.log(paste_data);
 				paste_data.title = DOMPurify.sanitize(paste_data.title);
 				paste_data.author = DOMPurify.sanitize(paste_data.author);
 				paste_data.notes = DOMPurify.sanitize(paste_data.notes);
@@ -476,13 +479,12 @@
 				}
 			}
 		} catch (e) {
-			console.log(e);
+			console.error(e);
 		}
 		loaded = true;
 	});
 
 	async function copyPaste() {
-		console.log("Copying paste to clipboard");
 		const main = document.getElementsByTagName("main")[0];
 
 		// Get the paste data.

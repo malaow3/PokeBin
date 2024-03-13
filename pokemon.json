@@ -184,7 +184,7 @@
     "type1": "ground",
     "type2": ""
   },
-  "maushold-family-of-three": {
+  "maushold": {
     "id": 10257,
     "type1": "normal",
     "type2": ""
@@ -3239,7 +3239,7 @@
     "type1": "rock",
     "type2": "bug"
   },
-  "maushold": {
+  "maushold-four": {
     "id": 925,
     "type1": "normal",
     "type2": ""

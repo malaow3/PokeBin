@@ -125,7 +125,7 @@ function search_like<T>(
 	}
 
 	const regex_pattern = `^${pattern.replace("_", ".")}.*`;
-	console.log(regex_pattern);
+
 	// Iterate over the map.
 	let regex_match_value: Option<[string, T]> = None;
 	hashmap.forEach((v, k, _map) => {
@@ -186,16 +186,30 @@ const alcremie_decorations = [
 	"star-sweet",
 	"strawberry-sweet",
 ];
+
+const same_as_base_forms = [
+	"sinistcha-masterpiece",
+	"poltchageist-artisan",
+	"polteageist-antique",
+	"sinistea-antique",
+];
+
 function get_image(
 	hashmap: Map<string, DynamicObject>,
-	pokemon: string,
+	raw_pokemon: string,
 	is_shiny: boolean,
 	is_female: boolean,
 ): string {
-	console.log("Finding image of ", pokemon);
 	// First, see if the pokemon is in the map.
 	// If it is, return the filepath.
 	let base_path = `${base_url}home`;
+	let pokemon = raw_pokemon;
+
+	// Special case for Sinistcha-Masterpiece, Poltchageist-Artisan, Sinistea-Antique, and Polteageist-Antique.
+	if (same_as_base_forms.includes(pokemon)) {
+		pokemon = pokemon.split("-")[0];
+	}
+
 	if (pokemon.includes("alcremie") && !pokemon.includes("gmax")) {
 		// Alcremie is a special case. Since there are SO many variations.
 		const random_decoration_idx =
@@ -219,6 +233,7 @@ function get_image(
 	}
 
 	let value = hashmap.get(pokemon);
+	console.log(value);
 	if (value !== undefined) {
 		if (is_shiny && value.has_shiny) {
 			base_path += "/shiny";
