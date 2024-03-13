@@ -210,6 +210,13 @@ function get_image(
 		pokemon = pokemon.split("-")[0];
 	}
 
+	// Swap maushold and maushold-family-of-three
+	if (pokemon === "maushold") {
+		pokemon = "maushold-family-of-three";
+	} else if (pokemon === "maushold-four") {
+		pokemon = "maushold";
+	}
+
 	if (pokemon.includes("alcremie") && !pokemon.includes("gmax")) {
 		// Alcremie is a special case. Since there are SO many variations.
 		const random_decoration_idx =

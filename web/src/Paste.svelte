@@ -222,9 +222,6 @@
 				const moves: Map<string, Move> = new Map(
 					Object.entries(other_data.moves),
 				);
-				const files: Map<string, string> = new Map(
-					Object.entries(other_data.files),
-				);
 
 				const RE_HEAD =
 					/^(?:(.* \()([A-Z][a-z0-9:']+\.?(?:[- ][A-Za-z][a-z0-9:']*\.?)*)(\))|([A-Z][a-z0-9:']+\.?(?:[- ][A-Za-z][a-z0-9:']*\.?)*))(?:( \()([MF])(\)))?(?:( @ )([A-Z][a-z0-9:']*(?:[- ][A-Z][a-z0-9:']*)*))?( *)$/;
@@ -300,7 +297,6 @@
 						search_name,
 						is_shiny,
 						is_female,
-						files,
 					);
 					set_mon.image = image;
 

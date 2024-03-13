@@ -10,6 +10,8 @@ pub struct Mon {
     pub id: u32,
     pub type1: String,
     pub type2: String,
+    pub has_shiny: bool,
+    pub has_female: bool,
 }
 
 #[derive(Debug, serde::Serialize, serde::Deserialize, Clone)]

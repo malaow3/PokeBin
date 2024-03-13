@@ -144,7 +144,6 @@ struct AppState {
     mon_map: Arc<HashMap<String, Mon>>,
     move_map: Arc<HashMap<String, Move>>,
     item_map: Arc<HashMap<String, Value>>,
-    file_map: Arc<HashMap<String, String>>,
 }
 
 lazy_static! {
@@ -169,16 +168,12 @@ async fn run_main() {
     let move_file = std::fs::File::open("moves.json").unwrap();
     let move_map: HashMap<String, utils::Move> = serde_json::from_reader(move_file).unwrap();
 
-    let images_file = std::fs::File::open("files.json").unwrap();
-    let file_map: HashMap<String, String> = serde_json::from_reader(images_file).unwrap();
-
     let state = AppState {
         db_pool: Arc::new(db_pool),
         cipher: Arc::new(cipher),
         mon_map: Arc::new(map.clone()),
         move_map: Arc::new(move_map),
         item_map: Arc::new(item_map),
-        file_map: Arc::new(file_map),
     };
 
     let cors = CorsLayer::new()
@@ -392,7 +387,6 @@ async fn get_other_data_info(State(state): State<AppState>) -> Response {
         "mons": state.mon_map,
         "items": state.item_map,
         "moves": state.move_map,
-        "files": state.file_map,
     }))
     .into_response()
 }

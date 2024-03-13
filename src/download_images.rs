@@ -70,6 +70,8 @@ pub async fn run_img() {
                     id,
                     type1: String::from(""),
                     type2: String::from(""),
+                    has_shiny: false,
+                    has_female: false,
                 },
             );
         }
@@ -108,6 +110,13 @@ pub async fn run_img() {
                     .as_str()
                     .unwrap()
                     .to_string();
+            }
+
+            if pokemon["sprites"]["front_shiny"].as_str().is_some() {
+                item.1.has_shiny = true;
+            }
+            if pokemon["sprites"]["front_female"].as_str().is_some() {
+                item.1.has_female = true;
             }
         }
     }
