@@ -259,6 +259,8 @@
                             search_name = result[0];
                             set_mon.type1 = result[1].type1;
                             set_mon.nickname = captures[1];
+                            // Remove the last two characters from the nickname.
+                            set_mon.nickname = set_mon.nickname.slice(0, -2);
                         }
                     } else if (captures[4]) {
                         search_name = captures[4]
@@ -828,8 +830,8 @@
                     {:else}
                         <article>
                             <pre>
-					{set_item.text}
-				</pre>
+                                {set_item.text}
+                            </pre>
                         </article>
                     {/if}
                 {/each}
