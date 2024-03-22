@@ -737,7 +737,7 @@
                                         {/if}
                                         {#if set_item.mon.spa != 0}
                                             <span class="stat-spa"
-                                                >{set_item.mon.spa} Spa</span
+                                                >{set_item.mon.spa} SpA</span
                                             >
                                             {#if set_item.mon.last_stat != "spa"}
                                                 <span> / </span>
@@ -745,7 +745,7 @@
                                         {/if}
                                         {#if set_item.mon.spd != 0}
                                             <span class="stat-spd"
-                                                >{set_item.mon.spd} Spd</span
+                                                >{set_item.mon.spd} SpD</span
                                             >
                                             {#if set_item.mon.last_stat != "spd"}
                                                 <span> / </span>
