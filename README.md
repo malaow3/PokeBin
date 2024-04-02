@@ -26,17 +26,17 @@ There are a few pieces that are required to make PokeBin somewhat useful.
 
 - Pokemon information (types, species, forms, move data). This information comes curtosey of [PokeApi](https://pokeapi.co/)
 which is a wonderful project and I highly recommend you check them out!
-- Pokemon images. Again, these come from [PokeApi](https://pokeapi.co/). There is a *slight* difference between this repo and 
+- Pokemon images. Again, these come from [PokeApi](https://pokeapi.co/). There is a *slight* difference between this repo and
 the production version. That difference is the images are hosted in an S3 bucket from Amazon. This is only because when I tried to copy
 all the images with Docker I ran out of disk space 😭 whoops!
-- Item information and sprites. This comes from [Pokemon Showdown](https://pokemonshowdown.com/). The data is in a JS file by default, so 
+- Item information and sprites. This comes from [Pokemon Showdown](https://pokemonshowdown.com/). The data is in a JS file by default, so
 I put together a small script to convert it to JSON.
 
 ### Web server
 The web server is built with Rust (using Axum). I just like writing Rust. Not much more to it!
 
 ### Web client
-The web client is built with Svelte. I have never used Svelte before and this seemed 
+The web client is built with Svelte. I have never used Svelte before and this seemed
 like a great learning experience.
 
 ### Database
@@ -47,8 +47,13 @@ The database used is Postgres. When running locally, I spin it up with Docker. F
 First, make sure you have all the prerequisites completed.
 - Basic understanding of Git / command line familiarity
 - Rust installed
-- Docker installed
-- Your Javascript package manager of choice (for this example, I'll be using Bun)
+    - Rust can be installed by following the instructions located [here](https://www.rust-lang.org/tools/install)
+    - It is recommended that you also use the nightly compiler -- once Rust is installed, run `rustup default nightly`
+    - You will also want the [mold linker](https://github.com/rui314/mold)
+    - You will also want the cranelift codegen by running `$ rustup component add rustc-codegen-cranelift-preview --toolchain nightly`
+- Postgres (On ubuntu, a simple `apt install postgresql`, but installation varies per distro. A quick google should get you there.)
+- Docker installed (If on WSL you will need [Docker Desktop](https://www.docker.com/products/docker-desktop/))
+- Your Javascript package manager of choice (for this example, I'll be using [Bun](https://bun.sh/))
 
 
 If you want to run PokeBin localy, you'll need to follow the following steps:
@@ -63,11 +68,24 @@ For example your file might look like:
 DATABASE_URL=postgresql://malaow:postgres@localhost:5432/pokebin
 POKEBIN_KEY=my_secret_key
 ```
+If you use a different username and password for your local database, you will also have to make the changes to the
+docker-compose.yml file.
+
 3. Install the web dependencies by running `cd web; bun install`
 4. Build the web files by running `bun run build`
 5. Cd back to the root of the repo by running `cd ..`
 6. Start the database. Run `docker compose up -d db`
-7. Build the Rust binary by running `cargo build -r`
+7. Create the database in Postgres.
+    - Run `psql -U <username>` -h localhost` to connect to the database.
+    - Run `CREATE DATABASE pokebin;` to create the database.
+    - Run `\list` to confirm the database is created.
+    - Run `\q` to quit.
+
+NOTE: If you skipped installing the mold linker and the codegen backend, you will need to make changes to the Cargo.toml file AND the
+config file located at `.cargo/config.toml`. It is recommended you install those for faster compilation AND so that you don't have to make
+changes yourself!
+
+8. Build the Rust binary by running `cargo build -r`
 
 If you are on Linux, you can run the whole thing via docker. Just run `docker compose up -d`
 If you **aren't** on Linux, that's fine. Just make sure the database is running, then run the web server with `./target/release/pokebin`
@@ -100,7 +118,7 @@ is also important, truthfully it looks pretty poor right now 😭.
 I believe open source is one of the most amazing parts of software! Being able to contribute to a tool you use to make it better, fix a bug, or add a new feature is incredibly rewarding.
 If you want to contribute, feel free to fork the repo and send a PR with your changes!
 
-Unfortunately, there isn't a strict set of tests / linting guidelines. I might be a bit picky on a review, but over time I hope to get the repo to a state where 
+Unfortunately, there isn't a strict set of tests / linting guidelines. I might be a bit picky on a review, but over time I hope to get the repo to a state where
 contributing is easy and there is enough feedback baked into the tests/linting/static analysis that if things pass it should have no problem getting merged!
 
 # Notes
