@@ -10,7 +10,6 @@ use lazy_static::lazy_static;
 use std::{collections::HashMap, sync::Arc};
 use templates::HtmlTemplate;
 use tokio_util::io::ReaderStream;
-use utapi_rs::UtApi;
 use utils::encode_id;
 use utils::Move;
 
@@ -53,48 +52,48 @@ async fn main() {
 
     match args.command {
         Some(Command::UTImg) => {
-            let key =
-                std::env::var("UPLOADTHING_SECRET").expect("UPLOADTHING_SECRET should be set");
-            let api = UtApi::new(Some(key));
-
-            let options = utapi_rs::models::ListFilesOpts {
-                limit: Some(5000),
-                offset: Some(0),
-            };
-
-            let files = match api.list_files(Some(options)).await {
-                Ok(files) => files,
-                Err(e) => panic!("Error listing files: {:?}", e),
-            };
-
-            let mut key_to_file: HashMap<String, String> = HashMap::new();
-            for file in &files.files {
-                key_to_file.insert(file.key.clone(), file.name.clone());
-            }
-
-            let file_keys = files
-                .files
-                .iter()
-                .map(|f| f.key.to_owned())
-                .collect::<Vec<_>>();
-            let mut file_to_url: HashMap<String, String> = HashMap::new();
-            let urls = match api.get_file_urls(file_keys).await {
-                Ok(u) => u,
-                Err(e) => panic!("{e}"),
-            };
-
-            for url_resp in urls.data {
-                let key = url_resp.key;
-                let file_name = key_to_file.get(&key).expect("File should not be None");
-
-                file_to_url.insert(file_name.to_owned(), url_resp.url);
-            }
-
-            // Write the JSON to file.
-            let data = serde_json::to_string_pretty(&file_to_url)
-                .expect("Hashmap should be able to be serialized");
-
-            std::fs::write("files.json", data).expect("File should be able to be written to");
+            // let key =
+            //     std::env::var("UPLOADTHING_SECRET").expect("UPLOADTHING_SECRET should be set");
+            // let api = UtApi::new(Some(key));
+            //
+            // let options = utapi_rs::models::ListFilesOpts {
+            //     limit: Some(5000),
+            //     offset: Some(0),
+            // };
+            //
+            // let files = match api.list_files(Some(options)).await {
+            //     Ok(files) => files,
+            //     Err(e) => panic!("Error listing files: {:?}", e),
+            // };
+            //
+            // let mut key_to_file: HashMap<String, String> = HashMap::new();
+            // for file in &files.files {
+            //     key_to_file.insert(file.key.clone(), file.name.clone());
+            // }
+            //
+            // let file_keys = files
+            //     .files
+            //     .iter()
+            //     .map(|f| f.key.to_owned())
+            //     .collect::<Vec<_>>();
+            // let mut file_to_url: HashMap<String, String> = HashMap::new();
+            // let urls = match api.get_file_urls(file_keys).await {
+            //     Ok(u) => u,
+            //     Err(e) => panic!("{e}"),
+            // };
+            //
+            // for url_resp in urls.data {
+            //     let key = url_resp.key;
+            //     let file_name = key_to_file.get(&key).expect("File should not be None");
+            //
+            //     file_to_url.insert(file_name.to_owned(), url_resp.url);
+            // }
+            //
+            // // Write the JSON to file.
+            // let data = serde_json::to_string_pretty(&file_to_url)
+            //     .expect("Hashmap should be able to be serialized");
+            //
+            // std::fs::write("files.json", data).expect("File should be able to be written to");
         }
         Some(Command::Img) => run_img().await,
         Some(Command::Items) => {

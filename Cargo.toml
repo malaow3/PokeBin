@@ -1,4 +1,4 @@
-cargo-features = ["codegen-backend"]
+# cargo-features = ["codegen-backend"]
 [package]
 name = "pokebin"
 version = "0.1.0"
@@ -29,7 +29,7 @@ phf = { version = "0.11.2", features = ["macros"] }
 rand = "0.8.5"
 rayon = "1.8.0"
 regex = "1.10.2"
-reqwest = { version = "0.11.23", default_features = false, features = [
+reqwest = { version = "0.11.23", default-features = false, features = [
   "rustls-tls",
   "serde_json",
   "async-compression",
@@ -41,19 +41,18 @@ reqwest = { version = "0.11.23", default_features = false, features = [
 scraper = "0.18.1"
 serde = { version = "1.0.194", features = ["derive"] }
 serde_json = "1.0.110"
-sqlx = { version = "0.7.3", default_features = false, features = [
+sqlx = { version = "0.7.3", default-features = false, features = [
   "postgres",
   "runtime-tokio-rustls",
   "macros",
 ] }
-tokio = { version = "1.36.0", features = ["full"] }
-tokio-util = { version = "0.7.10", features = ["codec", "full"] }
+tokio = { version = "1.36.0" }
+tokio-util = { version = "0.7.10", features = ["codec"] }
 tower = { version = "0.4.13", features = ["util"] }
 tower-http = { version = "0.5.0", features = ["trace", "fs", "cors"] }
 tracing = "0.1.40"
 trunkrs = "0.2.7"
 typenum = "1.17.0"
-utapi-rs = "0.1.2"
 whoami = "1.5.0"
 
 [dev-dependencies]
@@ -66,4 +65,4 @@ lto = "off"
 codegen-units = 1
 panic = "abort"
 opt-level = 3
-codegen-backend = "cranelift"
+# codegen-backend = "cranelift"
