@@ -54,11 +54,13 @@ tracing = "0.1.40"
 trunkrs = "0.2.7"
 typenum = "1.17.0"
 whoami = "1.5.0"
+rustls = "0.21.11"
 
 [dev-dependencies]
 h2 = "0.4.4"
 mio = "0.8.11"
 whoami = "1.5.0"
+rustls = "0.21.11"
 
 [profile.release]
 lto = "off"
