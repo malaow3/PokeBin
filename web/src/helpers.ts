@@ -176,7 +176,7 @@ function get_item_image(
 	return `background: transparent url("assets/sprites") -${left}px -${top}px no-repeat;`;
 }
 
-const base_url = "https://pokebin-imgs.s3.amazonaws.com/";
+const base_url = "";
 const alcremie_decorations = [
 	"berry-sweet",
 	"clove-sweet",
