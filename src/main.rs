@@ -209,7 +209,7 @@ async fn run_main() {
             "/about",
             axum::routing::get_service(ServeDir::new("./web/dist/about.html")),
         )
-        .nest_service("/imgs", axum::routing::get_service(ServeDir::new("./home")))
+        .nest_service("/home", axum::routing::get_service(ServeDir::new("./home")))
         // Serve the web/dist folder as static files
         .route("/:id", get(get_paste))
         .route("/detailed/:id", get(get_paste_json_detailed))
