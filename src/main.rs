@@ -448,6 +448,7 @@ async fn get_paste_json_detailed(
             "title": String::from_utf8_lossy(&p.title),
             "author": String::from_utf8_lossy(&p.author),
             "notes": String::from_utf8_lossy(&p.notes),
+            "format": String::from_utf8_lossy(&p.format),
             "rental": String::from_utf8_lossy(&p.rental),
             "paste": String::from_utf8_lossy(&p.paste),
             // "mons": state.mon_map,

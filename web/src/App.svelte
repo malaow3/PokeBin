@@ -1,113 +1,111 @@
 <script lang="ts">
-    import { onMount } from "svelte";
-    import { encryptMessage } from "./helpers";
+import { onMount } from "svelte";
+import { encryptMessage } from "./helpers";
 
-    function resizeNotes() {
-        const footer = document.getElementById("footer");
-        const notes = document.getElementById("notes");
-        const topOb = document.getElementById("top");
-        const belowNotes = document.getElementById("belowNotes");
-        const notesLabel = document.getElementById("notesLabel");
+function resizeNotes() {
+    const footer = document.getElementById("footer");
+    const notes = document.getElementById("notes");
+    const topOb = document.getElementById("top");
+    const belowNotes = document.getElementById("belowNotes");
+    const notesLabel = document.getElementById("notesLabel");
 
-        if (
-            notes === null ||
-            footer === null ||
-            topOb === null ||
-            belowNotes === null ||
-            notesLabel === null
-        ) {
-            return;
-        }
-
-        const labelHeight = notesLabel.clientHeight;
-
-        const availableHeight =
-            window.innerHeight -
-            topOb.clientHeight -
-            belowNotes.clientHeight -
-            footer.clientHeight -
-            labelHeight -
-            10;
-
-        if (notes.clientHeight > availableHeight) {
-            notes.style.height = `${availableHeight}px`;
-        }
+    if (
+        notes === null ||
+        footer === null ||
+        topOb === null ||
+        belowNotes === null ||
+        notesLabel === null
+    ) {
+        return;
     }
 
-    // On mount!
-    onMount(() => {
-        const notes = document.getElementById("notes");
+    const labelHeight = notesLabel.clientHeight;
 
-        if (notes !== null) {
-            // Cast notes to NOT null.
-            notes.addEventListener("touchend", resizeNotes);
-            notes.addEventListener("mouseup", resizeNotes);
-        }
-    });
+    const availableHeight =
+        window.innerHeight -
+        topOb.clientHeight -
+        belowNotes.clientHeight -
+        footer.clientHeight -
+        labelHeight -
+        10;
 
-    // biome-ignore lint/suspicious/noExplicitAny: any is ok here.
-    async function handleForm(e: any) {
-        e.preventDefault();
-        const paste = document.getElementById("paste") as HTMLTextAreaElement;
-        if (paste === null) {
-            return;
-        }
+    if (notes.clientHeight > availableHeight) {
+        notes.style.height = `${availableHeight}px`;
+    }
+}
 
-        const form = document.getElementById("form") as HTMLFormElement;
+// On mount!
+onMount(() => {
+    const notes = document.getElementById("notes");
 
-        if (paste.value === "") {
-            alert("Paste cannot be empty!");
-            return;
-        }
+    if (notes !== null) {
+        // Cast notes to NOT null.
+        notes.addEventListener("touchend", resizeNotes);
+        notes.addEventListener("mouseup", resizeNotes);
+    }
+});
 
-        const password = document.getElementById(
-            "password",
-        ) as HTMLInputElement;
-        if (password === null) {
-            return;
-        }
+// biome-ignore lint/suspicious/noExplicitAny: any is ok here.
+async function handleForm(e: any) {
+    e.preventDefault();
+    const paste = document.getElementById("paste") as HTMLTextAreaElement;
+    if (paste === null) {
+        return;
+    }
 
-        if (password.value === "") {
-            form.submit();
-            return;
-        }
+    const form = document.getElementById("form") as HTMLFormElement;
 
-        const password_value = password.value;
-        // AES encrypt the paste
-        let content = paste.value;
+    if (paste.value === "") {
+        alert("Paste cannot be empty!");
+        return;
+    }
 
-        const title = document.getElementById("title") as HTMLInputElement;
-        const author = document.getElementById("author") as HTMLInputElement;
-        const notes = document.getElementById("notes") as HTMLTextAreaElement;
-        const format = document.getElementById("format") as HTMLInputElement;
-        const rental = document.getElementById("rental") as HTMLInputElement;
+    const password = document.getElementById("password") as HTMLInputElement;
+    if (password === null) {
+        return;
+    }
 
-        const jsondata = {
-            title: title.value,
-            author: author.value,
-            notes: notes.value,
-            format: format.value,
-            rental: rental.value,
-        };
-
-        content = `${JSON.stringify(jsondata)}\n-----\n${content}`;
-
-        // AES encrypt the paste
-        const data = await encryptMessage(password_value, content);
-        // Submit the form removing the password
-        paste.value = "";
-
-        // Add a new input.
-        const hidden_input = document.getElementById(
-            "encryptedData",
-        ) as HTMLInputElement;
-        if (hidden_input === null) {
-            return;
-        }
-        hidden_input.value = data;
-
+    if (password.value === "") {
         form.submit();
+        return;
     }
+
+    const password_value = password.value;
+    // AES encrypt the paste
+    let content = paste.value;
+
+    const title = document.getElementById("title") as HTMLInputElement;
+    const author = document.getElementById("author") as HTMLInputElement;
+    const notes = document.getElementById("notes") as HTMLTextAreaElement;
+    const format = document.getElementById("format") as HTMLInputElement;
+    const rental = document.getElementById("rental") as HTMLInputElement;
+
+    const jsondata = {
+        title: title.value,
+        author: author.value,
+        notes: notes.value,
+        format: format.value,
+        rental: rental.value,
+    };
+
+    content = `${JSON.stringify(jsondata)}\n-----\n${content}`;
+
+    // AES encrypt the paste
+    const data = await encryptMessage(password_value, content);
+    // Submit the form removing the password
+    paste.value = "";
+
+    // Add a new input.
+    const hidden_input = document.getElementById(
+        "encryptedData",
+    ) as HTMLInputElement;
+    if (hidden_input === null) {
+        return;
+    }
+    hidden_input.value = data;
+
+    form.submit();
+}
 </script>
 
 <main>
@@ -259,7 +257,7 @@
                         About PokeBin
                     </a>
                     <br />
-                    <p>Made with ❤️</p>
+                    <p>Made with ❤</p>
                 </div>
             </div>
         </div>
