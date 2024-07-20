@@ -7,9 +7,7 @@ RUN apt-get update && apt-get install -y \
 
 COPY .env .
 COPY web/dist web/dist
-COPY moves.json .
-copy items.json .
-copy pokemon.json .
+COPY data/ .
 COPY home home
 COPY templates templates/
 COPY ads.txt .

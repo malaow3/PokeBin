@@ -1,0 +1,301 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.toggle-notes {
+    background: #333;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    user-select: none !important;
+    border-radius: 3px;
+}
+
+p {
+	word-wrap: break-word;
+}
+
+@media (max-width: 399px) {
+	article .paste {
+		font-size: 13px !important;
+		min-width: 100% !important;
+		width: 100% !important;
+	}
+}
+
+
+/* Mobile styles */
+@media (max-width: 1158px) {
+
+	.extra {
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	body {
+		font-size: 10px;
+		/* Smaller font size for mobile */
+	}
+
+	.content-container {
+		display: flex;
+		flex-direction: column;
+		/* side-content above main */
+	}
+
+	.side-content {
+		width: 100% !important;
+		flex-direction: column !important;
+	}
+
+}
+
+/* Desktop and larger tablets */
+@media (min-width: 1159px) {
+
+	.extra {
+		flex-direction: column;
+	}
+
+	body {
+		font-size: 12px;
+		/* Regular font size for larger devices */
+	}
+
+	.content-container {
+		display: flex;
+		flex-direction: column;
+		/* main above side-content */
+	}
+
+}
+
+img.img-pokemon {
+	/* width: 12vw; */
+	/* min-width: 150px; */
+	height: auto;
+	/* max-width: 250px; */
+	width: 150px;
+}
+
+body {
+	margin: 0;
+	/*background-color: black !important;*/
+
+    @apply bg-zinc-900;
+	color: white;
+	font:
+		12px "M+ 1c",
+		sans-serif;
+}
+
+/* Common styles for all devices */
+img.img-pokemon {
+	height: auto;
+}
+
+main,
+.side-content {
+	margin: 0;
+}
+
+.side-content {
+	padding-top: 20px !important;
+}
+
+.extra {
+	width: 200px;
+	font-size: 14px;
+	user-select: none !important;
+}
+
+.side-content {
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	/* gap: 20px; */
+}
+
+* {
+	min-width: 0;
+}
+
+.type-normal {
+	color: #a8a878;
+}
+
+.type-fighting {
+	color: #c03028;
+}
+
+.type-flying {
+	color: #a890f0;
+}
+
+.type-poison {
+	color: #a040a0;
+}
+
+.type-ground {
+	color: #e0c068;
+}
+
+.type-rock {
+	color: #b8a038;
+}
+
+.type-bug {
+	color: #a8b820;
+}
+
+.type-ghost {
+	color: #705898;
+}
+
+.type-steel {
+	color: #b8b8d0;
+}
+
+.type-fire {
+	color: #f08030;
+}
+
+.type-water {
+	color: #6890f0;
+}
+
+.type-grass {
+	color: #78c850;
+}
+
+.type-electric {
+	color: #f8d030;
+}
+
+.type-psychic {
+	color: #f85888;
+}
+
+.type-ice {
+	color: #98d8d8;
+}
+
+.type-dragon {
+	color: #7038f8;
+}
+
+.type-dark {
+	color: #705848;
+}
+
+.type-fairy {
+	color: #ee99ac;
+}
+
+.gender-m {
+	@apply text-sky-500;
+}
+
+.gender-f {
+	color: #e82010;
+}
+
+.attr {
+	color: #a0a0a0;
+}
+
+.stat-hp {
+	color: #ff0000;
+}
+
+.stat-atk {
+	color: #f08030;
+}
+
+.stat-def {
+	color: #f8d030;
+}
+
+.stat-spa {
+	color: #6890f0;
+}
+
+.stat-spd {
+	color: #78c850;
+}
+
+.stat-spe {
+	color: #f85888;
+}
+
+main,
+.side-content {
+	margin: 0
+}
+
+article {
+	float: left;
+}
+
+article:nth-child(odd) {
+	clear: left;
+}
+
+article>.paste {
+	min-width: 350px;
+	width: 25vw;
+	margin: 10px 10px 0;
+	/*font: 15px;*/
+    font-size: 1rem;
+    /*font-family: monospace;*/
+    font-family: 'Ubuntu Mono', monospace;
+    font-weight: 400;
+    font-style: normal;
+	line-height: 1.45;
+}
+
+article {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: flex-start;
+	margin: 0;
+}
+
+div.img {
+	position: relative;
+	margin-left: 15px;
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+
+span.img-item {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 48px;
+	/* Change this to the desired width */
+	height: 48px;
+	/* Change this to the desired height */
+	/* background-size: 344px 1032px; */
+	/* Adjust the background size to 'auto' */
+}
+
+
+#wrapper {
+	user-select: none;
+	width: 100%;
+	/* Adjust the width as necessary, could be 100% or a specific value like 35vw */
+	max-width: 35vw;
+	/* Prevents the container from exceeding the bounds of its parent */
+	height: 25px;
+	/* Fixed height as you've already specified */
+	max-height: 25px;
+	/* Ensures container does not grow taller than this */
+	overflow: hidden;
+	/* Adds scrollbars if content exceeds container size */
+	margin: 0 auto;
+	/* Centers the container if within a block that's wider than the container itself */
+}

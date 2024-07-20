@@ -1,6 +1,5 @@
 mod db;
 mod download_images;
-mod helpers;
 mod templates;
 mod utils;
 
@@ -40,7 +39,6 @@ struct Args {
 enum Command {
     Img,
     Items,
-    UTImg,
 }
 
 #[tokio::main]
@@ -51,50 +49,6 @@ async fn main() {
     let args = Args::parse();
 
     match args.command {
-        Some(Command::UTImg) => {
-            // let key =
-            //     std::env::var("UPLOADTHING_SECRET").expect("UPLOADTHING_SECRET should be set");
-            // let api = UtApi::new(Some(key));
-            //
-            // let options = utapi_rs::models::ListFilesOpts {
-            //     limit: Some(5000),
-            //     offset: Some(0),
-            // };
-            //
-            // let files = match api.list_files(Some(options)).await {
-            //     Ok(files) => files,
-            //     Err(e) => panic!("Error listing files: {:?}", e),
-            // };
-            //
-            // let mut key_to_file: HashMap<String, String> = HashMap::new();
-            // for file in &files.files {
-            //     key_to_file.insert(file.key.clone(), file.name.clone());
-            // }
-            //
-            // let file_keys = files
-            //     .files
-            //     .iter()
-            //     .map(|f| f.key.to_owned())
-            //     .collect::<Vec<_>>();
-            // let mut file_to_url: HashMap<String, String> = HashMap::new();
-            // let urls = match api.get_file_urls(file_keys).await {
-            //     Ok(u) => u,
-            //     Err(e) => panic!("{e}"),
-            // };
-            //
-            // for url_resp in urls.data {
-            //     let key = url_resp.key;
-            //     let file_name = key_to_file.get(&key).expect("File should not be None");
-            //
-            //     file_to_url.insert(file_name.to_owned(), url_resp.url);
-            // }
-            //
-            // // Write the JSON to file.
-            // let data = serde_json::to_string_pretty(&file_to_url)
-            //     .expect("Hashmap should be able to be serialized");
-            //
-            // std::fs::write("files.json", data).expect("File should be able to be written to");
-        }
         Some(Command::Img) => run_img().await,
         Some(Command::Items) => {
             // Read the contents of the JavaScript file (replace with your file path)
@@ -130,7 +84,7 @@ async fn main() {
 
             let items_json = serde_json::to_string_pretty(&new_items).unwrap();
 
-            std::fs::write("items.json", items_json).unwrap();
+            std::fs::write("data/items.json", items_json).unwrap();
         }
         None => run_main().await,
     }
@@ -157,14 +111,13 @@ async fn run_main() {
     info!("Starting server");
     let db_pool = db::create_db().await;
     let cipher = utils::create_cipher();
-    let file = std::fs::File::open("pokemon.json").unwrap();
+    let file = std::fs::File::open("data/pokemon.json").unwrap();
     let map: HashMap<String, utils::Mon> = serde_json::from_reader(file).unwrap();
-    // helpers::verify_map(&mut map);
 
-    let item_file = std::fs::File::open("items.json").unwrap();
+    let item_file = std::fs::File::open("data/items.json").unwrap();
     let item_map: HashMap<String, Value> = serde_json::from_reader(item_file).unwrap();
 
-    let move_file = std::fs::File::open("moves.json").unwrap();
+    let move_file = std::fs::File::open("data/moves.json").unwrap();
     let move_map: HashMap<String, utils::Move> = serde_json::from_reader(move_file).unwrap();
 
     let state = AppState {
@@ -182,24 +135,6 @@ async fn run_main() {
 
     let app = axum::Router::new()
         .route("/create", post(create_paste))
-        .route(
-            "/get-img/:mon/:shiny/:female",
-            get(
-                |Path((mon, shiny, female)): Path<(String, bool, bool)>| async move {
-                    let img = helpers::get_image(&map, &mon, shiny, female);
-                    println!("Image: {}", img);
-
-                    // replace "home" with "imgs"
-                    let img = img.replace("home", "imgs");
-                    (
-                        axum::http::StatusCode::OK,
-                        Json(json!({
-                            "img": img
-                        })),
-                    )
-                },
-            ),
-        )
         // Serve the about.html file
         .nest_service(
             "/assets/favicon",
@@ -207,11 +142,15 @@ async fn run_main() {
         )
         .nest_service(
             "/about",
-            axum::routing::get_service(ServeDir::new("./web/dist/about.html")),
+            axum::routing::get_service(ServeDir::new("./web/solid/dist/about.html")),
         )
         .nest_service("/home", axum::routing::get_service(ServeDir::new("./home")))
         // Serve the web/dist folder as static files
-        .route("/:id", get(get_paste))
+        .nest_service(
+            "/:id",
+            axum::routing::get_service(ServeDir::new("./web/solid/dist/paste.html")),
+        )
+        //.route("/:id", get(get_paste))
         .route("/detailed/:id", get(get_paste_json_detailed))
         .route("/:id/json", get(get_paste_json))
         .route(
@@ -251,7 +190,13 @@ async fn run_main() {
             }),
         )
         .route("/other-data-info", get(get_other_data_info))
-        .fallback_service(axum::routing::get_service(ServeDir::new("./web/dist")))
+        .nest_service(
+            "/static",
+            axum::routing::get_service(ServeDir::new("./web/solid/dist/static")),
+        )
+        .fallback_service(axum::routing::get_service(ServeDir::new(
+            "./web/solid/dist",
+        )))
         // Serve the images in the home folder.
         .layer(cors)
         .with_state(state);
@@ -326,10 +271,10 @@ async fn create_paste(
     axum::response::Redirect::to(&format!("/{id}")).into_response()
 }
 
-async fn get_paste(State(_state): State<AppState>, Path(id): Path<String>) -> Response {
-    let template = templates::PasteTemplate { paste: id };
-    HtmlTemplate(template).into_response()
-}
+//async fn get_paste(State(_state): State<AppState>, Path(id): Path<String>) -> Response {
+//    //let template = templates::PasteTemplate { paste: id };
+//    HtmlTemplate(template).into_response()
+//}
 
 async fn get_paste_json(State(state): State<AppState>, Path(id): Path<String>) -> Response {
     let decode_id = match utils::decode_id(&id, &state.cipher) {
@@ -390,38 +335,6 @@ async fn get_other_data_info(State(state): State<AppState>) -> Response {
     .into_response()
 }
 
-// #[derive(serde::Serialize, serde::Deserialize)]
-// struct Content {
-//     text: Option<String>,
-//     mon: Option<Set>,
-// }
-
-// #[derive(serde::Serialize, serde::Deserialize, Default)]
-// struct Set {
-//     name: String,
-//     search_name: String,
-//     image: String,
-//     item: String,
-//     item_img: String,
-//     moves: Vec<Move>,
-//     type1: String,
-//     gender: String,
-//     other: Vec<String>,
-//     hp: u32,
-//     atk: u32,
-//     def: u32,
-//     spa: u32,
-//     spd: u32,
-//     spe: u32,
-//     hp_iv: Option<u32>,
-//     atk_iv: Option<u32>,
-//     def_iv: Option<u32>,
-//     spa_iv: Option<u32>,
-//     spd_iv: Option<u32>,
-//     spe_iv: Option<u32>,
-//     nickname: String,
-// }
-
 async fn get_paste_json_detailed(
     State(state): State<AppState>,
     Path(id): Path<String>,
@@ -451,233 +364,14 @@ async fn get_paste_json_detailed(
             "format": String::from_utf8_lossy(&p.format),
             "rental": String::from_utf8_lossy(&p.rental),
             "paste": String::from_utf8_lossy(&p.paste),
-            // "mons": state.mon_map,
-            // "items": state.item_map,
-            // "moves": state.move_map,
-            // "files": state.file_map
         }))
         .into_response(),
         db::DBResult::EncryptedPaste(e) => {
             // Early return the JSON.
             Json(json!({
                 "encrypted_data": e,
-                // "mons": state.mon_map,
-                // "items": state.item_map,
-                // "moves": state.move_map,
-                // "files": state.file_map
             }))
             .into_response()
         }
     }
-
-    // let paste = match paste {
-    //     db::DBResult::Paste(p) => p,
-    //     db::DBResult::EncryptedPaste(e) => {
-    //         // Early return the JSON.
-    //         return Json(json!({
-    //             "encrypted_data": e,
-    //             "mons": state.mon_map,
-    //             "items": state.item_map,
-    //             "moves": state.move_map,
-    //         }))
-    //         .into_response();
-    //     }
-    // };
-
-    // // Split the paste on 2+ newlines.
-    // let paste_string = String::from_utf8_lossy(&paste.paste);
-    // let sets = paste_string
-    //     .split("\n\n")
-    //     .filter_map(|s| {
-    //         if s.is_empty() {
-    //             return None;
-    //         }
-    //         Some(s.trim())
-    //     })
-    //     .collect::<Vec<&str>>();
-    //
-    // let mut contents = vec![];
-    //
-    // for set in sets {
-    //     let lines = set.lines().collect::<Vec<&str>>();
-    //     let m = RE_HEAD.captures(lines[0]);
-    //     if m.is_none() {
-    //         contents.push(Content {
-    //             text: Some(set.to_string()),
-    //             mon: None,
-    //         });
-    //         continue;
-    //     }
-    //
-    //     let mut setmon = Set::default();
-    //
-    //     let m = m.unwrap();
-    //     if let Some(name) = m.get(2) {
-    //         // Get the pokemon data.
-    //         let searchname = name.as_str().to_lowercase().replace(' ', "-");
-    //         let mon = helpers::search_like(&state.mon_map, &searchname);
-    //         setmon.name = name.as_str().to_string();
-    //         if let Some((search_name, mon)) = mon {
-    //             setmon.search_name = search_name;
-    //             setmon.type1 = mon.type1;
-    //             let nickname = m.get(1).unwrap().as_str();
-    //             setmon.nickname = nickname[0..nickname.len() - 1].to_string();
-    //         }
-    //     } else if let Some(name) = m.get(4) {
-    //         // Get the pokemon data.
-    //         let searchname = name.as_str().to_lowercase().replace(' ', "-");
-    //         let mon = helpers::search_like(&state.mon_map, &searchname);
-    //         setmon.name = name.as_str().to_string();
-    //         if let Some((search_name, mon)) = mon {
-    //             setmon.search_name = search_name;
-    //             setmon.type1 = mon.type1;
-    //         }
-    //     }
-    //
-    //     if let Some(item) = m.get(6) {
-    //         let gender = item.as_str();
-    //         if gender == "M" {
-    //             setmon.gender = "m".to_string();
-    //         } else if gender == "F" {
-    //             setmon.gender = "f".to_string();
-    //         }
-    //     }
-    //
-    //     if let Some(item) = m.get(9) {
-    //         setmon.item = item.as_str().to_string();
-    //         setmon.item_img = helpers::get_item_image(&state.item_map, &setmon.item);
-    //     }
-    //
-    //     // Get the image for the mon.
-    //     let is_female = setmon.gender == "f";
-    //     let is_shiny = IS_SHINY.is_match(set);
-    //     let image = helpers::get_image(&state.mon_map, &setmon.search_name, is_shiny, is_female);
-    //     setmon.image = image.replace("home", "imgs");
-    //
-    //     // Get the moves.
-    //     for line in lines[1..].iter() {
-    //         let m = RE_MOVE.captures(line);
-    //         if m.is_some() {
-    //             let m = m.unwrap();
-    //             if let Some(move_name) = m.get(3) {
-    //                 let move_search = move_name.as_str().to_lowercase().replace(' ', "-");
-    //                 let move_item = helpers::search_like(&state.move_map, &move_search);
-    //                 if let Some((_, move_item)) = move_item {
-    //                     setmon.moves.push(Move {
-    //                         name: move_name.as_str().to_string(),
-    //                         type1: move_item.type1,
-    //                         id: 0,
-    //                     });
-    //                 } else {
-    //                     setmon.moves.push(Move {
-    //                         name: move_name.as_str().to_string(),
-    //                         type1: "".to_string(),
-    //                         id: 0,
-    //                     })
-    //                 }
-    //             }
-    //         } else if line.starts_with("EVs: ") {
-    //             let evs = line.split(": ").collect::<Vec<&str>>();
-    //             let m = RE_STAT.captures(evs[1]);
-    //             if m.is_some() {
-    //                 let m = m.unwrap();
-    //                 if let Some(evs) = m.get(1) {
-    //                     setmon.hp = evs.as_str().split(' ').collect::<Vec<&str>>()[0]
-    //                         .parse()
-    //                         .unwrap();
-    //                 }
-    //                 if let Some(evs) = m.get(3) {
-    //                     setmon.atk = evs.as_str().split(' ').collect::<Vec<&str>>()[0]
-    //                         .parse()
-    //                         .unwrap();
-    //                 }
-    //                 if let Some(evs) = m.get(5) {
-    //                     setmon.def = evs.as_str().split(' ').collect::<Vec<&str>>()[0]
-    //                         .parse()
-    //                         .unwrap();
-    //                 }
-    //                 if let Some(evs) = m.get(7) {
-    //                     setmon.spa = evs.as_str().split(' ').collect::<Vec<&str>>()[0]
-    //                         .parse()
-    //                         .unwrap();
-    //                 }
-    //                 if let Some(evs) = m.get(9) {
-    //                     setmon.spd = evs.as_str().split(' ').collect::<Vec<&str>>()[0]
-    //                         .parse()
-    //                         .unwrap();
-    //                 }
-    //                 if let Some(evs) = m.get(11) {
-    //                     setmon.spe = evs.as_str().split(' ').collect::<Vec<&str>>()[0]
-    //                         .parse()
-    //                         .unwrap();
-    //                 }
-    //             }
-    //         } else if line.starts_with("IVs: ") {
-    //             let ivs = line.split(": ").collect::<Vec<&str>>();
-    //             let m = RE_STAT.captures(ivs[1]);
-    //             if m.is_some() {
-    //                 let m = m.unwrap();
-    //                 if let Some(ivs) = m.get(1) {
-    //                     setmon.hp_iv = Some(
-    //                         ivs.as_str().split(' ').collect::<Vec<&str>>()[0]
-    //                             .parse()
-    //                             .unwrap(),
-    //                     );
-    //                 }
-    //                 if let Some(ivs) = m.get(3) {
-    //                     setmon.atk_iv = Some(
-    //                         ivs.as_str().split(' ').collect::<Vec<&str>>()[0]
-    //                             .parse()
-    //                             .unwrap(),
-    //                     );
-    //                 }
-    //                 if let Some(ivs) = m.get(5) {
-    //                     setmon.def_iv = Some(
-    //                         ivs.as_str().split(' ').collect::<Vec<&str>>()[0]
-    //                             .parse()
-    //                             .unwrap(),
-    //                     );
-    //                 }
-    //                 if let Some(ivs) = m.get(7) {
-    //                     setmon.spa_iv = Some(
-    //                         ivs.as_str().split(' ').collect::<Vec<&str>>()[0]
-    //                             .parse()
-    //                             .unwrap(),
-    //                     );
-    //                 }
-    //                 if let Some(ivs) = m.get(9) {
-    //                     setmon.spd_iv = Some(
-    //                         ivs.as_str().split(' ').collect::<Vec<&str>>()[0]
-    //                             .parse()
-    //                             .unwrap(),
-    //                     );
-    //                 }
-    //                 if let Some(ivs) = m.get(11) {
-    //                     setmon.spe_iv = Some(
-    //                         ivs.as_str().split(' ').collect::<Vec<&str>>()[0]
-    //                             .parse()
-    //                             .unwrap(),
-    //                     );
-    //                 }
-    //             }
-    //         } else {
-    //             setmon.other.push(line.to_string());
-    //         }
-    //     }
-    //
-    //     contents.push(Content {
-    //         text: None,
-    //         mon: Some(setmon),
-    //     })
-    // }
-    //
-    // Json(json!({
-    //     "title": String::from_utf8_lossy(&paste.title),
-    //     "author": String::from_utf8_lossy(&paste.author),
-    //     "notes": String::from_utf8_lossy(&paste.notes),
-    //     "rental": String::from_utf8_lossy(&paste.rental),
-    //     "format": String::from_utf8_lossy(&paste.format),
-    //     "sets": contents
-    // }))
-    // .into_response()
 }
