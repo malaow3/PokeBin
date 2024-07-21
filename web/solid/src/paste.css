@@ -81,9 +81,8 @@ img.img-pokemon {
 
 body {
 	margin: 0;
-	/*background-color: black !important;*/
-
-    @apply bg-zinc-900;
+	background-color: black !important;
+    /*@apply bg-zinc-900;*/
 	color: white;
 	font:
 		12px "M+ 1c",
@@ -110,12 +109,13 @@ main,
 	user-select: none !important;
 }
 
-.side-content {
-	display: flex;
-	flex-direction: row;
-	align-items: flex-start;
+/*.side-content {*/
+/*	display: flex;*/
+	/*flex-direction: row;*/
+	/*flex-direction: column;*/
+	/*align-items: flex-start;*/
 	/* gap: 20px; */
-}
+/*}*/
 
 * {
 	min-width: 0;
@@ -243,16 +243,17 @@ article:nth-child(odd) {
 }
 
 article>.paste {
-	min-width: 350px;
+	min-width: 400px;
 	width: 25vw;
 	margin: 10px 10px 0;
 	/*font: 15px;*/
     font-size: 1rem;
+    line-height: 1.15rem;
     /*font-family: monospace;*/
     font-family: 'Ubuntu Mono', monospace;
     font-weight: 400;
     font-style: normal;
-	line-height: 1.45;
+	/*line-height: 1.45;*/
 }
 
 article {

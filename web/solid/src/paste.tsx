@@ -464,53 +464,74 @@ function App() {
                         role="note"
                         style="user-select: none"
                     >
-                        <div id="metadata">
-                            <Show when={data()?.title !== ""}>
-                                <p
-                                    class="mx-10 text-2xl subpixel-antialiased"
-                                    id="title"
-                                >
-                                    {data()?.title}
-                                </p>
-                            </Show>
-                            <Show when={data()?.author !== ""}>
-                                <p class="mx-10 text-base" id="author">
-                                    By: {data()?.author}
-                                </p>
-                            </Show>
-
-                            <Show when={data()?.format !== ""}>
-                                <p class="mx-10 text-base" id="format">
-                                    Format: {data()?.format}
-                                </p>
-                            </Show>
-                            <Show when={data()?.rental !== ""}>
-                                <p class="mx-10 text-base" id="rental">
-                                    Rental: {data()?.rental}
-                                </p>
-                            </Show>
-
-                            <Show when={data()?.notes !== ""}>
-                                <button
-                                    type="button"
-                                    onClick={() => setShowNotes(!showNotes())}
-                                    class="mx-10 toggle-notes"
-                                >
-                                    <Show when={showNotes()}>Hide notes</Show>
-                                    <Show when={!showNotes()}>Show notes</Show>
-                                </button>
-                                <Show when={showNotes()}>
+                        <div
+                            id="metadata"
+                            class="flex flex-col sm:flex-row relative"
+                        >
+                            {/* Left column for metadata */}
+                            <div class="flex-1 pr-4">
+                                {" "}
+                                {/* pr-4 for right padding to separate from right column */}
+                                <Show when={data()?.title !== ""}>
                                     <p
-                                        class="mx-10 text-base"
-                                        style="user-select:none"
-                                        id="notes"
-                                        innerHTML={data()?.notes.replace(
-                                            /\n/g,
-                                            "<br>",
-                                        )}
-                                    />
+                                        class="mx-10 text-2xl subpixel-antialiased"
+                                        id="title"
+                                    >
+                                        {data()?.title}
+                                    </p>
                                 </Show>
-                            </Show>
+                                <Show when={data()?.author !== ""}>
+                                    <p class="mx-10 text-base" id="author">
+                                        By: {data()?.author}
+                                    </p>
+                                </Show>
+                                <Show when={data()?.format !== ""}>
+                                    <p class="mx-10 text-base" id="format">
+                                        Format: {data()?.format}
+                                    </p>
+                                </Show>
+                                <Show when={data()?.rental !== ""}>
+                                    <p class="mx-10 text-base" id="rental">
+                                        Rental: {data()?.rental}
+                                    </p>
+                                </Show>
+                            </div>
+                            {/* Right column for notes */}
+                            <div class="flex-1 pl-4 relative">
+                                {" "}
+                                {/* pl-4 for left padding to separate from left column */}
+                                <Show when={data()?.notes !== ""}>
+                                    <div class="absolute top-0 right-0 p-4">
+                                        <div class="flex justify-end mb-4">
+                                            <button
+                                                type="button"
+                                                onClick={() =>
+                                                    setShowNotes(!showNotes())
+                                                }
+                                                class="toggle-notes"
+                                            >
+                                                <Show when={showNotes()}>
+                                                    Hide notes
+                                                </Show>
+                                                <Show when={!showNotes()}>
+                                                    Show notes
+                                                </Show>
+                                            </button>
+                                        </div>
+                                        <Show when={showNotes()}>
+                                            <p
+                                                class="bg-zinc-800 border-solid border-2 border-white p-10 rounded-md text-base"
+                                                style="user-select:none"
+                                                id="notes"
+                                                innerHTML={data()?.notes.replace(
+                                                    /\n/g,
+                                                    "<br>",
+                                                )}
+                                            />
+                                        </Show>
+                                    </div>
+                                </Show>
+                            </div>
                         </div>
                     </div>
                 </div>
