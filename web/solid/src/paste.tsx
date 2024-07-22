@@ -25,6 +25,28 @@ import {
 } from "./types";
 import DOMPurify from "dompurify";
 
+function makeTransparentOnMouseover(e: MouseEvent | FocusEvent) {
+    console.log("make transparent");
+    const element = e.target as HTMLElement;
+    console.log(element);
+    if (element === null) {
+        return;
+    }
+    // Set the opacity to 1.0 on mouseover
+    element.style.opacity = "0.2";
+}
+
+function makeOpaqueOnFocus(e: MouseEvent | FocusEvent) {
+    console.log("make opaque");
+    const element = e.target as HTMLElement;
+    console.log(element);
+    if (element === null) {
+        return;
+    }
+    // Set the opacity to 1.0 on mouseover
+    element.style.opacity = "1.0";
+}
+
 async function fetchPasteData() {
     // Get the paste ID from the URL
     const url = new URL(window.location.href);
@@ -386,11 +408,8 @@ function App() {
     //const [showNotes, setShowNotes] = createSignal(false);
     const [data, { refetch }] = createResource(fetchPasteData);
     const [showNotes, setShowNotes] = createSignal(false);
-    let selectable = false; // Initially, the title is selectable
 
     function setSelectable(value: boolean, id: string) {
-        selectable = value;
-
         const element = document.getElementById(id);
         if (element === null) {
             return;
@@ -398,9 +417,9 @@ function App() {
 
         // First update the style
         if (value) {
-            element.setAttribute("style", "user-select: text !important");
+            element.style.userSelect = "text";
         } else {
-            element.setAttribute("style", "user-select: auto !important");
+            element.style.userSelect = "auto";
         }
 
         // Set the style to be selectable for ALL children recursively
@@ -415,7 +434,7 @@ function App() {
             children_list.push(children[i]);
         }
         while (children_list.length > 0) {
-            const child = children_list.pop();
+            const child = children_list.pop() as HTMLElement;
             if (child === null || child === undefined) {
                 break;
             }
@@ -427,11 +446,11 @@ function App() {
             if (value) {
                 // Set the style to be unselectable
                 for (let i = 0; i < children.length; i++) {
-                    child.setAttribute("style", "user-select: auto !important");
+                    child.style.userSelect = "auto";
                 }
             } else {
                 for (let i = 0; i < children.length; i++) {
-                    child.setAttribute("style", "user-select: none !important");
+                    child.style.userSelect = "none";
                 }
             }
         }
@@ -520,8 +539,16 @@ function App() {
                                         </div>
                                         <Show when={showNotes()}>
                                             <p
-                                                class="bg-zinc-800 border-solid border-2 border-white p-10 rounded-md text-base"
-                                                style="user-select:none"
+                                                class="max-w-72 bg-zinc-800 border-solid border-2 border-white p-5 rounded-md text-base"
+                                                onMouseOver={makeOpaqueOnFocus}
+                                                onFocus={makeOpaqueOnFocus}
+                                                onMouseOut={
+                                                    makeTransparentOnMouseover
+                                                }
+                                                onBlur={
+                                                    makeTransparentOnMouseover
+                                                }
+                                                style="user-select:none; opacity: 1.0"
                                                 id="notes"
                                                 innerHTML={data()?.notes.replace(
                                                     /\n/g,
