@@ -3,6 +3,7 @@ import {
     createSignal,
     For,
     Match,
+    onCleanup,
     onMount,
     Show,
     Switch,
@@ -24,6 +25,15 @@ import {
     newPasteData,
 } from "./types";
 import DOMPurify from "dompurify";
+
+async function copyPaste() {
+    const main = document.getElementsByTagName("main")[0];
+
+    // Get the paste data.
+    const data = main.innerText;
+    // Copy the data to the clipboard.
+    await navigator.clipboard.writeText(data);
+}
 
 function makeTransparentOnMouseover(e: MouseEvent | FocusEvent) {
     console.log("make transparent");
@@ -124,7 +134,7 @@ async function fetchPasteData() {
             const RE_MOVE =
                 /^(-)( ([A-Z][a-z\']*(?:[- ][A-Za-z][a-z\']*)*)(?: \[([A-Z][a-z]+)\])?(?: \/ [A-Z][a-z\']*(?:[- ][A-Za-z][a-z\']*)*)* *)$/;
             const RE_STAT =
-                /^(\d+ HP)?( \/ )?(\d+ Atk)?( \/ )?(\d+ Def)?( \/ )?(\d+ SpA)?( \/ )?(\d+ SpD)?( \/ )?(\d+ Spe)?( *)$/;
+                /^(\d+\s*HP)?(\s*\/\s*)?(\d+\s*Atk)?(\s*\/\s*)?(\d+\s*Def)?(\s*\/\s*)?(\d+\s*SpA)?(\s*\/\s*)?(\d+\s*SpD)?(\s*\/\s*)?(\d+\s*Spe)?(\s*)$/;
 
             for (let i = 0; i < sets.length; i++) {
                 const set = sets[i].trim();
@@ -405,9 +415,43 @@ async function fetchPasteData() {
 }
 
 function App() {
-    //const [showNotes, setShowNotes] = createSignal(false);
     const [data, { refetch }] = createResource(fetchPasteData);
     const [showNotes, setShowNotes] = createSignal(false);
+    const [notesWidth, setNotesWidth] = createSignal("300px");
+
+    function updateWidths() {
+        const main = document.getElementsByTagName("main")[0];
+        const article = document.getElementsByTagName("article")[0];
+
+        if (!main || !article) return;
+
+        let diff = 0;
+        const two_column_width = 2 * article.clientWidth;
+        if (main.clientWidth < two_column_width) {
+            diff = main.clientWidth - article.clientWidth;
+            const articles = document.getElementsByClassName("paste");
+            for (let i = 0; i < articles.length; i++) {
+                const article = articles[i] as HTMLElement;
+                article.style.fontSize = "1rem";
+                article.style.lineHeight = "1";
+            }
+        } else {
+            diff = window.innerWidth - 2 * article.clientWidth;
+        }
+        diff = Math.max(300, diff);
+
+        setNotesWidth(`${diff}px`);
+
+        // Update the metadata offset
+        // const metadata = document.getElementById("sidebar");
+        // if (metadata === null) {
+        //     return;
+        // }
+        //
+        // const image_offset =
+        //     document.getElementsByClassName("img")[0].clientWidth + 5;
+        // metadata.style.marginLeft = `${image_offset}px`;
+    }
 
     function setSelectable(value: boolean, id: string) {
         const element = document.getElementById(id);
@@ -457,13 +501,18 @@ function App() {
     }
 
     onMount(async () => {
+        window.addEventListener("resize", updateWidths);
         refetch();
         while (data.loading) {
-            await new Promise((resolve) => setTimeout(resolve, 50));
+            await new Promise((resolve) => setTimeout(resolve, 10));
         }
+        updateWidths();
         console.log(data());
     });
 
+    onCleanup(() => {
+        window.removeEventListener("resize", updateWidths);
+    });
     return (
         <>
             <Show when={data.error}>
@@ -492,12 +541,12 @@ function App() {
                                 {" "}
                                 {/* pr-4 for right padding to separate from right column */}
                                 <Show when={data()?.title !== ""}>
-                                    <p
-                                        class="mx-10 text-2xl subpixel-antialiased"
+                                    <h1
+                                        class="mx-10 text-pink-500 text-2xl"
                                         id="title"
                                     >
                                         {data()?.title}
-                                    </p>
+                                    </h1>
                                 </Show>
                                 <Show when={data()?.author !== ""}>
                                     <p class="mx-10 text-base" id="author">
@@ -524,9 +573,9 @@ function App() {
                                         <div class="flex justify-end mb-4">
                                             <button
                                                 type="button"
-                                                onClick={() =>
-                                                    setShowNotes(!showNotes())
-                                                }
+                                                onClick={() => {
+                                                    setShowNotes(!showNotes());
+                                                }}
                                                 class="toggle-notes"
                                             >
                                                 <Show when={showNotes()}>
@@ -539,7 +588,7 @@ function App() {
                                         </div>
                                         <Show when={showNotes()}>
                                             <p
-                                                class="max-w-72 bg-zinc-800 border-solid border-2 border-white p-5 rounded-md text-base"
+                                                class="w-80 bg-zinc-800 border-solid border-2 border-white p-5 rounded-md text-base"
                                                 onMouseOver={makeOpaqueOnFocus}
                                                 onFocus={makeOpaqueOnFocus}
                                                 onMouseOut={
@@ -548,7 +597,7 @@ function App() {
                                                 onBlur={
                                                     makeTransparentOnMouseover
                                                 }
-                                                style="user-select:none; opacity: 1.0"
+                                                style={`user-select:none; opacity: 1.0; width: ${notesWidth()}`}
                                                 id="notes"
                                                 innerHTML={data()?.notes.replace(
                                                     /\n/g,
@@ -560,14 +609,41 @@ function App() {
                                 </Show>
                             </div>
                         </div>
+                        <div class="extra mx-10">
+                            <div style="user-select: none !important">
+                                <a
+                                    class="patreon-button"
+                                    href="https://patreon.com/malaow3"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    <img
+                                        width="16"
+                                        height="16"
+                                        class="octicon rounded-2 d-block"
+                                        alt="patreon"
+                                        src="https://github.githubassets.com/assets/patreon-96b15b9db4b9.svg"
+                                    />
+                                    <span class="ml-2">Support on Patreon</span>
+                                </a>
+                            </div>
+                            <button
+                                type="submit"
+                                onClick={copyPaste}
+                                class="text-center content-center bg-pink-600 hover:bg-pink-800 text-white font-bold mt-2 text-sm py-1 px-4 rounded"
+                            >
+                                Copy
+                            </button>
+                        </div>
                     </div>
                 </div>
+                <hr class="mt-4 mb-2 border-zinc-700" />
 
-                <br />
                 <main>
                     <For each={data()?.sets}>
                         {(set_item) => (
                             <Show when={set_item.mon !== null}>
+                                {/* <article class="border-zinc-700 border-2 border-solid rounded-md mx-3"> */}
                                 <article>
                                     <div class="img">
                                         <Show
@@ -586,54 +662,60 @@ function App() {
                                     </div>
 
                                     <div class="paste">
-                                        <Switch>
-                                            <Match
+                                        <div class="text-xl">
+                                            <Switch>
+                                                <Match
+                                                    when={
+                                                        set_item.mon
+                                                            ?.nickname !== ""
+                                                    }
+                                                >
+                                                    <span>
+                                                        {set_item.mon?.nickname}{" "}
+                                                        (
+                                                    </span>
+                                                    <span
+                                                        class={`type-${set_item.mon?.type1}`}
+                                                    >
+                                                        {set_item.mon?.name}
+                                                    </span>
+                                                    <span>)</span>
+                                                </Match>
+                                                <Match
+                                                    when={
+                                                        set_item.mon
+                                                            ?.nickname === ""
+                                                    }
+                                                >
+                                                    <span
+                                                        class={`type-${set_item.mon?.type1}`}
+                                                    >
+                                                        {set_item.mon?.name}
+                                                    </span>
+                                                </Match>
+                                            </Switch>
+                                            <Show
                                                 when={
-                                                    set_item.mon?.nickname !==
-                                                    ""
+                                                    set_item.mon?.gender !== ""
                                                 }
                                             >
-                                                <span>
-                                                    {set_item.mon?.nickname} (
-                                                </span>
+                                                <span> (</span>
                                                 <span
-                                                    class={`type-${set_item.mon?.type1}`}
+                                                    class={`gender-${set_item.mon?.gender}`}
                                                 >
-                                                    {set_item.mon?.name}
+                                                    {set_item.mon?.gender.toUpperCase()}
                                                 </span>
                                                 <span>)</span>
-                                            </Match>
-                                            <Match
-                                                when={
-                                                    set_item.mon?.nickname ===
-                                                    ""
-                                                }
+                                            </Show>
+
+                                            <Show
+                                                when={set_item.mon?.item !== ""}
                                             >
                                                 <span
-                                                    class={`type-${set_item.mon?.type1}`}
-                                                >
-                                                    {set_item.mon?.name}
-                                                </span>
-                                            </Match>
-                                        </Switch>
-                                        <Show
-                                            when={set_item.mon?.gender !== ""}
-                                        >
-                                            <span>(</span>
-                                            <span
-                                                class={`gender-${set_item.mon?.gender}`}
-                                            >
-                                                {set_item.mon?.gender.toUpperCase()}
-                                            </span>
-                                            <span>)</span>
-                                        </Show>
-
-                                        <Show when={set_item.mon?.item !== ""}>
-                                            <span
-                                                innerHTML={` @ ${set_item.mon?.item.trim()}`}
-                                            />
-                                        </Show>
-                                        <br />
+                                                    innerHTML={` @ ${set_item.mon?.item.trim()}`}
+                                                />
+                                            </Show>
+                                        </div>
                                         {/* Ability */}
                                         <For
                                             each={set_item.mon?.other.filter(
@@ -658,7 +740,6 @@ function App() {
                                                 </>
                                             )}
                                         </For>
-
                                         {/* Level */}
                                         <For
                                             each={set_item.mon?.other.filter(
@@ -682,7 +763,6 @@ function App() {
                                                 </>
                                             )}
                                         </For>
-
                                         {/* Shiny */}
                                         <For
                                             each={set_item.mon?.other.filter(
@@ -706,7 +786,6 @@ function App() {
                                                 </>
                                             )}
                                         </For>
-
                                         {/* Hidden Power Type */}
                                         <For
                                             each={set_item.mon?.other.filter(
@@ -740,7 +819,6 @@ function App() {
                                                 </>
                                             )}
                                         </For>
-
                                         {/* Tera Type */}
                                         <For
                                             each={set_item.mon?.other.filter(
@@ -751,7 +829,7 @@ function App() {
                                             {(tera_type) => (
                                                 <>
                                                     <span class="attr">
-                                                        Tera Type:&nbsp;
+                                                        Tera Type:{" "}
                                                     </span>
                                                     <span
                                                         class={`type-${tera_type
@@ -773,7 +851,6 @@ function App() {
                                                 </>
                                             )}
                                         </For>
-
                                         {/* EVs */}
                                         <Show
                                             when={
@@ -796,7 +873,7 @@ function App() {
                                                             ?.last_stat !== "hp"
                                                     }
                                                 >
-                                                    <span> / </span>
+                                                    <span>/</span>
                                                 </Show>
                                             </Show>
 
@@ -813,7 +890,7 @@ function App() {
                                                         "atk"
                                                     }
                                                 >
-                                                    <span> / </span>
+                                                    <span>/</span>
                                                 </Show>
                                             </Show>
                                             <Show
@@ -829,7 +906,7 @@ function App() {
                                                         "def"
                                                     }
                                                 >
-                                                    <span> / </span>
+                                                    <span>/</span>
                                                 </Show>
                                             </Show>
                                             <Show
@@ -845,7 +922,7 @@ function App() {
                                                         "spa"
                                                     }
                                                 >
-                                                    <span> / </span>
+                                                    <span>/</span>
                                                 </Show>
                                             </Show>
                                             <Show
@@ -861,7 +938,7 @@ function App() {
                                                         "spd"
                                                     }
                                                 >
-                                                    <span> / </span>
+                                                    <span>/</span>
                                                 </Show>
                                             </Show>
                                             <Show
@@ -873,7 +950,6 @@ function App() {
                                             </Show>
                                             <br />
                                         </Show>
-
                                         {/* Nature */}
                                         <For
                                             each={set_item.mon?.other.filter(
@@ -887,7 +963,6 @@ function App() {
                                                 </>
                                             )}
                                         </For>
-
                                         {/* IVs */}
                                         <Show
                                             when={
@@ -912,7 +987,7 @@ function App() {
                                                         "hp"
                                                     }
                                                 >
-                                                    <span> / </span>
+                                                    <span>/</span>
                                                 </Show>
                                             </Show>
 
@@ -932,7 +1007,7 @@ function App() {
                                                         "atk"
                                                     }
                                                 >
-                                                    <span> / </span>
+                                                    <span>/</span>
                                                 </Show>
                                             </Show>
                                             <Show
@@ -951,7 +1026,7 @@ function App() {
                                                         "def"
                                                     }
                                                 >
-                                                    <span> / </span>
+                                                    <span>/</span>
                                                 </Show>
                                             </Show>
                                             <Show
@@ -970,7 +1045,7 @@ function App() {
                                                         "spa"
                                                     }
                                                 >
-                                                    <span> / </span>
+                                                    <span>/</span>
                                                 </Show>
                                             </Show>
                                             <Show
@@ -989,7 +1064,7 @@ function App() {
                                                         "spd"
                                                     }
                                                 >
-                                                    <span> / </span>
+                                                    <span>/</span>
                                                 </Show>
                                             </Show>
                                             <Show
@@ -1008,11 +1083,9 @@ function App() {
                                                         "spe"
                                                     }
                                                 >
-                                                    <span> / </span>
+                                                    <span>/</span>
                                                 </Show>
-                                                <br />
                                             </Show>
-
                                             <br />
                                         </Show>
                                         {/* Moves */}
@@ -1022,7 +1095,7 @@ function App() {
                                                     <span
                                                         class={`type-${move.type1}`}
                                                     >
-                                                        -
+                                                        -{" "}
                                                     </span>
                                                     <span>{move.name}</span>
                                                     <br />
