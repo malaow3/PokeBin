@@ -1,13 +1,11 @@
 mod db;
 mod download_images;
-mod templates;
 mod utils;
 
 use axum::response::IntoResponse;
 use axum::response::Response;
 use lazy_static::lazy_static;
 use std::{collections::HashMap, sync::Arc};
-use templates::HtmlTemplate;
 use tokio_util::io::ReaderStream;
 use utils::encode_id;
 use utils::Move;
@@ -142,13 +140,13 @@ async fn run_main() {
         )
         .nest_service(
             "/about",
-            axum::routing::get_service(ServeDir::new("./web/solid/dist/about.html")),
+            axum::routing::get_service(ServeDir::new("./web/dist/about.html")),
         )
         .nest_service("/home", axum::routing::get_service(ServeDir::new("./home")))
         // Serve the web/dist folder as static files
         .nest_service(
             "/:id",
-            axum::routing::get_service(ServeDir::new("./web/solid/dist/paste.html")),
+            axum::routing::get_service(ServeDir::new("./web/dist/paste.html")),
         )
         //.route("/:id", get(get_paste))
         .route("/detailed/:id", get(get_paste_json_detailed))
@@ -192,11 +190,9 @@ async fn run_main() {
         .route("/other-data-info", get(get_other_data_info))
         .nest_service(
             "/static",
-            axum::routing::get_service(ServeDir::new("./web/solid/dist/static")),
+            axum::routing::get_service(ServeDir::new("./web/dist/static")),
         )
-        .fallback_service(axum::routing::get_service(ServeDir::new(
-            "./web/solid/dist",
-        )))
+        .fallback_service(axum::routing::get_service(ServeDir::new("./web/dist")))
         // Serve the images in the home folder.
         .layer(cors)
         .with_state(state);
