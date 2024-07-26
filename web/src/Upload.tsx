@@ -1,6 +1,7 @@
 import { onMount } from "solid-js";
 import { encryptMessage } from "./helpers";
 import "./Upload.css";
+import PatreonButton from "./buttons";
 
 function App() {
     //const [count, setCount] = createSignal(0);
@@ -243,9 +244,13 @@ function App() {
                             </div>
                         </div>
                         <div
-                            class="text-center mt-auto py-8 w-full flex justify-center items-center"
+                            class="text-center mt-auto py-8 w-full flex-col justify-center items-center"
                             id="footer"
                         >
+                            <div class="my-4">
+                                <PatreonButton />
+                            </div>
+                            <br />
                             <div>
                                 <a
                                     href="/about"

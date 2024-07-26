@@ -1,5 +1,7 @@
 import { render } from "solid-js/web";
 import "./about.css";
+import "./base.css";
+import PatreonButton from "./buttons";
 
 function App() {
     return (
@@ -41,10 +43,41 @@ function App() {
                     </p>
                     <br />
                     This is entirely a passion-project, but once again I want to
-                    thank you for checking out
+                    thank you for checking out{" "}
                     <span class="text-pink-600">Poke</span>
                     <span style="color: #f7cae2">Bin</span>
                     💖
+                    <br />
+                    <br />
+                    <p>
+                        Unfortunately, hosting a site isn't free! If you can, please
+                        consider supporting financially. If we garner enough support to
+                        offset the website costs, I intend to host a community tournament
+                        with a prize pool as a thank you!
+                        <br />
+                        <br />
+
+                        Additionally, if you'd like to advertise on PokeBin, feel free to
+                        reach out via email to at{" "}
+                        <a href="mailto:malaow3@yahoo.com">malaow3@yahoo.com</a>
+                    </p>
+                    <br />
+                    <PatreonButton />
+                    <br />
+                    <p>
+                        I've also been working on a new project, PlotBot! Feel free to check
+                        out the details <a
+                            href="https://www.patreon.com/posts/introducing-104234417"
+                        >here</a
+                        >! If you subscribe to my Patreon, you not only support PokeBin's
+                        continued development and hosting but you also get access to
+                        PlotBot!
+                    </p>
+                    <a
+                        href="https://www.patreon.com/posts/introducing-104234417"
+                        target="_blank"
+                    >Check out my latest project, PlotBot!
+                    </a>
                     <br />
                     <br />
                     <a href="/">Return to PokeBin</a>
