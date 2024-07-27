@@ -415,12 +415,10 @@ function App() {
         if (!main && !sidebar && !notes) return;
 
         const windowWidth = window.innerWidth;
-        console.log(windowWidth);
         const articleWidth = (
             document.getElementsByTagName("article")[0] as HTMLElement
         ).clientWidth;
         if (windowWidth < 2 * articleWidth) {
-            console.log("Mobile layout");
             // Mobile layout
             const width = windowWidth - 20;
             setNotesWidth(`${width}px`);
@@ -430,10 +428,10 @@ function App() {
         const sidebarWidth = document.getElementById("sidebar") as HTMLElement;
         const availableWidth =
             windowWidth - 2 * articleWidth - sidebarWidth.clientWidth;
-        console.log(availableWidth);
         let diff = Math.max(300, availableWidth);
         diff = Math.min(diff, 800);
         setNotesWidth(`${diff}px`);
+        // debug();
     }
 
     function setSelectable(value: boolean, id: string) {
@@ -493,6 +491,24 @@ function App() {
         console.log(data());
     });
 
+
+    // @ts-ignore: This is a debugging function
+    const debug = () => {
+        // Print the window width, the main width, the sidebar width, and each article's width
+        console.log("---------------------");
+        console.log("Window width:", window.innerWidth);
+        const main = document.getElementsByTagName("main")![0] as HTMLElement;
+        console.log("Main width:", main.clientWidth);
+        const sidebar = document.getElementById("sidebar")! as HTMLElement;
+        console.log("Sidebar width:", sidebar.clientWidth);
+        const articles = document.getElementsByTagName("article");
+        for (let i = 0; i < articles.length; i++) {
+            const article = articles[i] as HTMLElement;
+            console.log(`Article ${i} width:`, article.clientWidth);
+        }
+        console.log("---------------------");
+    };
+
     onCleanup(() => {
         window.removeEventListener("resize", updateWidths);
     });
@@ -532,11 +548,10 @@ function App() {
                                         </div>
 
                                         <div class="paste">
-                                            <div
-                                                style={{
-                                                    "font-size": "1.05rem",
-                                                }}
-                                            >
+                                            <div class="font-semibold" style={{
+                                                "font-size": "13.5px",
+                                                "line-height": "1rem",
+                                            }}>
                                                 <Switch>
                                                     <Match
                                                         when={
@@ -594,8 +609,11 @@ function App() {
                                                         ""
                                                     }
                                                 >
+                                                    <span style={{ "font-size": "7px" }}>{" "}</span>
+                                                    <span>@</span>
+                                                    <span style={{ "font-size": "7px" }}>{" "}</span>
                                                     <span
-                                                        innerHTML={` @ ${set_item.mon?.item.trim()}`}
+                                                        innerHTML={`${set_item.mon?.item.trim()}`}
                                                     />
                                                 </Show>
                                             </div>
@@ -1018,27 +1036,59 @@ function App() {
                     </main>
                     <div class="side-content" id="sidebar">
                         <div class="sidebar-inner">
-                            <div class="metadata">
+                            <div class="metadata"
+                                id="metadata"
+                                style={{
+                                    "user-select": "none",
+                                }}
+                                onMouseOver={() => {
+                                    setSelectable(true, "metadata");
+                                }}
+                                onFocus={() => {
+                                    setSelectable(true, "metadata");
+                                }}
+                                onMouseOut={() => {
+                                    setSelectable(false, "metadata");
+                                }}
+                                onBlur={() => {
+                                    setSelectable(false, "metadata");
+                                }}
+                            >
                                 <Show when={data()?.title !== ""}>
                                     <h1
                                         class="text-pink-300 text-2xl"
                                         id="title"
+                                        style={{
+                                            "user-select": "none",
+                                        }}
                                     >
                                         {data()?.title}
                                     </h1>
                                 </Show>
                                 <Show when={data()?.author !== ""}>
-                                    <p class="text-base" id="author">
+                                    <p class="text-base" id="author"
+                                        style={{
+                                            "user-select": "none",
+                                        }}
+                                    >
                                         By: {data()?.author}
                                     </p>
                                 </Show>
                                 <Show when={data()?.format !== ""}>
-                                    <p class="text-base" id="format">
+                                    <p class="text-base" id="format"
+                                        style={{
+                                            "user-select": "none",
+                                        }}
+                                    >
                                         Format: {data()?.format}
                                     </p>
                                 </Show>
                                 <Show when={data()?.rental !== ""}>
-                                    <p class="text-base" id="rental">
+                                    <p class="text-base" id="rental"
+                                        style={{
+                                            "user-select": "none",
+                                        }}
+                                    >
                                         Rental: {data()?.rental}
                                     </p>
                                 </Show>
@@ -1104,6 +1154,9 @@ function App() {
                                 <PatreonButton />
                             </div>
                             <button
+                                style={{
+                                    "user-select": "none",
+                                }}
                                 type="submit"
                                 onClick={copyPaste}
                                 class="copy-button"
@@ -1113,7 +1166,7 @@ function App() {
                         </div>
                     </div>
                 </div>
-            </Show>
+            </Show >
         </>
     );
 }

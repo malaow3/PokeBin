@@ -188,8 +188,8 @@ article:nth-child(odd) {
 }
 
 article > .paste {
-    min-width: 335px !important;
-    max-width: 335px !important;
+    min-width: 342px !important;
+    max-width: 342px !important;
     width: 35vw;
     margin: 2px;
     font-size: 13.5px;
@@ -274,17 +274,19 @@ span.img-item {
   position: relative;
   display: flex;
   justify-content: space-between;
-  padding: 0 10px;
-  max-width: 100%;
+  max-width: 1600px;
   overflow-x: hidden;
+  margin: 0 auto;
+  padding: 0 10px;
 }
 
 main {
+  max-width: 1600px;
   flex: 1;
   margin-right: 20px;
   overflow-x: visible;
   z-index: 1;
-  min-width: 0; /* This allows flex items to shrink below their minimum content size */
+  min-width: 0;
 }
 
 .side-content {
@@ -298,6 +300,7 @@ main {
   top: 20px;
   margin-right: 20px;
   z-index: 2;
+  flex-shrink: 1;
 }
 
 .sidebar-inner {
@@ -436,7 +439,7 @@ main {
 
 @media (max-width: 1299px) {
     article > .paste {
-        max-width: 335px !important;
+        max-width: 342px !important;
     }
     .img-pokemon {
         max-width: 140px;
@@ -448,7 +451,7 @@ main {
 
 @media (min-width: 1300px) {
     article > .paste {
-        max-width: 360px !important;
+        max-width: 342px !important;
     }
     .img-pokemon {
         max-width: 150px;
@@ -460,7 +463,7 @@ main {
 
 @media (min-width: 1500px) {
     article > .paste {
-        max-width: !important;
+        max-width: 400!important;
     }
     .img-pokemon {
         max-width: 180px;
@@ -475,7 +478,7 @@ main {
         max-width: 420px !important;
     }
     .img-pokemon {
-        max-width: 200px;
+        max-width: 180px;
     }
     .side-content {
         width: 18vw;
@@ -487,9 +490,10 @@ main {
         max-width: 460px !important;
     }
     .img-pokemon {
-        max-width: 200px;
+        max-width: 180px;
     }
     .side-content {
         width: 20vw;
     }
 }
+
