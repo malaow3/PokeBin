@@ -414,6 +414,13 @@ function App() {
 
         if (!main && !sidebar && !notes) return;
 
+        if (main.clientHeight <= window.innerHeight) {
+            // Disable scrolling
+            document.body.style.overflowY = "hidden";
+        } else {
+            document.body.style.overflowY = "auto";
+        }
+
         const windowWidth = window.innerWidth;
         const articleWidth = (
             document.getElementsByTagName("article")[0] as HTMLElement
