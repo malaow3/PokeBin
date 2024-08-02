@@ -2,6 +2,7 @@ import {
     createResource,
     createSignal,
     For,
+    Index,
     Match,
     onCleanup,
     onMount,
@@ -422,21 +423,47 @@ function App() {
         }
 
         const windowWidth = window.innerWidth;
+        const articles = document.getElementsByTagName("article");
         const articleWidth = (
-            document.getElementsByTagName("article")[0] as HTMLElement
+            articles[0] as HTMLElement
         ).clientWidth;
         if (windowWidth < 2 * articleWidth) {
             // Mobile layout
             const width = windowWidth - 20;
             setNotesWidth(`${width}px`);
+
+            // Set the article margin-bottom to be 10px
+            for (let i = 0; i < articles.length; i++) {
+                const article = articles[i] as HTMLElement;
+                article.style.marginBottom = "5px";
+            }
             return;
         }
+
         // Desktop layout
         const sidebarWidth = document.getElementById("sidebar") as HTMLElement;
         const availableWidth =
             windowWidth - 2 * articleWidth - sidebarWidth.clientWidth;
         let diff = Math.max(300, availableWidth);
         diff = Math.min(diff, 800);
+
+        // On desktop, we have 3 articles stacked vertically.
+        // The last two do not have margin-bottom.
+        // Set the end of the range to be the minimum of 4 and the length of articles.
+        let end = 4;
+        if (articles.length < 4) {
+            end = articles.length;
+        }
+        for (let i = 0; i < end; i++) {
+            console.log(articles[i]);
+            let margin_bottom = Math.floor(window.innerHeight * 0.01);
+            if (i < end) {
+                articles[i].style.marginBottom = `${margin_bottom}px`;
+            } else {
+                articles[i].style.marginBottom = "0px";
+            }
+        }
+
         setNotesWidth(`${diff}px`);
         // debug();
     }
@@ -556,7 +583,7 @@ function App() {
 
                                         <div class="paste">
                                             <div class="font-semibold" style={{
-                                                "font-size": "13.5px",
+                                                "font-size": "12.5px",
                                                 "line-height": "1rem",
                                             }}>
                                                 <Switch>
@@ -1015,11 +1042,14 @@ function App() {
                                                 <br />
                                             </Show>
                                             {/* Moves */}
-                                            <For each={set_item.mon?.moves}>
-                                                {(move) => (
+                                            <Index each={set_item.mon?.moves}>
+                                                {(move, idx) => (
                                                     <>
+                                                        <Show when={idx > 0}>
+                                                            <br />
+                                                        </Show>
                                                         <span
-                                                            class={`type-${move.type1} font-extrabold`}
+                                                            class={`type-${move().type1} font-extrabold`}
                                                             style={{
                                                                 "font-size":
                                                                     "1.3rem",
@@ -1029,12 +1059,10 @@ function App() {
                                                         >
                                                             -{" "}
                                                         </span>
-                                                        <span>{move.name}</span>
-                                                        <br />
+                                                        <span>{move().name}</span>
                                                     </>
                                                 )}
-                                            </For>
-                                            <br />
+                                            </Index>
                                         </div>
                                     </article>
                                 </Show>
