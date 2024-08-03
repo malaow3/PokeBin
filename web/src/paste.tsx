@@ -455,7 +455,6 @@ function App() {
             end = articles.length;
         }
         for (let i = 0; i < end; i++) {
-            console.log(articles[i]);
             let margin_bottom = Math.floor(window.innerHeight * 0.01);
             if (i < end) {
                 articles[i].style.marginBottom = `${margin_bottom}px`;
@@ -1065,6 +1064,7 @@ function App() {
                                             </Index>
                                         </div>
                                     </article>
+                                    <br style={{ "line-height": "0px" }} />
                                 </Show>
                             )}
                         </For>
