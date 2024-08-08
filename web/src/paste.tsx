@@ -697,9 +697,7 @@ function App() {
                                         </div>
 
                                         <div class="paste">
-                                            <div id="mon_title" class="font-semibold" style={{
-                                                "line-height": "1rem",
-                                            }}>
+                                            <div id="mon_title">
                                                 <Switch>
                                                     <Match
                                                         when={
