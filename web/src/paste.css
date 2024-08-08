@@ -1,240 +1,165 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-p {
-	word-wrap: break-word;
-}
-
-@media (max-width: 399px) {
-	article .paste {
-		font-size: 13px !important;
-		min-width: 100% !important;
-		width: 100% !important;
-	}
-}
-
-
-img.img-pokemon {
-    min-width: 140px;
-    height: auto;
-    width: 25vw;
-    margin-left: 0px;
-}
-
-/* Desktop and larger tablets */
-@media (min-width: 1159px) {
-
-	.extra {
-		flex-direction: column;
-	}
-
-	body {
-        font-size: 100%;
-	}
-
-}
-
-
+/* Global Styles */
 body {
     text-rendering: optimizeLegibility;
-	margin: 0;
-	background-color: black !important;
-	color: white;
+    margin: 0;
+    background-color: black !important;
+    color: white;
     -webkit-font-smoothing: auto;
     -moz-osx-font-smoothing: auto;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
-}
-
-main,
-.side-content {
-	margin: 0;
-}
-
-.side-content {
-	padding-top: 20px !important;
-}
-
-.extra {
-	width: 200px;
-	user-select: none !important;
-    margin-top: 10px;
+    font-size: 100%;
 }
 
 * {
-	min-width: 0;
+    min-width: 0;
 }
 
-.type-normal {
-    color: #bfbfa0;
+p {
+    word-wrap: break-word;
 }
 
-.type-fighting {
-    color: #ff6f66;
-}
-
-.type-flying {
-    color: #c3b0ff;
-}
-
-.type-poison {
-    color: #d760d7;
-}
-
-.type-ground {
-    color: #ffd78a;
-}
-
-.type-rock {
-    color: #d9c068;
-}
-
-.type-bug {
-    color: #c8de4a;
-}
-
-.type-ghost {
-    color: #9e84c4;
-}
-
-.type-steel {
-    color: #d8d8f0;
-}
-
-.type-fire {
-    color: #ffa666;
-}
-
-.type-water {
-    color: #80b0ff;
-}
-
-.type-grass {
-    color: #8ede68;
-}
-
-.type-electric {
-    color: #ffe466;
-}
-
-.type-psychic {
-    color: #ff80b0;
-}
-
-.type-ice {
-    color: #b3f0f0;
-}
-
-.type-dragon {
-    color: #9066ff;
-}
-
-.type-dark {
-    color: #a08870;
-}
-
-.type-fairy {
-    color: #ffb3c6;
-}
-
-.gender-m {
-    color: #66ccff;
-}
-
-.gender-f {
-    color: #ff6666;
-}
-
-.attr {
-    color: #c0c0c0;
-}
-
-.stat-hp {
-    color: #ff6666;
-}
-
-.stat-atk {
-    color: #ffa666;
-}
-
-.stat-def {
-    color: #ffe466;
-}
-
-.stat-spa {
-    color: #80b0ff;
-}
-
-.stat-spd {
-    color: #8ede68;
-}
-
-.stat-spe {
-    color: #ff80b0;
+/* Layout */
+.content-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    max-width: 100%;
+    overflow-x: hidden;
+    flex-direction: column;
+    margin: 0 auto;
+    padding: 0 10px;
 }
 
 main,
 .side-content {
-	margin: 0
+    margin: 0;
 }
 
+main {
+    max-width: 100%;
+    flex: 1;
+    margin-right: 20px;
+    overflow-x: visible;
+    z-index: 1;
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.side-content {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    position: sticky;
+    margin-right: 20px;
+    margin-left: 0px;
+    z-index: 2;
+    flex-shrink: 1;
+    gap: 20px;
+    padding-top: 5px !important;
+}
+
+/* Article Styles */
 article {
-	float: left;
+    float: left;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    width: 50%;
+    min-width: 580px;
 }
 
 article:nth-child(odd) {
-	clear: left;
+    clear: left;
 }
 
 article > .paste {
-    min-width: 342px !important;
-    max-width: 342px !important;
-    width: 35vw;
-    margin: 2px;
-    font-size: 12.5px;
+    min-width: 390px !important;
+    width: calc(100% - 220px);
+    /* font-size: 15px "M+ 1m", monospace; */
+    font-size: 16px;
     line-height: 1.10rem;
-    font-family: "Roboto Mono", monospace;
+    font-family: monospace;
     font-optical-sizing: auto;
-    font-weight: 400;
+    /* font-weight: 400; */
     font-style: normal;
 }
 
-article {
-	display: flex;
-	flex-flow: row wrap;
-	align-items: flex-start;
+/* Image Styles */
+div.img {
+    position: relative;
+    margin-left: 0px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
-div.img {
-	position: relative;
-	margin-left: 0px;
-	user-select: none;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
+.img {
+    margin-right: 5px;
+}
+
+img.img-pokemon {
+    width: 180px;
+    height: auto;
+    margin-left: 0px;
 }
 
 span.img-item {
-	position: absolute;
-	right: 0;
-	bottom: 0;
-	width: 48px;
-	height: 48px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 48px;
+    height: 48px;
 }
 
-
-#wrapper {
-	user-select: none;
-	width: 100%;
-	max-width: 35vw;
-	height: 25px;
-	max-height: 25px;
-	overflow: hidden;
-	margin: 0 auto;
+/* Sidebar Styles */
+.sidebar-inner {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
 }
 
+.metadata {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 
+.notes-section {
+    position: relative;
+}
+
+.notes-content {
+    position: absolute;
+    left: 200px;
+    top: -50px;
+    @apply bg-zinc-600;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    max-height: 80vh;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.extra {
+    width: 200px;
+    user-select: none !important;
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+/* Button Styles */
 .patreon-button {
     box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
     line-height: 36px !important;
@@ -252,11 +177,7 @@ span.img-item {
     overflow-wrap: break-word;
     vertical-align: middle;
     border: 0 none #fff !important;
-    font-family:
-        "Quicksand",
-        Helvetica,
-        Century Gothic,
-        sans-serif !important;
+    font-family: "Quicksand", Helvetica, Century Gothic, sans-serif !important;
     text-decoration: none;
     text-shadow: none;
     font-weight: 700 !important;
@@ -270,91 +191,19 @@ span.img-item {
     text-decoration: none !important;
 }
 
-.content-wrapper {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  max-width: 100%;
-  overflow-x: hidden;
-  margin: 0 auto;
-  padding: 0 10px;
-}
-
-main {
-  max-width: 1800px;
-  flex: 1;
-  margin-right: 20px;
-  overflow-x: visible;
-  z-index: 1;
-  min-width: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0 25px;
-}
-
-.side-content {
-  width: 10vw;
-  min-width: 200px;
-  max-width: 400px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  position: sticky;
-  top: 20px;
-  margin-right: 20px;
-  z-index: 2;
-  flex-shrink: 1;
-}
-
-.sidebar-inner {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.metadata {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.notes-section {
-  position: relative;
-}
-
-.notes-content {
-  position: absolute;
-  right: 110%;
-  top: 0;
-  @apply bg-zinc-600;
-  border: 1px solid #ccc;
-  padding: 20px;
-  border-radius: 5px;
-  max-height: 80vh;
-  overflow-y: auto;
-  z-index: 1000;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-}
-
-
-.extra {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
 .copy-button {
-  min-width: 190px;
-  max-width: 190px;
-  text-align: center;
-  background-color: #e91e63;
-  color: white;
-  font-weight: bold;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+    min-width: 190px;
+    max-width: 190px;
+    text-align: center;
+    background-color: #e91e63;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
+
 .copy-button:hover {
     background-color: #a9395f;
 }
@@ -369,134 +218,147 @@ main {
     background: #333;
     color: white;
     border: none;
-    cursor: pointer;
     user-select: none !important;
-    border-radius: 3px;
 }
 
-/* For mobile devices */
+/* Type and Stat Colors */
+.type-normal { color: #bfbfa0; }
+.type-fighting { color: #ff6f66; }
+.type-flying { color: #c3b0ff; }
+.type-poison { color: #d760d7; }
+.type-ground { color: #ffd78a; }
+.type-rock { color: #d9c068; }
+.type-bug { color: #c8de4a; }
+.type-ghost { color: #9e84c4; }
+.type-steel { color: #d8d8f0; }
+.type-fire { color: #ffa666; }
+.type-water { color: #80b0ff; }
+.type-grass { color: #8ede68; }
+.type-electric { color: #ffe466; }
+.type-psychic { color: #ff80b0; }
+.type-ice { color: #b3f0f0; }
+.type-dragon { color: #9066ff; }
+.type-dark { color: #a08870; }
+.type-fairy { color: #ffb3c6; }
+
+.gender-m { color: #66ccff; }
+.gender-f { color: #ff6666; }
+
+.attr { color: #c0c0c0; }
+
+.stat-hp { color: #ff6666; }
+.stat-atk { color: #ffa666; }
+.stat-def { color: #ffe466; }
+.stat-spa { color: #80b0ff; }
+.stat-spd { color: #8ede68; }
+.stat-spe { color: #ff80b0; }
+
+/* Miscellaneous */
+#wrapper {
+    user-select: none;
+    width: 100%;
+    max-width: 35vw;
+    height: 25px;
+    max-height: 25px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+#buttons {
+    margin-left: 20px;
+}
+
+/* Media Queries */
+@media (min-width: 1159px) {
+    .extra {
+        flex-direction: column;
+    }
+}
+
 @media (max-width: 768px) {
-  .side-content {
-    width: 100%;
-    min-width: unset;
-    position: static;
-    align-items: flex-start;
-    margin-bottom: 20px;
-    margin-left: 10px;
-  }
-
-  .notes-section {
-    position: relative;
-    width: 100%;
-  }
-
-  .notes-content {
-    position: static;
-    right: auto;
-    top: auto;
-    margin-top: 10px;
-    max-height: none;
-    overflow-y: visible;
-  }
-
-  .sidebar-inner {
-    gap: 30px;
-  }
-
-  .content-wrapper {
-    flex-direction: column-reverse;
-  }
-
-  main {
-    margin-right: 0;
-    width: 100%;
-  }
-  article {
-    width: 100%;
-    margin-left: 10px;
-  }
-
-  article > .paste {
-    min-width: unset !important;
-    width: 100% !important;
-  }
-
-  .img-pokemon {
-    width: auto !important;
-    min-width: 150px!important;
-    height: auto !important;
-    margin-left: 0 !important;
-  }
-
-  .side-content {
-    width: 100%;
-    gap: 10px;
-  }
-
-  .metadata, .notes-section, .extra{
-    width: 100%;
-    max-width: none;
-  }
-}
-
-
-@media (max-width: 1299px) {
-    article > .paste {
-        max-width: 342px !important;
-    }
-    .img-pokemon {
-        max-width: 140px;
-    }
     .side-content {
-        width: 10vw;
+        width: 100%;
+        flex-direction: column;
+        min-width: unset;
+        position: static;
+        align-items: flex-start;
+        margin-bottom: 10px;
+        margin-left: 10px;
     }
-}
 
-@media (min-width: 1300px) {
+    .notes-section {
+        position: relative;
+        width: 100%;
+    }
+
+    .notes-content {
+        position: static;
+        right: auto;
+        top: auto;
+        margin-top: 10px;
+        max-height: none;
+        overflow-y: visible;
+    }
+
+    .content-wrapper {
+        flex-direction: column;
+    }
+
+    main {
+        margin-left: 10px;
+        margin-bottom: 0px;
+        width: 100%;
+    }
+
+    article {
+        width: 50%;
+        margin-left: 10px;
+    }
+
     article > .paste {
-        max-width: 342px !important;
+        min-width: unset !important;
+        width: 100% !important;
+        margin-bottom: 0px;
     }
+
     .img-pokemon {
-        max-width: 150px;
+        width: auto !important;
+        min-width: 180px!important;
+        max-width: 180px !important;
+        height: auto !important;
+        margin-left: 0 !important;
     }
-    .side-content {
-        width: 13vw;
+
+    .img {
+        margin-bottom: 5px;
+        margin-left: 3px;
+    }
+
+
+    .metadata, .notes-section, .extra {
+        width: 100%;
+        max-width: none;
     }
 }
 
-@media (min-width: 1500px) {
+@media (max-width: 399px) {
+    main {
+        margin-left: 0px;
+    }
+
+    article {
+        width: 100% !important;
+        min-width: 0px !important;
+        flex-direction: column;
+    }
+
     article > .paste {
-        max-width: 400!important;
+        font-size: 16px !important;
+        min-width: 100% !important;
+        width: 100% !important;
     }
-    .img-pokemon {
-        max-width: 180px;
-    }
-    .side-content {
-        width: 15vw;
+
+    #mon_title {
+        wrap: break-word;
     }
 }
-
-@media (min-width: 1600px) {
-    article > .paste {
-        max-width: 420px !important;
-    }
-    .img-pokemon {
-        max-width: 180px;
-    }
-    .side-content {
-        width: 18vw;
-    }
-}
-
-@media (min-width: 2000px) {
-    article > .paste {
-        max-width: 460px !important;
-    }
-    .img-pokemon {
-        max-width: 180px;
-    }
-    .side-content {
-        width: 20vw;
-    }
-}
-

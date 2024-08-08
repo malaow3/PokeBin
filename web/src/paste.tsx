@@ -415,56 +415,29 @@ function App() {
 
         if (!main && !sidebar && !notes) return;
 
-        if (main.clientHeight <= window.innerHeight) {
-            // Disable scrolling
-            document.body.style.overflowY = "hidden";
-        } else {
-            document.body.style.overflowY = "auto";
+        let articles = document.getElementsByTagName("article");
+        let end = articles.length;
+        if (articles.length > 4) {
+            end = 4;
         }
 
         const windowWidth = window.innerWidth;
-        const articles = document.getElementsByTagName("article");
-        const articleWidth = (
-            articles[0] as HTMLElement
-        ).clientWidth;
-        if (windowWidth < 2 * articleWidth) {
-            // Mobile layout
-            const width = windowWidth - 20;
-            setNotesWidth(`${width}px`);
-
-            // Set the article margin-bottom to be 10px
-            for (let i = 0; i < articles.length; i++) {
-                const article = articles[i] as HTMLElement;
-                article.style.marginBottom = "5px";
-            }
-            return;
-        }
-
-        // Desktop layout
-        const sidebarWidth = document.getElementById("sidebar") as HTMLElement;
-        const availableWidth =
-            windowWidth - 2 * articleWidth - sidebarWidth.clientWidth;
-        let diff = Math.max(300, availableWidth);
-        diff = Math.min(diff, 800);
-
-        // On desktop, we have 3 articles stacked vertically.
-        // The last two do not have margin-bottom.
-        // Set the end of the range to be the minimum of 4 and the length of articles.
-        let end = 4;
-        if (articles.length < 4) {
-            end = articles.length;
-        }
         for (let i = 0; i < end; i++) {
-            let margin_bottom = Math.floor(window.innerHeight * 0.01);
-            if (i < end) {
+
+            if (windowWidth > 1024) {
+                let margin_bottom = Math.floor(window.innerHeight * 0.02);
                 articles[i].style.marginBottom = `${margin_bottom}px`;
-            } else {
-                articles[i].style.marginBottom = "0px";
             }
         }
 
-        setNotesWidth(`${diff}px`);
-        // debug();
+        if (windowWidth <= 1024) {
+            // Mobile layout
+            setNotesWidth("300px");
+        } else {
+            // Desktop layout
+            const width = windowWidth - 420;
+            setNotesWidth(`${width}px`);
+        }
     }
 
     function setSelectable(value: boolean, id: string) {
@@ -554,7 +527,150 @@ function App() {
                 when={!data.loading && data() !== null && data() !== undefined}
             >
                 <div class="content-wrapper">
-                    <main class="my-4">
+                    <div class="side-content" id="sidebar">
+                        <div class="sidebar-inner">
+                            <Show when={data()?.title !== "" || data()?.author !== "" || data()?.format !== "" || data()?.rental !== ""}>
+                                <div class="metadata"
+                                    id="metadata"
+                                    style={{
+                                        "user-select": "none",
+                                    }}
+                                    onMouseOver={() => {
+                                        setSelectable(true, "metadata");
+                                    }}
+                                    onFocus={() => {
+                                        setSelectable(true, "metadata");
+                                    }}
+                                    onMouseOut={() => {
+                                        setSelectable(false, "metadata");
+                                    }}
+                                    onBlur={() => {
+                                        setSelectable(false, "metadata");
+                                    }}
+                                >
+                                    <Show when={data()?.title !== ""}>
+                                        <h1
+                                            class="text-pink-300 text-2xl"
+                                            id="title"
+                                            style={{
+                                                "user-select": "none",
+                                            }}
+                                        >
+                                            {data()?.title}
+                                        </h1>
+                                    </Show>
+                                    <Show when={data()?.author !== ""}>
+                                        <p class="text-base" id="author"
+                                            style={{
+                                                "user-select": "none",
+                                            }}
+                                        >
+                                            By: {data()?.author}
+                                        </p>
+                                    </Show>
+                                    <Show when={data()?.format !== ""}>
+                                        <p class="text-base" id="format"
+                                            style={{
+                                                "user-select": "none",
+                                            }}
+                                        >
+                                            Format: {data()?.format}
+                                        </p>
+                                    </Show>
+                                    <Show when={data()?.rental !== ""}>
+                                        <p class="text-base" id="rental"
+                                            style={{
+                                                "user-select": "none",
+                                            }}
+                                        >
+                                            Rental: {data()?.rental}
+                                        </p>
+                                    </Show>
+                                </div>
+                            </Show>
+                            <div class="notes-section my-1">
+                                <Show when={data()?.notes !== ""}>
+                                    <button
+                                        class="notes-toggle"
+                                        type="button"
+                                        onClick={() => {
+                                            setShowNotes(!showNotes());
+                                            let notes = document.getElementsByClassName("notes-content");
+                                            if (notes.length > 0) {
+                                                let notes_obj = notes[0] as HTMLElement;
+                                                if (notes_obj.getBoundingClientRect().top < 0) {
+                                                    notes_obj.style.top = "0px";
+                                                }
+                                            }
+
+                                            if (showNotes()) {
+                                                setNotesOpacity(1.0);
+                                            }
+                                        }}
+                                    >
+                                        <Show when={showNotes()}>
+                                            Hide notes
+                                        </Show>
+                                        <Show when={!showNotes()}>
+                                            Show notes
+                                        </Show>
+                                    </button>
+                                    <Show when={showNotes()}>
+                                        <div
+                                            class="notes-content"
+                                            onMouseOver={() => {
+                                                makeOpaqueOnFocus();
+                                                setSelectable(true, "notes");
+                                            }}
+                                            onFocus={() => {
+                                                makeOpaqueOnFocus();
+                                                setSelectable(true, "notes");
+                                            }}
+                                            onMouseOut={() => {
+                                                makeTransparentOnMouseover();
+                                                setSelectable(false, "notes");
+                                            }}
+                                            onBlur={() => {
+                                                makeTransparentOnMouseover();
+                                                setSelectable(false, "notes");
+                                            }}
+                                            style={{
+                                                width: notesWidth(),
+                                                opacity: notesOpacity(),
+                                                "user-select": "none",
+                                                "z-index": 2,
+                                            }}
+                                        >
+                                            <p
+                                                id="notes"
+                                                innerHTML={data()?.notes.replace(
+                                                    /\n/g,
+                                                    "<br>",
+                                                )}
+                                            />
+                                        </div>
+                                    </Show>
+                                </Show>
+                            </div>
+                        </div>
+                        <div id="buttons">
+
+                            <div class="extra">
+                                <PatreonButton />
+                            </div>
+                            <button
+                                style={{
+                                    "user-select": "none",
+                                }}
+                                type="submit"
+                                onClick={copyPaste}
+                                class="copy-button"
+                            >
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+                    <main class="my-6">
                         <For each={data()?.sets}>
                             {(set_item) => (
                                 <Show when={set_item.mon !== null}>
@@ -581,8 +697,7 @@ function App() {
                                         </div>
 
                                         <div class="paste">
-                                            <div class="font-semibold" style={{
-                                                "font-size": "12.5px",
+                                            <div id="mon_title" class="font-semibold" style={{
                                                 "line-height": "1rem",
                                             }}>
                                                 <Switch>
@@ -1062,144 +1177,15 @@ function App() {
                                                     </>
                                                 )}
                                             </Index>
+                                            <br class="display-none" style={{ "line-height": "0px" }} />
+                                            <br class="display-none" style={{ "line-height": "0px" }} />
                                         </div>
                                     </article>
-                                    <br style={{ "line-height": "0px" }} />
                                 </Show>
                             )}
                         </For>
                     </main>
-                    <div class="side-content" id="sidebar">
-                        <div class="sidebar-inner">
-                            <div class="metadata"
-                                id="metadata"
-                                style={{
-                                    "user-select": "none",
-                                }}
-                                onMouseOver={() => {
-                                    setSelectable(true, "metadata");
-                                }}
-                                onFocus={() => {
-                                    setSelectable(true, "metadata");
-                                }}
-                                onMouseOut={() => {
-                                    setSelectable(false, "metadata");
-                                }}
-                                onBlur={() => {
-                                    setSelectable(false, "metadata");
-                                }}
-                            >
-                                <Show when={data()?.title !== ""}>
-                                    <h1
-                                        class="text-pink-300 text-2xl"
-                                        id="title"
-                                        style={{
-                                            "user-select": "none",
-                                        }}
-                                    >
-                                        {data()?.title}
-                                    </h1>
-                                </Show>
-                                <Show when={data()?.author !== ""}>
-                                    <p class="text-base" id="author"
-                                        style={{
-                                            "user-select": "none",
-                                        }}
-                                    >
-                                        By: {data()?.author}
-                                    </p>
-                                </Show>
-                                <Show when={data()?.format !== ""}>
-                                    <p class="text-base" id="format"
-                                        style={{
-                                            "user-select": "none",
-                                        }}
-                                    >
-                                        Format: {data()?.format}
-                                    </p>
-                                </Show>
-                                <Show when={data()?.rental !== ""}>
-                                    <p class="text-base" id="rental"
-                                        style={{
-                                            "user-select": "none",
-                                        }}
-                                    >
-                                        Rental: {data()?.rental}
-                                    </p>
-                                </Show>
-                            </div>
-                            <div class="notes-section">
-                                <Show when={data()?.notes !== ""}>
-                                    <button
-                                        class="notes-toggle"
-                                        type="button"
-                                        onClick={() => {
-                                            setShowNotes(!showNotes());
-                                            if (showNotes()) {
-                                                setNotesOpacity(1.0);
-                                            }
-                                        }}
-                                    >
-                                        <Show when={showNotes()}>
-                                            Hide notes
-                                        </Show>
-                                        <Show when={!showNotes()}>
-                                            Show notes
-                                        </Show>
-                                    </button>
-                                    <Show when={showNotes()}>
-                                        <div
-                                            class="notes-content"
-                                            onMouseOver={() => {
-                                                makeOpaqueOnFocus();
-                                                setSelectable(true, "notes");
-                                            }}
-                                            onFocus={() => {
-                                                makeOpaqueOnFocus();
-                                                setSelectable(true, "notes");
-                                            }}
-                                            onMouseOut={() => {
-                                                makeTransparentOnMouseover();
-                                                setSelectable(false, "notes");
-                                            }}
-                                            onBlur={() => {
-                                                makeTransparentOnMouseover();
-                                                setSelectable(false, "notes");
-                                            }}
-                                            style={{
-                                                width: notesWidth(),
-                                                opacity: notesOpacity(),
-                                                "user-select": "none",
-                                                "z-index": 2,
-                                            }}
-                                        >
-                                            <p
-                                                id="notes"
-                                                innerHTML={data()?.notes.replace(
-                                                    /\n/g,
-                                                    "<br>",
-                                                )}
-                                            />
-                                        </div>
-                                    </Show>
-                                </Show>
-                            </div>
 
-                            <div class="extra">
-                                <PatreonButton />
-                            </div>
-                            <button
-                                style={{
-                                    "user-select": "none",
-                                }}
-                                type="submit"
-                                onClick={copyPaste}
-                                class="copy-button"
-                            >
-                                Copy
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </Show >
         </>
