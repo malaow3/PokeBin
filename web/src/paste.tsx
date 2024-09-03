@@ -164,6 +164,11 @@ async function fetchPasteData() {
                     set_mon.name = "Calyrex-Ice";
                     search_name = "calyrex-ice";
                 }
+                // Special case for Vivillon-Pokeball -- All the other forms are fine.
+                else if (set_mon.name.toLowerCase() === "vivillon-pokeball") {
+                    set_mon.name = "Vivillon-Pokeball";
+                    search_name = "vivillon-poke-ball";
+                }
 
                 if (captures[6]) {
                     const gender = captures[6];
