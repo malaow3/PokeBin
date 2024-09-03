@@ -241,7 +241,6 @@ function get_image(
     }
 
     let value = hashmap.get(pokemon);
-    console.log(value);
     if (value !== undefined) {
         if (is_shiny && value.has_shiny) {
             base_path += "/shiny";

@@ -5,14 +5,12 @@ RUN apt-get update && apt-get install -y \
 	curl \
 	&& rm -rf /var/lib/apt/lists/*
 
+WORKDIR /app
+
 COPY .env .
 COPY web/dist web/dist
-COPY moves.json .
-copy items.json .
-copy pokemon.json .
-COPY home home
-COPY templates templates/
-COPY ads.txt .
-COPY target/release/pokebin /usr/local/bin/
+COPY data/ ./data
+COPY home ./home
+COPY target/release/pokebin .
 EXPOSE 8000
-CMD ["pokebin"]
+CMD ["./pokebin"]

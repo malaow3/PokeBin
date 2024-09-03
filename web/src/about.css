@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+li {
+    list-style: disc;
+    margin-left: 0;
+    padding-left: 1em;
+    text-indent: -1em;
+}
+
+a {
+    @apply text-sky-500;
+}
