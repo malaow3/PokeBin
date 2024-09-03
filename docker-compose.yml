@@ -1,24 +1,24 @@
 services:
-  db:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_USER: malaow
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - 5432:5432
-    networks:
-        - pokebin
+  # db:
+  #   image: postgres
+  #   restart: always
+  #   environment:
+  #     POSTGRES_USER: malaow
+  #     POSTGRES_PASSWORD: postgres
+  #   ports:
+  #     - 5432:5432
+  #   networks:
+  #       - pokebin
 
   web:
     build: .
     ports:
-      - 8000:8000
+      - 3005:3005
     # depends_on:
     #   - db
     network_mode: host
     # networks:
-    #     - pokebin
+        # - pokebin
 
-networks:
-  pokebin:
+# networks:
+#   pokebin:

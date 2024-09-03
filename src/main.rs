@@ -199,7 +199,7 @@ async fn run_main() {
 
     let app = utils::add_logging(app);
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:8000").await.unwrap();
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:3005").await.unwrap();
     axum::serve(listener, app).await.unwrap();
 }
 

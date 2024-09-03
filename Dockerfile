@@ -11,6 +11,6 @@ COPY .env .
 COPY web/dist web/dist
 COPY data/ ./data
 COPY home ./home
-COPY target/release/pokebin .
-EXPOSE 8000
+COPY pokebin .
+EXPOSE 3005
 CMD ["./pokebin"]
