@@ -11,6 +11,7 @@ import {
 } from "solid-js";
 import "./paste.css";
 import PatreonButton from "./buttons";
+import Watermark from "./watermark";
 import { render } from "solid-js/web";
 import {
     decryptMessage,
@@ -1188,7 +1189,7 @@ function App() {
                             )}
                         </For>
                     </main>
-
+                    <Watermark />
                 </div>
             </Show >
         </>
