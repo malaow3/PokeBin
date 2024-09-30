@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 COPY .env .
+COPY robots.txt .
 COPY web/dist web/dist
 COPY data/ ./data
 COPY home ./home

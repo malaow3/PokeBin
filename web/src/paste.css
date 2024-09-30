@@ -115,8 +115,8 @@ img.img-pokemon {
 
 span.img-item {
     position: absolute;
-    right: 0;
-    bottom: 0;
+    right: 10px;
+    bottom: 15px;
     width: 48px;
     height: 48px;
 }
@@ -205,6 +205,7 @@ span.img-item {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    padding: 5px !important;
 }
 
 .copy-button:hover {
@@ -222,6 +223,7 @@ span.img-item {
     color: white;
     border: none;
     user-select: none !important;
+    padding: 5px !important;
 }
 
 /* Type and Stat Colors */

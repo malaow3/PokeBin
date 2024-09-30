@@ -28,14 +28,41 @@ import {
     newPasteData,
 } from "./types";
 import DOMPurify from "dompurify";
+import ScreenshotButton from "./screenshot";
 
 async function copyPaste() {
     const main = document.getElementsByTagName("main")[0];
 
-    // Get the paste data.
-    const data = main.innerText;
+    function extractText(element: Element): string {
+        if (element.id === "NOCOPY") {
+            return "";
+        }
+
+        if (element.childNodes.length === 0) {
+            return element.textContent || "";
+        }
+
+        let text = "";
+        for (const child of element.childNodes) {
+            // If the node is a <br>, add a new line.
+            if (child.nodeName === "BR") {
+                text += "\n";
+                continue;
+            }
+
+            if (child.nodeType === Node.TEXT_NODE) {
+                text += child.textContent || "";
+            } else if (child.nodeType === Node.ELEMENT_NODE) {
+                text += extractText(child as Element)
+            }
+        }
+        return text;
+    }
+
+    const data = extractText(main);
+
     // Copy the data to the clipboard.
-    await navigator.clipboard.writeText(data);
+    await navigator.clipboard.writeText(data.trim());
 }
 
 async function fetchPasteData() {
@@ -700,6 +727,7 @@ function App() {
                                                 src={set_item.mon?.image}
                                                 alt={set_item.mon?.name}
                                             />
+                                            <Watermark />
                                         </div>
 
                                         <div class="paste">
@@ -769,6 +797,7 @@ function App() {
                                                     />
                                                 </Show>
                                             </div>
+                                            <br style={{ "line-height": "0px !important", display: "none" }} />
                                             {/* Ability */}
                                             <For
                                                 each={set_item.mon?.other.filter(
@@ -1189,7 +1218,6 @@ function App() {
                             )}
                         </For>
                     </main>
-                    <Watermark />
                 </div>
             </Show >
         </>

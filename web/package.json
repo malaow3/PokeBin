@@ -10,6 +10,7 @@
     "dependencies": {
         "bakutils-catcher": "^3.6.1",
         "dompurify": "^3.1.6",
+        "html2canvas": "^1.4.1",
         "solid-js": "^1.8.17",
         "ts-pattern": "^5.2.0"
     },

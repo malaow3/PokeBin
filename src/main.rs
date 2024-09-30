@@ -6,6 +6,7 @@ use axum::response::IntoResponse;
 use axum::response::Response;
 use lazy_static::lazy_static;
 use std::{collections::HashMap, sync::Arc};
+use tokio::io::AsyncReadExt;
 use tokio_util::io::ReaderStream;
 use utils::encode_id;
 use utils::Move;
@@ -149,6 +150,33 @@ async fn run_main() {
             axum::routing::get_service(ServeDir::new("./web/dist/paste.html")),
         )
         //.route("/:id", get(get_paste))
+        .route(
+            "/robots.txt",
+            get(|| async move {
+                // Serve the robots.txt file
+                let mut file = match tokio::fs::File::open("robots.txt").await {
+                    Ok(file) => file,
+                    Err(err) => {
+                        return Err((StatusCode::NOT_FOUND, format!("File not found: {}", err)))
+                    }
+                };
+                // Return the file contents
+                let mut contents = String::new();
+                match file.read_to_string(&mut contents).await {
+                    Ok(_) => {}
+                    Err(err) => {
+                        return Err((
+                            StatusCode::INTERNAL_SERVER_ERROR,
+                            format!("Error reading file: {}", err),
+                        ))
+                    }
+                };
+                Ok(axum::response::Response::builder()
+                    .header(axum::http::header::CONTENT_TYPE, "text/plain")
+                    .body(contents)
+                    .unwrap())
+            }),
+        )
         .route("/detailed/:id", get(get_paste_json_detailed))
         .route("/:id/json", get(get_paste_json))
         .route(

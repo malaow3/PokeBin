@@ -1,15 +1,13 @@
 
-
 function Watermark() {
 
     return (
         <div
+            id="NOCOPY"
             style={{
-                position: 'fixed',
-                bottom: '25px',
-                right: '50px',
-                "font-size": '18px',
-                color: 'rgba(255, 255, 255, 0.5)',
+                "font-size": '16px',
+                // color: 'rgba(255, 255, 255, 0.6)',
+                color: 'rgba(251, 173, 255, 0.6)',
                 "pointer-events": 'none',
                 "z-index": 9999,
                 "transform-origin": 'bottom right',
@@ -19,7 +17,9 @@ function Watermark() {
                 "-ms-user-select": 'none',
                 display: 'flex',
                 "align-items": 'center',
-                "white-space": 'nowrap'
+                "white-space": 'nowrap',
+                "margin-top": "0px",
+                "margin-left": "10px"
             }}
         >
             PokeBin
@@ -28,10 +28,11 @@ function Watermark() {
                 class="ml-1"
                 src="/assets/favicon/android-chrome-192x192.png"
                 style={{
-                    height: "35px",
-                    width: "35px",
+                    height: "25px",
+                    width: "25px",
                     "margin-right": "4px",
-                    scale: 1.0
+                    scale: 1.0,
+                    opacity: 0.6
                 }}
                 alt="It's Spheal!"
             />
