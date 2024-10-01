@@ -28,7 +28,6 @@ import {
     newPasteData,
 } from "./types";
 import DOMPurify from "dompurify";
-import ScreenshotButton from "./screenshot";
 
 async function copyPaste() {
     const main = document.getElementsByTagName("main")[0];
@@ -727,7 +726,6 @@ function App() {
                                                 src={set_item.mon?.image}
                                                 alt={set_item.mon?.name}
                                             />
-                                            <Watermark />
                                         </div>
 
                                         <div class="paste">
@@ -1217,6 +1215,7 @@ function App() {
                                 </Show>
                             )}
                         </For>
+                        <Watermark />
                     </main>
                 </div>
             </Show >
