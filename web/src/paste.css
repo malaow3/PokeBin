@@ -4,6 +4,7 @@
 
 /* Global Styles */
 body {
+    zoom: 1.2;
     text-rendering: optimizeLegibility;
     margin: 0;
     background-color: black !important;
@@ -55,7 +56,7 @@ main {
     flex-direction: row;
     position: sticky;
     margin-right: 20px;
-    margin-left: 0px;
+    margin-left: 0;
     z-index: 2;
     flex-shrink: 1;
     gap: 20px;
@@ -77,7 +78,7 @@ article:nth-child(odd) {
 }
 
 article > .paste {
-    min-width: 390!important;
+    min-width: 390px !important;
     width: 50%;
     font-size: 14px;
     line-height: 1.10rem;
@@ -85,12 +86,16 @@ article > .paste {
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 /* Image Styles */
-div.img {
+div.img,
+img.img-pokemon {
     position: relative;
-    margin-left: 0px;
+    margin-left: 0;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -100,17 +105,10 @@ div.img {
 img.img-pokemon {
     width: 180px;
     height: auto;
-    margin-left: 0px;
 }
 
 .img {
     margin-right: 10px;
-}
-
-img.img-pokemon {
-    width: 180px;
-    height: auto;
-    margin-left: 0px;
 }
 
 span.img-item {
@@ -128,7 +126,8 @@ span.img-item {
     margin-left: 20px;
 }
 
-.metadata {
+.metadata,
+.extra {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -156,56 +155,45 @@ span.img-item {
     width: 200px;
     user-select: none !important;
     margin-top: 5px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
     margin-bottom: 10px;
 }
 
 /* Button Styles */
+.patreon-button,
+.copy-button,
+.notes-toggle {
+    min-width: 190px;
+    max-width: 190px;
+    padding: 5px !important;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    color: white;
+    border: none;
+    user-select: none !important;
+}
+
 .patreon-button {
     box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
     line-height: 36px !important;
-    min-width: 190px;
-    max-width: 190px;
     display: flex !important;
     align-items: center;
     background-color: #6366f1;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    text-align: center !important;
-    border-radius: 7px;
-    color: #fff;
-    cursor: pointer;
-    overflow-wrap: break-word;
-    vertical-align: middle;
-    border: 0 none #fff !important;
     font-family: "Quicksand", Helvetica, Century Gothic, sans-serif !important;
-    text-decoration: none;
-    text-shadow: none;
     font-weight: 700 !important;
     font-size: 0.875rem;
-    line-height: 1.25rem;
+    text-decoration: none;
+    text-shadow: none;
 }
 
 .patreon-button:hover {
     opacity: 0.85;
     color: #f5f5f5 !important;
-    text-decoration: none !important;
 }
 
 .copy-button {
-    min-width: 190px;
-    max-width: 190px;
-    text-align: center;
     background-color: #e91e63;
-    color: white;
     font-weight: bold;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    padding: 5px !important;
 }
 
 .copy-button:hover {
@@ -213,17 +201,7 @@ span.img-item {
 }
 
 .notes-toggle {
-    min-width: 190px;
-    max-width: 190px;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
     background: #333;
-    color: white;
-    border: none;
-    user-select: none !important;
-    padding: 5px !important;
 }
 
 /* Type and Stat Colors */
@@ -273,6 +251,11 @@ span.img-item {
     margin-left: 20px;
 }
 
+#mon_title {
+    line-height: 1rem;
+    font-weight: 600 !important;
+}
+
 /* Media Queries */
 @media (min-width: 1159px) {
     .extra {
@@ -311,24 +294,27 @@ span.img-item {
 
     main {
         margin-left: 10px;
-        margin-bottom: 0px;
+        margin-bottom: 0;
         width: 100%;
     }
 
     article {
-        width: 50%;
+        width: 100% !important;
+        min-width: 0 !important;
         margin-left: 10px;
     }
 
     article > .paste {
-        min-width: unset !important;
+        min-width: 0 !important;
         width: 100% !important;
-        margin-bottom: 0px;
+        max-width: 100% !important;
+        overflow-x: hidden;
+        margin-bottom: 0;
     }
 
     .img-pokemon {
         width: auto !important;
-        min-width: 180px!important;
+        min-width: 180px !important;
         max-width: 180px !important;
         height: auto !important;
         margin-left: 0 !important;
@@ -339,47 +325,37 @@ span.img-item {
         margin-left: 3px;
     }
 
-
-    .metadata, .notes-section, .extra {
+    .metadata,
+    .notes-section,
+    .extra {
         width: 100%;
         max-width: none;
     }
 }
 
-#mon_title {
-    line-height: "1rem";
-    font-weight: 600 !important;
-}
-
 @media (max-width: 399px) {
     main {
-        margin-left: 0px;
+        margin-left: 0;
     }
 
     article {
         width: 100% !important;
-        min-width: 0px !important;
+        min-width: 0 !important;
         flex-direction: column;
     }
 
     article > .paste {
         font-size: 16px !important;
-        min-width: 100% !important;
+        min-width: 0 !important;
         width: 100% !important;
+        max-width: 100% !important;
     }
 
-
-    .metadata, .notes-section, .extra {
+    .metadata,
+    .notes-section,
+    .extra {
         width: 100%;
         max-width: none;
-    }
-}
-
-@media (max-width: 399px) {
-    article .paste {
-        font-size: 16px !important;
-        min-width: 100% !important;
-        width: 100% !important;
     }
 
     #mon_title {

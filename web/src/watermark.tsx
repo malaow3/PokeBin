@@ -44,7 +44,7 @@ function Watermark() {
                 display: 'flex',
                 "align-items": 'center',
                 "white-space": 'nowrap',
-                "margin-top": "0px",
+                "margin-top": "15px",
                 "margin-left": "10px"
             }}
         >
