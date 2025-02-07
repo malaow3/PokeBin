@@ -4,7 +4,6 @@
 
 /* Global Styles */
 body {
-    zoom: 1.2;
     text-rendering: optimizeLegibility;
     margin: 0;
     background-color: black !important;
@@ -113,10 +112,11 @@ img.img-pokemon {
 
 span.img-item {
     position: absolute;
-    right: 10px;
-    bottom: 15px;
+    right: 25px;
+    bottom: 0px;
     width: 48px;
     height: 48px;
+    z-index: 9999;
 }
 
 /* Sidebar Styles */
@@ -263,7 +263,22 @@ span.img-item {
     }
 }
 
+@media(min-width: 1501px) {
+    body {
+        zoom: 1.2;
+    }
+}
+
+@media(max-width: 1500px) {
+    body {
+        zoom: 1.1;
+    }
+}
+
 @media (max-width: 768px) {
+    body {
+        zoom: 1.2;
+    }
     .side-content {
         width: 100%;
         flex-direction: column;
@@ -334,6 +349,9 @@ span.img-item {
 }
 
 @media (max-width: 399px) {
+    body {
+        zoom: 1.2;
+    }
     main {
         margin-left: 0;
     }

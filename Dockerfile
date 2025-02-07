@@ -12,6 +12,6 @@ COPY robots.txt .
 COPY web/dist web/dist
 COPY data/ ./data
 COPY home ./home
-COPY pokebin .
+COPY pokebin ./pokebin
 EXPOSE 3005
 CMD ["./pokebin"]
