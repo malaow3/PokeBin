@@ -815,7 +815,7 @@ function App() {
                                                                 .trim()
                                                                 .replace(
                                                                     "Ability:",
-                                                                    " ",
+                                                                    "",
                                                                 )}`}
                                                         />
                                                         <br />
@@ -839,7 +839,7 @@ function App() {
                                                                 .trim()
                                                                 .replace(
                                                                     "Level:",
-                                                                    " ",
+                                                                    "",
                                                                 )}`}
                                                         />
                                                         <br />
@@ -863,7 +863,7 @@ function App() {
                                                                 .trim()
                                                                 .replace(
                                                                     "Shiny:",
-                                                                    " ",
+                                                                    "",
                                                                 )}`}
                                                         />
                                                         <br />
@@ -888,14 +888,14 @@ function App() {
                                                             class={`type-${hidden_power
                                                                 .trim()
                                                                 .replace(
-                                                                    "Hidden Power: ",
+                                                                    "Hidden Power:",
                                                                     "",
                                                                 )}`}
                                                         >
                                                             {hidden_power
                                                                 .trim()
                                                                 .replace(
-                                                                    "Hidden Power: ",
+                                                                    "Hidden Power:",
                                                                     "",
                                                                 )}
                                                         </span>
