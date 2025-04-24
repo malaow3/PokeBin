@@ -14,8 +14,6 @@ function Watermark() {
     } else {
       setIsFixed(false);
     }
-
-    console.log(isFixed());
   }
 
   onMount(() => {
