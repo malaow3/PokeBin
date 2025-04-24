@@ -1,0 +1,8 @@
+.{
+    .tasks = .{
+        .{ .name = "build", .cmd = "bun run build" },
+    },
+    .watcher = .{
+        "src/*",
+    },
+}

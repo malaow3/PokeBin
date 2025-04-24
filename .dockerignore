@@ -1,0 +1,16 @@
+.github/
+.zig-cache/
+.zig-out/
+.direnv/
+.git/
+.jj/
+web/
+wasm/
+src/
+scripts/
+extension/
+!web/dist
+.gitignore
+.LICENSE
+README.md
+.envrc

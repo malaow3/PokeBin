@@ -1,13 +1,13 @@
-/web/dist
-/web/solid/dist
-/target
-*.profraw
-node_modules
-imgs_archive
-
-build.sh
-version.txt
 .env
 
-zig-cache
-zig-out
+zig-out/
+.zig-cache/
+.direnv/
+
+web/node_modules/
+
+extension/dist
+extension/node_modules
+
+scripts/.venv
+scripts/.mypy_cache

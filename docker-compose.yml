@@ -1,24 +1,18 @@
 services:
-  # db:
-  #   image: postgres
-  #   restart: always
-  #   environment:
-  #     POSTGRES_USER: malaow
-  #     POSTGRES_PASSWORD: postgres
-  #   ports:
-  #     - 5432:5432
-  #   networks:
-  #       - pokebin
-
-  web:
-    build: .
+  redis:
+    image: redis:7.2
+    command: ["redis-server", "--requirepass", "${DB_PASS}"]
     ports:
-      - 3005:3005
-    # depends_on:
-    #   - db
-    network_mode: host
-    # networks:
-        # - pokebin
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
 
-# networks:
-#   pokebin:
+  app:
+    build: .
+    depends_on:
+      - redis
+    ports:
+      - "2000:2000"
+
+volumes:
+  redis_data:

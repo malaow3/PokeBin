@@ -3,43 +3,42 @@ import { pluginBabel } from "@rsbuild/plugin-babel";
 import { pluginSolid } from "@rsbuild/plugin-solid";
 
 export default defineConfig({
-    plugins: [
-        pluginBabel({
-            include: /\.(?:jsx|tsx)$/,
-        }),
-        pluginSolid(),
-    ],
-    html: {
-        template({ entryName }) {
-            const templates = {
-                index: "./index.html",
-                about: "./about.html",
-                paste: "./paste.html",
-            };
-            return templates[entryName] || templates.index;
-        },
-    },
-    source: {
-        entry: {
-            index: "./src/index.tsx",
-            about: "./src/about.tsx",
-            paste: "./src/paste.tsx",
-        },
-    },
+  plugins: [
+    pluginBabel({
+      include: /\.(?:jsx|tsx)$/,
+    }),
+    pluginSolid(),
+  ],
 
-    output: {
-        sourceMap: {
-            js: "source-map",
-            css: true,
-        },
-        //filename: {
-        //js: (pathData, _assetInfo) => {
-        //    if (pathData.chunk?.name === "paste") {
-        //        return "paste.js";
-        //    }
-        //
-        //    return "[name]_script.[contenthash:8].js";
-        //},
-        //},
+  html: {
+    template() {
+      return "./template.html";
     },
+    title({ entryName }) {
+      const titles = {
+        index: "PokeBin",
+        about: "About PokeBin",
+        tos: "Terms of Service",
+        report: "Report a PokeBin",
+        paste: "PokeBin",
+        settings: "PokeBin Settings",
+      };
+
+      return titles[entryName] || "PokeBin";
+    },
+  },
+  source: {
+    entry: {
+      index: "./src/index.tsx",
+      about: "./src/about.tsx",
+      tos: "./src/tos.tsx",
+      report: "./src/report.tsx",
+      paste: "./src/paste.tsx",
+      replay: "./src/replay.tsx",
+      settings: "./src/settings.tsx",
+    },
+  },
+  output: {
+    sourceMap: true,
+  },
 });

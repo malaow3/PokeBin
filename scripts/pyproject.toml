@@ -1,0 +1,25 @@
+[project]
+name = "scripts"
+version = "0.1.0"
+description = "Scripts to fetch and update data"
+requires-python = ">=3.11"
+dependencies = [
+    "aiohttp>=3.11.16",
+    "asyncio>=3.4.3",
+    "brotli>=1.1.0",
+    "mypy>=1.15.0",
+    "requests>=2.32.3",
+    "ruff>=0.11.6",
+    "types-requests>=2.32.0.20250328",
+
+    # "types-psycopg2>=2.9.21.20250318",
+    # "psycopg2>=2.9.10",
+    # "pycryptodome>=3.22.0",
+]
+
+[tool.mypy]
+check_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = "brotli"
+ignore_missing_imports = true
