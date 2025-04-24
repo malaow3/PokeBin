@@ -306,7 +306,15 @@ fn searchLike(search: []const u8) ?SearchValue {
 
 fn getImageLink(item: []const u8) [*:0]const u8 {
     const missing = ("background: transparent url(\"assets/missing.png\") no-repeat; height: 64px !important; width: 64px!important; background-position: 5px 10px");
-    const value = data.ITEMS.get(item);
+    var value = data.ITEMS.get(item);
+    if (value == null) {
+        // Remove the `-` and ` `
+        const no_dash = std.mem.replaceOwned(u8, allocator, item, "-", "") catch @panic("failed to allocate memory");
+        const no_space = std.mem.replaceOwned(u8, allocator, no_dash, " ", "") catch @panic("failed to allocate memory");
+        value = data.ITEMS.get(no_space);
+        allocator.free(no_space);
+        allocator.free(no_dash);
+    }
     if (value) |v| {
         const sprite_num: i64 = v.spritenum;
         const top: i64 = @divFloor(sprite_num, 16) * 24 * 2;
