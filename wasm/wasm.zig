@@ -95,6 +95,10 @@ const showdown_box_size = 24;
 // 5 - item add error
 // 6 - too many pokemon
 export fn validatePaste(pastePtr: [*]u8, paste_len: usize) usize {
+    data.init() catch |err| {
+        consoleLog("Failed to initialize data - {any}", .{err});
+        @panic("failed to initialize data");
+    };
     const paste = pastePtr[0..paste_len];
 
     var iter = std.mem.splitSequence(u8, paste, "\n\n");
@@ -109,6 +113,38 @@ export fn validatePaste(pastePtr: [*]u8, paste_len: usize) usize {
         while (lines.next()) |l| {
             if (l.len > max_line_len) return 2;
             if (l.len == 0) continue;
+            if (line_count == 1) {
+                var name_items = std.mem.splitScalar(u8, l, '@');
+                var name_part = name_items.next().?;
+
+                name_part = trim(name_part);
+                if (std.mem.endsWith(u8, name_part, "(M)")) {
+                    name_part = sanitize(trim(name_part[0 .. name_part.len - 3]));
+                } else if (std.mem.endsWith(u8, name_part, "(F)")) {
+                    name_part = sanitize(trim(name_part[0 .. name_part.len - 3]));
+                }
+
+                var name: [*:0]const u8 = allocator.dupeZ(u8, "") catch @panic("failed to allocate memory");
+                if (name_part[name_part.len - 1] == ')') {
+                    // Nickname present
+                    const start = findLastInstance(name_part, '(');
+                    if (start) |i| {
+                        name = sanitize(trim(name_part[i + 1 .. name_part.len - 1]));
+                    } else {
+                        @panic("Failed to find pokemon name");
+                    }
+                } else {
+                    name = sanitize(trim(name_part));
+                }
+
+                const span = std.mem.span(name);
+                const lower = getSearchName(span, null);
+                const search_value = searchLike(lower);
+                if (search_value == null) {
+                    consoleLog("Invalid pokemon name: {s}", .{lower});
+                    return 3;
+                }
+            }
             if (line_count > 1) {
                 if (std.mem.indexOf(u8, l, "https://") != null //
                 or std.mem.indexOf(u8, l, "http://") != null //
@@ -306,15 +342,7 @@ fn searchLike(search: []const u8) ?SearchValue {
 
 fn getImageLink(item: []const u8) [*:0]const u8 {
     const missing = ("background: transparent url(\"assets/missing.png\") no-repeat; height: 64px !important; width: 64px!important; background-position: 5px 10px");
-    var value = data.ITEMS.get(item);
-    if (value == null) {
-        // Remove the `-` and ` `
-        const no_dash = std.mem.replaceOwned(u8, allocator, item, "-", "") catch @panic("failed to allocate memory");
-        const no_space = std.mem.replaceOwned(u8, allocator, no_dash, " ", "") catch @panic("failed to allocate memory");
-        value = data.ITEMS.get(no_space);
-        allocator.free(no_space);
-        allocator.free(no_dash);
-    }
+    const value = data.ITEMS.get(item);
     if (value) |v| {
         const sprite_num: i64 = v.spritenum;
         const top: i64 = @divFloor(sprite_num, 16) * 24 * 2;
@@ -492,6 +520,33 @@ fn parseEvIvLine(line: []const u8, base_value: usize) ![6]usize {
     return values;
 }
 
+fn getSearchName(pokemon_name: []const u8, pokemon: ?*Pokemon) []const u8 {
+    const search_name = std.mem.replaceOwned(u8, allocator, pokemon_name, " ", "-") catch @panic("failed to allocate memory");
+    defer allocator.free(search_name);
+    var lower = std.ascii.allocLowerString(allocator, search_name) catch @panic("failed to allocate memory");
+
+    if (std.mem.eql(u8, lower, "calyrex-shadow-rider")) {
+        if (pokemon) |p| {
+            p.*.name = "Calyrex-Shadow";
+        }
+        allocator.free(lower);
+        lower = allocator.dupe(u8, "calyrex-shadow") catch @panic("failed to allocate memory");
+    } else if (std.mem.eql(u8, lower, "calyrex-ice-rider")) {
+        if (pokemon) |p| {
+            p.*.name = "Calyrex-Ice";
+        }
+        allocator.free(lower);
+        lower = allocator.dupe(u8, "calyrex-ice") catch @panic("failed to allocate memory");
+    } else if (std.mem.eql(u8, lower, "vivillon-pokeball")) {
+        if (pokemon) |p| {
+            p.*.name = "Vivillon-Pokeball";
+        }
+        allocator.free(lower);
+        lower = allocator.dupe(u8, "vivillon-poke-ball") catch @panic("failed to allocate memory");
+    }
+    return lower;
+}
+
 fn parsePokemon(item: []const u8, twoDImages: bool) !*Pokemon {
     const pokemon = initPokemon();
     var lines = std.mem.splitScalar(u8, item, '\n');
@@ -543,25 +598,8 @@ fn parsePokemon(item: []const u8, twoDImages: bool) !*Pokemon {
             const name = pokemon.name;
             const span = std.mem.span(name);
 
-            const search_name = try std.mem.replaceOwned(u8, allocator, span, " ", "-");
-            defer allocator.free(search_name);
-
-            var lower = try std.ascii.allocLowerString(allocator, search_name);
+            const lower = getSearchName(span, pokemon);
             defer allocator.free(lower);
-
-            if (std.mem.eql(u8, lower, "calyrex-shadow-rider")) {
-                pokemon.name = "Calyrex-Shadow";
-                allocator.free(lower);
-                lower = try allocator.dupe(u8, "calyrex-shadow");
-            } else if (std.mem.eql(u8, lower, "calyrex-ice-rider")) {
-                pokemon.name = "Calyrex-Ice";
-                allocator.free(lower);
-                lower = try allocator.dupe(u8, "calyrex-ice");
-            } else if (std.mem.eql(u8, lower, "vivillon-pokeball")) {
-                pokemon.name = "Vivillon-Pokeball";
-                allocator.free(lower);
-                lower = try allocator.dupe(u8, "vivillon-poke-ball");
-            }
 
             const value = searchLike(lower);
             if (value) |v| {
