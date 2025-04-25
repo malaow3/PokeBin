@@ -89,7 +89,10 @@ pub fn fetchReplay(_: *state.State, req: *httpz.Request, res: *httpz.Response) !
     };
 
     if (data) |d| {
-        const user = try std.json.parseFromSlice(SDUser, allocator, d, .{});
+        const user = std.json.parseFromSlice(SDUser, allocator, d, .{}) catch |err| {
+            zlog.err("Failed to parse JSON: {s}", .{@errorName(err)});
+            return error.InvalidJSON;
+        };
         defer user.deinit();
 
         var client = std.http.Client{
@@ -104,15 +107,19 @@ pub fn fetchReplay(_: *state.State, req: *httpz.Request, res: *httpz.Response) !
         defer allocator.free(header_buf);
 
         const body = try std.fmt.allocPrint(allocator, "name={s}&pass={s}&challstr={s}", .{ user.value.name, user.value.pass, user.value.challstr });
-        const response = try client.fetch(.{
+        const response = client.fetch(.{
             .method = .POST,
             .location = .{ .url = "https://play.pokemonshowdown.com/api/login" },
             .extra_headers = headers,
             .payload = body,
             .server_header_buffer = header_buf,
-        });
+        }) catch |err| {
+            zlog.err("Failed to login: {s}", .{@errorName(err)});
+            return error.LoginFailed;
+        };
 
         if (response.status != .ok and response.status != .no_content) {
+            zlog.err("Status: {s}", .{@tagName(response.status)});
             return error.ReportSubmissionFailed;
         }
 
@@ -147,12 +154,15 @@ pub fn fetchReplay(_: *state.State, req: *httpz.Request, res: *httpz.Response) !
             var replay_response_body = std.ArrayList(u8).init(allocator);
             defer replay_response_body.deinit();
 
-            const replay_response = try client.fetch(.{
+            const replay_response = client.fetch(.{
                 .method = .GET,
                 .location = .{ .url = replay_url },
                 .extra_headers = replay_headers,
                 .response_storage = .{ .dynamic = &replay_response_body },
-            });
+            }) catch |err| {
+                zlog.err("Failed to fetch page {d} replays: {s}", .{ page, @errorName(err) });
+                return err;
+            };
 
             if (replay_response.status != .ok and replay_response.status != .no_content) {
                 break;

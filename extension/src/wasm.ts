@@ -1,3 +1,5 @@
+import { pokebin_url } from "./main.tsx";
+
 interface WebAssemblyExports {
   init(seed: bigint): void;
   memory: WebAssembly.Memory;
@@ -31,7 +33,7 @@ function decodeString(pointer: number, length: number) {
 
 export async function initWasm() {
   const wasmModule = await WebAssembly.instantiateStreaming(
-    fetch("https://pokebin.malaow3.com/wasm"),
+    fetch(`${pokebin_url}/wasm`),
     {
       env: {
         _throwError(pointer: number, length: number) {
