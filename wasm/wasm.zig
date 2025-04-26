@@ -548,6 +548,7 @@ fn getSearchName(pokemon_name: []const u8, pokemon: ?*Pokemon) []const u8 {
 }
 
 fn parsePokemon(item: []const u8, twoDImages: bool) !*Pokemon {
+    consoleLog("Parsing pokemon: {s}", .{item});
     const pokemon = initPokemon();
     var lines = std.mem.splitScalar(u8, item, '\n');
     var line_idx: usize = 0;

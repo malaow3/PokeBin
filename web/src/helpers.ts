@@ -269,11 +269,9 @@ function decodePokemon(pokemonPtr: number): Pokemon {
         } catch (e) {
           console.error(`Error decoding move at index ${i}:`, e);
         }
-        offset += sizeOfUint8;
       }
-    } else {
-      offset += sizeOfUint32;
     }
+    offset += sizeOfUint32;
 
     let gender = "";
     if (genderNum === 77) {
