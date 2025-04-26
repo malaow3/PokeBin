@@ -73,7 +73,8 @@
         packages.default = pkgs-unstable.stdenv.mkDerivation {
           pname = "pokebin-zig";
           version = "2.0.0";
-          src = ./.;
+          src = pkgs-unstable.lib.cleanSource ./.;
+          strictDeps = true;
 
           # nativeBuildInputs = [ zig.packages.${system}.${zigVersion} ];
 

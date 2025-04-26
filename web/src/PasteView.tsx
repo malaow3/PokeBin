@@ -76,10 +76,10 @@ const PasteView = () => {
     }
 
     // Add all relevant fields
-    addField(
-      "data",
-      btoa(decodeURIComponent(encodeURIComponent(JSON.stringify(pasteObj)))),
+    const encoded = btoa(
+      decodeURIComponent(encodeURIComponent(JSON.stringify(pasteObj))),
     );
+    addField("data", encoded);
 
     document.body.appendChild(form);
     form.submit();
@@ -202,6 +202,7 @@ const PasteView = () => {
   }
 
   async function copyPaste() {
+    console.log("Copying paste to clipboard...");
     const main = document.getElementsByTagName("main")[0];
 
     if (!main) {
@@ -233,6 +234,8 @@ const PasteView = () => {
 
     // Copy the data to the clipboard.
     await navigator.clipboard.writeText(text.trim());
+    console.log(text.trim());
+    console.log("Paste copied to clipboard.");
   }
 
   // Update document title when title changes
@@ -594,23 +597,33 @@ const PasteView = () => {
                           IVs:&nbsp;
                           <Show when={pokemon.ivs[0] !== 31}>
                             {pokemon.ivs[0]} HP
-                            <Show when={pokemon.last_stat_iv !== "hp"}>/</Show>
+                            <Show when={pokemon.last_stat_iv !== "hp"}>
+                              &nbsp;/&nbsp;
+                            </Show>
                           </Show>
                           <Show when={pokemon.ivs[1] !== 31}>
                             {pokemon.ivs[1]} Atk
-                            <Show when={pokemon.last_stat_iv !== "atk"}>/</Show>
+                            <Show when={pokemon.last_stat_iv !== "atk"}>
+                              &nbsp;/&nbsp;
+                            </Show>
                           </Show>
                           <Show when={pokemon.ivs[2] !== 31}>
                             {pokemon.ivs[2]} Def
-                            <Show when={pokemon.last_stat_iv !== "def"}>/</Show>
+                            <Show when={pokemon.last_stat_iv !== "def"}>
+                              &nbsp;/&nbsp;
+                            </Show>
                           </Show>
                           <Show when={pokemon.ivs[3] !== 31}>
                             {pokemon.ivs[3]} SpA
-                            <Show when={pokemon.last_stat_iv !== "spa"}>/</Show>
+                            <Show when={pokemon.last_stat_iv !== "spa"}>
+                              &nbsp;/&nbsp;
+                            </Show>
                           </Show>
                           <Show when={pokemon.ivs[4] !== 31}>
                             {pokemon.ivs[4]} SpD
-                            <Show when={pokemon.last_stat_iv !== "spd"}>/</Show>
+                            <Show when={pokemon.last_stat_iv !== "spd"}>
+                              &nbsp;/&nbsp;
+                            </Show>
                           </Show>
                           <Show when={pokemon.ivs[5] !== 31}>
                             {pokemon.ivs[5]} Spe

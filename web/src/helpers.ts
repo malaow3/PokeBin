@@ -41,7 +41,6 @@ interface WebAssemblyExports {
 }
 
 const sizeOfUint32 = Uint32Array.BYTES_PER_ELEMENT;
-const sizeOfUint8 = Uint8Array.BYTES_PER_ELEMENT;
 const sizeOfNullByte = Uint8Array.BYTES_PER_ELEMENT;
 const nullByte = 0x00;
 
