@@ -203,7 +203,7 @@ const PasteView = () => {
 
   async function copyPaste() {
     console.log("Copying paste to clipboard...");
-    const main = document.getElementsByTagName("main")[0];
+    const main = document.getElementsByClassName("main")[0];
 
     if (!main) {
       return;
