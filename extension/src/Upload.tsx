@@ -1,6 +1,7 @@
 import { createSignal } from "solid-js";
 import { encrypt } from "./encryption.ts";
 import type { UnsafeWindow } from "./types.ts";
+import { utf8ToBase64 } from "./helpers.ts";
 
 const usfw = window as unknown as UnsafeWindow;
 
@@ -75,7 +76,7 @@ const Upload = (props: { pokebin_url: string }) => {
     };
     const form_content = JSON.stringify(form_data);
 
-    const encoded = btoa(decodeURIComponent(encodeURIComponent(form_content)));
+    const encoded = utf8ToBase64(form_content);
     const data_element = document.getElementById("data") as HTMLInputElement;
     data_element.value = encoded;
 

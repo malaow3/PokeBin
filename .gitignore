@@ -8,6 +8,9 @@ web/node_modules/
 
 extension/dist
 extension/node_modules
+extension/build
+
+extension-build
 
 scripts/.venv
 scripts/.mypy_cache

@@ -94,7 +94,7 @@ function encodeNullTerminatedString(string: string) {
   );
   slice.set(buffer);
   slice[buffer.length] = nullByte;
-  return pointer;
+  return { pointer, length: buffer.length };
 }
 
 async function initWasm() {
@@ -123,7 +123,8 @@ function validatePaste(paste: string): number {
     return -1;
   }
 
-  const buffer_ptr = exports.allocUint8(paste.length);
+  const pasteBuffer = new TextEncoder().encode(paste);
+  const buffer_ptr = exports.allocUint8(pasteBuffer.length);
   if (!buffer_ptr) {
     console.error("Failed to allocate memory");
     return -1;
@@ -132,13 +133,10 @@ function validatePaste(paste: string): number {
   // Get a view of memory
   const memoryView = new Uint8Array(exports.memory.buffer);
 
-  // Copy the passphrase and message into the single buffer
-  const pasteBuffer = new TextEncoder().encode(paste);
-  for (let i = 0; i < paste.length; i++) {
-    memoryView[buffer_ptr + i] = pasteBuffer[i];
-  }
+  // Copy the entire buffer
+  memoryView.set(pasteBuffer, buffer_ptr);
 
-  const success = exports.validatePaste(buffer_ptr, paste.length);
+  const success = exports.validatePaste(buffer_ptr, pasteBuffer.length);
   exports.resetArena();
 
   return success;
@@ -525,10 +523,9 @@ export function parsePaste(data: string, twoDimages: boolean): Paste | null {
     return null;
   }
 
-  const input = encodeNullTerminatedString(data);
-  const input_len = data.length;
+  const { pointer, length } = encodeNullTerminatedString(data);
 
-  const pastePtr = exports.parsePaste(input, input_len, twoDimages);
+  const pastePtr = exports.parsePaste(pointer, length, twoDimages);
   const paste = decodePaste(pastePtr);
 
   exports.resetArena();
@@ -536,4 +533,23 @@ export function parsePaste(data: string, twoDimages: boolean): Paste | null {
   return paste;
 }
 
-export { encrypt, initWasm, decrypt, validatePaste };
+function utf8ToBase64(str: string | undefined) {
+  // Encode to UTF-8 bytes, then to base64
+  return btoa(String.fromCharCode(...new TextEncoder().encode(str)));
+}
+
+function base64ToUtf8(b64: string) {
+  // Decode base64 to bytes, then decode as UTF-8
+  return new TextDecoder().decode(
+    Uint8Array.from(atob(b64), (c) => c.charCodeAt(0)),
+  );
+}
+
+export {
+  encrypt,
+  initWasm,
+  decrypt,
+  validatePaste,
+  utf8ToBase64,
+  base64ToUtf8,
+};

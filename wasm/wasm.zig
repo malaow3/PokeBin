@@ -240,14 +240,20 @@ fn sanitize(str: []const u8) [:0]const u8 {
     var output = std.ArrayList(u8).init(allocator);
     defer output.deinit();
 
-    for (str) |c| {
-        switch (c) {
+    var it = std.unicode.Utf8Iterator{ .bytes = str, .i = 0 };
+    while (it.nextCodepoint()) |cp| {
+        switch (cp) {
             '<' => output.appendSlice("&lt;") catch @panic("failed to append slice"),
             '>' => output.appendSlice("&gt;") catch @panic("failed to append slice"),
             '&' => output.appendSlice("&amp;") catch @panic("failed to append slice"),
             '"' => output.appendSlice("&quot;") catch @panic("failed to append slice"),
             '\'' => output.appendSlice("&apos;") catch @panic("failed to append slice"),
-            else => output.append(c) catch @panic("failed to append"),
+            else => {
+                // Append the codepoint as UTF-8
+                var buf: [4]u8 = undefined;
+                const len = std.unicode.utf8Encode(cp, &buf) catch @panic("utf8 encode failed");
+                output.appendSlice(buf[0..len]) catch @panic("failed to append");
+            },
         }
     }
 

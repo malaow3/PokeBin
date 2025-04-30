@@ -1,6 +1,6 @@
 import "./app.css";
 import { onMount, createSignal, Show, createEffect } from "solid-js";
-import { encrypt, initWasm, validatePaste } from "./helpers.ts";
+import { encrypt, initWasm, validatePaste, utf8ToBase64 } from "./helpers.ts";
 import PatreonButton from "./patreon.tsx";
 import logo from "../public/logo/large_logo_cropped.webp";
 
@@ -187,7 +187,7 @@ const App = () => {
 
     if (passwordEl.value === "") {
       const jsonString = JSON.stringify(form_data);
-      const encoded = btoa(decodeURIComponent(encodeURIComponent(jsonString)));
+      const encoded = utf8ToBase64(jsonString);
       dataEl.value = encoded;
       const end = Date.now();
       console.log(`Processing took ${end - start}ms`);
@@ -207,7 +207,7 @@ const App = () => {
     }
 
     const jsonString = JSON.stringify(form_data);
-    const encoded = btoa(decodeURIComponent(encodeURIComponent(jsonString)));
+    const encoded = utf8ToBase64(jsonString);
     dataEl.value = encoded;
     passwordEl.disabled = true;
     const end = Date.now();

@@ -9,7 +9,13 @@ import {
 import "./app.css";
 import "./paste.css";
 import Watermark from "./watermark";
-import { decrypt, initWasm, parsePaste, type Paste } from "./helpers";
+import {
+  decrypt,
+  initWasm,
+  parsePaste,
+  type Paste,
+  utf8ToBase64,
+} from "./helpers";
 
 function stripIvsEvs(pasteText: string): string {
   // Remove lines that start with "IVs:" or "EVs:" (case-insensitive, optional whitespace)
@@ -76,9 +82,7 @@ const PasteView = () => {
     }
 
     // Add all relevant fields
-    const encoded = btoa(
-      decodeURIComponent(encodeURIComponent(JSON.stringify(pasteObj))),
-    );
+    const encoded = utf8ToBase64(JSON.stringify(pasteObj));
     addField("data", encoded);
 
     document.body.appendChild(form);

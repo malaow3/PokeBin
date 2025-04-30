@@ -1,4 +1,5 @@
 import { createSignal } from "solid-js";
+import { utf8ToBase64 } from "./helpers.ts";
 
 const OtsBattleUpload = (props: {
   text: string;
@@ -45,7 +46,7 @@ const OtsBattleUpload = (props: {
     const jsonString = JSON.stringify(form_data);
 
     // Base64 encode the JSON string safely
-    const encoded = btoa(decodeURIComponent(encodeURIComponent(jsonString)));
+    const encoded = utf8ToBase64(jsonString);
 
     data_element.value = encoded;
     form.submit();
