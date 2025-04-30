@@ -324,17 +324,26 @@ fn searchLike(search: []const u8) ?SearchValue {
     // Try searching on the individual parts
     const old_pattern = search;
     var patIter = std.mem.splitScalar(u8, search, '-');
-    const pat = patIter.next().?;
-    if (std.mem.eql(u8, old_pattern, pat)) {
-        return null;
+    var items = std.ArrayList([]const u8).init(allocator);
+    while (patIter.next()) |item| {
+        items.append(item) catch @panic("failed to append item");
     }
 
-    const res = searchLike(pat);
-    if (res) |v| {
-        return .{
-            .name = old_pattern,
-            .value = v.value,
-        };
+    while (items.items.len > 1) {
+        const pat = std.mem.join(allocator, "-", items.items[0 .. items.items.len - 1]) catch @panic("failed to join");
+        if (std.mem.eql(u8, old_pattern, pat)) {
+            return null;
+        }
+
+        const res = searchLike(pat);
+        if (res) |v| {
+            return .{
+                .name = old_pattern,
+                .value = v.value,
+            };
+        }
+
+        _ = items.pop();
     }
 
     return null;

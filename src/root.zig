@@ -30,36 +30,52 @@ pub const EnvConfig = struct {
 
 pub fn parseEnv(allocator: std.mem.Allocator) !EnvConfig {
     const cwd = std.fs.cwd();
-    const env = try cwd.openFile(".env", .{});
-    defer env.close();
-
-    const fileData = try env.readToEndAlloc(allocator, std.math.maxInt(usize));
-    var lines = std.mem.splitAny(u8, fileData, "\n");
+    var env_file_exists = true;
+    cwd.access(".env", .{}) catch {
+        env_file_exists = false;
+    };
     var envConfig = EnvConfig{};
     var dbConfig = DBConfig{};
-    while (lines.next()) |line| {
-        if (std.mem.eql(u8, line, "")) {
-            continue;
-        }
-        var items = std.mem.splitScalar(u8, line, '=');
-        const key = std.mem.trim(u8, items.next().?, " ");
-        const value = std.mem.trim(u8, items.next().?, " ");
 
-        if (std.mem.eql(u8, key, "DB_HOST")) {
-            dbConfig.host = value;
-        } else if (std.mem.eql(u8, key, "DB_PORT")) {
-            dbConfig.port = try std.fmt.parseUnsigned(u16, value, 10);
-        } else if (std.mem.eql(u8, key, "DB_USER")) {
-            dbConfig.user = value;
-        } else if (std.mem.eql(u8, key, "DB_PASS")) {
-            dbConfig.pass = value;
-        } else if (std.mem.eql(u8, key, "DISCORD_WEBHOOK")) {
-            envConfig.webhook = value;
-        } else if (std.mem.eql(u8, key, "LIVE_OFFSET")) {
-            envConfig.live_offset = try std.fmt.parseUnsigned(usize, value, 10);
-        } else if (std.mem.eql(u8, key, "TOTAL_OFFSET")) {
-            envConfig.total_offset = try std.fmt.parseUnsigned(usize, value, 10);
+    if (env_file_exists) {
+        const env = try cwd.openFile(".env", .{});
+        defer env.close();
+
+        const fileData = try env.readToEndAlloc(allocator, std.math.maxInt(usize));
+        var lines = std.mem.splitAny(u8, fileData, "\n");
+        while (lines.next()) |line| {
+            if (std.mem.eql(u8, line, "")) {
+                continue;
+            }
+            var items = std.mem.splitScalar(u8, line, '=');
+            const key = std.mem.trim(u8, items.next().?, " ");
+            const value = std.mem.trim(u8, items.next().?, " ");
+
+            if (std.mem.eql(u8, key, "DB_HOST")) {
+                dbConfig.host = value;
+            } else if (std.mem.eql(u8, key, "DB_PORT")) {
+                dbConfig.port = try std.fmt.parseUnsigned(u16, value, 10);
+            } else if (std.mem.eql(u8, key, "DB_USER")) {
+                dbConfig.user = value;
+            } else if (std.mem.eql(u8, key, "DB_PASS")) {
+                dbConfig.pass = value;
+            } else if (std.mem.eql(u8, key, "DISCORD_WEBHOOK")) {
+                envConfig.webhook = value;
+            } else if (std.mem.eql(u8, key, "LIVE_OFFSET")) {
+                envConfig.live_offset = try std.fmt.parseUnsigned(usize, value, 10);
+            } else if (std.mem.eql(u8, key, "TOTAL_OFFSET")) {
+                envConfig.total_offset = try std.fmt.parseUnsigned(usize, value, 10);
+            }
         }
+    } else {
+        const envmap = try std.process.getEnvMap(allocator);
+        envConfig.webhook = envmap.get("DISCORD_WEBHOOK") orelse "";
+        envConfig.live_offset = try std.fmt.parseUnsigned(usize, envmap.get("LIVE_OFFSET") orelse "0", 10);
+        envConfig.total_offset = try std.fmt.parseUnsigned(usize, envmap.get("TOTAL_OFFSET") orelse "0", 10);
+        dbConfig.host = envmap.get("DB_HOST") orelse "";
+        dbConfig.port = try std.fmt.parseUnsigned(u16, envmap.get("DB_PORT") orelse "0", 10);
+        dbConfig.user = envmap.get("DB_USER") orelse "";
+        dbConfig.pass = envmap.get("DB_PASS") orelse "";
     }
 
     envConfig.db_config = dbConfig;
