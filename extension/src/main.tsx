@@ -32,6 +32,21 @@ function processDetails(detailsElement: Element | ChildNode) {
   return textContent;
 }
 
+function waitForRoom() {
+  return new Promise((resolve) => {
+    function check() {
+      // @ts-ignore
+      if (window.room?.curTeam) {
+        // @ts-ignore
+        resolve(window.room);
+      } else {
+        setTimeout(check, 100);
+      }
+    }
+    check();
+  });
+}
+
 function App() {
   const [mutations, setMutations] = createSignal<MutationRecord[]>([]);
 
@@ -46,7 +61,7 @@ function App() {
     observer.disconnect();
   });
 
-  const handleDomChanges = () => {
+  const handleDomChanges = async () => {
     for (const mutation of mutations()) {
       if (mutation.type === "childList") {
         const addedNodes = mutation.addedNodes;
@@ -62,6 +77,7 @@ function App() {
             ) {
               const pokebinUpload = document.createElement("div");
               pokebinUpload.id = "pokebin-upload";
+              await waitForRoom();
               render(() => <Upload pokebin_url={pokebin_url} />, pokebinUpload);
               targetButton.insertAdjacentElement("afterend", pokebinUpload);
             }
