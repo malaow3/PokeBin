@@ -17,6 +17,7 @@ pub fn build(b: *std.Build) void {
     const http = b.dependency("httpz", .{});
     const zul = b.dependency("zul", .{});
     const okredis = b.dependency("okredis", .{});
+    const pg = b.dependency("pg", .{});
 
     // -----------------------------------------------------------------------
     // Create modules (lib_mod, exe_mod, redis)
@@ -32,6 +33,11 @@ pub fn build(b: *std.Build) void {
     });
     const redis = b.createModule(.{
         .root_source_file = b.path("src/okredis.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    const pgMod = b.createModule(.{
+        .root_source_file = b.path("src/pg.zig"),
         .target = target,
         .optimize = optimize,
     });
@@ -51,6 +57,8 @@ pub fn build(b: *std.Build) void {
 
     redis.addImport("zlog", zlog.module("zlog"));
     redis.addImport("okredis", okredis.module("okredis"));
+
+    pgMod.addImport("pg", pg.module("pg"));
 
     // -----------------------------------------------------------------------
     // Create the WASM module

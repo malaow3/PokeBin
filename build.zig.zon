@@ -42,6 +42,10 @@
             .url = "git+https://github.com/max-legrand/brotli?ref=zig-build#74d99fd67e6c89812714a0b486b199de78a413bf",
             .hash = "brotli-0.0.0-lm3Mv610IQAZ-HH7P3FPTMZn5sy9OhfRW0G97qYaFeNv",
         },
+        .pg = .{
+            .url = "git+https://github.com/karlseguin/pg.zig?ref=master#901c289368f0eae8e37ca90e3f806be9e3ff86f9",
+            .hash = "pg-0.0.0-Wp_7gRD-BQCbDvJEahLsdoxUdlR7BsmvPnQyYdGyQzEE",
+        },
     },
     .paths = .{
         "build.zig",
