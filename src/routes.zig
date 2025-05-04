@@ -230,7 +230,7 @@ pub fn image(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void
 }
 
 pub fn totalPastes(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
-    var result = try app.pool.sendAlloc(i64, res.arena, .{"DBSIZE"});
+    var result = try app.pgpool.getCount();
     // TODO: Remove this once data starts coming in!
     result += @intCast(app.config.total_offset);
 
@@ -290,17 +290,14 @@ pub fn getUUIDJson(app: *state.State, req: *httpz.Request, res: *httpz.Response)
         return;
     };
 
-    const lookup = try std.fmt.allocPrint(res.arena, "data:{s}", .{user});
-    const value = try app.pool.getAlloc(?[]u8, res.arena, lookup);
-    if (value) |v| {
-        res.body = v;
-        res.content_type = .JSON;
-        res.status = 200;
-    } else {
+    const value = app.pgpool.getUUID(user) catch {
         res.status = 404;
         res.body = "Not Found";
         return;
-    }
+    };
+    res.body = value;
+    res.content_type = .JSON;
+    res.status = 200;
 }
 
 pub fn getUUID(appState: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
@@ -314,11 +311,8 @@ pub fn getUUID(appState: *state.State, req: *httpz.Request, res: *httpz.Response
     // 60 sec * 60 min * 24 hours * 365 days = 31536000 seconds
     res.header("Cache-Control", "public, max-age=31536000");
 
-    const key = try std.fmt.allocPrint(res.arena, "data:{s}", .{user});
-    defer res.arena.free(key);
-
-    const value = try appState.pool.getAlloc(?[]u8, res.arena, key);
-    if (value) |_| {
+    const exists = try appState.pgpool.uuidExists(user);
+    if (exists) {
         return serveHtmlFile(appState, "web/dist/paste.html", res);
     } else {
         res.header("Location", "/");
@@ -351,10 +345,10 @@ pub fn create(app: *state.State, req: *httpz.Request, res: *httpz.Response) !voi
 
     // Hash and check for existing
     const hash = try hashDataToHex(decoded, res.arena);
-    const hash_key = try std.fmt.allocPrint(res.arena, "index:{s}", .{hash});
 
-    const existing = try app.pool.getAlloc(?[]u8, res.arena, hash_key);
+    const existing: ?[]const u8 = app.pgpool.hashExists(hash) catch null;
     if (existing) |e| {
+        zlog.info("UUID already exists: {s}", .{e});
         // Data already exists, redirect to existing UUID
         const url = try std.fmt.allocPrint(res.arena, "/{s}", .{e});
         res.status = 302;
@@ -364,25 +358,10 @@ pub fn create(app: *state.State, req: *httpz.Request, res: *httpz.Response) !voi
 
     // Not found, create new UUID and store
     const uuid = try app.getNewUUID(res.arena);
+    zlog.info("Inserting new UUID: {s}", .{uuid});
 
-    const uuid_key = try std.fmt.allocPrint(res.arena, "data:{s}", .{uuid});
-    const result = try app.pool.set(redis.OrErr(void), uuid_key, decoded);
-    switch (result) {
-        .Err => |err| {
-            zlog.err("Error: {any}", .{err});
-            return error.CreateError;
-        },
-        else => {},
-    }
-
-    const idx_result = try app.pool.set(redis.OrErr(void), hash_key, uuid);
-    switch (idx_result) {
-        .Err => |err| {
-            zlog.err("Error: {any}", .{err});
-            return error.CreateError;
-        },
-        else => {},
-    }
+    // Store in DB
+    try app.pgpool.savePaste(uuid, decoded, hash);
 
     const url = try std.fmt.allocPrint(res.arena, "/{s}", .{uuid});
     res.status = 302;

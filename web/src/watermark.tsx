@@ -97,6 +97,7 @@ function Watermark() {
         "-ms-user-select": "none",
         "align-items": "center",
         "white-space": "nowrap",
+        width: "100px",
       }}
     >
       <img

@@ -27,16 +27,12 @@
             .hash = "zlog-0.0.0-_MGzdbBDAABfTEnaVhw1nSH-EN9J4x_Svt9M07fkn6Vd",
         },
         .httpz = .{
-            .url = "git+https://github.com/karlseguin/http.zig#0ce9038e13c138423f68d95a475159039458e798",
-            .hash = "httpz-0.0.0-PNVzrJ-0BgAp8WPkVfsFGNPRlRpBoU-8w0LxMDXBp37t",
+            .url = "git+https://github.com/karlseguin/http.zig?ref=dev#bab4296f0b4c99aec60b5c0339848aebc0254a50",
+            .hash = "httpz-0.0.0-PNVzrMK3BgAntHQ7y_vXZ4Q2yKKM0py7_KnwKoPv3aep",
         },
         .zul = .{
             .url = "git+https://github.com/karlseguin/zul#d9142c73aedc5698beba58b3fbf2bcfe69864778",
             .hash = "zul-0.0.0-1oDot0BCBwA9cUo5OOrPs5NGmvoM7sk1ztfbdfL7mh4P",
-        },
-        .okredis = .{
-            .url = "git+https://github.com/kristoff-it/zig-okredis?ref=master#c196c948fd3f9f88d9118d93d02153d39a3fba55",
-            .hash = "okredis-0.0.0-Cg726qkaBACbJ6pLJ-nOYxjO40hoGdlto52a7BvAsbwV",
         },
         .brotli = .{
             .url = "git+https://github.com/max-legrand/brotli?ref=zig-build#74d99fd67e6c89812714a0b486b199de78a413bf",

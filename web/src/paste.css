@@ -293,16 +293,16 @@ body.light .stat-spe { color: #c2185b; }
   .main { flex-direction: row; }
 }
 
-@media (min-width: 1501px), (min-width: 1901px) {
+@media (min-width: 1501px) {
   body { zoom: 1.2; }
 }
 
-@media (max-width: 1900px), (max-width: 1280px), (min-width: 1024px) and (max-width: 1269px) {
+@media (max-width: 1500px) {
   body { zoom: 1.1; }
 }
 
-@media (min-width: 1281px) {
-  article { padding-bottom: 0px; }
+@media (max-width: 1400px) {
+    body { zoom: 1.0; }
 }
 
 @media (min-width: 1024px) and (max-width: 1269px) {
@@ -314,8 +314,8 @@ body.light .stat-spe { color: #c2185b; }
   img.img-pokemon { width: 180px; }
   article { padding: 0; }
   .paste {
-      width: 80vw !important;
-      min-width: 80vw !important;
+    width: 80vw !important;
+    min-width: 80vw !important;
   }
 }
 

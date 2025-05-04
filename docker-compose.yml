@@ -1,18 +1,11 @@
 services:
-  redis:
-    image: redis:7.2
-    command: ["redis-server", "--requirepass", "${DB_PASS}"]
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-
   app:
     build: .
-    depends_on:
-      - redis
     ports:
       - "2000:2000"
+    networks:
+      - coolify
 
-volumes:
-  redis_data:
+networks:
+  coolify:
+    external: true

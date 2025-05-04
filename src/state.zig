@@ -1,11 +1,11 @@
 const lib = @import("pokebin_lib");
 const std = @import("std");
 const httpz = @import("httpz");
-const redis = @import("redis");
 const zlog = @import("zlog");
 const zul = @import("zul");
 const ws = @import("ws.zig");
 const utils = @import("utils.zig");
+const psql = @import("psql.zig");
 
 const CachedFile = struct {
     data: []u8,
@@ -38,7 +38,7 @@ pub fn getMimeType(filename: []const u8) ?httpz.ContentType {
 pub const State = struct {
     const Self = @This();
     allocator: std.mem.Allocator,
-    pool: redis.RedisPool,
+    pgpool: *psql.Pool,
     file_cache: std.StringHashMap(CachedFile),
     rwlock: std.Thread.RwLock,
     config: lib.EnvConfig,
@@ -47,14 +47,14 @@ pub const State = struct {
 
     pub const WebsocketHandler = ws.Client;
 
-    pub fn init(allocator: std.mem.Allocator, max_connections: ?usize) !State {
-        const connections = if (max_connections) |m| m else 10;
-        var config = try lib.parseEnv(allocator);
-        const redisConfig: *redis.RedisConfig = @ptrCast(&config.db_config);
+    pub fn init(allocator: std.mem.Allocator) !State {
+        const config = try lib.parseEnv(allocator);
+
+        const pgPool = try psql.initDB(allocator, config.db_config);
 
         return Self{
             .allocator = allocator,
-            .pool = try redis.RedisPool.init(allocator, redisConfig, connections),
+            .pgpool = pgPool,
             .file_cache = std.StringHashMap(CachedFile).init(allocator),
             .rwlock = std.Thread.RwLock{},
             .config = config,
@@ -64,7 +64,7 @@ pub const State = struct {
     }
 
     pub fn deinit(self: *State) void {
-        self.pool.deinit();
+        self.pgpool.deinit();
         var iter = self.file_cache.iterator();
         while (iter.next()) |entry| {
             self.allocator.free(entry.key_ptr.*);
@@ -347,11 +347,11 @@ pub const State = struct {
     pub fn getNewUUID(self: *State, allocator: std.mem.Allocator) ![]const u8 {
         var uuid = zul.UUID.v4();
         var id = lib.uuidToPasteID(uuid);
-        var value = try self.pool.exists(&id);
+        var value = try self.pgpool.uuidExists(&id);
         while (value) {
             uuid = zul.UUID.v4();
             id = lib.uuidToPasteID(uuid);
-            value = try self.pool.exists(&id);
+            value = try self.pgpool.uuidExists(&id);
         }
         const result = try std.fmt.allocPrint(allocator, "{s}", .{id});
         return result;

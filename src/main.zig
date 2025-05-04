@@ -2,7 +2,6 @@ const std = @import("std");
 const lib = @import("pokebin_lib");
 const zlog = @import("zlog");
 const zul = @import("zul");
-const redis = @import("redis");
 const httpz = @import("httpz");
 const utils = @import("utils.zig");
 const state = @import("state.zig");
@@ -32,10 +31,22 @@ pub fn main() !void {
     const allocator = arena.allocator();
     // End allocator setup
 
+    var skip_preload = false;
+    var verbose = false;
+    var args = std.process.args();
+    while (args.next()) |arg| {
+        if (std.mem.eql(u8, arg, "--skip-preload") or std.mem.eql(u8, arg, "-s")) {
+            skip_preload = true;
+        }
+        if (std.mem.eql(u8, arg, "--verbose") or std.mem.eql(u8, arg, "-v")) {
+            verbose = true;
+        }
+    }
+
     // Logging setup
+    const log_level = if (verbose) zlog.Logger.Level.DEBUG else zlog.Logger.Level.INFO;
     try zlog.initGlobalLogger(
-        .INFO,
-        // .DEBUG,
+        log_level,
         true,
         "PokeBin",
         null,
@@ -46,18 +57,18 @@ pub fn main() !void {
     // End logging setup
     zlog.info("Initializing PokeBin - v{s}", .{version});
 
-    zlog.info("Initializing Redis!", .{});
-    var appState = try state.State.init(allocator, null);
+    var appState = try state.State.init(allocator);
     state_ptr = &appState;
     defer appState.deinit();
-    zlog.info("Redis initialized!", .{});
 
-    zlog.info("Preloading cache!", .{});
-    try appState.preloadDirectoryRecursive("web/dist/", false);
-    try appState.preloadFile("zig-out/bin/wasm.wasm.br", .WASM, true);
-    try appState.preloadFile("robots.txt", .TEXT, false);
-    try appState.preloadDirectoryRecursive("home/", true);
-    zlog.info("Cache preload complete!", .{});
+    if (!skip_preload) {
+        zlog.info("Preloading cache!", .{});
+        try appState.preloadDirectoryRecursive("web/dist/", false);
+        try appState.preloadFile("zig-out/bin/wasm.wasm.br", .WASM, true);
+        try appState.preloadFile("robots.txt", .TEXT, false);
+        try appState.preloadDirectoryRecursive("home/", true);
+        zlog.info("Cache preload complete!", .{});
+    }
 
     var server = try httpz.Server(*state.State).init(allocator, .{
         .address = "0.0.0.0",

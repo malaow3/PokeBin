@@ -1,6 +1,5 @@
 const std = @import("std");
 const zul = @import("zul");
-const redis = @import("redis");
 
 // For a 16 character hexadecimal string, the chance of a collision between 10 million generated
 // values is ~ 0.000271%
@@ -18,7 +17,6 @@ pub const DBConfig = struct {
     port: u16 = 0,
     user: []const u8 = "",
     pass: []const u8 = "",
-    ping: bool = false,
 };
 
 pub const EnvConfig = struct {
@@ -81,26 +79,4 @@ pub fn parseEnv(allocator: std.mem.Allocator) !EnvConfig {
     envConfig.db_config = dbConfig;
 
     return envConfig;
-}
-
-pub fn initDBClient(allocator: std.mem.Allocator) !redis.Redis {
-    const config = try parseEnv(allocator);
-
-    var redisClient = try redis.Redis.init(allocator, config.host, config.port);
-
-    try redisClient.auth(config.user, config.pass);
-
-    const pong = try redisClient.ping();
-    defer allocator.free(pong);
-    if (!std.mem.eql(u8, pong, "PONG")) {
-        return error.RedisPingFailed;
-    }
-
-    return redisClient;
-}
-
-pub fn initDBPool(allocator: std.mem.Allocator) !redis.RedisPool {
-    var config = try parseEnv(allocator);
-    const pool = try redis.RedisPool.init(allocator, @ptrCast(&config), 10);
-    return pool;
 }

@@ -12,15 +12,13 @@ pub fn build(b: *std.Build) void {
     const brotli_lib = brotli_pkg.artifact("brotli");
 
     // -----------------------------------------------------------------------
-    // Define dependencies (zlog, httpz, zul, okredis)
     const zlog = b.dependency("zlog", .{});
     const http = b.dependency("httpz", .{});
     const zul = b.dependency("zul", .{});
-    const okredis = b.dependency("okredis", .{});
     const pg = b.dependency("pg", .{});
 
     // -----------------------------------------------------------------------
-    // Create modules (lib_mod, exe_mod, redis)
+    // Create modules (lib_mod, exe_mod)
     const lib_mod = b.createModule(.{
         .root_source_file = b.path("src/root.zig"),
         .target = target,
@@ -31,34 +29,18 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-    const redis = b.createModule(.{
-        .root_source_file = b.path("src/okredis.zig"),
-        .target = target,
-        .optimize = optimize,
-    });
-    const pgMod = b.createModule(.{
-        .root_source_file = b.path("src/pg.zig"),
-        .target = target,
-        .optimize = optimize,
-    });
 
     // Add imports to modules
     exe_mod.addImport("pokebin_lib", lib_mod);
-    exe_mod.addImport("redis", redis);
     exe_mod.addImport("zlog", zlog.module("zlog"));
     exe_mod.addImport("httpz", http.module("httpz"));
     exe_mod.addImport("zul", zul.module("zul"));
     exe_mod.linkLibrary(brotli_lib);
     exe_mod.addIncludePath(brotli_pkg.path("c/include"));
+    exe_mod.addImport("pg", pg.module("pg"));
 
-    lib_mod.addImport("redis", redis);
     lib_mod.addImport("zlog", zlog.module("zlog"));
     lib_mod.addImport("zul", zul.module("zul"));
-
-    redis.addImport("zlog", zlog.module("zlog"));
-    redis.addImport("okredis", okredis.module("okredis"));
-
-    pgMod.addImport("pg", pg.module("pg"));
 
     // -----------------------------------------------------------------------
     // Create the WASM module
@@ -97,8 +79,8 @@ pub fn build(b: *std.Build) void {
     const exe = b.addExecutable(.{
         .name = "pokebin",
         .root_module = exe_mod,
-        .use_llvm = false,
-        .use_lld = false,
+        // .use_llvm = false,
+        // .use_lld = false,
     });
     b.installArtifact(exe); // Install the executable
     wasm_compress_step.dependOn(b.getInstallStep());
