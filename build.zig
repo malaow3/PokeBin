@@ -8,7 +8,10 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    const brotli_pkg = b.dependency("brotli", .{});
+    const brotli_pkg = b.dependency("brotli", .{
+        .target = target,
+        .optimize = optimize,
+    });
     const brotli_lib = brotli_pkg.artifact("brotli");
 
     // -----------------------------------------------------------------------
