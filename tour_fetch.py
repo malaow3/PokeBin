@@ -27,8 +27,9 @@ def row_to_tournament(row: Tag) -> Tournament:
     date = cols[0].getText()
     a_tag = cols[2].select_one("a")
     if not a_tag:
-        raise ValueError("No link found")
-    name = a_tag.getText()
+        name = cols[2].getText()
+    else:
+        name = a_tag.getText()
     location = cols[3].getText()
     links = cols[4]
     links_tags = links.select("a")
@@ -51,8 +52,13 @@ def main() -> int:
 
     upcoming = body.select_one("#dtUpcomingEvents > tbody")
     assert upcoming is not None
-    rows = list(map(lambda x: row_to_tournament(x), upcoming.select("tr")))
-    logging.info(f"Found {len(rows)} upcoming events")
+    upcoming_rows = list(map(lambda x: row_to_tournament(x), upcoming.select("tr")))
+    logging.info(f"Found {len(upcoming_rows)} upcoming events")
+
+    past = body.select_one("#dtPastEvents > tbody")
+    assert past is not None
+    past_rows = list(map(lambda x: row_to_tournament(x), past.select("tr")))
+    logging.info(f"Found {len(past_rows)} past events")
 
     return 0
 

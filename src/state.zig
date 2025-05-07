@@ -98,6 +98,7 @@ pub const State = struct {
     ) !void {
         const method_string = statusToString(req.method);
         var timer = try std.time.Timer.start();
+        zlog.info("Processing {s} {s}", .{ method_string, req.url.path });
         action(self, req, res) catch {
             res.status = 500;
             res.body = "Internal Server Error";
