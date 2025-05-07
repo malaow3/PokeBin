@@ -36,6 +36,14 @@ pub fn main() !void {
     const allocator = arena.allocator();
     // End allocator setup
 
+    var child = std.process.Child.init(&[_][]const u8{ "uv", "run", "tour_fetch.py" }, allocator);
+    child.stdout_behavior = .Inherit;
+    child.stderr_behavior = .Inherit;
+    const result = try child.spawnAndWait();
+    if (result.Exited != 0) {
+        zlog.err("Failed to run tour fetch script!", .{});
+    }
+
     var skip_preload = false;
     var verbose = false;
     var args = std.process.args();
