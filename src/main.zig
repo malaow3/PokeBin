@@ -7,6 +7,11 @@ const utils = @import("utils.zig");
 const state = @import("state.zig");
 const shutdown = @import("shutdown.zig");
 const routes = @import("routes.zig");
+const wslog = @import("wslog.zig");
+
+pub const std_options = std.Options{
+    .logFn = wslog.log,
+};
 
 pub const version = "2.0.0";
 

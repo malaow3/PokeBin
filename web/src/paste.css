@@ -496,12 +496,15 @@ body.light .stat-spe {
 		zoom: 1.0;
 	}
 	.side-content {
-		width: 100%;
+		width: 90%;
 		flex-direction: column;
 		min-width: unset;
 		position: static;
 		align-items: flex-start;
 		margin-left: 10px;
+	}
+	#buttons {
+		flex-direction: row;
 	}
 	.notes-section {
 		width: 100%;
