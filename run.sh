@@ -30,8 +30,8 @@ fi
 TEMP_COMPOSE="docker-compose.tmp.yml"
 trap 'rm -f "$TEMP_COMPOSE"' EXIT
 
-# Copy original compose file and add network_mode
-sed '/build: \./a\    network_mode: host' docker-compose.yml > "$TEMP_COMPOSE"
+# Use yq to remove coolify network and set network_mode: host
+yq 'del(.services[].networks) | del(.networks.coolify) | .services[].network_mode = "host"' docker-compose.yml > "$TEMP_COMPOSE"
 
 # Run docker compose with temporary file
 docker compose -f "$TEMP_COMPOSE" up --build

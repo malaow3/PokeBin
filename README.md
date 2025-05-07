@@ -43,7 +43,7 @@ The web client is built with SolidJS. Additionally I use WASM for data-intensive
 
 ### Database
 
-Both encrypted and decrypted pastes are stored in a Redis database for quick key-value lookups.
+Both encrypted and decrypted pastes are stored in a PostgreSQL database.
 
 ## How to use
 
@@ -51,7 +51,7 @@ First, make sure you have all the prerequisites completed.
 
 - Basic understanding of Git / command line familiarity
 - Zig installed
-- Redis installed
+- PSQL installed
 - Brotli CLI installed for compressing files
 - Docker installed (If on WSL you will need [Docker Desktop](https://www.docker.com/products/docker-desktop/))
 - Your Javascript package manager of choice (for this example, I'll be using [Bun](https://bun.sh/))
@@ -61,9 +61,9 @@ If you want to run PokeBin localy, you'll need to follow the following steps:
 1. Clone the repo
 2. You will need to create a .env file. Inside that file you'll need to define two environment variables.
 
-   - DB_HOST: The url of your database. If running via Docker, this should be 'redis'
+   - DB_HOST: The url of your database.
    - DB_USER: Username for the database
-   - DB_PORT: Port for the database, default is 6379
+   - DB_PORT: Port for the database, default is 5432
    - DB_PASS: Password for the database
 
 3. Install the web dependencies by running `cd web; bun install`

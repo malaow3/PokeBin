@@ -462,13 +462,12 @@ const PasteView = () => {
                 style={{ "user-select": "none" }}
                 type="submit"
                 onClick={copyPaste}
-                class="w-[175px] h-[30px] copy-button font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black py-1 rounded mb-1"
+                class="cursor-pointer w-[175px] h-[30px] copy-button font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black py-1 rounded"
               >
                 Copy
               </button>
-              <br />
               <button
-                class="cursor-pointer h-[30px] font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black w-[175px] mt-1 py-1 border-none rounded"
+                class="cursor-pointer h-[30px] font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black w-[175px] py-1 rounded"
                 style={{ "user-select": "none" }}
                 type="button"
                 onClick={() => setShowModal(true)}

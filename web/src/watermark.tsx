@@ -5,8 +5,16 @@ function Watermark() {
   const [isFixed, setIsFixed] = createSignal(false);
   const [dir, setDir] = createSignal("shrink");
   const [prevSize, setPrevSize] = createSignal(window.innerWidth);
+  const [height, setHeight] = createSignal("50px");
+  const [width, setWidth] = createSignal("100px");
+  const [bottom, setBottom] = createSignal("10px");
 
   function check() {
+    if (window.innerWidth <= 500) {
+      setWidth("75px");
+      setHeight("35px");
+      setBottom("30px");
+    }
     if (window.innerWidth <= 1290) {
       if (dir() === "shrink") {
         setIsFixed(true);
@@ -84,7 +92,7 @@ function Watermark() {
       style={{
         position: isFixed() ? "fixed" : "relative",
         display: "flex",
-        bottom: "10px",
+        bottom: bottom(),
         right: isFixed() ? "30px" : undefined, // Only set right when fixed
         left: isFixed() ? undefined : "30px", // Only set left when not fixed
         "flex-direction": isFixed() ? "column" : "row",
@@ -103,8 +111,8 @@ function Watermark() {
       <img
         src={logo}
         style={{
-          height: "50px",
-          width: "100px",
+          height: height(),
+          width: width(),
           transform: "scale(1.5)", // 1.5x bigger visually
         }}
         class="border-none outline-none shadow-none"

@@ -52,6 +52,7 @@
             # zig.packages.${system}.${zigVersion}
             # pkgs-stable.zls
 
+            pkgs-stable.yq
             pkgs-stable.brotli
             pkgs-unstable.blueprint-compiler # remove once blueprint-compiler 0.16.0 is in the stable nixpkgs
           ] ++ valgrindPackage;

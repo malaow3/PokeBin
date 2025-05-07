@@ -5,103 +5,109 @@
    ========================= */
 
 body.dark {
-  background-color: black !important;
-  color: white;
+	background-color: black !important;
+	color: white;
 }
 
 body.light {
-    background-color: #F9F9F9 !important;
-    color: black;
+	background-color: #f9f9f9 !important;
+	color: black;
 }
 
 body {
-  margin: 0;
-  max-width: 100%;
+	margin: 0;
+	max-width: 100%;
 }
 
-html: {
-    margin: 0;
-    padding: 0;
-    border: 0,
+html {
+	margin: 0;
+	padding: 0;
+	border: 0,;
 }
 
 * {
-  min-width: 0;
-  /* DEBUG STYLING */
-  /* outline: 1px solid red !important; */
+	min-width: 0;
+	/* DEBUG STYLING */
+	/* outline: 1px solid red !important; */
 }
 
 p {
-  word-wrap: break-word;
+	word-wrap: break-word;
+}
+
+#buttons {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
 }
 
 /* =========================
    Layout
    ========================= */
 .content-wrapper {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  max-width: 100%;
-  margin: 0;
-  padding: 0;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	max-width: 100%;
+	margin: 0;
+	padding: 0;
 }
 
 .main {
-  display: flex;
-  flex-wrap: wrap;
-  max-width: 100%;
-  flex: 1;
-  min-width: 0;
-  overflow-x: visible;
-  z-index: 1;
+	display: flex;
+	flex-wrap: wrap;
+	max-width: 100%;
+	flex: 1;
+	min-width: 0;
+	overflow-x: visible;
+	z-index: 1;
 }
 
 .side-content {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  position: sticky;
-  margin-right: 20px;
-  margin-left: 0;
-  z-index: 2;
-  flex-shrink: 1;
-  padding-top: 5px !important;
-  padding-bottom: 10px;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	position: sticky;
+	margin-right: 20px;
+	margin-left: 0;
+	z-index: 2;
+	flex-shrink: 1;
+	padding-top: 5px !important;
+	padding-bottom: 10px;
 }
 
 /* =========================
    Article Styles
    ========================= */
 article {
-  float: left;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  width: 50%;
-  min-width: 600px;
-  box-sizing: border-box;
-  padding: 0px 10px 0px 10px;
-  margin-bottom: 0 !important;
+	float: left;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	width: 50%;
+	min-width: 600px;
+	box-sizing: border-box;
+	padding: 0px 10px 0px 10px;
+	margin-bottom: 0 !important;
 }
 
 article:nth-child(odd) {
-  clear: left;
+	clear: left;
 }
 
 article > .paste {
-  min-width: 380px !important;
-  width: 50%;
-  font-size: 15px;
-  line-height: 1.10rem;
-  font-family: "Fira Mono", monospace;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
+	min-width: 380px !important;
+	width: 50%;
+	font-size: 15px;
+	line-height: 1.10rem;
+	font-family: "Fira Mono", monospace;
+	font-optical-sizing: auto;
+	font-weight: 400;
+	font-style: normal;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
 }
 
 /* =========================
@@ -109,178 +115,319 @@ article > .paste {
    ========================= */
 div.img,
 img.img-pokemon {
-  position: relative;
-  margin-left: 0;
-  user-select: none;
-  flex-shrink: 0;
+	position: relative;
+	margin-left: 0;
+	user-select: none;
+	flex-shrink: 0;
 }
 
 img.img-pokemon {
-  width: 200px;
-  height: auto;
-  display: block;
+	width: 200px;
+	height: auto;
+	display: block;
 }
 
 span.img-item {
-  position: absolute;
-  right: 25px;
-  bottom: 0px;
-  width: 48px;
-  height: 48px;
-  z-index: 99;
+	position: absolute;
+	right: 25px;
+	bottom: 0px;
+	width: 48px;
+	height: 48px;
+	z-index: 99;
 }
 
 /* =========================
    Sidebar Styles
    ========================= */
 .sidebar-inner {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 .metadata,
 .extra {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+	display: flex;
+	flex-direction: column;
+}
+.metadata {
+	gap: 2px;
 }
 
 .extra {
-  width: 200px;
-  user-select: none !important;
-  margin-top: 5px;
-  margin-bottom: 10px;
+	width: 200px;
+	user-select: none !important;
+	margin-top: 5px;
+	margin-bottom: 10px;
+	gap: 10px;
 }
 
 .notes-section {
-  position: relative;
+	position: relative;
 }
 
 .notes-content {
-  position: absolute;
-  left: 170px;
-  top: -50px;
-  @apply bg-zinc-800;
-  border: 1px solid #ccc;
-  padding: 20px;
-  border-radius: 5px;
-  max-height: 80vh;
-  overflow-y: auto;
-  z-index: 1000;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+	position: absolute;
+	left: 170px;
+	top: -50px;
+	@apply bg-zinc-800;
+	border: 1px solid #ccc;
+	padding: 20px;
+	border-radius: 5px;
+	max-height: 80vh;
+	overflow-y: auto;
+	z-index: 1000;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
 /* =========================
    Button Styles
    ========================= */
-/* .copy-button, */
-/* .notes-toggle { */
-/*   /* padding-top: 2px; */ */
-/*   /* padding-bottom: 2px; */ */
-/*   border-radius: 5px; */
-/*   cursor: pointer; */
-/*   text-align: center; */
-/*   border: none; */
-/*   user-select: none !important; */
-/* } */
 
 .notes-toggle {
-  background: #333;
-  color: white;
-  max-width: 150px;
-  min-width: 150px;
+	background: #333;
+	color: white;
+	max-width: 150px;
+	min-width: 150px;
 }
 
 /* =========================
    Type and Stat Colors
    ========================= */
-.type-normal, .type-Normal { color: #bfbfa0; }
-.type-fighting, .type-Fighting { color: #ff6f66; }
-.type-flying, .type-Flying { color: #c3b0ff; }
-.type-poison, .type-Poison { color: #d760d7; }
-.type-ground, .type-Ground { color: #ffd78a; }
-.type-rock, .type-Rock { color: #d9c068; }
-.type-bug, .type-Bug { color: #c8de4a; }
-.type-ghost, .type-Ghost { color: #9e84c4; }
-.type-steel, .type-Steel { color: #d8d8f0; }
-.type-fire, .type-Fire { color: #ffa666; }
-.type-water, .type-Water { color: #80b0ff; }
-.type-grass, .type-Grass { color: #8ede68; }
-.type-electric, .type-Electric { color: #ffe466; }
-.type-psychic, .type-Psychic { color: #ff80b0; }
-.type-ice, .type-Ice { color: #b3f0f0; }
-.type-dragon, .type-Dragon { color: #9066ff; }
-.type-dark, .type-Dark { color: #a08870; }
-.type-fairy, .type-Fairy { color: #ffb3c6; }
+.type-normal,
+.type-Normal {
+	color: #bfbfa0;
+}
+.type-fighting,
+.type-Fighting {
+	color: #ff6f66;
+}
+.type-flying,
+.type-Flying {
+	color: #c3b0ff;
+}
+.type-poison,
+.type-Poison {
+	color: #d760d7;
+}
+.type-ground,
+.type-Ground {
+	color: #ffd78a;
+}
+.type-rock,
+.type-Rock {
+	color: #d9c068;
+}
+.type-bug,
+.type-Bug {
+	color: #c8de4a;
+}
+.type-ghost,
+.type-Ghost {
+	color: #9e84c4;
+}
+.type-steel,
+.type-Steel {
+	color: #d8d8f0;
+}
+.type-fire,
+.type-Fire {
+	color: #ffa666;
+}
+.type-water,
+.type-Water {
+	color: #80b0ff;
+}
+.type-grass,
+.type-Grass {
+	color: #8ede68;
+}
+.type-electric,
+.type-Electric {
+	color: #ffe466;
+}
+.type-psychic,
+.type-Psychic {
+	color: #ff80b0;
+}
+.type-ice,
+.type-Ice {
+	color: #b3f0f0;
+}
+.type-dragon,
+.type-Dragon {
+	color: #9066ff;
+}
+.type-dark,
+.type-Dark {
+	color: #a08870;
+}
+.type-fairy,
+.type-Fairy {
+	color: #ffb3c6;
+}
 
-.gender-m, .gender-M { color: #66ccff; }
-.gender-f, .gender-F { color: #ff6666; }
+.gender-m,
+.gender-M {
+	color: #66ccff;
+}
+.gender-f,
+.gender-F {
+	color: #ff6666;
+}
 
-.attr { color: #c0c0c0; }
+.attr {
+	color: #c0c0c0;
+}
 
-.stat-hp { color: #ff6666; }
-.stat-atk { color: #ffa666; }
-.stat-def { color: #ffe466; }
-.stat-spa { color: #80b0ff; }
-.stat-spd { color: #8ede68; }
-.stat-spe { color: #ff80b0; }
+.stat-hp {
+	color: #ff6666;
+}
+.stat-atk {
+	color: #ffa666;
+}
+.stat-def {
+	color: #ffe466;
+}
+.stat-spa {
+	color: #80b0ff;
+}
+.stat-spd {
+	color: #8ede68;
+}
+.stat-spe {
+	color: #ff80b0;
+}
 
 /* =========================
    Type Colors (Light Mode)
    ========================= */
-body.light .type-normal, body.light .type-Normal { color: #7a7a5c; }
-body.light .type-fighting, body.light .type-Fighting { color: #b22222; }
-body.light .type-flying, body.light .type-Flying { color: #7d6fa3; }
-body.light .type-poison, body.light .type-Poison { color: #a040a0; }
-body.light .type-ground, body.light .type-Ground { color: #a68b4a; }
-body.light .type-rock, body.light .type-Rock { color: #a38c21; }
-body.light .type-bug, body.light .type-Bug { color: #7b9f3a; }
-body.light .type-ghost, body.light .type-Ghost { color: #705898; }
-body.light .type-steel, body.light .type-Steel { color: #4b5a5b; }
-body.light .type-fire, body.light .type-Fire { color: #d65a1a; }
-body.light .type-water, body.light .type-Water { color: #3b83bd; }
-body.light .type-grass, body.light .type-Grass { color: #4e9248; }
-body.light .type-electric, body.light .type-Electric { color: #b38f00; }
-body.light .type-psychic, body.light .type-Psychic { color: #c04080; }
-body.light .type-ice, body.light .type-Ice { color: #1ca9c9; }
-body.light .type-dragon, body.light .type-Dragon { color: #5a42a6; }
-body.light .type-dark, body.light .type-Dark { color: #5c4638; }
-body.light .type-fairy, body.light .type-Fairy { color: #b94e7a; }
+body.light .type-normal,
+body.light .type-Normal {
+	color: #7a7a5c;
+}
+body.light .type-fighting,
+body.light .type-Fighting {
+	color: #b22222;
+}
+body.light .type-flying,
+body.light .type-Flying {
+	color: #7d6fa3;
+}
+body.light .type-poison,
+body.light .type-Poison {
+	color: #a040a0;
+}
+body.light .type-ground,
+body.light .type-Ground {
+	color: #a68b4a;
+}
+body.light .type-rock,
+body.light .type-Rock {
+	color: #a38c21;
+}
+body.light .type-bug,
+body.light .type-Bug {
+	color: #7b9f3a;
+}
+body.light .type-ghost,
+body.light .type-Ghost {
+	color: #705898;
+}
+body.light .type-steel,
+body.light .type-Steel {
+	color: #4b5a5b;
+}
+body.light .type-fire,
+body.light .type-Fire {
+	color: #d65a1a;
+}
+body.light .type-water,
+body.light .type-Water {
+	color: #3b83bd;
+}
+body.light .type-grass,
+body.light .type-Grass {
+	color: #4e9248;
+}
+body.light .type-electric,
+body.light .type-Electric {
+	color: #b38f00;
+}
+body.light .type-psychic,
+body.light .type-Psychic {
+	color: #c04080;
+}
+body.light .type-ice,
+body.light .type-Ice {
+	color: #1ca9c9;
+}
+body.light .type-dragon,
+body.light .type-Dragon {
+	color: #5a42a6;
+}
+body.light .type-dark,
+body.light .type-Dark {
+	color: #5c4638;
+}
+body.light .type-fairy,
+body.light .type-Fairy {
+	color: #b94e7a;
+}
 
 /* =========================
    Gender Colors (Light Mode)
    ========================= */
-body.light .gender-m, body.light .gender-M { color: #1e90ff; }
-body.light .gender-f, body.light .gender-F { color: #e75480; }
+body.light .gender-m,
+body.light .gender-M {
+	color: #1e90ff;
+}
+body.light .gender-f,
+body.light .gender-F {
+	color: #e75480;
+}
 
 /* =========================
    Attribute and Stat Colors (Light Mode)
    ========================= */
-body.light .attr { color: #6a6a6a; }
+body.light .attr {
+	color: #6a6a6a;
+}
 
-body.light .stat-hp { color: #d32f2f; }
-body.light .stat-atk { color: #e67e22; }
-body.light .stat-def { color: #b38f00; }
-body.light .stat-spa { color: #1976d2; }
-body.light .stat-spd { color: #388e3c; }
-body.light .stat-spe { color: #c2185b; }
+body.light .stat-hp {
+	color: #d32f2f;
+}
+body.light .stat-atk {
+	color: #e67e22;
+}
+body.light .stat-def {
+	color: #b38f00;
+}
+body.light .stat-spa {
+	color: #1976d2;
+}
+body.light .stat-spd {
+	color: #388e3c;
+}
+body.light .stat-spe {
+	color: #c2185b;
+}
 
 /* =========================
    Miscellaneous
    ========================= */
 #wrapper {
-  user-select: none;
-  width: 100%;
-  max-width: 35vw;
-  height: 25px;
-  max-height: 25px;
-  overflow: hidden;
-  margin: 0 auto;
+	user-select: none;
+	width: 100%;
+	max-width: 35vw;
+	height: 25px;
+	max-height: 25px;
+	overflow: hidden;
+	margin: 0 auto;
 }
 
 #mon_title {
-  line-height: 1rem;
-  font-weight: 600 !important;
+	line-height: 1rem;
+	font-weight: 600 !important;
 }
 
 /* =========================
@@ -289,111 +436,152 @@ body.light .stat-spe { color: #c2185b; }
 
 /* Large screens */
 @media (min-width: 1159px) {
-  .extra { flex-direction: column; }
-  .main { flex-direction: row; }
+	.extra {
+		flex-direction: column;
+	}
+	.main {
+		flex-direction: row;
+	}
 }
 
 @media (min-width: 1501px) {
-  body { zoom: 1.2; }
+	body {
+		zoom: 1.2;
+	}
 }
 
 @media (max-width: 1500px) {
-  body { zoom: 1.1; }
+	body {
+		zoom: 1.1;
+	}
 }
 
 @media (max-width: 1400px) {
-    body { zoom: 1.0; }
+	body {
+		zoom: 1.0;
+	}
+	.paste {
+		font-size: 18px !important;
+	}
 }
 
 @media (min-width: 1024px) and (max-width: 1269px) {
-  body { zoom: 1; }
-  article { padding: 0; }
+	body {
+		zoom: 1;
+	}
+	article {
+		padding: 0;
+	}
+	.paste {
+		font-size: 18px !important;
+	}
 }
 
 @media (max-width: 1269px) {
-  img.img-pokemon { width: 180px; }
-  article { padding: 0; }
-  .paste {
-    width: 80vw !important;
-    min-width: 80vw !important;
-  }
+	img.img-pokemon {
+		width: 180px;
+	}
+	article {
+		padding: 0;
+	}
+	.paste {
+		width: 80vw !important;
+		min-width: 80vw !important;
+	}
 }
 
 /* Tablet and below */
 @media (max-width: 768px) {
-  body { zoom: 1.2; }
-  .side-content {
-    width: 100%;
-    flex-direction: column;
-    min-width: unset;
-    position: static;
-    align-items: flex-start;
-    margin-left: 10px;
-  }
-  .notes-section { width: 100%; }
-  .notes-content {
-    position: static;
-    margin-top: 10px;
-    max-height: none;
-    overflow-y: visible;
-  }
-  .content-wrapper { flex-direction: column; }
-  .main {
-    margin-bottom: 0px;
-    padding-bottom: 0px;
-    width: 100%;
-  }
-  article {
-    width: 100% !important;
-    min-width: 0 !important;
-    margin-left: 10px;
-    flex-direction: column;
-    margin-bottom: 0px !important;
-  }
-  .paste {
-    min-width: 100%;
-    width: 100%;
-    font-size: 15px !important;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-  }
-  .img-pokemon {
-    width: auto !important;
-    min-width: 180px !important;
-    max-width: 180px !important;
-    height: auto !important;
-    margin-left: 0 !important;
-  }
-  .img { margin-bottom: 5px; margin-left: 3px; }
-  .metadata, .notes-section, .extra {
-    width: 100%;
-    max-width: none;
-  }
+	body {
+		zoom: 1.0;
+	}
+	.side-content {
+		width: 100%;
+		flex-direction: column;
+		min-width: unset;
+		position: static;
+		align-items: flex-start;
+		margin-left: 10px;
+	}
+	.notes-section {
+		width: 100%;
+	}
+	.notes-content {
+		position: static;
+		margin-top: 10px;
+		max-height: none;
+		overflow-y: visible;
+	}
+	.content-wrapper {
+		flex-direction: column;
+	}
+	.main {
+		margin-bottom: 0px;
+		padding-bottom: 0px;
+		width: 100%;
+	}
+	article {
+		width: 100% !important;
+		min-width: 0 !important;
+		margin-left: 10px;
+		flex-direction: column;
+		margin-bottom: 0px !important;
+	}
+	.paste {
+		min-width: 100%;
+		width: 100%;
+		font-size: 16px !important;
+		white-space: pre-wrap;
+		word-wrap: break-word;
+		overflow-wrap: break-word;
+	}
+	.img-pokemon {
+		width: auto !important;
+		min-width: 180px !important;
+		max-width: 180px !important;
+		height: auto !important;
+		margin-left: 0 !important;
+	}
+	.img {
+		margin-bottom: 5px;
+		margin-left: 3px;
+	}
+	.metadata,
+	.notes-section,
+	.extra {
+		width: 100%;
+		max-width: none;
+	}
 }
 
 /* Small screens */
 @media (max-width: 399px) {
-  body { zoom: 1.2; }
-  .main { margin-left: 0 !important; }
-  article {
-    width: 100% !important;
-    min-width: 0 !important;
-    flex-direction: column;
-    margin-bottom: 0px !important;
-  }
-  article > .paste {
-    margin: 0;
-    font-size: 15px !important;
-    min-width: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-  }
-  .metadata, .notes-section, .extra {
-    width: 100%;
-    max-width: none;
-  }
+	body {
+		zoom: 1.2;
+	}
+	.main {
+		margin-left: 0 !important;
+	}
+	article {
+		width: 100% !important;
+		min-width: 0 !important;
+		flex-direction: column;
+		margin-bottom: 0px !important;
+	}
+	article > .paste {
+		margin: 0;
+		font-size: 15px !important;
+		min-width: 0 !important;
+		width: 100% !important;
+		max-width: 100% !important;
+		white-space: pre-wrap;
+		word-wrap: break-word;
+		overflow-wrap: break-word;
+	}
+	.metadata,
+	.notes-section,
+	.extra {
+		width: 100%;
+		max-width: none;
+	}
 }
