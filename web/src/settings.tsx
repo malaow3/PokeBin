@@ -1,4 +1,4 @@
-import { createSignal } from "solid-js";
+import { createEffect, createSignal, onMount } from "solid-js";
 import { render } from "solid-js/web";
 import "./app.css";
 
@@ -6,6 +6,16 @@ const getLocal = (key: string, fallback: boolean) => {
   const str = localStorage.getItem(key);
   return str !== null ? JSON.parse(str) : fallback;
 };
+
+function updateThemeColor(dark: boolean) {
+  let meta = document.querySelector('meta[name="theme-color"]');
+  if (!meta) {
+    meta = document.createElement("meta");
+    meta.setAttribute("name", "theme-color");
+    document.head.appendChild(meta);
+  }
+  meta.setAttribute("content", dark ? "#000000" : "#f9f9f9");
+}
 
 const SettingsPage = () => {
   const [moveColors, setMoveColors] = createSignal(
@@ -16,18 +26,39 @@ const SettingsPage = () => {
   );
   const [darkMode, setDarkMode] = createSignal(getLocal("darkMode", true));
 
-  // Update localStorage and body class on dark mode change
-  const handleDarkMode = (checked: boolean) => {
-    setDarkMode(checked);
-    localStorage.setItem("darkMode", JSON.stringify(checked));
+  // Set theme on mount
+  onMount(() => {
+    const dark = darkMode();
     const body = document.body;
-    if (checked) {
+    if (dark) {
       body.classList.add("dark");
       body.classList.remove("light");
     } else {
       body.classList.add("light");
       body.classList.remove("dark");
     }
+    updateThemeColor(dark);
+  });
+
+  // Update theme when darkMode changes
+  createEffect(() => {
+    const dark = darkMode();
+    const body = document.body;
+    if (dark) {
+      body.classList.add("dark");
+      body.classList.remove("light");
+    } else {
+      body.classList.add("light");
+      body.classList.remove("dark");
+    }
+    updateThemeColor(dark);
+  });
+
+  // Handler for dark mode toggle
+  const handleDarkMode = (checked: boolean) => {
+    setDarkMode(checked);
+    localStorage.setItem("darkMode", JSON.stringify(checked));
+    // The effect above will update the body class and theme color
   };
 
   return (

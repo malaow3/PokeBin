@@ -4,6 +4,16 @@ import { encrypt, initWasm, validatePaste, utf8ToBase64 } from "./helpers.ts";
 import PatreonButton from "./patreon.tsx";
 import logo from "../public/logo/large_logo_cropped.webp";
 
+function updateThemeColor(dark: boolean) {
+  let meta = document.querySelector('meta[name="theme-color"]');
+  if (!meta) {
+    meta = document.createElement("meta");
+    meta.setAttribute("name", "theme-color");
+    document.head.appendChild(meta);
+  }
+  meta.setAttribute("content", dark ? "#000000" : "#f9f9f9");
+}
+
 const App = () => {
   // Initialize refs with createSignal to track when they're defined
   const [form, setForm] = createSignal<HTMLFormElement | undefined>();
@@ -27,13 +37,6 @@ const App = () => {
   const [live, setLive] = createSignal<string>("");
   const [isReady, setIsReady] = createSignal(false);
 
-  function handleNotesDoubleClick() {
-    const notesEl = notes();
-    if (notesEl) {
-      notesEl.style.height = "auto";
-    }
-  }
-
   const darkModeString = localStorage.getItem("darkMode");
   let darkMode = true;
   if (darkModeString !== null) {
@@ -53,11 +56,19 @@ const App = () => {
       body.classList.add("light");
       body.classList.remove("dark");
     }
+    updateThemeColor(sett().darkMode);
   }
 
   createEffect(() => {
     darkModeToggle();
   });
+
+  function handleNotesDoubleClick() {
+    const notesEl = notes();
+    if (notesEl) {
+      notesEl.style.height = "auto";
+    }
+  }
 
   function resizeNotes() {
     const notesEl = notes();

@@ -35,6 +35,13 @@ const PasteView = () => {
   const [notesWidth, setNotesWidth] = createSignal("300px");
   const [showModal, setShowModal] = createSignal(false);
 
+  function updateThemeColor(darkMode: bool) {
+    const meta = document.getElementById("theme-color-meta");
+    if (meta) {
+      meta.setAttribute("content", darkMode ? "#000000" : "#f9f9f9");
+    }
+  }
+
   type PasteUpload = {
     title: string;
     author: string;
@@ -272,6 +279,7 @@ const PasteView = () => {
       body.classList.add("light");
       body.classList.remove("dark");
     }
+    updateThemeColor(sett().darkMode);
   }
 
   createEffect(() => {
@@ -679,7 +687,7 @@ const PasteView = () => {
               tabindex="-1"
             >
               <div
-                class="relative bg-white dark:bg-zinc-800 rounded-lg p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-lg"
+                class="relative bg-zinc-800 rounded-lg p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-lg"
                 onClick={(e) => e.stopPropagation()}
                 onKeyDown={() => {}}
                 tabindex="0"

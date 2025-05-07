@@ -1,4 +1,5 @@
 .env
+.venv/
 
 zig-out/
 .zig-cache/

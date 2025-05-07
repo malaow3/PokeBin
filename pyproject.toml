@@ -1,0 +1,17 @@
+[project]
+name = "pokebin"
+version = "2.0.0"
+requires-python = ">=3.11"
+dependencies = [
+    "bs4>=0.0.2",
+    "mlogger",
+    "pylogrus>=0.4.0",
+    "requests>=2.32.3",
+    "types-requests>=2.32.0.20250328",
+]
+
+[tool.uv.sources]
+mlogger = { git = "https://github.com/malaow3/mlogger" }
+
+[tool.pyright]
+typeCheckingMode = "basic"
