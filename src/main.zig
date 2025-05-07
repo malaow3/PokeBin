@@ -36,13 +36,13 @@ pub fn main() !void {
     const allocator = arena.allocator();
     // End allocator setup
 
-    var child = std.process.Child.init(&[_][]const u8{ "uv", "run", "tour_fetch.py" }, allocator);
-    child.stdout_behavior = .Inherit;
-    child.stderr_behavior = .Inherit;
-    const result = try child.spawnAndWait();
-    if (result.Exited != 0) {
-        zlog.err("Failed to run tour fetch script!", .{});
-    }
+    // var child = std.process.Child.init(&[_][]const u8{ "uv", "run", "tour_fetch.py" }, allocator);
+    // child.stdout_behavior = .Inherit;
+    // child.stderr_behavior = .Inherit;
+    // const result = try child.spawnAndWait();
+    // if (result.Exited != 0) {
+    //     zlog.err("Failed to run tour fetch script!", .{});
+    // }
 
     var skip_preload = false;
     var verbose = false;
@@ -85,6 +85,11 @@ pub fn main() !void {
 
     var server = try httpz.Server(*state.State).init(allocator, .{
         .thread_pool = .{ .count = 25 },
+        .websocket = .{
+            .large_buffer_pool = 100,
+            .small_buffer_pool = 25,
+            .max_message_size = 1024 * 1024 * 10,
+        },
         .workers = .{
             .min_conn = 10,
             .max_conn = 100,

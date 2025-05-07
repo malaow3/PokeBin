@@ -244,7 +244,12 @@ pub fn favicon(app: *state.State, req: *httpz.Request, res: *httpz.Response) !vo
         "web", "dist", path,
     });
 
-    return serveCachedFile(app, res, filepath, state.getMimeType(filepath) orelse httpz.ContentType.BINARY, true);
+    return serveCachedFile(app, res, filepath, state.getMimeType(filepath) orelse httpz.ContentType.BINARY, true) catch {
+        res.status = 404;
+        res.content_type = .TEXT;
+        res.body = "Not Found";
+        return;
+    };
 }
 
 pub fn assets(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
@@ -260,7 +265,12 @@ pub fn assets(app: *state.State, req: *httpz.Request, res: *httpz.Response) !voi
         });
     }
 
-    return serveCachedFile(app, res, filepath, state.getMimeType(sub_path) orelse httpz.ContentType.BINARY, true);
+    return serveCachedFile(app, res, filepath, state.getMimeType(sub_path) orelse httpz.ContentType.BINARY, true) catch {
+        res.status = 404;
+        res.content_type = .TEXT;
+        res.body = "Not Found";
+        return;
+    };
 }
 
 pub fn static(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
@@ -270,16 +280,31 @@ pub fn static(app: *state.State, req: *httpz.Request, res: *httpz.Response) !voi
         "web", "dist", "static", sub_path,
     });
 
-    return serveCachedFile(app, res, filepath, state.getMimeType(sub_path) orelse httpz.ContentType.BINARY, true);
+    return serveCachedFile(app, res, filepath, state.getMimeType(sub_path) orelse httpz.ContentType.BINARY, true) catch {
+        res.status = 404;
+        res.content_type = .TEXT;
+        res.body = "Not Found";
+        return;
+    };
 }
 
 pub fn wasm(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
     res.headers.add("Access-Control-Allow-Origin", "https://play.pokemonshowdown.com");
-    return serveCachedFile(app, res, "zig-out/bin/wasm.wasm.br", .WASM, true);
+    return serveCachedFile(app, res, "zig-out/bin/wasm.wasm.br", .WASM, true) catch {
+        res.status = 404;
+        res.content_type = .TEXT;
+        res.body = "Not Found";
+        return;
+    };
 }
 
 pub fn robots(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
-    return serveCachedFile(app, res, "robots.txt", .TEXT, true);
+    return serveCachedFile(app, res, "robots.txt", .TEXT, true) catch {
+        res.status = 404;
+        res.content_type = .TEXT;
+        res.body = "Not Found";
+        return;
+    };
 }
 
 pub fn getUUIDJson(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
