@@ -35,7 +35,7 @@ const PasteView = () => {
   const [notesWidth, setNotesWidth] = createSignal("300px");
   const [showModal, setShowModal] = createSignal(false);
 
-  function updateThemeColor(darkMode: bool) {
+  function updateThemeColor(darkMode: boolean) {
     const meta = document.getElementById("theme-color-meta");
     if (meta) {
       meta.setAttribute("content", darkMode ? "#000000" : "#f9f9f9");
@@ -339,6 +339,13 @@ const PasteView = () => {
     };
     window.addEventListener("keydown", handleKeyDown);
     onCleanup(() => window.removeEventListener("keydown", handleKeyDown));
+
+    const root = document.getElementById("root");
+    if (root) {
+      if (root.clientHeight <= window.innerHeight) {
+        root.style.overflowY = "hidden";
+      }
+    }
   });
 
   return (

@@ -55,10 +55,13 @@ p {
 }
 
 .main {
-	display: flex;
-	flex-wrap: wrap;
-	max-width: 100%;
-	flex: 1;
+	/* display: flex; */
+	/* flex-wrap: wrap; */
+    /* flex: 1; */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0; /* or whatever gap you want */
+    max-width: 100%;
 	min-width: 0;
 	overflow-x: visible;
 	z-index: 1;
@@ -81,12 +84,14 @@ p {
    Article Styles
    ========================= */
 article {
-	float: left;
+	/* float: left; */
 	display: flex;
 	flex-direction: row;
+    /* width: 50%; */
 	align-items: flex-start;
-	width: 50%;
-	min-width: 600px;
+	/* min-width: 600px; */
+    width: auto;
+    min-width: 0;
 	box-sizing: border-box;
 	padding: 0px 10px 0px 10px;
 	margin-bottom: 0 !important;
@@ -461,8 +466,25 @@ body.light .stat-spe {
 		zoom: 1.0;
 	}
 	.paste {
-		font-size: 18px !important;
+		font-size: 15px !important;
 	}
+    img.img-pokemon {
+        width: 160px;
+    }
+
+    .metadata > h1 {
+        font-size: 1.2rem;
+    }
+    .metadata > p {
+        font-size: 0.9rem;
+    }
+    #buttons > button {
+        font-size: 0.8rem !important;
+        height: 30px
+    }
+    article {
+        max-width: 620px
+    }
 }
 
 @media (min-width: 1024px) and (max-width: 1269px) {

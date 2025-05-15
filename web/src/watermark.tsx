@@ -14,6 +14,8 @@ function Watermark() {
       setWidth("75px");
       setHeight("35px");
       setBottom("30px");
+    } else {
+      setBottom("60px");
     }
     if (window.innerWidth <= 1290) {
       if (dir() === "shrink") {
@@ -106,6 +108,7 @@ function Watermark() {
         "align-items": "center",
         "white-space": "nowrap",
         width: "100px",
+        height: "0px",
       }}
     >
       <img
