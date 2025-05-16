@@ -1,4 +1,4 @@
-import { createSignal, For, onMount } from "solid-js";
+import { createSignal, For, onMount, createEffect } from "solid-js";
 import { render } from "solid-js/web";
 import "./app.css";
 
@@ -18,6 +18,76 @@ export default function ReplayFetcher() {
   const [error, setError] = createSignal<string | null>(null);
   const [replays, setReplays] = createSignal<Replay[]>([]);
 
+  // --- Selection state ---
+  const [selectedIds, setSelectedIds] = createSignal<string[]>([]);
+  let lastCheckedIndex: number | null = null;
+
+  // Helper: get all replay ids
+  const allIds = () => replays().map((r) => r.id);
+
+  // When replays change, select all by default
+  function selectAll() {
+    setSelectedIds(allIds());
+  }
+  function unselectAll() {
+    setSelectedIds([]);
+  }
+
+  // Watch for replays change to select all by default
+  onMount(() => {
+    // Also select all on mount if there are replays
+    if (replays().length > 0) selectAll();
+  });
+  // Use an effect to select all when replays change
+  createEffect(() => {
+    if (replays().length > 0) selectAll();
+  });
+
+  // Checkbox click handler with shift/ctrl support
+  function handleCheckboxClick(e: MouseEvent, replay: Replay, index: number) {
+    const id = replay.id;
+    const prev = selectedIds();
+    let next: string[] = [];
+
+    if (e.shiftKey && lastCheckedIndex !== null) {
+      // Range select
+      const start = Math.min(lastCheckedIndex, index);
+      const end = Math.max(lastCheckedIndex, index);
+      const idsInRange = replays()
+        .slice(start, end + 1)
+        .map((r) => r.id);
+      // If current is checked, add all in range; else, remove all in range
+      if (prev.includes(id)) {
+        // Remove all in range
+        next = prev.filter((x) => !idsInRange.includes(x));
+      } else {
+        // Add all in range
+        next = Array.from(new Set([...prev, ...idsInRange]));
+      }
+    } else if (e.ctrlKey || e.metaKey) {
+      // Toggle single
+      if (prev.includes(id)) {
+        next = prev.filter((x) => x !== id);
+      } else {
+        next = [...prev, id];
+      }
+      lastCheckedIndex = index;
+    } else {
+      // Toggle single, and set lastCheckedIndex
+      if (prev.includes(id)) {
+        next = prev.filter((x) => x !== id);
+      } else {
+        next = [...prev, id];
+      }
+      lastCheckedIndex = index;
+    }
+    setSelectedIds(next);
+  }
+
+  function isChecked(id: string) {
+    return selectedIds().includes(id);
+  }
+
   function getChallstr() {
     return new Promise((resolve, reject) => {
       const ws = new WebSocket("wss://sim3.psim.us/showdown/websocket");
@@ -25,7 +95,6 @@ export default function ReplayFetcher() {
         const lines = event.data.split("\n");
         for (const line of lines) {
           if (line.startsWith("|challstr|")) {
-            // The challstr is everything after "|challstr|"
             const challstr = line.slice(10);
             ws.close();
             resolve(challstr);
@@ -35,9 +104,7 @@ export default function ReplayFetcher() {
       ws.onerror = (_err) => {
         reject(new Error("WebSocket error"));
       };
-      ws.onclose = () => {
-        // Optionally handle close
-      };
+      ws.onclose = () => {};
     });
   }
 
@@ -76,11 +143,14 @@ export default function ReplayFetcher() {
   }
 
   function copyAll() {
-    const urls = replays().map((replay) => {
-      let url = `https://replay.pokemonshowdown.com/${replay.id}`;
-      if (replay.password) url += `-${replay.password}pw`;
-      return url;
-    });
+    const selectedSet = new Set(selectedIds());
+    const urls = replays()
+      .filter((replay) => selectedSet.has(replay.id))
+      .map((replay) => {
+        let url = `https://replay.pokemonshowdown.com/${replay.id}`;
+        if (replay.password) url += `-${replay.password}pw`;
+        return url;
+      });
     navigator.clipboard.writeText(urls.join("\n"));
   }
 
@@ -154,17 +224,48 @@ export default function ReplayFetcher() {
         )}
         {replays().length > 0 && (
           <div>
-            <button
-              type="submit"
-              class="mb-4 bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
-              onClick={copyAll}
-            >
-              Copy All URLs
-            </button>
+            <div class="flex gap-2 mb-4">
+              <button
+                type="button"
+                class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
+                onClick={copyAll}
+              >
+                Copy URLs
+              </button>
+              <button
+                type="button"
+                class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded"
+                onClick={unselectAll}
+              >
+                Uncheck All
+              </button>
+              <button
+                type="button"
+                class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded"
+                onClick={selectAll}
+              >
+                Check All
+              </button>
+            </div>
             <div class="overflow-x-auto">
               <table class="min-w-full bg-gray-900 rounded-lg">
                 <thead>
                   <tr>
+                    <th class="px-4 py-2 text-left">
+                      <input
+                        type="checkbox"
+                        checked={selectedIds().length === replays().length}
+                        ref={(el) => {
+                          el.indeterminate =
+                            selectedIds().length > 0 &&
+                            selectedIds().length < replays().length;
+                        }}
+                        onChange={(e) => {
+                          if (e.currentTarget.checked) selectAll();
+                          else unselectAll();
+                        }}
+                      />
+                    </th>
                     <th class="px-4 py-2 text-left">URL</th>
                     <th class="px-4 py-2 text-left">Format</th>
                     <th class="px-4 py-2 text-left">Player 1</th>
@@ -174,11 +275,24 @@ export default function ReplayFetcher() {
                 </thead>
                 <tbody>
                   <For each={replays()} fallback={null}>
-                    {(replay) => {
+                    {(replay, i) => {
                       let url = `https://replay.pokemonshowdown.com/${replay.id}`;
                       if (replay.password) url += `-${replay.password}pw`;
                       return (
                         <tr>
+                          <td class="px-4 py-2">
+                            <input
+                              type="checkbox"
+                              checked={isChecked(replay.id)}
+                              onClick={(e) =>
+                                handleCheckboxClick(
+                                  e as MouseEvent,
+                                  replay,
+                                  i(),
+                                )
+                              }
+                            />
+                          </td>
                           <td class="px-4 py-2 break-all">
                             <a
                               href={url}
