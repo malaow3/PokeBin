@@ -10,10 +10,10 @@ function Watermark() {
   const [bottom, setBottom] = createSignal("10px");
 
   function check() {
-    if (window.innerWidth <= 500) {
+    if (window.innerWidth <= 450) {
       setWidth("75px");
       setHeight("35px");
-      setBottom("30px");
+      setBottom("65px");
     } else {
       setBottom("60px");
     }
