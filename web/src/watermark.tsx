@@ -8,14 +8,16 @@ function Watermark() {
   const [height, setHeight] = createSignal("50px");
   const [width, setWidth] = createSignal("100px");
   const [bottom, setBottom] = createSignal("10px");
+  const [padding, setPadding] = createSignal("0px");
 
   function check() {
     if (window.innerWidth <= 450) {
       setWidth("75px");
       setHeight("35px");
-      setBottom("65px");
+      setBottom("55px");
     } else {
-      setBottom("60px");
+      setBottom("20px");
+      setPadding("15px");
     }
     if (window.innerWidth <= 1290) {
       if (dir() === "shrink") {
@@ -95,6 +97,7 @@ function Watermark() {
         position: isFixed() ? "fixed" : "relative",
         display: "flex",
         bottom: bottom(),
+        "padding-bottom": padding(),
         right: isFixed() ? "30px" : undefined, // Only set right when fixed
         left: isFixed() ? undefined : "30px", // Only set left when not fixed
         "flex-direction": isFixed() ? "column" : "row",

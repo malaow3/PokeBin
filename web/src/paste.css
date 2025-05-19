@@ -55,12 +55,9 @@ p {
 }
 
 .main {
-	/* display: flex; */
-	/* flex-wrap: wrap; */
-	/* flex: 1; */
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 0; /* or whatever gap you want */
+	display: flex;
+	flex-wrap: wrap;
+	flex: 1;
 	max-width: 100%;
 	min-width: 0;
 	overflow-x: visible;
@@ -466,10 +463,10 @@ body.light .stat-spe {
 		zoom: 1.0;
 	}
 	.paste {
-		font-size: 15px !important;
+		font-size: 16px !important;
 	}
 	img.img-pokemon {
-		width: 160px;
+		width: 180px;
 	}
 
 	.metadata > h1 {
@@ -586,9 +583,6 @@ body.light .stat-spe {
 	}
 	.main {
 		margin-left: 0 !important;
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: 0;
 	}
 	#buttons {
 		display: flex;
