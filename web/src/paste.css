@@ -87,6 +87,10 @@ article {
 	/* width: 50%; */
 	align-items: flex-start;
 	/* min-width: 600px; */
+
+	flex: 1 0 48%; /* Grow, shrink, basis 50% */
+	max-width: 48%; /* Never more than 2 per row */
+
 	width: auto;
 	min-width: 0;
 	box-sizing: border-box;
@@ -507,6 +511,10 @@ body.light .stat-spe {
 		width: 80vw !important;
 		min-width: 80vw !important;
 	}
+
+	.main {
+		flex-direction: column;
+	}
 }
 
 /* Tablet and below */
@@ -541,6 +549,7 @@ body.light .stat-spe {
 		margin-bottom: 0px;
 		padding-bottom: 0px;
 		width: 100%;
+		flex-direction: column;
 	}
 	article {
 		width: 100% !important;
@@ -583,6 +592,7 @@ body.light .stat-spe {
 	}
 	.main {
 		margin-left: 0 !important;
+		flex-direction: column;
 	}
 	#buttons {
 		display: flex;
