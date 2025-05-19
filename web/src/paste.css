@@ -462,6 +462,12 @@ body.light .stat-spe {
 	}
 }
 
+@media (min-width: 1401px) {
+	article {
+		max-width: 40%;
+	}
+}
+
 @media (max-width: 1400px) {
 	body {
 		zoom: 1.0;
