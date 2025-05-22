@@ -18,6 +18,13 @@ export default function ReplayFetcher() {
   const [error, setError] = createSignal<string | null>(null);
   const [replays, setReplays] = createSignal<Replay[]>([]);
 
+  const [orderAsc, setOrderAsc] = createSignal(true);
+
+  const orderedReplays = () => {
+    const arr = replays();
+    return orderAsc() ? arr : [...arr].reverse();
+  };
+
   // --- Selection state ---
   const [selectedIds, setSelectedIds] = createSignal<string[]>([]);
   let lastCheckedIndex: number | null = null;
@@ -246,6 +253,13 @@ export default function ReplayFetcher() {
               >
                 Check All
               </button>
+              <button
+                type="button"
+                class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded"
+                onClick={() => setOrderAsc((v) => !v)}
+              >
+                Flip Order
+              </button>
             </div>
             <div class="overflow-x-auto">
               <table class="min-w-full bg-gray-900 rounded-lg">
@@ -274,10 +288,13 @@ export default function ReplayFetcher() {
                   </tr>
                 </thead>
                 <tbody>
-                  <For each={replays()} fallback={null}>
-                    {(replay, i) => {
+                  <For each={orderedReplays()} fallback={null}>
+                    {(replay, _i) => {
                       let url = `https://replay.pokemonshowdown.com/${replay.id}`;
                       if (replay.password) url += `-${replay.password}pw`;
+                      const originalIndex = replays().findIndex(
+                        (r) => r.id === replay.id,
+                      );
                       return (
                         <tr>
                           <td class="px-4 py-2">
@@ -288,7 +305,7 @@ export default function ReplayFetcher() {
                                 handleCheckboxClick(
                                   e as MouseEvent,
                                   replay,
-                                  i(),
+                                  originalIndex,
                                 )
                               }
                             />
