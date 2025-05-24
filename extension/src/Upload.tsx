@@ -1,15 +1,19 @@
-import { createSignal } from "solid-js";
+import { createSignal, Show } from "solid-js";
 import { encrypt } from "./encryption.ts";
 import type { UnsafeWindow } from "./types.ts";
 import { utf8ToBase64 } from "./helpers.ts";
 
 const usfw = window as unknown as UnsafeWindow;
 
-const Upload = (props: { pokebin_url: string }) => {
+type UploadProps = {
+  pokebin_url: string;
+  newUI?: boolean;
+};
+
+const Upload = ({ pokebin_url, newUI = false }: UploadProps) => {
   const [ots, setOts] = createSignal(false);
   const [removeAuthor, setRemoveAuthor] = createSignal(false);
   const [password, setPassword] = createSignal("");
-  const [pokebin_url] = createSignal(props.pokebin_url);
 
   const onkey = async (e: KeyboardEvent) => {
     if (e.key === "Enter") {
@@ -21,20 +25,52 @@ const Upload = (props: { pokebin_url: string }) => {
     if (e) {
       e.preventDefault();
     }
-    if (usfw.room.curTeam.team.length === 0) {
+
+    if (!newUI && usfw.room.curTeam.team.length === 0) {
       alert("No team selected.");
       return;
     }
 
-    const name = usfw.room.curTeam.name;
-    const format = usfw.room.curTeam.format;
-    const gen = usfw.room.curTeam.gen;
-    const team = usfw.Storage.exportTeam(usfw.room.curTeam.team, gen, ots());
-    let author = usfw.app.user.attributes.name;
+    let name: string;
+    let format: string;
+    if (!newUI) {
+      name = usfw.room.curTeam.name;
+      format = usfw.room.curTeam.format;
+    } else {
+      name = usfw.PS.room.team.name;
+      format = usfw.PS.room.team.format;
+    }
+
+    let team: string;
+    if (!newUI) {
+      const gen = usfw.room.curTeam.gen;
+      team = usfw.Storage.exportTeam(usfw.room.curTeam.team, gen, ots());
+    } else {
+      team = usfw.PSTeambuilder.exportPackedTeam(usfw.PS.room.team, true);
+      if (ots()) {
+        let lines = team.split("\n");
+        lines = lines.filter((line) => {
+          const trimmed = line.trim();
+          return (
+            !trimmed.startsWith("EVs: ") &&
+            !trimmed.startsWith("IVs: ") &&
+            !trimmed.includes("Nature")
+          );
+        });
+        team = lines.join("\n");
+      }
+    }
+    let author: string;
+    if (!newUI) {
+      author = usfw.app.user.attributes.name;
+    } else {
+      author = usfw.PS.user.name;
+    }
     if (removeAuthor()) {
       author = "";
     }
 
+    console.log("POKEBIN:", team);
     const form = document.getElementById("PokeBinForm") as HTMLFormElement;
     const base_data = {
       title: name,
@@ -89,20 +125,31 @@ const Upload = (props: { pokebin_url: string }) => {
   };
 
   return (
-    <main>
+    <main
+      style={{
+        "padding-bottom": newUI ? "10px" : "",
+      }}
+    >
       <br />
       <div class="group">
         <form
           id="PokeBinForm"
           method="post"
-          action={`${pokebin_url()}/create`}
+          action={`${pokebin_url}/create`}
           target="_blank"
           class="form-row"
           onSubmit={process_button}
         >
-          <button class="button" type="submit">
-            Upload to PokeBin
-          </button>
+          <Show when={newUI}>
+            <button style={{ width: "160px" }} class="button" type="submit">
+              Upload to PokeBin
+            </button>
+          </Show>
+          <Show when={!newUI}>
+            <button class="button" type="submit">
+              Upload to PokeBin
+            </button>
+          </Show>
           <div
             style={{
               display: "flex",
@@ -110,7 +157,14 @@ const Upload = (props: { pokebin_url: string }) => {
               "align-items": "center",
             }}
           >
-            <label for="anonymous">Remove username</label>
+            <Show when={!newUI}>
+              <label for="anonymous">Remove username</label>
+            </Show>
+            <Show when={newUI}>
+              <label style={{ "font-size": "13px" }} for="anonymous">
+                Remove username
+              </label>
+            </Show>
             <input
               type="checkbox"
               id="anonymous"
@@ -125,7 +179,14 @@ const Upload = (props: { pokebin_url: string }) => {
               "align-items": "center",
             }}
           >
-            <label for="ots">OTS</label>
+            <Show when={!newUI}>
+              <label for="ots">OTS</label>
+            </Show>
+            <Show when={newUI}>
+              <label style={{ "font-size": "13px" }} for="ots">
+                OTS
+              </label>
+            </Show>
             <input
               type="checkbox"
               id="ots"

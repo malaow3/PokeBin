@@ -150,16 +150,18 @@ export fn validatePaste(pastePtr: [*]u8, paste_len: usize) usize {
                 or std.mem.indexOf(u8, l, "http://") != null //
                 or std.mem.indexOf(u8, l, "www.") != null //
                 or std.mem.indexOf(u8, l, ".com") != null //
-                or std.mem.indexOfAny(u8, l, "><.,!?+") != null //
+                or std.mem.indexOfAny(u8, l, "><.,!?") != null //
                 ) {
+                    consoleLog("Line has illegal start: {s}", .{l});
                     return 3;
                 }
 
-                // Should be A-Z or a `-`
+                // Should be A-Z, `-`, or a `[`
                 const startingChar = l[0];
                 if (!((startingChar >= 'A' and startingChar <= 'Z') or
-                    startingChar == '-'))
+                    startingChar == '-' or startingChar == '['))
                 {
+                    consoleLog("Invalid line: {s}", .{l});
                     return 3;
                 }
             }
@@ -505,6 +507,78 @@ fn getImage(raw_pokemon: []const u8, is_female: bool, is_shiny: bool, twoDImages
     return egg_path;
 }
 
+const statResult = struct {
+    stats: [6]usize,
+    nature: []const u8,
+};
+fn parseEvIvLineNew(line: []const u8, base_value: usize) !statResult {
+    var values: [6]usize = [_]usize{base_value} ** 6;
+    var iter = std.mem.splitSequence(u8, line, ": ");
+    _ = iter.next();
+
+    const stats = iter.rest();
+
+    var items = std.ArrayList([]const u8).init(allocator);
+    defer items.deinit();
+    var stat_iter = std.mem.splitScalar(u8, trim(stats), '/');
+    while (stat_iter.next()) |item| {
+        try items.append(item);
+    }
+
+    var nature: []const u8 = "";
+    for (items.items) |item| {
+        // Example: EVs: 28 HP / - Atk / 12 Def / 228+ SpA / 4 SpD / 236 Spe (Modest)
+        const trimmed_item = std.mem.trim(u8, item, " ");
+        var sections = std.mem.splitScalar(u8, trim(trimmed_item), ' ');
+        const value_raw = std.mem.trim(u8, sections.next().?, "+- ");
+
+        if (value_raw.len == 0 or value_raw[0] < 48 or value_raw[0] > 57) {
+            // No numeric value
+            continue;
+        }
+
+        const stat = sections.next().?;
+
+        var idx: usize = 6;
+        if (std.mem.eql(u8, stat, "HP")) {
+            idx = 0;
+        } else if (std.mem.eql(u8, stat, "Atk")) {
+            idx = 1;
+        } else if (std.mem.eql(u8, stat, "Def")) {
+            idx = 2;
+        } else if (std.mem.eql(u8, stat, "SpA")) {
+            idx = 3;
+        } else if (std.mem.eql(u8, stat, "SpD")) {
+            idx = 4;
+        } else if (std.mem.eql(u8, stat, "Spe")) {
+            idx = 5;
+        } else {
+            return error.InvalidStat;
+        }
+        if (std.mem.eql(u8, value_raw, "")) {
+            values[idx] = base_value;
+            continue;
+        }
+
+        if (sections.next()) |nature_string| {
+            const start = std.mem.indexOf(u8, nature_string, "(") orelse {
+                return error.InvalidStat;
+            };
+            const end = std.mem.indexOf(u8, nature_string, ")") orelse {
+                return error.InvalidStat;
+            };
+            nature = nature_string[start + 1 .. end];
+        }
+
+        const value = try std.fmt.parseInt(usize, trim(value_raw), 10);
+        values[idx] = value;
+    }
+    return statResult{
+        .nature = nature,
+        .stats = values,
+    };
+}
+
 fn parseEvIvLine(line: []const u8, base_value: usize) ![6]usize {
     var values: [6]usize = [_]usize{base_value} ** 6;
     var iter = std.mem.splitSequence(u8, line, ": ");
@@ -562,16 +636,43 @@ fn getSearchName(pokemon_name: []const u8, pokemon: ?*Pokemon) []const u8 {
     return lower;
 }
 
-fn parsePokemon(item: []const u8, twoDImages: bool) !*Pokemon {
-    consoleLog("Parsing pokemon: {s}", .{item});
-    const pokemon = initPokemon();
-    var lines = std.mem.splitScalar(u8, item, '\n');
-    var line_idx: usize = 0;
+const VersionReturn = struct {
+    isNewVersion: bool,
+    lines: [][]const u8,
+};
 
+fn isNewVersion(pokemonText: []const u8) !VersionReturn {
+    var iter = std.mem.splitScalar(u8, pokemonText, '\n');
+
+    var lines = std.ArrayList([]const u8).init(allocator);
+    defer lines.deinit();
+
+    while (iter.next()) |line| {
+        try lines.append(line);
+    }
+
+    var isNew = false;
+    if (lines.items.len > 1) {
+        if (lines.items[1][0] == '[' and std.mem.indexOf(u8, lines.items[1], "]") != null) {
+            isNew = true;
+        }
+    }
+
+    const result = VersionReturn{
+        .lines = try lines.toOwnedSlice(),
+        .isNewVersion = isNew,
+    };
+
+    return result;
+}
+
+fn parsePokemonFromLines(lines: [][]const u8, twoDImages: bool, fullMonText: []const u8) !*Pokemon {
+    var pokemon = initPokemon();
     var moves = std.ArrayList(*Move).init(allocator);
     var other_lines = std.ArrayList([]const u8).init(allocator);
 
-    while (lines.next()) |line| {
+    for (0..lines.len) |line_idx| {
+        const line = lines[line_idx];
         if (line.len == 0) continue;
         if (line_idx == 0) {
             var items = std.mem.splitScalar(u8, line, '@');
@@ -629,7 +730,7 @@ fn parsePokemon(item: []const u8, twoDImages: bool) !*Pokemon {
             }
 
             const isFemale = pokemon.gender == 'F';
-            const isShiny = std.mem.indexOf(u8, item, "Shiny: Yes") != null;
+            const isShiny = std.mem.indexOf(u8, fullMonText, "Shiny: Yes") != null;
             pokemon.pokemon_image = getImage(lower, isFemale, isShiny, twoDImages);
         } else if (line[0] == '-') {
             const move_name = sanitize(trim(line[1..]));
@@ -701,7 +802,6 @@ fn parsePokemon(item: []const u8, twoDImages: bool) !*Pokemon {
         } else {
             try other_lines.append(trim(line));
         }
-        line_idx += 1;
     }
 
     if (moves.items.len > 0) {
@@ -723,6 +823,188 @@ fn parsePokemon(item: []const u8, twoDImages: bool) !*Pokemon {
     }
 
     return pokemon;
+}
+
+fn parsePokemonFromLinesNew(lines: [][]const u8, twoDImages: bool) !*Pokemon {
+    const pokemon = initPokemon();
+
+    var moves = std.ArrayList(*Move).init(allocator);
+    var other_lines = std.ArrayList([]const u8).init(allocator);
+
+    for (0..lines.len) |line_idx| {
+        const line = lines[line_idx];
+        if (line_idx == 0) {
+            var name_line = line;
+            if (line[0] == '(') {
+                // Nickname present
+                const end = std.mem.indexOf(u8, line, ")") orelse {
+                    return error.InvalidPokemon;
+                };
+                const nickname = line[1..end];
+                name_line = line[end + 1 ..];
+                pokemon.nickname = sanitize(trim(nickname));
+            }
+
+            if (std.mem.endsWith(u8, name_line, " (M)")) {
+                pokemon.gender = 'M';
+            } else if (std.mem.endsWith(u8, name_line, " (F)")) {
+                pokemon.gender = 'F';
+            }
+            if (pokemon.gender != 0) {
+                name_line = name_line[0 .. name_line.len - 4];
+            }
+            pokemon.name = sanitize(trim(name_line));
+        } else if (line[0] == '[' or line[0] == '@') {
+            // Ability
+            if (line[0] == '[') {
+                const end = std.mem.indexOf(u8, line, "]") orelse {
+                    return error.InvalidPokemon;
+                };
+                const ability = line[1..end];
+                pokemon.ability = sanitize(trim(ability));
+            }
+            if (std.mem.indexOf(u8, line, "@ ") != null) {
+                var split = std.mem.splitSequence(u8, line, "@ ");
+                // Skip the first.
+                _ = split.next();
+                const item_opt = split.next();
+                if (item_opt) |item| {
+                    const trim_item = trim(item);
+                    pokemon.item = sanitize(trim_item);
+                    const remove_space = std.mem.replaceOwned(u8, allocator, trim_item, " ", "") catch @panic("failed to allocate sprite");
+                    defer allocator.free(remove_space);
+                    const remove_dash = std.mem.replaceOwned(u8, allocator, remove_space, "-", "") catch @panic("failed to allocate sprite");
+                    defer allocator.free(remove_dash);
+                    const search_item = std.ascii.allocLowerString(
+                        allocator,
+                        remove_dash,
+                    ) catch @panic("failed to allocate sprite");
+                    pokemon.item_image = getImageLink(search_item);
+                }
+            }
+        } else if (line[0] == '-') {
+            const move_name = sanitize(trim(line[1..]));
+            const move = try allocator.create(Move);
+            const move_slug = try std.mem.replaceOwned(u8, allocator, move_name, " ", "-");
+            const move_lookup = try std.ascii.allocLowerString(allocator, move_slug);
+            allocator.free(move_slug);
+            move.* = .{
+                .name = move_name,
+                .type1 = &[_:0]u8{0},
+            };
+
+            if (data.MOVES.get(move_lookup)) |v| {
+                move.type1 = try allocator.dupeZ(u8, v.type1);
+            }
+            allocator.free(move_lookup);
+
+            moves.append(move) catch @panic("failed to append move");
+        } else if (std.mem.startsWith(u8, line, "EVs: ")) {
+            const evStats = try parseEvIvLineNew(line, 0);
+            pokemon.evs = evStats.stats;
+            pokemon.nature = sanitize(trim(evStats.nature));
+
+            var idx: i64 = 5;
+            while (idx > 0) {
+                if (pokemon.evs[@intCast(idx)] != 0) {
+                    break;
+                }
+                idx -= 1;
+            }
+            switch (idx) {
+                -1 => pokemon.last_stat_ev = "\x00",
+                0 => pokemon.last_stat_ev = "hp\x00",
+                1 => pokemon.last_stat_ev = "atk\x00",
+                2 => pokemon.last_stat_ev = "def\x00",
+                3 => pokemon.last_stat_ev = "spa\x00",
+                4 => pokemon.last_stat_ev = "spd\x00",
+                5 => pokemon.last_stat_ev = "spe\x00",
+                else => @panic("Invalid EV index"),
+            }
+        } else if (std.mem.startsWith(u8, line, "IVs: ")) {
+            const ivStats = try parseEvIvLineNew(line, 31);
+            pokemon.ivs = ivStats.stats;
+
+            var idx: i64 = 5;
+            while (idx > 0) {
+                if (pokemon.ivs[@intCast(idx)] != 31) {
+                    break;
+                }
+                idx -= 1;
+            }
+            switch (idx) {
+                -1 => pokemon.last_stat_iv = "\x00",
+                0 => pokemon.last_stat_iv = "hp\x00",
+                1 => pokemon.last_stat_iv = "atk\x00",
+                2 => pokemon.last_stat_iv = "def\x00",
+                3 => pokemon.last_stat_iv = "spa\x00",
+                4 => pokemon.last_stat_iv = "spd\x00",
+                5 => pokemon.last_stat_iv = "spe\x00",
+                else => @panic("Invalid IV index"),
+            }
+        } else if (std.mem.startsWith(u8, line, "Shiny")) {
+            pokemon.shiny = sanitize(trim("Yes"));
+        } else if (std.mem.startsWith(u8, line, "Level: ")) {
+            pokemon.level = try std.fmt.parseInt(usize, trim(line[7..]), 10);
+        } else if (std.mem.startsWith(u8, line, "Hidden Power: ")) {
+            pokemon.hidden_power = sanitize(trim(line[12..]));
+        } else if (std.mem.startsWith(u8, line, "Tera Type: ")) {
+            pokemon.tera_type = sanitize(trim(line[10..]));
+        } else {
+            try other_lines.append(trim(line));
+        }
+    }
+
+    const name = pokemon.name;
+    const span = std.mem.span(name);
+
+    const lower = getSearchName(span, pokemon);
+    defer allocator.free(lower);
+
+    const value = searchLike(lower);
+    if (value) |v| {
+        pokemon.type1 = try allocator.dupeZ(u8, v.value.type1);
+        if (v.value.type2.len > 0) {
+            pokemon.type2 = try allocator.dupeZ(u8, v.value.type2);
+        }
+    }
+
+    const isFemale = pokemon.gender == 'F';
+    const shinyValue: []const u8 = std.mem.span(pokemon.shiny);
+    const isShiny = std.mem.eql(u8, shinyValue, "Yes");
+    pokemon.pokemon_image = getImage(lower, isFemale, isShiny, twoDImages);
+
+    if (moves.items.len > 0) {
+        pokemon.moves_len = moves.items.len;
+    } else {
+        pokemon.moves_len = 0;
+    }
+    pokemon.moves = moves.items.ptr;
+
+    // Allocate space for item pointers
+    const lines_slice = try allocator.alloc([*:0]const u8, other_lines.items.len);
+    if (other_lines.items.len > 0) {
+        pokemon.lines_count = other_lines.items.len;
+
+        // Duplicate each item string and store pointers
+        for (other_lines.items, 0..) |line, i| {
+            lines_slice[i] = sanitize(line);
+        }
+    } else {
+        pokemon.lines_count = 0;
+    }
+    pokemon.lines = lines_slice.ptr;
+
+    return pokemon;
+}
+
+fn parsePokemon(item: []const u8, twoDImages: bool) !*Pokemon {
+    consoleLog("Parsing pokemon: {s}", .{item});
+    const result = try isNewVersion(item);
+    if (!result.isNewVersion) {
+        return parsePokemonFromLines(result.lines, twoDImages, item);
+    }
+    return parsePokemonFromLinesNew(result.lines, twoDImages);
 }
 
 export fn parsePaste(buffer: [*]u8, buffer_len: usize, twoDimages: bool) *Paste {

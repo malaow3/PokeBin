@@ -494,6 +494,7 @@ function decodePaste(pastePtr: number): Paste {
     for (let i = 0; i < pokemon_len; i++) {
       const pokemonPtr = pokemonArraySlice[i];
       const mon = decodePokemon(pokemonPtr);
+      console.log(mon);
       pokemon.push(mon);
     }
 

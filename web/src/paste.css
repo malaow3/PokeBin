@@ -88,8 +88,8 @@ article {
 	align-items: flex-start;
 	/* min-width: 600px; */
 
-	flex: 1 0 48%; /* Grow, shrink, basis 50% */
-	max-width: 48%; /* Never more than 2 per row */
+	flex: 1 0 50%; /* Grow, shrink, basis 50% */
+	max-width: 50%; /* Never more than 2 per row */
 
 	width: auto;
 	min-width: 0;
@@ -452,7 +452,7 @@ body.light .stat-spe {
 
 @media (min-width: 1501px) {
 	body {
-		zoom: 1.2;
+		zoom: 1.1;
 	}
 }
 
@@ -473,7 +473,7 @@ body.light .stat-spe {
 		zoom: 1.0;
 	}
 	.paste {
-		font-size: 16px !important;
+		font-size: 15px !important;
 	}
 	img.img-pokemon {
 		width: 180px;

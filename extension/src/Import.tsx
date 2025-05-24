@@ -4,7 +4,11 @@ import { decrypt } from "./encryption.ts";
 
 const usfw: UnsafeWindow = window as unknown as UnsafeWindow;
 
-const Import = () => {
+type ImportProps = {
+  newUI?: boolean;
+};
+
+const Import = ({ newUI = false }: ImportProps) => {
   const [importUrl, setImportUrl] = createSignal("");
   const [password, setPassword] = createSignal("");
 
@@ -45,18 +49,37 @@ const Import = () => {
     }
 
     const format = paste.format;
-    if (format) {
-      usfw.room.changeFormat(format);
+
+    if (!newUI) {
+      if (format) {
+        usfw.room.changeFormat(format);
+      }
+      let title = paste.title;
+      if (title && !title.startsWith("Untitled")) {
+        title = title.replace(/[\|\\\/]/g, "");
+        usfw.$(".teamnameedit").val(title).change();
+      }
+      usfw.Storage.activeSetList = usfw.room.curSetList =
+        usfw.Storage.importTeam(paste.content);
+      usfw.room.updateTeamView();
+    } else {
+      if (format) {
+        usfw.PS.room.team.format = format;
+      }
+      let title = paste.title;
+      if (title && !title.startsWith("Untitled")) {
+        title = title.replace(/[\|\\\/]/g, "");
+        usfw.PS.room.team.name = title;
+      }
+      console.log("POKEBIN: ", paste.content);
+      const sets = usfw.PSTeambuilder.importTeam(paste.content);
+      const packed = usfw.Teams.pack(sets);
+      usfw.PS.room.team.packedTeam = packed;
+      usfw.PS.room.update();
+      usfw.PS.teams.push(usfw.PS.room.team);
+      usfw.PS.teams.save();
+      usfw.PS.teams.update();
     }
-    let title = paste.title;
-    if (title && !title.startsWith("Untitled")) {
-      title = title.replace(/[\|\\\/]/g, "");
-      usfw.$(".teamnameedit").val(title).change();
-    }
-    usfw.Storage.activeSetList = usfw.room.curSetList = usfw.Storage.importTeam(
-      paste.content,
-    );
-    usfw.room.updateTeamView();
   };
 
   const importableUrl = (value: string): string => {

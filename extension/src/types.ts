@@ -10,6 +10,12 @@ interface UnsafeWindow extends Window {
   Storage: any;
   // biome-ignore lint/suspicious/noExplicitAny : provided by Showdown
   app: any;
+  // biome-ignore lint/suspicious/noExplicitAny : provided by Showdown
+  PS: any;
+  // biome-ignore lint/suspicious/noExplicitAny : provided by Showdown
+  PSTeambuilder: any;
+  // biome-ignore lint/suspicious/noExplicitAny : provided by Showdown
+  Teams: any;
 }
 
 export type { UnsafeWindow };

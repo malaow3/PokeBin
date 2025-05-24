@@ -129,6 +129,7 @@ const App = () => {
     }
 
     const valid = validatePaste(pasteEl.value);
+    console.log(valid);
     if (valid !== 0) {
       if (valid === -1) {
         alert("PokeBin encountered an issue! Please refresh and try again!");
