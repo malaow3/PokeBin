@@ -79,6 +79,7 @@ const Import = ({ newUI = false }: ImportProps) => {
       usfw.PS.teams.push(usfw.PS.room.team);
       usfw.PS.teams.save();
       usfw.PS.teams.update();
+      alert("Team imported, refresh to view properly!");
     }
   };
 

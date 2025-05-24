@@ -13,7 +13,7 @@ pub const std_options = std.Options{
     .logFn = wslog.log,
 };
 
-pub const version = "2.0.0";
+pub const version = "2.1.0";
 
 pub var state_ptr: ?*state.State = null;
 pub var server_instance: ?*httpz.Server(*state.State) = null;

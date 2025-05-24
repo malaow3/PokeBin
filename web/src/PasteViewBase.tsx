@@ -384,6 +384,7 @@ export default function PasteViewBase(props: Props) {
               }}
             </For>
           </div>
+          <br />
           <Watermark />
           <Show when={showModal()}>
             <div
