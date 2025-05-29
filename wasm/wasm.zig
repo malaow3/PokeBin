@@ -2,54 +2,11 @@ const std = @import("std");
 const crypto = std.crypto;
 const zcrypto = @import("crypto.zig");
 const data = @import("data.zig");
+const utils = @import("utils.zig");
 
-var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
-const allocator = arena.allocator();
-
-extern "env" fn _throwError(pointer: [*]const u8, length: u32) noreturn;
-extern "env" fn _consoleLog(pointer: [*]const u8, length: u32) void;
-
-pub fn throwError(message: []const u8) noreturn {
-    _throwError(message.ptr, message.len);
-}
-
-const RndGen = std.Random.DefaultPrng;
-pub var rand: std.Random.DefaultPrng = undefined;
-
-export fn init(seed: u64) void {
-    rand = RndGen.init(seed);
-}
-
-pub fn consoleLog(comptime fmt: []const u8, args: anytype) void {
-    const msg = std.fmt.allocPrint(allocator, fmt, args) catch
-        @panic("failed to allocate memory for consoleLog message");
-    defer allocator.free(msg);
-    _consoleLog(msg.ptr, msg.len);
-}
-
-export fn allocUint8(length: u32) [*]const u8 {
-    const slice = allocator.alloc(u8, length) catch
-        @panic("failed to allocate memory");
-    return slice.ptr;
-}
-
-export fn free(pointer: u32, length: u32) void {
-    const slice: [*]u8 = @ptrFromInt(pointer);
-    return allocator.free(slice[0..length]);
-}
-
-// Reset the arena
-export fn resetArena() void {
-    arena.deinit();
-    arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
-    zcrypto.result_ptr = 0;
-    zcrypto.result_len = 0;
-}
-
-fn destroy(comptime T: type, pointer: u32) void {
-    const ptr: *T = @ptrFromInt(pointer);
-    allocator.destroy(ptr);
-}
+const allocator = utils.allocator;
+const consoleLog = utils.consoleLog;
+const destroy = utils.destroy;
 
 export fn getResultPtr() u32 {
     return zcrypto.getResultPtr();
@@ -57,6 +14,10 @@ export fn getResultPtr() u32 {
 
 export fn getResultLen() u32 {
     return zcrypto.getResultLen();
+}
+
+export fn resetResult() void {
+    zcrypto.resetResult();
 }
 
 export fn encryptMessage(
@@ -430,7 +391,7 @@ fn getImage(raw_pokemon: []const u8, is_female: bool, is_shiny: bool, twoDImages
     }
 
     if (std.mem.indexOf(u8, pokemon, "alcremie") != null and std.mem.indexOf(u8, pokemon, "gmax") == null) {
-        const random_decoration_idx = rand.random().intRangeAtMost(usize, 0, alcremie_decorations.len - 1);
+        const random_decoration_idx = utils.getRand().?.*.random().intRangeAtMost(usize, 0, alcremie_decorations.len - 1);
         const decoration = alcremie_decorations[random_decoration_idx];
         if (is_shiny) {
             return std.fmt.allocPrintZ(allocator, "{s}/shiny/869-{s}.png", .{ base_path, decoration }) catch @panic("failed to allocate sprite");

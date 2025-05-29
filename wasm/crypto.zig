@@ -1,6 +1,6 @@
 const std = @import("std");
 const crypto = std.crypto;
-const wasm = @import("wasm.zig");
+const utils = @import("utils.zig");
 
 // Global variables to store result information
 pub var result_ptr: u32 = 0;
@@ -13,6 +13,11 @@ pub fn getResultPtr() u32 {
 
 pub fn getResultLen() u32 {
     return result_len;
+}
+
+pub fn resetResult() void {
+    result_ptr = 0;
+    result_len = 0;
 }
 
 // Combined encryption function that sets global result variables
@@ -33,11 +38,11 @@ pub fn encryptMessage(
     var nonce: [12]u8 = undefined;
 
     // Combine seconds and milliseconds for a more precise seed
-    wasm.rand.random().bytes(&nonce);
+    utils.getRand().?.random().bytes(&nonce);
 
     // Generate a unique salt for each encryption
     var salt: [16]u8 = undefined;
-    wasm.rand.random().bytes(&salt);
+    utils.getRand().?.random().bytes(&salt);
 
     // Derive key from passphrase with the unique salt
     var key: [32]u8 = undefined;

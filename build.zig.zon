@@ -23,7 +23,7 @@
 
     .dependencies = .{
         .zlog = .{
-            .url = "git+https://github.com/max-legrand/zlog#5bf1b4e877ae52cbbec127e30a4885bc95e87dd8",
+            .url = "git+https://github.com/max-legrand/zlog?ref=main#5bf1b4e877ae52cbbec127e30a4885bc95e87dd8",
             .hash = "zlog-0.0.0-_MGzdbBDAABfTEnaVhw1nSH-EN9J4x_Svt9M07fkn6Vd",
         },
         .httpz = .{

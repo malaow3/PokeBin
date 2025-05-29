@@ -69,7 +69,26 @@ pub fn build(b: *std.Build) void {
         .root_module = wasm_module,
     });
 
+    const web_wasm_module = b.createModule(.{
+        .root_source_file = b.path("wasm/web_wasm.zig"),
+        .target = wasm_target,
+        .optimize = optimize,
+    });
+
+    const web_wasm = b.addExecutable(.{
+        .name = "web_wasm",
+        .root_module = web_wasm_module,
+    });
+    web_wasm.entry = .disabled; // Disable the entry point
+    web_wasm.rdynamic = true; // Enable rdynamic linking
+
+    const web_wasm_check = b.addExecutable(.{
+        .name = "web-wasm-check",
+        .root_module = web_wasm_module,
+    });
+
     b.installArtifact(wasm);
+    b.installArtifact(web_wasm);
     // -----------------------------------------------------------------------
     // Create the WASM compression step
     const wasm_compress_step = b.step("compress-wasm", "Compress WASM files with gzip");
@@ -115,6 +134,7 @@ pub fn build(b: *std.Build) void {
     const check = b.step("check", "Check if the app compiles");
     check.dependOn(&exe_check.step);
     check.dependOn(&wasm_check.step);
+    check.dependOn(&web_wasm_check.step);
 }
 
 // -----------------------------------------------------------------------
@@ -130,13 +150,25 @@ fn makeWasm(step: *std.Build.Step, options: std.Build.Step.MakeOptions) anyerror
     const bin_dir = std.fs.path.join(allocator, &.{ output_dir, "bin" }) catch unreachable;
     defer allocator.free(bin_dir);
 
-    const wasm_file_ext = std.fmt.allocPrint(allocator, "{s}.wasm", .{wasm_file_name}) catch unreachable;
-    const wasm_file_path = std.fs.path.join(allocator, &.{ bin_dir, wasm_file_ext }) catch unreachable;
+    var wasm_file_ext = std.fmt.allocPrint(allocator, "{s}.wasm", .{wasm_file_name}) catch unreachable;
+    var wasm_file_path = std.fs.path.join(allocator, &.{ bin_dir, wasm_file_ext }) catch unreachable;
 
     std.debug.print("wasm_file_path: {s}\n", .{wasm_file_path});
 
-    const compressed_file_name = std.fmt.allocPrint(allocator, "{s}.br", .{wasm_file_ext}) catch unreachable;
-    const compressed_file_path = std.fs.path.join(allocator, &.{ bin_dir, compressed_file_name }) catch unreachable;
+    var compressed_file_name = std.fmt.allocPrint(allocator, "{s}.br", .{wasm_file_ext}) catch unreachable;
+    var compressed_file_path = std.fs.path.join(allocator, &.{ bin_dir, compressed_file_name }) catch unreachable;
+
+    // Compress WASM data
+    try brotli.compressWithBrotli(allocator, wasm_file_path, compressed_file_path);
+    std.debug.print("Compressed WASM file: {s} -> {s}\n", .{ wasm_file_path, compressed_file_path });
+
+    wasm_file_ext = std.fmt.allocPrint(allocator, "web_wasm.wasm", .{}) catch unreachable;
+    wasm_file_path = std.fs.path.join(allocator, &.{ bin_dir, wasm_file_ext }) catch unreachable;
+
+    std.debug.print("wasm_file_path: {s}\n", .{wasm_file_path});
+
+    compressed_file_name = std.fmt.allocPrint(allocator, "{s}.br", .{wasm_file_ext}) catch unreachable;
+    compressed_file_path = std.fs.path.join(allocator, &.{ bin_dir, compressed_file_name }) catch unreachable;
 
     // Compress WASM data
     try brotli.compressWithBrotli(allocator, wasm_file_path, compressed_file_path);

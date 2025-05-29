@@ -1,4 +1,4 @@
-import { exports, memory } from "./helpers";
+import { exports, memory } from "./wasm_helpers";
 
 export function encrypt(message: string, passphrase: string): string | null {
   if (!exports || !memory) {

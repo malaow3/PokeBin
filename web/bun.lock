@@ -4,6 +4,7 @@
     "": {
       "name": "web",
       "dependencies": {
+        "@pkmn/img": "^0.2.39",
         "solid-js": "^1.9.5",
       },
       "devDependencies": {
@@ -121,6 +122,8 @@
     "@module-federation/sdk": ["@module-federation/sdk@0.11.1", "", {}, "sha512-QS6zevdQYLCGF6NFf0LysMGARh+dZxMeoRKKDUW5PYi3XOk+tjJ7QsDKybfcBZBNgBJfIuwxh4Oei6WOFJEfRg=="],
 
     "@module-federation/webpack-bundler-runtime": ["@module-federation/webpack-bundler-runtime@0.11.1", "", { "dependencies": { "@module-federation/runtime": "0.11.1", "@module-federation/sdk": "0.11.1" } }, "sha512-XlVegGyCBBLId8Jr6USjPOFYViQ0CCtoYjHpC8y1FOGtuXLGrvnEdFcl4XHlFlp3MY3Rxhr8QigrdZhYe5bRWg=="],
+
+    "@pkmn/img": ["@pkmn/img@0.2.39", "", {}, "sha512-R2FrsMkD1I69vDE+H0WteihGUnRC1Vqsun5631/qlQEkh5xZLrqg/djabR30dszOQFl9jz1Yr0ZaXLKVg5C07w=="],
 
     "@rsbuild/core": ["@rsbuild/core@1.3.2", "", { "dependencies": { "@rspack/core": "1.3.1", "@rspack/lite-tapable": "~1.0.1", "@swc/helpers": "^0.5.15", "core-js": "~3.41.0", "jiti": "^2.4.2" }, "bin": { "rsbuild": "bin/rsbuild.js" } }, "sha512-PVs3I8QKzNr8Uo0kToPliMZdlX6HZkmMvXUgD71rqc14secPtnhlTENmaXLm0jNmSpF3AJRGiYmhTrYXk7/+2Q=="],
 

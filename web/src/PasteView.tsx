@@ -8,16 +8,20 @@ import {
 } from "solid-js";
 import "./app.css";
 import "./paste.css";
+import { decrypt, initWasm } from "./wasm_helpers";
+
 import {
-  decrypt,
-  initWasm,
+  initWasm as initWebWasm,
   parsePaste,
   type Paste,
   utf8ToBase64,
-} from "./helpers";
+  SavePasteToLastVisited,
+} from "./web_wasm_helpers";
+
 import { initSettings } from "./settings";
 import PasteViewBase from "./PasteViewBase";
 import PasteViewNew from "./PasteViewNew";
+import { getId } from "./utils";
 
 function stripIvsEvs(pasteText: string): string {
   // Remove lines that start with "IVs:" or "EVs:" (case-insensitive, optional whitespace)
@@ -225,7 +229,6 @@ const PasteView = () => {
 
     // Copy the data to the clipboard.
     await navigator.clipboard.writeText(text.trim());
-    console.log(text.trim());
     console.log("Paste copied to clipboard.");
   }
 
@@ -267,7 +270,6 @@ const PasteView = () => {
 
     // Copy the data to the clipboard.
     await navigator.clipboard.writeText(text.trim());
-    console.log(text.trim());
     console.log("Paste copied to clipboard.");
   }
 
@@ -284,7 +286,6 @@ const PasteView = () => {
   createEffect(() => {
     // Only run if data is loaded
     if (!data()) return;
-    console.log(data());
     // Re-parse with the current twoDImages setting
     const parsedPaste = parsePaste(data(), sett().twoDImages);
     setPaste(parsedPaste);
@@ -310,13 +311,12 @@ const PasteView = () => {
   });
 
   onMount(async () => {
-    const url = window.location.href;
-    const items = url.split("/");
-    const id = items[items.length - 1];
+    const id = getId();
     const response = await fetch(`/${id}/json`);
     const json = await response.json();
 
     await initWasm();
+    await initWebWasm();
     const wsUrl = "/ws";
     const socket = new WebSocket(wsUrl);
     socket.onopen = async () => {
@@ -369,10 +369,11 @@ const PasteView = () => {
         root.style.overflowY = "hidden";
       }
     }
-  });
 
-  createEffect(() => {
-    console.log("newFormat is", sett().newFormat);
+    const paste_value = paste();
+    if (paste_value !== null) {
+      SavePasteToLastVisited(sett, setSett, paste_value);
+    }
   });
 
   return (

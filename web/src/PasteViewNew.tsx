@@ -1,7 +1,8 @@
-import type { Paste } from "./helpers";
+import type { Paste } from "./web_wasm_helpers";
 import Watermark from "./watermark";
 import { type Accessor, For, Show } from "solid-js";
-import type { Settings } from "./settings";
+import { updateSetting, type Settings } from "./settings";
+import { SettingsForm } from "./settingsForm";
 
 type Props = {
   paste: Accessor<Paste | null>;
@@ -469,7 +470,7 @@ export default function PasteViewNew(props: Props) {
               <div
                 class="relative bg-zinc-800 rounded-lg p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-lg"
                 onClick={(e) => e.stopPropagation()}
-                onKeyDown={() => {}}
+                onKeyDown={(e) => e.stopPropagation()}
                 tabindex="0"
               >
                 <button
@@ -481,108 +482,24 @@ export default function PasteViewNew(props: Props) {
                   ✕
                 </button>
                 <h2 class="text-xl font-semibold mb-4">Settings</h2>
-                <div class="flex flex-col gap-2 w-60">
-                  <div class="flex flex-row items-center gap-4">
-                    <label
-                      for="newFormat"
-                      class="font-medium cursor-pointer w-44"
-                    >
-                      New paste format
-                    </label>
-                    <input
-                      id="newFormat"
-                      name="newFormat"
-                      type="checkbox"
-                      class="align-middle"
-                      checked={sett().newFormat}
-                      onChange={(e) => {
-                        const value = JSON.stringify(e.target.checked);
-                        localStorage.setItem("newFormat", value);
-                        setSett({
-                          ...sett(),
-                          newFormat: e.target.checked,
-                        });
-                      }}
-                    />
-                  </div>
-                  <div class="flex flex-row items-center gap-4">
-                    <label for="colors" class="font-medium cursor-pointer w-44">
-                      Move colors
-                    </label>
-                    <input
-                      id="colors"
-                      name="colors"
-                      type="checkbox"
-                      class="align-middle"
-                      checked={sett().moveColors}
-                      onChange={(e) => {
-                        const value = JSON.stringify(e.target.checked);
-                        localStorage.setItem("moveColors", value);
-                        setSett({
-                          ...sett(),
-                          moveColors: e.target.checked,
-                        });
-                      }}
-                    />
-                  </div>
-                  <div class="flex flex-row items-center gap-4">
-                    <label
-                      for="twoDImages"
-                      class="font-medium cursor-pointer w-44"
-                    >
-                      2D images
-                    </label>
-                    <input
-                      id="twoDImages"
-                      name="twoDImages"
-                      type="checkbox"
-                      class="align-middle"
-                      checked={sett().twoDImages}
-                      onChange={(e) => {
-                        const value = JSON.stringify(e.target.checked);
-                        localStorage.setItem("twoDImages", value);
-                        setSett({
-                          ...sett(),
-                          twoDImages: e.target.checked,
-                        });
-                      }}
-                    />
-                  </div>
-                  <div class="flex flex-row items-center gap-4">
-                    <label
-                      for="darkMode"
-                      class="font-medium cursor-pointer w-44"
-                    >
-                      Dark Mode
-                    </label>
-                    <input
-                      id="darkMode"
-                      name="darkMode"
-                      type="checkbox"
-                      class="align-middle"
-                      checked={sett().darkMode}
-                      onChange={(e) => {
-                        const value = JSON.stringify(e.target.checked);
-                        localStorage.setItem("darkMode", value);
-                        setSett({
-                          ...sett(),
-                          darkMode: e.target.checked,
-                        });
-                      }}
-                    />
-                  </div>
-                </div>
-                <Show when={!currentPaste().isOts && !isEncrypted()}>
-                  <div class="flex flex-row gap-4 align-middle mt-2">
-                    <button
-                      type="button"
-                      onClick={handleCreateOts}
-                      class="bg-[#c2a8d4] hover:bg-[#9770b6] text-black px-4 py-0 rounded text-base font-bold"
-                    >
-                      Create OTS
-                    </button>
-                  </div>
-                </Show>
+                <SettingsForm
+                  settings={sett()}
+                  onChange={(key, value) => {
+                    updateSetting(key, value, sett, setSett);
+                  }}
+                >
+                  <Show when={!currentPaste().isOts && !isEncrypted()}>
+                    <div class="flex flex-row gap-4 align-middle mt-2">
+                      <button
+                        type="button"
+                        onClick={handleCreateOts}
+                        class="bg-[#c2a8d4] hover:bg-[#9770b6] text-black px-4 py-0 rounded text-base font-bold"
+                      >
+                        Create OTS
+                      </button>
+                    </div>
+                  </Show>
+                </SettingsForm>
               </div>
             </div>
           </Show>

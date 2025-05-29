@@ -22,6 +22,7 @@ export default defineConfig({
         report: "Report a PokeBin",
         paste: "PokeBin",
         settings: "PokeBin Settings",
+        recent: "Recent PokeBins",
       };
 
       return titles[entryName] || "PokeBin";
@@ -35,10 +36,23 @@ export default defineConfig({
       report: "./src/report.tsx",
       paste: "./src/paste.tsx",
       replay: "./src/replay.tsx",
-      settings: "./src/settings.tsx",
+      settings: "./src/settingsPage.tsx",
+      recent: "./src/recent.tsx",
     },
   },
   output: {
     sourceMap: true,
+  },
+  tools: {
+    cssLoader: {
+      url: {
+        filter: (url) => {
+          if (/\/assets\/pokemonicons-sheet.png/.test(url)) {
+            return false;
+          }
+          return true;
+        },
+      },
+    },
   },
 });

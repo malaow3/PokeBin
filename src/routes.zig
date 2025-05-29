@@ -202,6 +202,10 @@ pub fn about(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
     return serveHtmlFile(app, "web/dist/about.html", res);
 }
 
+pub fn recent(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
+    return serveHtmlFile(app, "web/dist/recent.html", res);
+}
+
 pub fn settings(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
     return serveHtmlFile(app, "web/dist/settings.html", res);
 }
@@ -288,9 +292,27 @@ pub fn static(app: *state.State, req: *httpz.Request, res: *httpz.Response) !voi
     };
 }
 
-pub fn wasm(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
+fn serveWasmFile(filename: []const u8, app: *state.State, res: *httpz.Response) !void {
     res.headers.add("Access-Control-Allow-Origin", "https://play.pokemonshowdown.com");
-    return serveCachedFile(app, res, "zig-out/bin/wasm.wasm.br", .WASM, true) catch {
+    return serveCachedFile(app, res, filename, .WASM, true) catch {
+        res.status = 404;
+        res.content_type = .TEXT;
+        res.body = "Not Found";
+        return;
+    };
+}
+
+pub fn web_wasm(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
+    return serveWasmFile("zig-out/bin/web_wasm.wasm.br", app, res) catch {
+        res.status = 404;
+        res.content_type = .TEXT;
+        res.body = "Not Found";
+        return;
+    };
+}
+
+pub fn wasm(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
+    return serveWasmFile("zig-out/bin/wasm.wasm.br", app, res) catch {
         res.status = 404;
         res.content_type = .TEXT;
         res.body = "Not Found";

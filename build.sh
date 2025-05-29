@@ -21,6 +21,7 @@ zig build compress-wasm -Dtarget=x86_64-linux-gnu $RELEASE_FLAG
 mkdir -p dist/
 cp zig-out/bin/pokebin dist/
 cp zig-out/bin/wasm.wasm.br dist/
+cp zig-out/bin/web_wasm.wasm.br dist/
 pushd web
 bun i 
 bun run build

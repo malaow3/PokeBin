@@ -1,6 +1,11 @@
 import "./app.css";
 import { onMount, createSignal, Show, createEffect } from "solid-js";
-import { encrypt, initWasm, validatePaste, utf8ToBase64 } from "./helpers.ts";
+import { encrypt, initWasm } from "./wasm_helpers.ts";
+import {
+  initWasm as initWebWasm,
+  validatePaste,
+  utf8ToBase64,
+} from "./web_wasm_helpers.ts";
 import PatreonButton from "./patreon.tsx";
 import logo from "../public/logo/large_logo_cropped.webp";
 
@@ -101,6 +106,7 @@ const App = () => {
 
     setTotal(await fetch("/total").then((r) => r.text()));
 
+    await initWebWasm();
     await initWasm();
     setIsReady(true);
 

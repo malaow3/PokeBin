@@ -70,6 +70,7 @@ pub fn main() !void {
         zlog.info("Preloading cache!", .{});
         try appState.preloadDirectoryRecursive("web/dist/", false);
         try appState.preloadFile("zig-out/bin/wasm.wasm.br", .WASM, true);
+        try appState.preloadFile("zig-out/bin/web_wasm.wasm.br", .WASM, true);
         try appState.preloadFile("robots.txt", .TEXT, false);
         try appState.preloadDirectoryRecursive("home/", true);
         zlog.info("Cache preload complete!", .{});
@@ -104,6 +105,7 @@ pub fn main() !void {
     router.get("/assets/*", routes.assets, .{});
     router.get("/favicon/*", routes.favicon, .{});
     router.get("/wasm", routes.wasm, .{});
+    router.get("/web_wasm", routes.web_wasm, .{});
     router.get("/about", routes.about, .{});
     router.get("/tos", routes.tos, .{});
     router.post("/create", routes.create, .{});
@@ -119,6 +121,7 @@ pub fn main() !void {
     router.get("/replay", routes.replay, .{});
     router.post("/api/fetch-replays", routes.fetchReplay, .{});
     router.get("/settings", routes.settings, .{});
+    router.get("/recent", routes.recent, .{});
 
     zlog.info("Starting PokeBin!", .{});
     try server.listen();
