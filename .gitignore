@@ -1,8 +1,8 @@
 .env
 .venv/
 
-zig-out/
-.zig-cache/
+**/*zig-out/
+**/*.zig-cache/
 .direnv/
 
 web/node_modules/

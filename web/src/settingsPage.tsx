@@ -18,6 +18,12 @@ const SettingsPage = () => {
   const { sett: settings, setSett: setSettings } = initSettings();
   // Set theme on mount and when darkMode changes
   onMount(() => {
+    const wsUrl = "/ws";
+    const socket = new WebSocket(wsUrl);
+    socket.onopen = async () => {
+      console.log("WebSocket connected to:", wsUrl);
+    };
+
     const dark = settings().darkMode;
     document.body.classList.toggle("dark", dark);
     document.body.classList.toggle("light", !dark);
