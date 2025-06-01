@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /$
+Allow: /about
+Allow: /recent
+Allow: /tos
+Allow: /replay
+Disallow: /*/
