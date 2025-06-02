@@ -26,6 +26,9 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
+    const zlog = b.dependency("zlog", .{});
+    exe_mod.addImport("zlog", zlog.module("zlog"));
+
     // This creates another `std.Build.Step.Compile`, but this one builds an executable
     // rather than a static library.
     const exe = b.addExecutable(.{
