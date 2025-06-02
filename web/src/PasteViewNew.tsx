@@ -348,74 +348,76 @@ export default function PasteViewNew(props: Props) {
                           </div>
                         )}
                       </For>
-                      <div class="attribute-line">
-                        EVs:{" "}
-                        <Show when={stats[0] !== ""}>
-                          <span class="stat-hp">{stats[0]} HP</span>
-                          <Show when={pokemon.last_stat_ev !== "hp"}>/</Show>
-                        </Show>
-                        <Show when={stats[1] !== ""}>
-                          <span class="stat-atk">{stats[1]} Atk</span>
-                          <Show when={pokemon.last_stat_ev !== "atk"}>/</Show>
-                        </Show>
-                        <Show when={stats[2] !== ""}>
-                          <span class="stat-def">{stats[2]} Def</span>
-                          <Show when={pokemon.last_stat_ev !== "def"}>/</Show>
-                        </Show>
-                        <Show when={stats[3] !== ""}>
-                          <span class="stat-spa">{stats[3]} SpA</span>
-                          <Show when={pokemon.last_stat_ev !== "spa"}>/</Show>
-                        </Show>
-                        <Show when={stats[4] !== ""}>
-                          <span class="stat-spd">{stats[4]} SpD</span>
-                          <Show when={pokemon.last_stat_ev !== "spd"}>/</Show>
-                        </Show>
-                        <Show when={stats[5] !== ""}>
-                          <span class="stat-spe">{stats[5]} Spe</span>
-                        </Show>
-                      </div>
-                      <Show when={pokemon.nature !== ""}>
+                      <Show when={!currentPaste().isOts}>
                         <div class="attribute-line">
-                          {pokemon.nature} Nature
-                        </div>
-                      </Show>
-                      <Show when={pokemon.last_stat_iv !== ""}>
-                        <div class="attribute-line">
-                          IVs:{" "}
-                          <Show when={pokemon.ivs[0] !== 31}>
-                            {pokemon.ivs[0]} HP
-                            <Show when={pokemon.last_stat_iv !== "hp"}>
-                              &nbsp;/&nbsp;
-                            </Show>
+                          EVs:{" "}
+                          <Show when={stats[0] !== ""}>
+                            <span class="stat-hp">{stats[0]} HP</span>
+                            <Show when={pokemon.last_stat_ev !== "hp"}>/</Show>
                           </Show>
-                          <Show when={pokemon.ivs[1] !== 31}>
-                            {pokemon.ivs[1]} Atk
-                            <Show when={pokemon.last_stat_iv !== "atk"}>
-                              &nbsp;/&nbsp;
-                            </Show>
+                          <Show when={stats[1] !== ""}>
+                            <span class="stat-atk">{stats[1]} Atk</span>
+                            <Show when={pokemon.last_stat_ev !== "atk"}>/</Show>
                           </Show>
-                          <Show when={pokemon.ivs[2] !== 31}>
-                            {pokemon.ivs[2]} Def
-                            <Show when={pokemon.last_stat_iv !== "def"}>
-                              &nbsp;/&nbsp;
-                            </Show>
+                          <Show when={stats[2] !== ""}>
+                            <span class="stat-def">{stats[2]} Def</span>
+                            <Show when={pokemon.last_stat_ev !== "def"}>/</Show>
                           </Show>
-                          <Show when={pokemon.ivs[3] !== 31}>
-                            {pokemon.ivs[3]} SpA
-                            <Show when={pokemon.last_stat_iv !== "spa"}>
-                              &nbsp;/&nbsp;
-                            </Show>
+                          <Show when={stats[3] !== ""}>
+                            <span class="stat-spa">{stats[3]} SpA</span>
+                            <Show when={pokemon.last_stat_ev !== "spa"}>/</Show>
                           </Show>
-                          <Show when={pokemon.ivs[4] !== 31}>
-                            {pokemon.ivs[4]} SpD
-                            <Show when={pokemon.last_stat_iv !== "spd"}>
-                              &nbsp;/&nbsp;
-                            </Show>
+                          <Show when={stats[4] !== ""}>
+                            <span class="stat-spd">{stats[4]} SpD</span>
+                            <Show when={pokemon.last_stat_ev !== "spd"}>/</Show>
                           </Show>
-                          <Show when={pokemon.ivs[5] !== 31}>
-                            {pokemon.ivs[5]} Spe
+                          <Show when={stats[5] !== ""}>
+                            <span class="stat-spe">{stats[5]} Spe</span>
                           </Show>
                         </div>
+                        <Show when={pokemon.nature !== ""}>
+                          <div class="attribute-line">
+                            {pokemon.nature} Nature
+                          </div>
+                        </Show>
+                        <Show when={pokemon.last_stat_iv !== ""}>
+                          <div class="attribute-line">
+                            IVs:{" "}
+                            <Show when={pokemon.ivs[0] !== 31}>
+                              {pokemon.ivs[0]} HP
+                              <Show when={pokemon.last_stat_iv !== "hp"}>
+                                &nbsp;/&nbsp;
+                              </Show>
+                            </Show>
+                            <Show when={pokemon.ivs[1] !== 31}>
+                              {pokemon.ivs[1]} Atk
+                              <Show when={pokemon.last_stat_iv !== "atk"}>
+                                &nbsp;/&nbsp;
+                              </Show>
+                            </Show>
+                            <Show when={pokemon.ivs[2] !== 31}>
+                              {pokemon.ivs[2]} Def
+                              <Show when={pokemon.last_stat_iv !== "def"}>
+                                &nbsp;/&nbsp;
+                              </Show>
+                            </Show>
+                            <Show when={pokemon.ivs[3] !== 31}>
+                              {pokemon.ivs[3]} SpA
+                              <Show when={pokemon.last_stat_iv !== "spa"}>
+                                &nbsp;/&nbsp;
+                              </Show>
+                            </Show>
+                            <Show when={pokemon.ivs[4] !== 31}>
+                              {pokemon.ivs[4]} SpD
+                              <Show when={pokemon.last_stat_iv !== "spd"}>
+                                &nbsp;/&nbsp;
+                              </Show>
+                            </Show>
+                            <Show when={pokemon.ivs[5] !== 31}>
+                              {pokemon.ivs[5]} Spe
+                            </Show>
+                          </div>
+                        </Show>
                       </Show>
 
                       <Show when={pokemon.level !== 100}>
