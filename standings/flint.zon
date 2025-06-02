@@ -1,0 +1,19 @@
+.{
+    .tasks = .{
+        .{
+            .name = "build",
+            .cmd = "zig build",
+            .watcher = .{
+                "src/*",
+            },
+        },
+        .{
+            .name = "run",
+            .cmd = "./zig-out/bin/standings",
+            .watcher = .{
+                "src/*",
+            },
+            .deps = .{"build"},
+        },
+    },
+}

@@ -376,9 +376,14 @@ export default function PasteViewNew(props: Props) {
                           </Show>
                         </div>
                         <Show when={pokemon.nature !== ""}>
-                          <div class="attribute-line">
-                            {pokemon.nature} Nature
-                          </div>
+                          <Show when={pokemon.nature.endsWith("Nature")}>
+                            <div class="attribute-line">{pokemon.nature}</div>
+                          </Show>
+                          <Show when={!pokemon.nature.endsWith("Nature")}>
+                            <div class="attribute-line">
+                              {pokemon.nature} Nature
+                            </div>
+                          </Show>
                         </Show>
                         <Show when={pokemon.last_stat_iv !== ""}>
                           <div class="attribute-line">
