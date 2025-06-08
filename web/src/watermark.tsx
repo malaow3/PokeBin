@@ -19,6 +19,10 @@ function Watermark() {
       setWidth("75px");
       setHeight("35px");
       setBottom("60px");
+    } else if (window.innerWidth <= 1400) {
+      setWidth("75px");
+      setHeight("35px");
+      setBottom("60px");
     } else {
       setBottom("20px");
       setPadding("15px");

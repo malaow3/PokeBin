@@ -473,14 +473,18 @@ body.light .stat-spe {
 		zoom: 1.0;
 	}
 	.paste {
-		font-size: 15px !important;
+		font-size: 14px !important;
+	}
+	span {
+		font-size: 14px !important;
+		font-weight: 400;
 	}
 	img.img-pokemon {
-		width: 180px;
+		width: 160px;
 	}
 
 	.metadata > h1 {
-		font-size: 1.2rem;
+		font-size: 1.1rem;
 	}
 	.metadata > p {
 		font-size: 0.9rem;
