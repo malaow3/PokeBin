@@ -312,7 +312,7 @@ export default function PasteViewBase(props: Props) {
                       </Show>
                       <Show when={pokemon.last_stat_iv !== ""}>
                         <div class="attribute-line">
-                          IVs:&nbsp;
+                          <span class="attr">IVs: </span>
                           <Show when={pokemon.ivs[0] !== 31}>
                             {pokemon.ivs[0]} HP
                             <Show when={pokemon.last_stat_iv !== "hp"}>
