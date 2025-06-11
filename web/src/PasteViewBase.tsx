@@ -275,7 +275,7 @@ export default function PasteViewBase(props: Props) {
                       </Show>
                       <Show when={pokemon.last_stat_ev !== ""}>
                         <div class="attribute-line">
-                          EVs:&nbsp;
+                          <span class="attr">EVs: </span>
                           <Show when={pokemon.evs[0] !== 0}>
                             <span class="stat-hp">{pokemon.evs[0]} HP</span>
                             <Show when={pokemon.last_stat_ev !== "hp"}>/</Show>
@@ -304,9 +304,9 @@ export default function PasteViewBase(props: Props) {
 
                       <Show when={pokemon.nature !== ""}>
                         <div class="attribute-line">
-                          {pokemon.nature}
+                          <span class="attr">{pokemon.nature}</span>
                           <Show when={!pokemon.nature.endsWith(" Nature")}>
-                            <span> Nature</span>
+                            <span class="attr"> Nature</span>
                           </Show>
                         </div>
                       </Show>
