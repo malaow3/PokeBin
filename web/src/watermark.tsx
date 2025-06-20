@@ -11,7 +11,13 @@ function Watermark() {
   const [padding, setPadding] = createSignal("0px");
 
   function check() {
-    if (window.innerWidth <= 450) {
+    const aspectRatio = window.innerWidth / window.innerHeight;
+
+    if (aspectRatio >= 1.84 && aspectRatio <= 1.87) {
+      setWidth("75px");
+      setHeight("35px");
+      setBottom("55px");
+    } else if (window.innerWidth <= 450) {
       setWidth("75px");
       setHeight("35px");
       setBottom("55px");

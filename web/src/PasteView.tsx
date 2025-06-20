@@ -228,6 +228,7 @@ const PasteView = () => {
     });
 
     // Copy the data to the clipboard.
+    console.log(text.trim());
     await navigator.clipboard.writeText(text.trim());
     console.log("Paste copied to clipboard.");
   }
@@ -269,6 +270,7 @@ const PasteView = () => {
     });
 
     // Copy the data to the clipboard.
+    console.log(text.trim());
     await navigator.clipboard.writeText(text.trim());
     console.log("Paste copied to clipboard.");
   }

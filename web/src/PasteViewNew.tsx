@@ -453,11 +453,7 @@ export default function PasteViewNew(props: Props) {
                       </Show>
                       <br
                         class="display-none"
-                        style={{ "line-height": "0px" }}
-                      />
-                      <br
-                        class="display-none"
-                        style={{ "line-height": "0px" }}
+                        style={{ "line-height": "-10px" }}
                       />
                     </div>
                   </article>

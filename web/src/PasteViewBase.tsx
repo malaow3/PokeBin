@@ -375,10 +375,6 @@ export default function PasteViewBase(props: Props) {
                         class="display-none"
                         style={{ "line-height": "0px" }}
                       />
-                      <br
-                        class="display-none"
-                        style={{ "line-height": "0px" }}
-                      />
                     </div>
                   </article>
                 );

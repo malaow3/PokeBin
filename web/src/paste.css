@@ -473,10 +473,10 @@ body.light .stat-spe {
 		zoom: 1.0;
 	}
 	.paste {
-		font-size: 14px !important;
+		font-size: 16px;
 	}
 	span {
-		font-size: 14px !important;
+		font-size: 16px;
 		font-weight: 400;
 	}
 	img.img-pokemon {
@@ -495,6 +495,39 @@ body.light .stat-spe {
 	}
 	article {
 		max-width: 620px;
+	}
+}
+
+@media (min-aspect-ratio: 1.84 / 1) and (max-aspect-ratio: 1.87 / 1) {
+	body {
+		zoom: 1.0;
+	}
+	.metadata > h1 {
+		font-size: 1.1rem;
+	}
+	.metadata > p {
+		font-size: 0.9rem;
+	}
+	#buttons > button {
+		font-size: 0.8rem !important;
+		height: 30px;
+	}
+
+	.paste {
+		font-size: 16px !important;
+	}
+
+	span {
+		font-size: 16px !important;
+		font-weight: 400;
+	}
+
+	img.img-pokemon {
+		width: 140px !important;
+	}
+
+	.main {
+		gap: 0px;
 	}
 }
 
