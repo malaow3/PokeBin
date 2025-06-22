@@ -38,7 +38,13 @@ p {
 #buttons {
 	display: flex;
 	flex-direction: column;
-	gap: 2px;
+	gap: 4px;
+}
+
+#buttons > button {
+	font-size: 0.8rem !important;
+	height: 25px;
+	width: 125px;
 }
 
 /* =========================
@@ -489,10 +495,6 @@ body.light .stat-spe {
 	.metadata > p {
 		font-size: 0.9rem;
 	}
-	#buttons > button {
-		font-size: 0.8rem !important;
-		height: 30px;
-	}
 	article {
 		max-width: 620px;
 	}
@@ -507,10 +509,6 @@ body.light .stat-spe {
 	}
 	.metadata > p {
 		font-size: 0.9rem;
-	}
-	#buttons > button {
-		font-size: 0.8rem !important;
-		height: 30px;
 	}
 
 	.paste {

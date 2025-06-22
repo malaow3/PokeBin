@@ -11,6 +11,13 @@ import { getId } from "./utils.ts";
 export let exports: WebAssemblyExports;
 export let memory: WebAssembly.Memory;
 
+type QRResponse = { ptr: number; size: number };
+let qrResponse: QRResponse = { ptr: 0, size: 0 };
+
+function createQRCodeCallback(ptr: number, size: number) {
+  qrResponse = { ptr, size };
+}
+
 interface WebAssemblyExports {
   memory: WebAssembly.Memory;
 
@@ -40,6 +47,7 @@ interface WebAssemblyExports {
   getPackedPtr(): number;
   getPackedLen(): number;
   resetPackedResult(): void;
+  createQRCode(messagePtr: number): void;
 }
 
 let instance: WasmInstance;
@@ -57,6 +65,7 @@ export async function initWasm() {
           const message = decodeString(instance, pointer, length);
           console.log(message);
         },
+        createQRCodeCallback,
       },
     },
   );
@@ -550,4 +559,60 @@ export function base64ToUtf8(b64: string) {
   return new TextDecoder().decode(
     Uint8Array.from(atob(b64), (c) => c.charCodeAt(0)),
   );
+}
+
+function renderQRCode(
+  matrix: number[] | Uint8Array<ArrayBuffer>,
+  size: number,
+) {
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  if (ctx === null) {
+    return;
+  }
+
+  const canvasScale = 10;
+  const canvasSize = canvasScale * size;
+
+  canvas.width = canvasSize;
+  canvas.height = canvasSize;
+
+  ctx.scale(canvasScale, canvasScale);
+
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, size, size);
+
+  ctx.fillStyle = "black";
+
+  for (let r = 0; r < size; r++) {
+    for (let c = 0; c < size; c++) {
+      if (matrix[r * size + c] === 1) {
+        ctx.fillRect(c, r, 1, 1);
+      }
+    }
+  }
+
+  return canvas.toDataURL("image/png");
+}
+
+export function createQRCode(message: string) {
+  const buffer = new TextEncoder().encode(message);
+  const messagePtr = exports.allocUint8(buffer.length + 1);
+  const slice = new Uint8Array(memory.buffer, messagePtr, buffer.length + 1);
+  slice.set(buffer);
+  slice[buffer.length] = 0;
+
+  exports.createQRCode(messagePtr);
+  // createQRCodeCallback is called by the wasm module
+
+  const matrix = new Uint8Array(
+    memory.buffer,
+    qrResponse.ptr,
+    qrResponse.size * qrResponse.size,
+  );
+  const url = renderQRCode(matrix, qrResponse.size);
+
+  exports.free(messagePtr, message.length);
+  exports.free(qrResponse.ptr, qrResponse.size * qrResponse.size);
+  return url;
 }

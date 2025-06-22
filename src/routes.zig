@@ -5,6 +5,8 @@ const zlog = @import("zlog");
 const state = @import("state.zig");
 const redis = @import("redis");
 const ws = @import("ws.zig");
+const qr = @import("qr");
+
 const VERSION = @import("main.zig").version;
 
 fn serveCachedFile(
@@ -515,4 +517,19 @@ pub fn active(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void 
 
     res.body = try std.fmt.allocPrint(res.arena, "{d}", .{result});
     res.content_type = .TEXT;
+}
+
+pub fn qrCode(_: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
+    const ref: ?[]const u8 = req.headers.get("x-referer");
+    if (ref) |r| {
+        const img_bytes = try qr.createQrCodeImage(res.arena, r);
+        res.body = img_bytes;
+        res.content_type = .PNG;
+        res.status = 200;
+        return;
+    } else {
+        res.status = 400;
+        res.body = "No referer header";
+        return;
+    }
 }

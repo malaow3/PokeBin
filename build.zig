@@ -19,6 +19,7 @@ pub fn build(b: *std.Build) void {
     const http = b.dependency("httpz", .{});
     const zul = b.dependency("zul", .{});
     const pg = b.dependency("pg", .{});
+    const qr = b.dependency("qr", .{});
 
     // -----------------------------------------------------------------------
     // Create modules (lib_mod, exe_mod)
@@ -41,6 +42,7 @@ pub fn build(b: *std.Build) void {
     exe_mod.linkLibrary(brotli_lib);
     exe_mod.addIncludePath(brotli_pkg.path("c/include"));
     exe_mod.addImport("pg", pg.module("pg"));
+    exe_mod.addImport("qr", qr.module("qr"));
 
     lib_mod.addImport("zlog", zlog.module("zlog"));
     lib_mod.addImport("zul", zul.module("zul"));
@@ -74,6 +76,7 @@ pub fn build(b: *std.Build) void {
         .target = wasm_target,
         .optimize = optimize,
     });
+    web_wasm_module.addImport("qr", qr.module("qr"));
 
     const web_wasm = b.addExecutable(.{
         .name = "web_wasm",

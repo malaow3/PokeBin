@@ -2,6 +2,7 @@ const std = @import("std");
 const utils = @import("utils.zig");
 const data = @import("data.zig");
 const zpacked = @import("packed.zig");
+const qr = @import("qr");
 
 const consoleLog = utils.consoleLog;
 const allocator = utils.allocator;
@@ -92,6 +93,27 @@ export fn savePasteToLastViewed(limit: u32, packed_string: [*]u8, packed_len: us
     consoleLog("Setting packed string: {s}", .{packed_str});
     packed_ptr = @intFromPtr(packed_str.ptr);
     packed_str_len = @intCast(packed_str.len);
+}
+
+extern fn createQRCodeCallback(matrixPtr: [*]const u8, size: usize) void;
+export fn createQRCode(messagePtr: [*:0]const u8) void {
+    const message = std.mem.span(messagePtr);
+
+    const options = qr.CreateOptions{ .content = message, .quietZoneSize = 1, .ecLevel = .M };
+
+    const matrix = qr.create(allocator, options) catch @panic("failed to create QR code");
+    defer matrix.deinit();
+
+    // var buffer = std.heap.page_allocator.alloc(u8, length) catch @panic("failed to allocate memory");
+    var buffer = allocator.alloc(u8, matrix.size * matrix.size) catch @panic("failed to allocate memory");
+
+    for (0..matrix.size) |r| {
+        for (0..matrix.size) |c| {
+            buffer[r * matrix.size + c] = @intCast(matrix.get(r, c));
+        }
+    }
+
+    createQRCodeCallback(buffer.ptr, matrix.size);
 }
 
 const max_bytes = @floor(450 * 1.25);

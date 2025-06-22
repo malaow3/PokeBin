@@ -9,6 +9,10 @@
             },
         },
         .{
+            .name = "build-watch",
+            .cmd = "zig build compress-wasm --release=safe --summary all -fincremental --watch",
+        },
+        .{
             .name = "build-web",
             .cmd = "cd web; bun run build",
             .watcher = .{

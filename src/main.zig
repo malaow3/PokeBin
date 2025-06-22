@@ -122,6 +122,7 @@ pub fn main() !void {
     router.post("/api/fetch-replays", routes.fetchReplay, .{});
     router.get("/settings", routes.settings, .{});
     router.get("/recent", routes.recent, .{});
+    // router.post("/qr", routes.qrCode, .{});
 
     zlog.info("Starting PokeBin!", .{});
     try server.listen();

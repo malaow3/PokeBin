@@ -1,6 +1,6 @@
-import type { Paste } from "./web_wasm_helpers";
+import { type Paste, createQRCode } from "./web_wasm_helpers";
 import Watermark from "./watermark";
-import { type Accessor, For, Show } from "solid-js";
+import { type Accessor, createSignal, For, Show } from "solid-js";
 import { updateSetting, type Settings } from "./settings";
 import { SettingsForm } from "./settingsForm";
 
@@ -75,6 +75,9 @@ export default function PasteViewNew(props: Props) {
   const setSett = props.setSett;
   const isEncrypted = props.isEncrypted;
   const handleCreateOts = props.handleCreateOts;
+
+  const [showQrModal, setShowQrModal] = createSignal(false);
+  const [qrImageUrl, setQrImageUrl] = createSignal("");
 
   return (
     <Show when={paste()}>
@@ -219,6 +222,24 @@ export default function PasteViewNew(props: Props) {
                 onClick={() => setShowModal(true)}
               >
                 Settings
+              </button>
+              <button
+                class="cursor-pointer h-[30px] font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black w-[175px] py-1 rounded"
+                style={{ "user-select": "none" }}
+                type="button"
+                onClick={async () => {
+                  const location = window.location.href;
+                  const id = location.substring(location.lastIndexOf("/") + 1);
+                  const url = `https://pokebin.com/${id}`;
+                  const imgUrl = createQRCode(url);
+                  if (imgUrl === undefined) {
+                    return;
+                  }
+                  setQrImageUrl(imgUrl);
+                  setShowQrModal(true);
+                }}
+              >
+                QR
               </button>
             </div>
           </div>
@@ -503,6 +524,45 @@ export default function PasteViewNew(props: Props) {
                     </div>
                   </Show>
                 </SettingsForm>
+              </div>
+            </div>
+          </Show>
+          <Show when={showQrModal()}>
+            <div
+              class="fixed inset-0 bg-black/40 flex items-center justify-center z-200"
+              onKeyDown={(e) => e.stopPropagation()}
+              onClick={() => {
+                setShowQrModal(false);
+                // Clean up the object URL
+                URL.revokeObjectURL(qrImageUrl());
+                setQrImageUrl("");
+              }}
+              tabindex="-1"
+            >
+              <div
+                class="bg-white rounded-lg p-6 shadow-lg relative"
+                onClick={(e) => e.stopPropagation()}
+                onKeyDown={(e) => e.stopPropagation()}
+                tabindex="0"
+              >
+                <button
+                  type="button"
+                  class="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+                  onClick={() => {
+                    setShowQrModal(false);
+                    URL.revokeObjectURL(qrImageUrl());
+                    setQrImageUrl("");
+                  }}
+                  aria-label="Close QR modal"
+                >
+                  ✕
+                </button>
+                <img
+                  id="qr-code"
+                  src={qrImageUrl()}
+                  alt="QR Code"
+                  class="max-w-full max-h-[60vh] mx-auto"
+                />
               </div>
             </div>
           </Show>

@@ -29,7 +29,7 @@ pub fn consoleLog(comptime fmt: []const u8, args: anytype) void {
     _consoleLog(msg.ptr, msg.len);
 }
 
-export fn allocUint8(length: u32) [*]const u8 {
+pub export fn allocUint8(length: u32) [*]const u8 {
     const slice = allocator.alloc(u8, length) catch
         @panic("failed to allocate memory");
     return slice.ptr;
