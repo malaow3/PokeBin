@@ -53,8 +53,10 @@ interface WebAssemblyExports {
 let instance: WasmInstance;
 
 export async function initWasm() {
+  const version_response = await fetch("/version");
+  const version = await version_response.text();
   const wasmModule = await WebAssembly.instantiateStreaming(
-    fetch("/web_wasm"),
+    fetch(`/web_wasm?v=${version}`),
     {
       env: {
         _throwError(pointer: number, length: number) {
