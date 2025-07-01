@@ -5,7 +5,7 @@ const mbytes = @embedFile("moves.json");
 const missing_bytes = @embedFile("missing_shiny.json");
 
 pub const Pokemon = struct {
-    id: usize,
+    id: []const u8,
     type1: []const u8,
     type2: []const u8,
     has_shiny: bool,

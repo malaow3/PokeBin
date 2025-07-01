@@ -29,7 +29,6 @@ export fn savePasteToLastViewed(limit: u32, packed_string: [*]u8, packed_len: us
     const packed_string_slice = packed_string[0..packed_len];
 
     const existing = zpacked.parsePacked(packed_string_slice) catch @panic("failed to parse packed string");
-    consoleLog("{d} existing pastes", .{existing.pastes.len});
 
     const paste_json_slice = paste_json[0..paste_len];
     const paste = std.json.parseFromSlice(std.json.Value, allocator, paste_json_slice, .{}) catch @panic("failed to parse paste");
@@ -90,7 +89,6 @@ export fn savePasteToLastViewed(limit: u32, packed_string: [*]u8, packed_len: us
         return;
     };
 
-    consoleLog("Setting packed string: {s}", .{packed_str});
     packed_ptr = @intFromPtr(packed_str.ptr);
     packed_str_len = @intCast(packed_str.len);
 }
@@ -300,12 +298,12 @@ fn sanitize(str: []const u8) [:0]const u8 {
 fn initPokemon() *Pokemon {
     const pokemon = allocator.create(Pokemon) catch @panic("failed to allocate Pokemon");
     const pokemonStruct = Pokemon{
-        .name = &[_:0]u8{0},
-        .nickname = &[_:0]u8{0},
-        .item = &[_:0]u8{0},
+        .name = "\x00",
+        .nickname = "\x00",
+        .item = "\x00",
         .gender = 0,
-        .item_image = &[_:0]u8{0},
-        .pokemon_image = &[_:0]u8{0},
+        .item_image = "\x00",
+        .pokemon_image = "\x00",
         .moves_len = 0,
         .moves = &[_]*Move{},
         .evs = [_]usize{0} ** 6,
@@ -478,7 +476,7 @@ fn getImage(raw_pokemon: []const u8, is_female: bool, is_shiny: bool, twoDImages
     if (value) |v| {
         if (is_shiny and v.has_shiny) {
             if (twoDImages) {
-                const id_str = std.fmt.allocPrint(allocator, "{d}", .{v.id}) catch @panic("failed to allocate sprite");
+                const id_str = std.fmt.allocPrint(allocator, "{s}", .{v.id}) catch @panic("failed to allocate sprite");
                 defer allocator.free(id_str);
                 if (data.MISSING_SHINIES.get(id_str) == null) {
                     base_path = std.fs.path.join(allocator, &[_][]const u8{ base_path, "shiny" }) catch @panic("failed to allocate sprite");
@@ -492,14 +490,14 @@ fn getImage(raw_pokemon: []const u8, is_female: bool, is_shiny: bool, twoDImages
             base_path = std.fs.path.join(allocator, &[_][]const u8{ base_path, "female" }) catch @panic("failed to allocate sprite");
         }
 
-        return std.fmt.allocPrintZ(allocator, "{s}/{d}.png", .{ base_path, v.id }) catch @panic("failed to allocate sprite");
+        return std.fmt.allocPrintZ(allocator, "{s}/{s}.png", .{ base_path, v.id }) catch @panic("failed to allocate sprite");
     }
 
     const search_like_value = searchLike(pokemon);
     if (search_like_value) |v| {
         if (is_shiny and v.value.has_shiny) {
             if (twoDImages) {
-                const id_str = std.fmt.allocPrint(allocator, "{d}", .{v.value.id}) catch @panic("failed to allocate sprite");
+                const id_str = std.fmt.allocPrint(allocator, "{s}", .{v.value.id}) catch @panic("failed to allocate sprite");
                 defer allocator.free(id_str);
                 if (data.MISSING_SHINIES.get(id_str) == null) {
                     base_path = std.fs.path.join(allocator, &[_][]const u8{ base_path, "shiny" }) catch @panic("failed to allocate sprite");
@@ -511,7 +509,7 @@ fn getImage(raw_pokemon: []const u8, is_female: bool, is_shiny: bool, twoDImages
         if (is_female and v.value.has_female and !twoDImages) {
             base_path = std.fs.path.join(allocator, &[_][]const u8{ base_path, "female" }) catch @panic("failed to allocate sprite");
         }
-        return std.fmt.allocPrintZ(allocator, "{s}/{d}.png", .{ base_path, v.value.id }) catch @panic("failed to allocate sprite");
+        return std.fmt.allocPrintZ(allocator, "{s}/{s}.png", .{ base_path, v.value.id }) catch @panic("failed to allocate sprite");
     }
 
     var items = std.mem.splitScalar(u8, pokemon, '-');
@@ -644,6 +642,64 @@ fn parseEvIvLine(line: []const u8, base_value: usize) ![6]usize {
     return values;
 }
 
+fn stripAccents(str: []const u8) []const u8 {
+    const replacements = [_]struct { from: []const u8, to: u8 }{
+        .{ .from = "é", .to = 'e' },
+        .{ .from = "è", .to = 'e' },
+        .{ .from = "ê", .to = 'e' },
+        .{ .from = "ë", .to = 'e' },
+        .{ .from = "á", .to = 'a' },
+        .{ .from = "à", .to = 'a' },
+        .{ .from = "ä", .to = 'a' },
+        .{ .from = "â", .to = 'a' },
+        .{ .from = "í", .to = 'i' },
+        .{ .from = "ï", .to = 'i' },
+        .{ .from = "ó", .to = 'o' },
+        .{ .from = "ö", .to = 'o' },
+        .{ .from = "ú", .to = 'u' },
+        .{ .from = "ü", .to = 'u' },
+        .{ .from = "ñ", .to = 'n' },
+    };
+
+    var out = allocator.alloc(u8, str.len) catch @panic("failed to allocate memory");
+    var j: usize = 0;
+    var i: usize = 0;
+    while (i < str.len) {
+        var replaced = false;
+        for (replacements) |repl| {
+            if (std.mem.startsWith(u8, str[i..], repl.from)) {
+                out[j] = repl.to;
+                i += repl.from.len;
+                replaced = true;
+                break;
+            }
+        }
+        if (!replaced) {
+            out[j] = str[i];
+            i += 1;
+        }
+        j += 1;
+    }
+    return out[0..j];
+}
+
+fn isCombiningMark(cp: u21) bool {
+    // Unicode combining marks: U+0300–U+036F
+    return (cp >= 0x300 and cp <= 0x36F);
+}
+
+fn stripCombiningMarks(input: []const u8) ![]u8 {
+    var it = std.unicode.Utf8Iterator{ .bytes = input, .i = 0 };
+    var out = try allocator.alloc(u8, input.len);
+    var j: usize = 0;
+    while (it.nextCodepoint()) |cp| {
+        if (!isCombiningMark(cp)) {
+            j += std.unicode.utf8Encode(cp, out[j..]) catch @panic("utf8 encode failed");
+        }
+    }
+    return out[0..j];
+}
+
 fn getSearchName(pokemon_name: []const u8, pokemon: ?*Pokemon) []const u8 {
     const search_name = std.mem.replaceOwned(u8, allocator, pokemon_name, " ", "-") catch @panic("failed to allocate memory");
     defer allocator.free(search_name);
@@ -668,7 +724,13 @@ fn getSearchName(pokemon_name: []const u8, pokemon: ?*Pokemon) []const u8 {
         allocator.free(lower);
         lower = allocator.dupe(u8, "vivillon-poke-ball") catch @panic("failed to allocate memory");
     }
-    return lower;
+
+    const strippedAccents = stripAccents(lower);
+    allocator.free(lower);
+    const result = stripCombiningMarks(strippedAccents) catch @panic("failed to strip combining marks");
+    allocator.free(strippedAccents);
+
+    return result;
 }
 
 const VersionReturn = struct {
@@ -839,10 +901,8 @@ fn parsePokemonFromLines(lines: [][]const u8, twoDImages: bool, fullMonText: []c
         }
     }
 
-    if (moves.items.len > 0) {
-        pokemon.moves_len = moves.items.len;
-        pokemon.moves = moves.items.ptr;
-    }
+    pokemon.moves_len = moves.items.len;
+    pokemon.moves = moves.items.ptr;
 
     if (other_lines.items.len > 0) {
         pokemon.lines_count = other_lines.items.len;

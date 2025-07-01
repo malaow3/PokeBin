@@ -337,31 +337,41 @@ export default function PasteViewBase(props: Props) {
                           <Show when={pokemon.ivs[0] !== 31}>
                             {pokemon.ivs[0]} HP
                             <Show when={pokemon.last_stat_iv !== "hp"}>
-                              &nbsp;/&nbsp;
+                              <span style="font-size: 1px;"> </span>
+                              <span>/</span>
+                              <span style="font-size: 1px;"> </span>
                             </Show>
                           </Show>
                           <Show when={pokemon.ivs[1] !== 31}>
                             {pokemon.ivs[1]} Atk
                             <Show when={pokemon.last_stat_iv !== "atk"}>
-                              &nbsp;/&nbsp;
+                              <span style="font-size: 1px;"> </span>
+                              <span>/</span>
+                              <span style="font-size: 1px;"> </span>
                             </Show>
                           </Show>
                           <Show when={pokemon.ivs[2] !== 31}>
                             {pokemon.ivs[2]} Def
                             <Show when={pokemon.last_stat_iv !== "def"}>
-                              &nbsp;/&nbsp;
+                              <span style="font-size: 1px;"> </span>
+                              <span>/</span>
+                              <span style="font-size: 1px;"> </span>
                             </Show>
                           </Show>
                           <Show when={pokemon.ivs[3] !== 31}>
                             {pokemon.ivs[3]} SpA
                             <Show when={pokemon.last_stat_iv !== "spa"}>
-                              &nbsp;/&nbsp;
+                              <span style="font-size: 1px;"> </span>
+                              <span>/</span>
+                              <span style="font-size: 1px;"> </span>
                             </Show>
                           </Show>
                           <Show when={pokemon.ivs[4] !== 31}>
                             {pokemon.ivs[4]} SpD
                             <Show when={pokemon.last_stat_iv !== "spd"}>
-                              &nbsp;/&nbsp;
+                              <span style="font-size: 1px;"> </span>
+                              <span>/</span>
+                              <span style="font-size: 1px;"> </span>
                             </Show>
                           </Show>
                           <Show when={pokemon.ivs[5] !== 31}>

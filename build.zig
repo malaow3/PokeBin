@@ -1,5 +1,6 @@
 const std = @import("std");
 const brotli = @import("src/brotli.zig");
+const build_zig_zon = @embedFile("build.zig.zon");
 
 const wasm_file_name = "wasm";
 
@@ -33,6 +34,9 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
+    var options = std.Build.Step.Options.create(b);
+    options.addOption([]const u8, "contents", build_zig_zon);
+    exe_mod.addOptions("build.zig.zon", options);
 
     // Add imports to modules
     exe_mod.addImport("pokebin_lib", lib_mod);

@@ -1,7 +1,6 @@
 const std = @import("std");
 const utils = @import("utils.zig");
 const allocator = utils.allocator;
-const consoleLog = utils.consoleLog;
 
 pub const PackedPaste = struct {
     id: []const u8,
@@ -24,7 +23,6 @@ pub const PackedPaste = struct {
         try string.appendSlice(filled);
 
         for (self.pokemon) |pokemon| {
-            consoleLog("pokemon: {s}", .{pokemon});
             try string.append('|');
             try string.appendSlice(pokemon);
         }

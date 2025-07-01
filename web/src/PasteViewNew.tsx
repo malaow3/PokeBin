@@ -249,6 +249,12 @@ export default function PasteViewNew(props: Props) {
                 const stats: string[] = pokemon.evs.map((x) =>
                   x !== 0 ? x.toString() : "",
                 );
+                let allEmpty = true;
+                for (const stat of stats) {
+                  if (stat !== "") {
+                    allEmpty = false;
+                  }
+                }
                 // const nature = pokemon.nature;
                 // if (natureMap[nature] !== null) {
                 //   const indicies = natureMap[nature];
@@ -369,9 +375,9 @@ export default function PasteViewNew(props: Props) {
                           </div>
                         )}
                       </For>
-                      <Show when={!currentPaste().isOts}>
+                      <Show when={!currentPaste().isOts && !allEmpty}>
                         <div class="attribute-line">
-                          EVs:{" "}
+                          <span>EVs: </span>
                           <Show when={stats[0] !== ""}>
                             <span class="stat-hp">{stats[0]} HP</span>
                             <Show when={pokemon.last_stat_ev !== "hp"}>/</Show>
@@ -398,49 +404,61 @@ export default function PasteViewNew(props: Props) {
                         </div>
                         <Show when={pokemon.nature !== ""}>
                           <Show when={pokemon.nature.endsWith("Nature")}>
-                            <div class="attribute-line">{pokemon.nature}</div>
+                            <div class="attribute-line">
+                              <span>{pokemon.nature}</span>
+                            </div>
                           </Show>
                           <Show when={!pokemon.nature.endsWith("Nature")}>
                             <div class="attribute-line">
-                              {pokemon.nature} Nature
+                              <span>{pokemon.nature} Nature</span>
                             </div>
                           </Show>
                         </Show>
                         <Show when={pokemon.last_stat_iv !== ""}>
                           <div class="attribute-line">
-                            IVs:{" "}
+                            <span>IVs: </span>
                             <Show when={pokemon.ivs[0] !== 31}>
-                              {pokemon.ivs[0]} HP
+                              <span>{pokemon.ivs[0]} HP</span>
                               <Show when={pokemon.last_stat_iv !== "hp"}>
-                                &nbsp;/&nbsp;
+                                <span style="font-size: 1px;"> </span>
+                                <span>/</span>
+                                <span style="font-size: 1px;"> </span>
                               </Show>
                             </Show>
                             <Show when={pokemon.ivs[1] !== 31}>
-                              {pokemon.ivs[1]} Atk
+                              <span>{pokemon.ivs[1]} Atk</span>
                               <Show when={pokemon.last_stat_iv !== "atk"}>
-                                &nbsp;/&nbsp;
+                                <span style="font-size: 1px;"> </span>
+                                <span>/</span>
+                                <span style="font-size: 1px;"> </span>
                               </Show>
                             </Show>
                             <Show when={pokemon.ivs[2] !== 31}>
-                              {pokemon.ivs[2]} Def
+                              <span>{pokemon.ivs[2]} Def</span>
                               <Show when={pokemon.last_stat_iv !== "def"}>
-                                &nbsp;/&nbsp;
+                                <span style="font-size: 1px;"> </span>
+                                <span>/</span>
+                                <span style="font-size: 1px;"> </span>
                               </Show>
                             </Show>
                             <Show when={pokemon.ivs[3] !== 31}>
-                              {pokemon.ivs[3]} SpA
+                              <span>{pokemon.ivs[3]} SpA</span>
                               <Show when={pokemon.last_stat_iv !== "spa"}>
-                                &nbsp;/&nbsp;
+                                <span style="font-size: 1px;"> </span>
+                                <span>/</span>
+                                <span style="font-size: 1px;"> </span>
                               </Show>
                             </Show>
                             <Show when={pokemon.ivs[4] !== 31}>
-                              {pokemon.ivs[4]} SpD
+                              <span>{pokemon.ivs[4]} SpD</span>
                               <Show when={pokemon.last_stat_iv !== "spd"}>
-                                &nbsp;/&nbsp;
+                                <span style="font-size: 1px;"> </span>
+                                <span>/</span>
+                                <span style="font-size: 1px;"> </span>
                               </Show>
                             </Show>
                             <Show when={pokemon.ivs[5] !== 31}>
-                              {pokemon.ivs[5]} Spe
+                              <span>{pokemon.ivs[5]} Spe</span>
                             </Show>
                           </div>
                         </Show>

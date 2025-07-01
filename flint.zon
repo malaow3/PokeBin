@@ -9,6 +9,14 @@
             },
         },
         .{
+            .name = "build-debug",
+            .cmd = "zig build compress-wasm --summary all -fincremental",
+            .watcher = .{
+                "src/*",
+                "wasm/*",
+            },
+        },
+        .{
             .name = "build-watch",
             .cmd = "zig build compress-wasm --release=safe --summary all -fincremental --watch",
         },

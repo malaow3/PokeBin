@@ -261,28 +261,30 @@ function decodePokemon(pokemonPtr: number): Pokemon {
     const moves_len = movesLenPtr[0];
     offset += sizeOfUint32;
 
-    const movesArrayPtrSlice = new Uint32Array(
-      memory.buffer,
-      basePtr + offset,
-      1,
-    );
-    const movesArrayPointer = movesArrayPtrSlice[0];
-
-    const movesArray = new Uint32Array(
-      memory.buffer,
-      movesArrayPointer,
-      moves_len,
-    );
-
     const moves: Move[] = [];
     if (moves_len > 0) {
-      for (let i = 0; i < moves_len; i++) {
-        const currentMovePtr = movesArray[i];
-        try {
-          const move = decodeMove(currentMovePtr);
-          moves.push(move);
-        } catch (e) {
-          console.error(`Error decoding move at index ${i}:`, e);
+      const movesArrayPtrSlice = new Uint32Array(
+        memory.buffer,
+        basePtr + offset,
+        1,
+      );
+      const movesArrayPointer = movesArrayPtrSlice[0];
+
+      const movesArray = new Uint32Array(
+        memory.buffer,
+        movesArrayPointer,
+        moves_len,
+      );
+
+      if (moves_len > 0) {
+        for (let i = 0; i < moves_len; i++) {
+          const currentMovePtr = movesArray[i];
+          try {
+            const move = decodeMove(currentMovePtr);
+            moves.push(move);
+          } catch (e) {
+            console.error(`Error decoding move at index ${i}:`, e);
+          }
         }
       }
     }

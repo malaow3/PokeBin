@@ -8,12 +8,25 @@ const state = @import("state.zig");
 const shutdown = @import("shutdown.zig");
 const routes = @import("routes.zig");
 const wslog = @import("wslog.zig");
+const build_zig_zon = @import("build.zig.zon");
 
 pub const std_options = std.Options{
     .logFn = wslog.log,
 };
 
-pub const version = "2.2.0";
+pub fn getVersion() ?[]const u8 {
+    var it = std.mem.splitScalar(u8, build_zig_zon.contents, '\n');
+    while (it.next()) |item| {
+        const line = std.mem.trim(u8, item, " \t\n\r");
+        if (std.mem.startsWith(u8, line, ".version")) {
+            var tokenizer = std.mem.tokenizeAny(u8, line[".version".len..], " \"=");
+            return tokenizer.next();
+        }
+    }
+    return null;
+}
+
+pub const version = getVersion() orelse @panic("Failed to get version");
 
 pub var state_ptr: ?*state.State = null;
 pub var server_instance: ?*httpz.Server(*state.State) = null;

@@ -75,7 +75,7 @@ async def main():
                 has_female = True
 
             result_map[result["name"]] = {
-                "id": result["id"],
+                "id": str(result["id"]),
                 "type1": result["types"][0]["type"]["name"],
                 "type2": result["types"][1]["type"]["name"]
                 if len(result["types"]) > 1
@@ -83,6 +83,19 @@ async def main():
                 "has_shiny": has_shiny,
                 "has_female": has_female,
             }
+
+            if result["forms"] is not None and len(result["forms"]) > 0:
+                for form in result["forms"]:
+                    diff = form["name"][len(result["name"]) :]
+                    result_map[form["name"]] = {
+                        "id": f"{result['id']}{diff}",
+                        "type1": result["types"][0]["type"]["name"],
+                        "type2": result["types"][1]["type"]["name"]
+                        if len(result["types"]) > 1
+                        else "",
+                        "has_shiny": has_shiny,
+                        "has_female": has_female,
+                    }
 
         await asyncio.gather(*image_download_tasks)
 
