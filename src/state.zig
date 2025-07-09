@@ -98,24 +98,25 @@ pub const State = struct {
     ) !void {
         const method_string = statusToString(req.method);
         var timer = try std.time.Timer.start();
-        zlog.info("Processing {s} {s}", .{ method_string, req.url.path });
+        defer {
+            const elapsed = timer.lap() / 1000;
+            if (res.status == 404) {
+                zlog.warn(
+                    "[{d}] {s} {s} - {d}μs",
+                    .{ res.status, method_string, req.url.path, elapsed },
+                );
+            } else {
+                zlog.info(
+                    "[{d}] {s} {s} - {d}μs",
+                    .{ res.status, method_string, req.url.path, elapsed },
+                );
+            }
+        }
         action(self, req, res) catch {
             res.status = 500;
             res.body = "Internal Server Error";
             return;
         };
-        const elapsed = timer.lap() / 1000;
-        if (res.status == 404) {
-            zlog.warn(
-                "[{d}] {s} {s} - {d}μs",
-                .{ res.status, method_string, req.url.path, elapsed },
-            );
-        } else {
-            zlog.info(
-                "[{d}] {s} {s} - {d}μs",
-                .{ res.status, method_string, req.url.path, elapsed },
-            );
-        }
     }
 
     pub fn preloadFile(self: *Self, path: []const u8, content_type: ?httpz.ContentType, precompressed: bool) !void {
