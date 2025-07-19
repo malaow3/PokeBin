@@ -1,6 +1,7 @@
 import { createSignal } from "solid-js";
 import type { UnsafeWindow } from "./types.ts";
 import { decrypt } from "./encryption.ts";
+import { h } from "preact";
 
 const usfw: UnsafeWindow = window as unknown as UnsafeWindow;
 
@@ -75,11 +76,22 @@ const Import = ({ newUI = false }: ImportProps) => {
       const sets = usfw.PSTeambuilder.importTeam(paste.content);
       const packed = usfw.Teams.pack(sets);
       usfw.PS.room.team.packedTeam = packed;
-      usfw.PS.room.update();
       usfw.PS.teams.push(usfw.PS.room.team);
+      const icons = [];
+      for (const set of sets) {
+        icons.push(
+          h("span", {
+            class: "picon",
+            style: usfw.Dex.getPokemonIcon(set.species),
+          }),
+        );
+      }
+      usfw.PS.room.team.iconCache = icons;
       usfw.PS.teams.save();
       usfw.PS.teams.update();
-      alert("Team imported, refresh to view properly!");
+      usfw.PS.room.update();
+      usfw.PS.panel.forceReload = true;
+      usfw.PS.update();
     }
   };
 

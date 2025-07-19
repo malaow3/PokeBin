@@ -16,6 +16,8 @@ interface UnsafeWindow extends Window {
   PSTeambuilder: any;
   // biome-ignore lint/suspicious/noExplicitAny : provided by Showdown
   Teams: any;
+  // biome-ignore lint/suspicious/noExplicitAny : provided by Showdown
+  Dex: any;
 }
 
 export type { UnsafeWindow };
