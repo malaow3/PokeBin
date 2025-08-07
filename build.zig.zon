@@ -27,8 +27,8 @@
             .hash = "zlog-0.0.0-_MGzdbBDAABfTEnaVhw1nSH-EN9J4x_Svt9M07fkn6Vd",
         },
         .httpz = .{
-            .url = "git+https://github.com/karlseguin/http.zig?ref=dev#bab4296f0b4c99aec60b5c0339848aebc0254a50",
-            .hash = "httpz-0.0.0-PNVzrMK3BgAntHQ7y_vXZ4Q2yKKM0py7_KnwKoPv3aep",
+            .url = "git+https://github.com/karlseguin/http.zig?ref=master#ef50c6878c3c512786e3311df657eb425b87ba91",
+            .hash = "httpz-0.0.0-PNVzrAvCBgDPm4lE3vCQekPyCKAE2TIsbxly-GeS1_gl",
         },
         .zul = .{
             .url = "git+https://github.com/karlseguin/zul#d9142c73aedc5698beba58b3fbf2bcfe69864778",
