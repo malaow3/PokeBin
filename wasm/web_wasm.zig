@@ -783,9 +783,11 @@ fn parsePokemonFromLines(lines: [][]const u8, twoDImages: bool, fullMonText: []c
                 defer allocator.free(remove_space);
                 const remove_dash = std.mem.replaceOwned(u8, allocator, remove_space, "-", "") catch @panic("failed to allocate sprite");
                 defer allocator.free(remove_dash);
+                const remove_apos = std.mem.replaceOwned(u8, allocator, remove_space, "'", "") catch @panic("failed to allocate sprite");
+                defer allocator.free(remove_apos);
                 const search_item = std.ascii.allocLowerString(
                     allocator,
-                    remove_dash,
+                    remove_apos,
                 ) catch @panic("failed to allocate sprite");
                 pokemon.item_image = getImageLink(search_item);
             }
