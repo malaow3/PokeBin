@@ -150,8 +150,16 @@ pub fn fetchReplay(_: *state.State, req: *httpz.Request, res: *httpz.Response) !
         };
         defer allocator.free(cookie_value);
 
+        const username = user.value.name;
+        // If the username has spaces, remove them
+        const cleaned_username = try std.mem.replaceOwned(u8, res.arena, username, " ", "");
+
         while (true) {
-            const replay_url = try std.fmt.allocPrint(allocator, "https://replay.pokemonshowdown.com/api/replays/searchprivate?username={s}&format=&page={d}", .{ user.value.name, page });
+            const replay_url = try std.fmt.allocPrint(
+                allocator,
+                "https://replay.pokemonshowdown.com/api/replays/searchprivate?username={s}&format=&page={d}",
+                .{ cleaned_username, page },
+            );
 
             var replay_response_body = std.ArrayList(u8).init(allocator);
             defer replay_response_body.deinit();
