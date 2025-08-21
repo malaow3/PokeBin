@@ -6,6 +6,7 @@ const state = @import("state.zig");
 const redis = @import("redis");
 const ws = @import("ws.zig");
 const qr = @import("qr");
+const constants = @import("constants.zig");
 
 const VERSION = @import("main.zig").version;
 
@@ -109,28 +110,34 @@ pub fn fetchReplay(_: *state.State, req: *httpz.Request, res: *httpz.Response) !
         defer allocator.free(header_buf);
 
         const body = try std.fmt.allocPrint(allocator, "name={s}&pass={s}&challstr={s}", .{ user.value.name, user.value.pass, user.value.challstr });
-        const response = client.fetch(.{
-            .method = .POST,
-            .location = .{ .url = "https://play.pokemonshowdown.com/api/login" },
-            .extra_headers = headers,
-            .payload = body,
-            .server_header_buffer = header_buf,
-        }) catch |err| {
-            zlog.err("Failed to login: {s}", .{@errorName(err)});
-            return error.LoginFailed;
-        };
+        const uri = try std.Uri.parse("https://play.pokemonshowdown.com/api/login");
 
-        if (response.status != .ok and response.status != .no_content) {
-            zlog.err("Status: {s}", .{@tagName(response.status)});
+        var request = try client.request(.POST, uri, .{
+            .extra_headers = headers,
+        });
+        defer request.deinit();
+
+        request.transfer_encoding = .{ .content_length = body.len };
+        var body_writer = try request.sendBody(&.{});
+        try body_writer.writer.writeAll(body);
+        try body_writer.end();
+
+        const response = try request.receiveHead(&.{});
+        if (response.head.status != .ok and response.head.status != .no_content) {
+            zlog.err("Status: {s}", .{@tagName(response.head.status)});
             return error.ReportSubmissionFailed;
         }
 
-        var split = std.mem.splitScalar(u8, header_buf, '\n');
         var sid: []const u8 = "";
-        while (split.next()) |line| {
-            if (std.mem.startsWith(u8, line, "Set-Cookie: sid=")) {
-                const idx = std.mem.indexOf(u8, line, ";") orelse line.len;
-                sid = line[16..idx];
+        var header_iter = response.head.iterateHeaders();
+        while (header_iter.next()) |header| {
+            if (std.ascii.eqlIgnoreCase(header.name, "set-cookie")) {
+                // Check if this cookie is the sid cookie
+                if (std.mem.startsWith(u8, header.value, "sid=")) {
+                    const idx = std.mem.indexOf(u8, header.value, ";") orelse header.value.len;
+                    sid = header.value[4..idx]; // Skip "sid=" part
+                    break;
+                }
             }
         }
 
@@ -139,8 +146,8 @@ pub fn fetchReplay(_: *state.State, req: *httpz.Request, res: *httpz.Response) !
         }
 
         // Pagination loop
-        var all_replays = std.ArrayList(u8).init(allocator);
-        try all_replays.append('[');
+        var all_replays = std.ArrayList(u8).empty;
+        try all_replays.append(allocator, '[');
 
         var page: usize = 1;
         var first = true;
@@ -161,42 +168,46 @@ pub fn fetchReplay(_: *state.State, req: *httpz.Request, res: *httpz.Response) !
                 .{ cleaned_username, page },
             );
 
-            var replay_response_body = std.ArrayList(u8).init(allocator);
-            defer replay_response_body.deinit();
-
-            const replay_response = client.fetch(.{
-                .method = .GET,
-                .location = .{ .url = replay_url },
+            const replay_uri = try std.Uri.parse(replay_url);
+            var replay_request = try client.request(.GET, replay_uri, .{
                 .extra_headers = replay_headers,
-                .response_storage = .{ .dynamic = &replay_response_body },
-            }) catch |err| {
-                zlog.err("Failed to fetch page {d} replays: {s}", .{ page, @errorName(err) });
-                return err;
-            };
+            });
+            defer replay_request.deinit();
 
-            if (replay_response.status != .ok and replay_response.status != .no_content) {
+            // Send replay_requestuest
+            try replay_request.sendBodiless();
+
+            // Receive response
+            var replay_response = try replay_request.receiveHead(&.{});
+
+            if (replay_response.head.status != .ok and replay_response.head.status != .no_content) {
                 break;
             }
 
+            var writer = std.io.Writer.Allocating.init(allocator);
+            var reader = replay_response.reader(writer.writer.buffer);
+            _ = try reader.streamRemaining(&writer.writer);
+
+            const replay_response_body = try writer.toOwnedSlice();
             // The response is always prefixed with a ']' character
             // An empty page is `][]` or just `]`
-            if (replay_response_body.items.len <= 2) break; // '][' or ']'
-            const json_slice = replay_response_body.items[1..]; // skip the first ']'
+            if (replay_response_body.len <= 2) break; // '][' or ']'
+            const json_slice = replay_response_body[1..]; // skip the first ']'
 
             // If the page is empty (i.e., "[]"), break
             if (json_slice.len == 2 and std.mem.eql(u8, json_slice, "[]")) break;
 
             // Remove the surrounding [] from each page, join with commas
             if (json_slice.len > 2) {
-                if (!first) try all_replays.append(',');
+                if (!first) try all_replays.append(allocator, ',');
                 first = false;
-                try all_replays.appendSlice(json_slice[1 .. json_slice.len - 1]);
+                try all_replays.appendSlice(allocator, json_slice[1 .. json_slice.len - 1]);
             }
 
             page += 1;
         }
 
-        try all_replays.append(']');
+        try all_replays.append(allocator, ']');
 
         res.status = 200;
         res.headers.add("Content-Type", "application/json");
@@ -481,14 +492,13 @@ pub fn createReport(s: *state.State, req: *httpz.Request, res: *httpz.Response) 
             },
         };
 
-        const json_string = try std.json.stringifyAlloc(allocator, msgdata, .{});
-        defer allocator.free(json_string);
+        const json_message = try std.json.Stringify.valueAlloc(allocator, msgdata, .{});
 
         const response = try client.fetch(.{
             .method = .POST,
             .location = .{ .url = s.config.webhook },
             .extra_headers = headers,
-            .payload = json_string,
+            .payload = json_message,
         });
 
         if (response.status != .ok and response.status != .no_content) {

@@ -47,6 +47,8 @@ const max_line_len = @floor(65 * 1.25);
 const max_lines_per_item = @floor(16 * 1.25);
 const showdown_box_size = 24;
 
+const ARRAY_LIST_INITIAL_CAPACITY = 1024;
+
 // Return code:
 // 0 - success
 // 1 - item too many bytes
@@ -63,7 +65,10 @@ export fn validatePaste(pastePtr: [*]u8, paste_len: usize) usize {
     const paste = pastePtr[0..paste_len];
 
     var iter = std.mem.splitSequence(u8, paste, "\n\n");
-    var items = std.ArrayList([]const u8).init(allocator);
+    var items = std.ArrayList([]const u8).initCapacity(allocator, ARRAY_LIST_INITIAL_CAPACITY) catch {
+        consoleLog("Failed to allocate array list", .{});
+        @panic("failed to allocate array list");
+    };
 
     while (iter.next()) |item| {
         if (item.len == 0) continue;
@@ -130,7 +135,7 @@ export fn validatePaste(pastePtr: [*]u8, paste_len: usize) usize {
         }
         if (line_count > max_lines_per_item) return 4;
 
-        items.append(item) catch return 5;
+        items.append(allocator, item) catch return 5;
 
         if (items.items.len > showdown_box_size) {
             return 6;
@@ -200,22 +205,22 @@ export fn destroyPaste(pointer: usize) void {
 
 // Returns an HTML-sanitized, null-terminated string.
 fn sanitize(str: []const u8) [:0]const u8 {
-    var output = std.ArrayList(u8).init(allocator);
-    defer output.deinit();
+    var output = std.ArrayList(u8).initCapacity(allocator, str.len) catch @panic("failed to allocate array list");
+    defer output.deinit(allocator);
 
     var it = std.unicode.Utf8Iterator{ .bytes = str, .i = 0 };
     while (it.nextCodepoint()) |cp| {
         switch (cp) {
-            '<' => output.appendSlice("&lt;") catch @panic("failed to append slice"),
-            '>' => output.appendSlice("&gt;") catch @panic("failed to append slice"),
-            '&' => output.appendSlice("&amp;") catch @panic("failed to append slice"),
-            '"' => output.appendSlice("&quot;") catch @panic("failed to append slice"),
-            '\'' => output.appendSlice("&apos;") catch @panic("failed to append slice"),
+            '<' => output.appendSlice(allocator, "&lt;") catch @panic("failed to append slice"),
+            '>' => output.appendSlice(allocator, "&gt;") catch @panic("failed to append slice"),
+            '&' => output.appendSlice(allocator, "&amp;") catch @panic("failed to append slice"),
+            '"' => output.appendSlice(allocator, "&quot;") catch @panic("failed to append slice"),
+            '\'' => output.appendSlice(allocator, "&apos;") catch @panic("failed to append slice"),
             else => {
                 // Append the codepoint as UTF-8
                 var buf: [4]u8 = undefined;
                 const len = std.unicode.utf8Encode(cp, &buf) catch @panic("utf8 encode failed");
-                output.appendSlice(buf[0..len]) catch @panic("failed to append");
+                output.appendSlice(allocator, buf[0..len]) catch @panic("failed to append");
             },
         }
     }
@@ -293,9 +298,9 @@ fn searchLike(search: []const u8) ?SearchValue {
     // Try searching on the individual parts
     const old_pattern = search;
     var patIter = std.mem.splitScalar(u8, search, '-');
-    var items = std.ArrayList([]const u8).init(allocator);
+    var items = std.ArrayList([]const u8).initCapacity(allocator, ARRAY_LIST_INITIAL_CAPACITY) catch @panic("failed to allocate array list");
     while (patIter.next()) |item| {
-        items.append(item) catch @panic("failed to append item");
+        items.append(allocator, item) catch @panic("failed to append item");
     }
 
     while (items.items.len > 1) {
@@ -325,7 +330,7 @@ fn getImageLink(item: []const u8) [*:0]const u8 {
         const sprite_num: i64 = v.spritenum;
         const top: i64 = @divFloor(sprite_num, 16) * 24 * 2;
         const left: i64 = @mod(sprite_num, 16) * 24 * 2;
-        return std.fmt.allocPrintZ(allocator, "background: transparent url(\"assets/sprites\") -{d}px -{d}px no-repeat;", .{ left, top }) catch @panic("failed to allocate sprite");
+        return std.fmt.allocPrintSentinel(allocator, "background: transparent url(\"assets/sprites\") -{d}px -{d}px no-repeat;", .{ left, top }, 0) catch @panic("failed to allocate sprite");
     } else {
         return missing;
     }
@@ -394,17 +399,17 @@ fn getImage(raw_pokemon: []const u8, is_female: bool, is_shiny: bool, twoDImages
         const random_decoration_idx = utils.getRand().?.*.random().intRangeAtMost(usize, 0, alcremie_decorations.len - 1);
         const decoration = alcremie_decorations[random_decoration_idx];
         if (is_shiny) {
-            return std.fmt.allocPrintZ(allocator, "{s}/shiny/869-{s}.png", .{ base_path, decoration }) catch @panic("failed to allocate sprite");
+            return std.fmt.allocPrintSentinel(allocator, "{s}/shiny/869-{s}.png", .{ base_path, decoration }, 0) catch @panic("failed to allocate sprite");
         }
         const flavor = getFlavor(pokemon);
-        return std.fmt.allocPrintZ(allocator, "{s}/869-{s}-{s}.png", .{ base_path, flavor, decoration }) catch @panic("failed to allocate sprite");
+        return std.fmt.allocPrintSentinel(allocator, "{s}/869-{s}-{s}.png", .{ base_path, flavor, decoration }, 0) catch @panic("failed to allocate sprite");
     }
 
     const value = data.POKEMON.get(pokemon);
     if (value) |v| {
         if (is_shiny and v.has_shiny) {
             if (twoDImages) {
-                const id_str = std.fmt.allocPrint(allocator, "{d}", .{v.id}) catch @panic("failed to allocate sprite");
+                const id_str = std.fmt.allocPrint(allocator, "{s}", .{v.id}) catch @panic("failed to allocate sprite");
                 defer allocator.free(id_str);
                 if (data.MISSING_SHINIES.get(id_str) == null) {
                     base_path = std.fs.path.join(allocator, &[_][]const u8{ base_path, "shiny" }) catch @panic("failed to allocate sprite");
@@ -418,14 +423,14 @@ fn getImage(raw_pokemon: []const u8, is_female: bool, is_shiny: bool, twoDImages
             base_path = std.fs.path.join(allocator, &[_][]const u8{ base_path, "female" }) catch @panic("failed to allocate sprite");
         }
 
-        return std.fmt.allocPrintZ(allocator, "{s}/{d}.png", .{ base_path, v.id }) catch @panic("failed to allocate sprite");
+        return std.fmt.allocPrintSentinel(allocator, "{s}/{s}.png", .{ base_path, v.id }, 0) catch @panic("failed to allocate sprite");
     }
 
     const search_like_value = searchLike(pokemon);
     if (search_like_value) |v| {
         if (is_shiny and v.value.has_shiny) {
             if (twoDImages) {
-                const id_str = std.fmt.allocPrint(allocator, "{d}", .{v.value.id}) catch @panic("failed to allocate sprite");
+                const id_str = std.fmt.allocPrint(allocator, "{s}", .{v.value.id}) catch @panic("failed to allocate sprite");
                 defer allocator.free(id_str);
                 if (data.MISSING_SHINIES.get(id_str) == null) {
                     base_path = std.fs.path.join(allocator, &[_][]const u8{ base_path, "shiny" }) catch @panic("failed to allocate sprite");
@@ -437,7 +442,7 @@ fn getImage(raw_pokemon: []const u8, is_female: bool, is_shiny: bool, twoDImages
         if (is_female and v.value.has_female and !twoDImages) {
             base_path = std.fs.path.join(allocator, &[_][]const u8{ base_path, "female" }) catch @panic("failed to allocate sprite");
         }
-        return std.fmt.allocPrintZ(allocator, "{s}/{d}.png", .{ base_path, v.value.id }) catch @panic("failed to allocate sprite");
+        return std.fmt.allocPrintSentinel(allocator, "{s}/{s}.png", .{ base_path, v.value.id }, 0) catch @panic("failed to allocate sprite");
     }
 
     var items = std.mem.splitScalar(u8, pokemon, '-');
@@ -445,11 +450,11 @@ fn getImage(raw_pokemon: []const u8, is_female: bool, is_shiny: bool, twoDImages
     const species_value = data.POKEMON.get(species);
     if (species_value) |v| {
         const remaining = items.rest();
-        const id = std.fmt.allocPrintZ(allocator, "{d}-{s}", .{ v.id, remaining }) catch @panic("failed to allocate sprite");
+        const id = std.fmt.allocPrintSentinel(allocator, "{s}-{s}", .{ v.id, remaining }, 0) catch @panic("failed to allocate sprite");
 
         if (is_shiny and v.has_shiny) {
             if (twoDImages) {
-                const id_str = std.fmt.allocPrint(allocator, "{d}", .{v.id}) catch @panic("failed to allocate sprite");
+                const id_str = std.fmt.allocPrint(allocator, "{s}", .{v.id}) catch @panic("failed to allocate sprite");
                 defer allocator.free(id_str);
                 if (data.MISSING_SHINIES.get(id_str) == null) {
                     base_path = std.fs.path.join(allocator, &[_][]const u8{ base_path, "shiny" }) catch @panic("failed to allocate sprite");
@@ -461,10 +466,10 @@ fn getImage(raw_pokemon: []const u8, is_female: bool, is_shiny: bool, twoDImages
         if (is_female and v.has_female and !twoDImages) {
             base_path = std.fs.path.join(allocator, &[_][]const u8{ base_path, "female" }) catch @panic("failed to allocate sprite");
         }
-        return std.fmt.allocPrintZ(allocator, "{s}/{s}.png", .{ base_path, id }) catch @panic("failed to allocate sprite");
+        return std.fmt.allocPrintSentinel(allocator, "{s}/{s}.png", .{ base_path, id }, 0) catch @panic("failed to allocate sprite");
     }
 
-    const egg_path = std.fmt.allocPrintZ(allocator, "home/0.png", .{}) catch @panic("failed to allocate sprite");
+    const egg_path = std.fmt.allocPrintSentinel(allocator, "home/0.png", .{}, 0) catch @panic("failed to allocate sprite");
     return egg_path;
 }
 
@@ -479,11 +484,11 @@ fn parseEvIvLineNew(line: []const u8, base_value: usize) !statResult {
 
     const stats = iter.rest();
 
-    var items = std.ArrayList([]const u8).init(allocator);
-    defer items.deinit();
+    var items = try std.ArrayList([]const u8).initCapacity(allocator, ARRAY_LIST_INITIAL_CAPACITY);
+    defer items.deinit(allocator);
     var stat_iter = std.mem.splitScalar(u8, trim(stats), '/');
     while (stat_iter.next()) |item| {
-        try items.append(item);
+        try items.append(allocator, item);
     }
 
     var nature: []const u8 = "";
@@ -605,11 +610,11 @@ const VersionReturn = struct {
 fn isNewVersion(pokemonText: []const u8) !VersionReturn {
     var iter = std.mem.splitScalar(u8, pokemonText, '\n');
 
-    var lines = std.ArrayList([]const u8).init(allocator);
-    defer lines.deinit();
+    var lines = try std.ArrayList([]const u8).initCapacity(allocator, ARRAY_LIST_INITIAL_CAPACITY);
+    defer lines.deinit(allocator);
 
     while (iter.next()) |line| {
-        try lines.append(line);
+        try lines.append(allocator, line);
     }
 
     var isNew = false;
@@ -620,17 +625,19 @@ fn isNewVersion(pokemonText: []const u8) !VersionReturn {
     }
 
     const result = VersionReturn{
-        .lines = try lines.toOwnedSlice(),
+        .lines = try lines.toOwnedSlice(allocator),
         .isNewVersion = isNew,
     };
 
     return result;
 }
 
+const EXPECTED_MOVES_COUNT = 4;
+
 fn parsePokemonFromLines(lines: [][]const u8, twoDImages: bool, fullMonText: []const u8) !*Pokemon {
     var pokemon = initPokemon();
-    var moves = std.ArrayList(*Move).init(allocator);
-    var other_lines = std.ArrayList([]const u8).init(allocator);
+    var moves = try std.ArrayList(*Move).initCapacity(allocator, EXPECTED_MOVES_COUNT);
+    var other_lines = try std.ArrayList([]const u8).initCapacity(allocator, ARRAY_LIST_INITIAL_CAPACITY);
 
     for (0..lines.len) |line_idx| {
         const line = lines[line_idx];
@@ -709,7 +716,7 @@ fn parsePokemonFromLines(lines: [][]const u8, twoDImages: bool, fullMonText: []c
             }
             allocator.free(move_lookup);
 
-            moves.append(move) catch @panic("failed to append move");
+            moves.append(allocator, move) catch @panic("failed to append move");
         } else if (std.mem.startsWith(u8, line, "EVs:")) {
             pokemon.evs = try parseEvIvLine(line, 0);
             var idx: i64 = 5;
@@ -761,7 +768,7 @@ fn parsePokemonFromLines(lines: [][]const u8, twoDImages: bool, fullMonText: []c
         } else if (std.mem.endsWith(u8, trim(line), "Nature")) {
             pokemon.nature = sanitize(trim(line));
         } else {
-            try other_lines.append(trim(line));
+            try other_lines.append(allocator, trim(line));
         }
     }
 
@@ -789,8 +796,8 @@ fn parsePokemonFromLines(lines: [][]const u8, twoDImages: bool, fullMonText: []c
 fn parsePokemonFromLinesNew(lines: [][]const u8, twoDImages: bool) !*Pokemon {
     const pokemon = initPokemon();
 
-    var moves = std.ArrayList(*Move).init(allocator);
-    var other_lines = std.ArrayList([]const u8).init(allocator);
+    var moves = try std.ArrayList(*Move).initCapacity(allocator, EXPECTED_MOVES_COUNT);
+    var other_lines = try std.ArrayList([]const u8).initCapacity(allocator, ARRAY_LIST_INITIAL_CAPACITY);
 
     for (0..lines.len) |line_idx| {
         const line = lines[line_idx];
@@ -859,7 +866,7 @@ fn parsePokemonFromLinesNew(lines: [][]const u8, twoDImages: bool) !*Pokemon {
             }
             allocator.free(move_lookup);
 
-            moves.append(move) catch @panic("failed to append move");
+            moves.append(allocator, move) catch @panic("failed to append move");
         } else if (std.mem.startsWith(u8, line, "EVs: ")) {
             const evStats = try parseEvIvLineNew(line, 0);
             pokemon.evs = evStats.stats;
@@ -912,7 +919,7 @@ fn parsePokemonFromLinesNew(lines: [][]const u8, twoDImages: bool) !*Pokemon {
         } else if (std.mem.startsWith(u8, line, "Tera Type: ")) {
             pokemon.tera_type = sanitize(trim(line[10..]));
         } else {
-            try other_lines.append(trim(line));
+            try other_lines.append(allocator, trim(line));
         }
     }
 
@@ -968,6 +975,8 @@ fn parsePokemon(item: []const u8, twoDImages: bool) !*Pokemon {
     return parsePokemonFromLinesNew(result.lines, twoDImages);
 }
 
+const EXPECTED_POKEMON_COUNT = 6;
+
 export fn parsePaste(buffer: [*]u8, buffer_len: usize, twoDimages: bool) *Paste {
     data.init() catch |err| {
         consoleLog("Failed to initialize data - {any}", .{err});
@@ -1014,7 +1023,7 @@ export fn parsePaste(buffer: [*]u8, buffer_len: usize, twoDimages: bool) *Paste 
         paste.notes = sanitize(value.notes);
     }
 
-    var pokemon_list = std.ArrayList(*Pokemon).init(allocator);
+    var pokemon_list = std.ArrayList(*Pokemon).initCapacity(allocator, EXPECTED_POKEMON_COUNT) catch @panic("failed to allocate pokemon list");
 
     var iter = std.mem.splitSequence(u8, value.content, "\n\n");
     while (iter.next()) |item| {
@@ -1026,7 +1035,7 @@ export fn parsePaste(buffer: [*]u8, buffer_len: usize, twoDimages: bool) *Paste 
             consoleLog("Failed to parse pokemon: {any}", .{err});
             @panic("Failed to parse pokemon");
         };
-        pokemon_list.append(pokemon) catch @panic("failed to append pokemon");
+        pokemon_list.append(allocator, pokemon) catch @panic("failed to append pokemon");
     }
 
     paste.pokemon_len = pokemon_list.items.len;

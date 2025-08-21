@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/release-24.11";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/release-25.05";
     flake-utils.url = "github:numtide/flake-utils";
 
     # Uncomment this if you want to use Zig via Flake -- I prefer to use the tip of master as opposed to nightly.
@@ -31,13 +31,13 @@
         pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
 
         # zigVersion = "master";
-        
+
         # Check if the current system is Linux
         isLinux = builtins.match ".*linux.*" system != null;
-        
+
         # Conditionally include valgrind only on Linux
         valgrindPackage = if isLinux then [ pkgs-unstable.valgrind ] else [];
-        
+
         # Conditionally include valgrind-related shell hook text
         valgrindHook = if isLinux then ''
           echo "Valgrind version: $(valgrind --version)"
@@ -47,14 +47,12 @@
       {
         devShells.default = pkgs-stable.mkShell {
           buildInputs = [
-
-            # Enable these if you want to use Zig via Flake -- I prefer to use the tip of master as opposed to nightly.
-            # zig.packages.${system}.${zigVersion}
-            # pkgs-stable.zls
-
             pkgs-stable.yq
+            # pkgs-stable.pkgsCross.gnu64.openssl
+            # pkgs-stable.pkgsCross.gnu64.glibc
+            # pkgs-stable.pkgsCross.gnu64.gcc
             pkgs-stable.brotli
-            pkgs-unstable.blueprint-compiler # remove once blueprint-compiler 0.16.0 is in the stable nixpkgs
+            pkgs-stable.pkg-config
           ] ++ valgrindPackage;
 
           shellHook = ''

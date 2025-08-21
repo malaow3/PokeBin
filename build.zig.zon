@@ -19,32 +19,32 @@
 
     // Tracks the earliest Zig version that the package considers to be a
     // supported use case.
-    .minimum_zig_version = "0.14.0",
+    .minimum_zig_version = "0.15.1",
 
     .dependencies = .{
         .zlog = .{
-            .url = "git+https://github.com/max-legrand/zlog?ref=main#5bf1b4e877ae52cbbec127e30a4885bc95e87dd8",
-            .hash = "zlog-0.0.0-_MGzdbBDAABfTEnaVhw1nSH-EN9J4x_Svt9M07fkn6Vd",
+            .url = "git+https://github.com/max-legrand/zlog?ref=main#859f8c69ba356fdd2d369e7b02a5e1f91f13406f",
+            .hash = "zlog-0.0.0-_MGzdQ5KAACOiyZ6PDfF9vzef43EVkL5VUfSxe9FfjQd",
         },
         .httpz = .{
-            .url = "git+https://github.com/karlseguin/http.zig?ref=master#ef50c6878c3c512786e3311df657eb425b87ba91",
-            .hash = "httpz-0.0.0-PNVzrAvCBgDPm4lE3vCQekPyCKAE2TIsbxly-GeS1_gl",
+            .url = "git+https://github.com/karlseguin/http.zig?ref=master#c36e80f9cff70a0e2fc910cf647e2689374df58a",
+            .hash = "httpz-0.0.0-PNVzrFDABgDZtfzmUsdvwogq6pVjIwUUd2WNOl2mJCgk",
         },
         .zul = .{
-            .url = "git+https://github.com/karlseguin/zul#d9142c73aedc5698beba58b3fbf2bcfe69864778",
-            .hash = "zul-0.0.0-1oDot0BCBwA9cUo5OOrPs5NGmvoM7sk1ztfbdfL7mh4P",
+            .url = "git+https://github.com/karlseguin/zul?ref=master#9dff2f294807b12944bc1025b121f33c61748767",
+            .hash = "zul-0.0.0-1oDot06QBwAogVwyG0VAUIUbJnOOfsK7f25t66lFJZi7",
         },
         .brotli = .{
-            .url = "git+https://github.com/max-legrand/brotli?ref=zig-build#74d99fd67e6c89812714a0b486b199de78a413bf",
-            .hash = "brotli-0.0.0-lm3Mv610IQAZ-HH7P3FPTMZn5sy9OhfRW0G97qYaFeNv",
+            .url = "git+https://github.com/max-legrand/brotli?ref=zig-build#b25c56611c1273f874e329cba353fcba45e3e81e",
+            .hash = "brotli-0.0.0-lm3Mvx51IQD3catHxcBaVun4pL5zAcWxrbB0pSKVQVf8",
         },
         .pg = .{
-            .url = "git+https://github.com/karlseguin/pg.zig?ref=master#901c289368f0eae8e37ca90e3f806be9e3ff86f9",
-            .hash = "pg-0.0.0-Wp_7gRD-BQCbDvJEahLsdoxUdlR7BsmvPnQyYdGyQzEE",
+            .url = "git+https://github.com/karlseguin/pg.zig?ref=master#4c2602bad095f9d85b16711d12aa3a2bc7e169cc",
+            .hash = "pg-0.0.0-Wp_7gQ8FBgCRArfpYn9OdkUhGOUHVRXxB6h9S6lYu7bC",
         },
         .qr = .{
-            .url = "git+https://github.com/max-legrand/qr?ref=main#10892410cef92f6c44af27602f1df6c15e2b9230",
-            .hash = "qr-0.0.0-mHFkTcYWAQC98CB88VmdyVOiQalneb6v41tPTZmyGY4Z",
+            .url = "git+https://github.com/max-legrand/qr?ref=main#bfcd6fd4833e7db0115600e1de135aa0085a38ed",
+            .hash = "qr-0.0.0-mHFkTeobAQBeFiQkSGIMVm7LyT1fXlfHo3C5Gd0SAJnf",
         },
     },
     .paths = .{
