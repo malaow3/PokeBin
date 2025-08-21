@@ -16,13 +16,6 @@ pub fn build(b: *std.Build) void {
     const brotli_lib = brotli_pkg.artifact("brotli");
 
     // -----------------------------------------------------------------------
-    const zlog = b.dependency("zlog", .{});
-    const http = b.dependency("httpz", .{});
-    const zul = b.dependency("zul", .{});
-    const pg = b.dependency("pg", .{});
-    const qr = b.dependency("qr", .{});
-
-    // -----------------------------------------------------------------------
     // Create modules (lib_mod, exe_mod)
     const lib_mod = b.createModule(.{
         .root_source_file = b.path("src/root.zig"),
@@ -34,6 +27,28 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
+
+    // if (target.query.os_tag == .linux) {
+    //     exe_mod.linkSystemLibrary("pthread", .{ .needed = true });
+    //     exe_mod.linkSystemLibrary("dl", .{ .needed = true });
+    //     exe_mod.linkSystemLibrary("c", .{ .needed = true });
+    //
+    //     lib_mod.linkSystemLibrary("pthread", .{ .needed = true });
+    //     lib_mod.linkSystemLibrary("dl", .{ .needed = true });
+    //     lib_mod.linkSystemLibrary("c", .{ .needed = true });
+    // }
+    // -----------------------------------------------------------------------
+    const zlog = b.dependency("zlog", .{});
+    const http = b.dependency("httpz", .{});
+    const zul = b.dependency("zul", .{});
+
+    const pg = b.dependency("pg", .{
+        .openssl_lib_name = @as([]const u8, "ssl"),
+        // .openssl_lib_path = openssl_lib_path,
+        // .openssl_include_path = openssl_include_path,
+    });
+    const qr = b.dependency("qr", .{});
+
     var options = std.Build.Step.Options.create(b);
     options.addOption([]const u8, "contents", build_zig_zon);
     exe_mod.addOptions("build.zig.zon", options);

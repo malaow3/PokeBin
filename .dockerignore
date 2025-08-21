@@ -5,8 +5,8 @@
 .git/
 .jj/
 web/
-wasm/
-src/
+# wasm/
+# src/
 scripts/
 extension/
 !web/dist

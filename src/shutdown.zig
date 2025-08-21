@@ -3,7 +3,7 @@ const builtin = @import("builtin");
 const httpz = @import("httpz");
 const main = @import("main.zig");
 
-fn shutdown(_: c_int) callconv(.C) void {
+fn shutdown(_: c_int) callconv(.c) void {
     if (main.server_instance) |server| {
         main.server_instance = null;
         server.stop();
@@ -26,12 +26,12 @@ pub fn initSigHandler() void {
     } else {
         std.posix.sigaction(std.posix.SIG.INT, &.{
             .handler = .{ .handler = shutdown },
-            .mask = std.posix.empty_sigset,
+            .mask = std.posix.sigemptyset(),
             .flags = 0,
         }, null);
         std.posix.sigaction(std.posix.SIG.TERM, &.{
             .handler = .{ .handler = shutdown },
-            .mask = std.posix.empty_sigset,
+            .mask = std.posix.sigemptyset(),
             .flags = 0,
         }, null);
     }
