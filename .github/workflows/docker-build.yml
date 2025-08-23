@@ -25,3 +25,10 @@ jobs:
           push: true
           platforms: linux/amd64
           tags: ghcr.io/${{ github.repository_owner }}/pokebin:latest
+
+      - name: Trigger Coolify redeploy
+        run: |
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.COOLIFY_AUTH}}" \
+            ${{ secrets.COOLIFY_WEBHOOK }}
