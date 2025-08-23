@@ -35,8 +35,8 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Copy the built binary and wasm outputs
-COPY --from=build /app/zig-out/bin/pokebin /usr/local/bin/pokebin
-COPY --from=build /app/zig-out/bin/*.wasm* /app/
+COPY --from=build /app/zig-out/bin/pokebin zig-out/bin/pokebin
+COPY --from=build /app/zig-out/bin/*.wasm* zig-out/bin/
 
 # Copy static assets
 COPY web/dist web/dist
@@ -44,4 +44,4 @@ COPY home home
 # COPY .env .
 COPY robots.txt robots.txt
 
-CMD ["pokebin"]
+CMD ["zig-out/bin/pokebin"]
