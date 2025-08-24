@@ -1,5 +1,4 @@
 const std = @import("std");
-const brotli = @import("src/brotli.zig");
 const build_zig_zon = @embedFile("build.zig.zon");
 
 const wasm_file_name = "wasm";
@@ -28,24 +27,12 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
-    // if (target.query.os_tag == .linux) {
-    //     exe_mod.linkSystemLibrary("pthread", .{ .needed = true });
-    //     exe_mod.linkSystemLibrary("dl", .{ .needed = true });
-    //     exe_mod.linkSystemLibrary("c", .{ .needed = true });
-    //
-    //     lib_mod.linkSystemLibrary("pthread", .{ .needed = true });
-    //     lib_mod.linkSystemLibrary("dl", .{ .needed = true });
-    //     lib_mod.linkSystemLibrary("c", .{ .needed = true });
-    // }
-    // -----------------------------------------------------------------------
     const zlog = b.dependency("zlog", .{});
     const http = b.dependency("httpz", .{});
     const zul = b.dependency("zul", .{});
 
     const pg = b.dependency("pg", .{
-        .openssl_lib_name = @as([]const u8, "ssl"),
-        // .openssl_lib_path = openssl_lib_path,
-        // .openssl_include_path = openssl_include_path,
+        .openssl_lib_name = "ssl",
     });
     const qr = b.dependency("qr", .{});
 
@@ -161,39 +148,14 @@ pub fn build(b: *std.Build) void {
 
 // -----------------------------------------------------------------------
 // Function to compress the WASM file
-fn makeWasm(step: *std.Build.Step, options: std.Build.Step.MakeOptions) anyerror!void {
-    std.debug.print("Compressing WASM file\n", .{});
-    _ = options;
+fn makeWasm(step: *std.Build.Step, _: std.Build.Step.MakeOptions) anyerror!void {
     const b = step.owner;
     const allocator = b.allocator;
-
-    // Get install directory. This is where zig will put the file
-    const output_dir = b.install_path;
-    const bin_dir = std.fs.path.join(allocator, &.{ output_dir, "bin" }) catch unreachable;
-    defer allocator.free(bin_dir);
-
-    var wasm_file_ext = std.fmt.allocPrint(allocator, "{s}.wasm", .{wasm_file_name}) catch unreachable;
-    var wasm_file_path = std.fs.path.join(allocator, &.{ bin_dir, wasm_file_ext }) catch unreachable;
-
-    std.debug.print("wasm_file_path: {s}\n", .{wasm_file_path});
-
-    var compressed_file_name = std.fmt.allocPrint(allocator, "{s}.br", .{wasm_file_ext}) catch unreachable;
-    var compressed_file_path = std.fs.path.join(allocator, &.{ bin_dir, compressed_file_name }) catch unreachable;
-
-    // Compress WASM data
-    try brotli.compressWithBrotli(allocator, wasm_file_path, compressed_file_path);
-    std.debug.print("Compressed WASM file: {s} -> {s}\n", .{ wasm_file_path, compressed_file_path });
-
-    wasm_file_ext = std.fmt.allocPrint(allocator, "web_wasm.wasm", .{}) catch unreachable;
-    wasm_file_path = std.fs.path.join(allocator, &.{ bin_dir, wasm_file_ext }) catch unreachable;
-
-    std.debug.print("wasm_file_path: {s}\n", .{wasm_file_path});
-
-    compressed_file_name = std.fmt.allocPrint(allocator, "{s}.br", .{wasm_file_ext}) catch unreachable;
-    compressed_file_path = std.fs.path.join(allocator, &.{ bin_dir, compressed_file_name }) catch unreachable;
-
-    // Compress WASM data
-    try brotli.compressWithBrotli(allocator, wasm_file_path, compressed_file_path);
-
-    std.debug.print("Compressed WASM file: {s} -> {s}\n", .{ wasm_file_path, compressed_file_path });
+    //
+    std.debug.print("Compressing WASM file\n", .{});
+    var child = std.process.Child.init(
+        &.{ "bash", "compress-wasm.sh" },
+        allocator,
+    );
+    _ = try child.spawnAndWait();
 }

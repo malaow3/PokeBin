@@ -2,87 +2,61 @@
   description = "PokeBin Zig development environment";
 
   inputs = {
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/release-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-
-    # Uncomment this if you want to use Zig via Flake -- I prefer to use the tip of master as opposed to nightly.
-    #
-    # zig = {
-    #   url = "github:mitchellh/zig-overlay";
-    #   inputs = {
-    #     nixpkgs.follows = "nixpkgs-stable";
-    #     flake-utils.follows = "flake-utils";
-    #   };
-    # };
   };
 
-  outputs = {
-    self,
-    nixpkgs-unstable,
-    nixpkgs-stable,
-    flake-utils,
-    # zig,
-    ...
-  }:
+  outputs = { self, nixpkgs, flake-utils, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs-stable = nixpkgs-stable.legacyPackages.${system};
-        pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
+        pkgs = nixpkgs.legacyPackages.${system};
 
-        # zigVersion = "master";
-
-        # Check if the current system is Linux
+        # Detect platform
         isLinux = builtins.match ".*linux.*" system != null;
+        isDarwin = builtins.match ".*darwin.*" system != null;
 
-        # Conditionally include valgrind only on Linux
-        valgrindPackage = if isLinux then [ pkgs-unstable.valgrind ] else [];
-
-        # Conditionally include valgrind-related shell hook text
-        valgrindHook = if isLinux then ''
-          echo "Valgrind version: $(valgrind --version)"
-          echo "  valgrind --leak-check=full ./zig-out/bin/pokebin_zig - Check for memory leaks"
-        '' else "";
+        # Cross toolchain (Linux target)
+        cross = pkgs.pkgsCross.gnu64;
       in
       {
-        devShells.default = pkgs-stable.mkShell {
-          buildInputs = [
-            pkgs-stable.yq
-            # pkgs-stable.pkgsCross.gnu64.openssl
-            # pkgs-stable.pkgsCross.gnu64.glibc
-            # pkgs-stable.pkgsCross.gnu64.gcc
-            pkgs-stable.brotli
-            pkgs-stable.pkg-config
-          ] ++ valgrindPackage;
+        # Native dev shell
+        devShells.default = pkgs.mkShell {
+          buildInputs =
+            [
+              pkgs.yq
+              pkgs.brotli
+              pkgs.pkg-config
+            ]
+            ++ (if isLinux then [ pkgs.openssl ] else [])
+            ++ (if isDarwin then [ pkgs.openssl ] else []); # or rely on Homebrew
 
           shellHook = ''
-            echo "PokeBin Zig development environment"
-            echo "Zig version: $(zig version)"
-            ${valgrindHook}
-            echo ""
-            echo "Useful commands:"
-            echo "  zig build        - Build the project"
-            echo "  zig build run    - Run the project"
-            echo "  zig build test   - Run tests"
-            echo ""
+            if [[ "$(uname)" == "Darwin" ]]; then
+              export OPENSSL_LIB_PATH="$(brew --prefix openssl)/lib"
+              export OPENSSL_INCLUDE_PATH="$(brew --prefix openssl)/include"
+            else
+              export OPENSSL_LIB_PATH=${pkgs.openssl.out}/lib
+              export OPENSSL_INCLUDE_PATH=${pkgs.openssl.dev}/include
+            fi
+
+            echo "Native devShell for ${system}"
           '';
         };
 
-        packages.default = pkgs-unstable.stdenv.mkDerivation {
-          pname = "pokebin-zig";
-          version = "2.0.0";
-          src = pkgs-unstable.lib.cleanSource ./.;
-          strictDeps = true;
+        # Cross-compilation dev shell (target = x86_64-linux)
+        devShells.cross = pkgs.mkShell {
+          buildInputs = [
+            cross.openssl
+            cross.glibc
+            cross.gcc
+            pkgs.brotli
+            pkgs.pkg-config
+          ];
 
-          # nativeBuildInputs = [ zig.packages.${system}.${zigVersion} ];
-
-          buildPhase = ''
-            zig build -Doptimize=ReleaseSafe
-          '';
-
-          installPhase = ''
-            mkdir -p $out/bin
-            cp zig-out/bin/pokebin_zig $out/bin/
+          shellHook = ''
+            export OPENSSL_LIB_PATH=${cross.openssl.out}/lib
+            export OPENSSL_INCLUDE_PATH=${cross.openssl.dev}/include
+            echo "Cross-compilation devShell (target = x86_64-linux)"
           '';
         };
       }
