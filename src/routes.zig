@@ -92,7 +92,7 @@ pub fn fetchReplay(_: *state.State, req: *httpz.Request, res: *httpz.Response) !
     };
 
     if (data) |d| {
-        const user = std.json.parseFromSlice(SDUser, allocator, d, .{}) catch |err| {
+        const user: std.json.Parsed(SDUser) = std.json.parseFromSlice(SDUser, allocator, d, .{}) catch |err| {
             zlog.err("Failed to parse JSON: {s}", .{@errorName(err)});
             return error.InvalidJSON;
         };
@@ -101,6 +101,7 @@ pub fn fetchReplay(_: *state.State, req: *httpz.Request, res: *httpz.Response) !
         var client = std.http.Client{
             .allocator = allocator,
         };
+        defer client.deinit();
 
         const headers = &[_]std.http.Header{
             .{ .name = "Content-Type", .value = "application/x-www-form-urlencoded" },
@@ -118,9 +119,7 @@ pub fn fetchReplay(_: *state.State, req: *httpz.Request, res: *httpz.Response) !
         defer request.deinit();
 
         request.transfer_encoding = .{ .content_length = body.len };
-        var body_writer = try request.sendBody(&.{});
-        try body_writer.writer.writeAll(body);
-        try body_writer.end();
+        try request.sendBodyComplete(body);
 
         const response = try request.receiveHead(&.{});
         if (response.head.status != .ok and response.head.status != .no_content) {
@@ -184,11 +183,17 @@ pub fn fetchReplay(_: *state.State, req: *httpz.Request, res: *httpz.Response) !
                 break;
             }
 
-            var writer = std.io.Writer.Allocating.init(allocator);
-            var reader = replay_response.reader(writer.writer.buffer);
-            _ = try reader.streamRemaining(&writer.writer);
+            var transfer_buf: [1024]u8 = undefined;
+            var decompress: std.http.Decompress = undefined;
+            var decompress_buf: [std.compress.flate.max_window_len]u8 = undefined;
 
-            const replay_response_body = try writer.toOwnedSlice();
+            const reader = replay_response.readerDecompressing(
+                &transfer_buf,
+                &decompress,
+                &decompress_buf,
+            );
+            const replay_response_body = try reader.allocRemaining(allocator, .unlimited);
+
             // The response is always prefixed with a ']' character
             // An empty page is `][]` or just `]`
             if (replay_response_body.len <= 2) break; // '][' or ']'

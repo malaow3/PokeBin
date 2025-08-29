@@ -35,16 +35,7 @@ pub fn main() !void {
     shutdown.initSigHandler();
 
     // Allocator setup
-    var gpa = std.heap.GeneralPurposeAllocator(.{}).init;
-    defer {
-        switch (gpa.deinit()) {
-            .ok => {},
-            .leak => std.debug.print("leaked memory\n", .{}),
-        }
-    }
-    const gpa_allocator = gpa.allocator();
-
-    var arena = std.heap.ArenaAllocator.init(gpa_allocator);
+    var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
     defer arena.deinit();
     const allocator = arena.allocator();
     // End allocator setup

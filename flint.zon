@@ -2,17 +2,17 @@
     .tasks = .{
         .{
             .name = "build",
-            .cmd = "zig build compress-wasm --release=safe --summary all -fincremental",
+            .cmd = "zig build compress-wasm --release=safe --summary all",
             .watcher = .{
-                "src/*",
-                "wasm/*",
+                "src/.*\\.zig",
+                "wasm/.*\\.zig",
             },
         },
         .{
             .name = "build-web",
             .cmd = "bun run build",
             .watcher = .{
-                "web/src/*",
+                "web/src/.*$",
             },
             .cwd = "web",
         },
@@ -20,7 +20,7 @@
             .name = "build-ext",
             .cmd = "./build.sh",
             .watcher = .{
-                "extension/src/*",
+                "extension/src/.*$",
             },
             .cwd = "extension",
         },
