@@ -169,7 +169,7 @@ function App() {
                     .slice("open team sheet for ".length);
                   let id: string;
                   // @ts-ignore
-                  if (window.PS.room) {
+                  if (window.PS) {
                     // @ts-ignore
                     id = window.PS.room.id;
                   } else {
