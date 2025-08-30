@@ -164,9 +164,9 @@ function App() {
 
                 const summary = child.querySelector("summary");
                 if (summary) {
-                  const user = summary.textContent?.slice(
-                    "Open Team Sheet for ".length,
-                  );
+                  const user = summary.textContent
+                    ?.toLowerCase()
+                    .slice("open team sheet for ".length);
                   let id: string;
                   // @ts-ignore
                   if (window.PS.room) {
@@ -185,7 +185,7 @@ function App() {
 
                     for (let j = 0; j < items.length; j++) {
                       const item = items[j];
-                      if (item.textContent?.includes("Format:")) {
+                      if (item.textContent?.toLowerCase().includes("format:")) {
                         const parent = item.parentElement;
                         const formatText =
                           parent?.querySelector("strong")?.textContent;
