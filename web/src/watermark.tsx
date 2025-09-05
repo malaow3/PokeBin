@@ -13,7 +13,7 @@ function Watermark() {
   function check() {
     const aspectRatio = window.innerWidth / window.innerHeight;
 
-    if (aspectRatio >= 1.84 && aspectRatio <= 1.87) {
+    if (aspectRatio >= 1.84 && aspectRatio <= 1.864) {
       setWidth("75px");
       setHeight("35px");
       setBottom("55px");
