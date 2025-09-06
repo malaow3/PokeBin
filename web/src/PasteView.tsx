@@ -31,9 +31,6 @@ function stripIvsEvs(pasteText: string): string {
     .join("\n");
 }
 
-const aspectRatio = window.innerWidth / window.innerHeight;
-console.log(aspectRatio);
-
 const PasteView = () => {
   const [paste, setPaste] = createSignal<Paste | null>(null);
   const [isEncrypted, setIsEncrypted] = createSignal(false);

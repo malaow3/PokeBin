@@ -14,7 +14,7 @@ type Props = {
   notesWidth: () => string;
   setNotesOpacity: (value: number) => void;
   notesOpacity: () => number;
-  copyPaste: () => void;
+  copyPaste: () => Promise<void>;
   setShowModal: (value: boolean) => void;
   showModal: () => boolean;
   sett: () => Settings;
@@ -78,6 +78,7 @@ export default function PasteViewNew(props: Props) {
 
   const [showQrModal, setShowQrModal] = createSignal(false);
   const [qrImageUrl, setQrImageUrl] = createSignal("");
+  const [copyStatus, setCopyStatus] = createSignal("Copy");
 
   return (
     <Show when={paste()}>
@@ -210,10 +211,16 @@ export default function PasteViewNew(props: Props) {
               <button
                 style={{ "user-select": "none" }}
                 type="submit"
-                onClick={copyPaste}
+                onClick={async () => {
+                  await copyPaste();
+                  setCopyStatus("Copied!");
+                  setTimeout(() => {
+                    setCopyStatus("Copy");
+                  }, 2000);
+                }}
                 class="cursor-pointer w-[175px] h-[30px] copy-button font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black py-1 rounded"
               >
-                Copy
+                {copyStatus()}
               </button>
               <button
                 class="cursor-pointer h-[30px] font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black w-[175px] py-1 rounded"

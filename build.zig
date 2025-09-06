@@ -107,11 +107,18 @@ pub fn build(b: *std.Build) void {
 
     // -----------------------------------------------------------------------
     // Create the main executable (pokebin)
+    var use_llvm = true;
+    if (target.query.os_tag) |tag| {
+        if (tag == .linux) {
+            use_llvm = false;
+        }
+    }
+
     const exe = b.addExecutable(.{
         .name = "pokebin",
         .root_module = exe_mod,
-        // .use_llvm = false,
-        // .use_lld = false,
+        .use_llvm = use_llvm,
+        // .use_lld = use_llvm_ldd,
     });
     b.installArtifact(exe); // Install the executable
     wasm_compress_step.dependOn(b.getInstallStep());

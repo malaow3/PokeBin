@@ -297,6 +297,10 @@ fn sanitize(str: []const u8) [:0]const u8 {
     return allocator.dupeZ(u8, output.items) catch @panic("failed to allocate sanitized string");
 }
 
+fn clean(str: []const u8) [:0]const u8 {
+    return allocator.dupeZ(u8, trim(str)) catch @panic("failed to allocate sanitized string");
+}
+
 fn initPokemon() *Pokemon {
     const pokemon = allocator.create(Pokemon) catch @panic("failed to allocate Pokemon");
     const pokemonStruct = Pokemon{
@@ -889,17 +893,17 @@ fn parsePokemonFromLines(lines: [][]const u8, twoDImages: bool, fullMonText: []c
                 else => @panic("Invalid IV index"),
             }
         } else if (std.mem.startsWith(u8, line, "Ability: ")) {
-            pokemon.ability = sanitize(trim(line[9..]));
+            pokemon.ability = clean(line[9..]);
         } else if (std.mem.startsWith(u8, line, "Level: ")) {
             pokemon.level = try std.fmt.parseInt(usize, trim(line[7..]), 10);
         } else if (std.mem.startsWith(u8, line, "Shiny: ")) {
-            pokemon.shiny = sanitize(trim(line[7..]));
+            pokemon.shiny = clean(line[7..]);
         } else if (std.mem.startsWith(u8, line, "Hidden Power: ")) {
-            pokemon.hidden_power = sanitize(trim(line[12..]));
+            pokemon.hidden_power = clean(line[12..]);
         } else if (std.mem.startsWith(u8, line, "Tera Type: ")) {
-            pokemon.tera_type = sanitize(trim(line[10..]));
+            pokemon.tera_type = clean(line[10..]);
         } else if (std.mem.endsWith(u8, trim(line), "Nature")) {
-            pokemon.nature = sanitize(trim(line));
+            pokemon.nature = clean(line);
         } else {
             try other_lines.append(allocator, trim(line));
         }
@@ -960,7 +964,7 @@ fn parsePokemonFromLinesNew(lines: [][]const u8, twoDImages: bool) !*Pokemon {
                     return error.InvalidPokemon;
                 };
                 const ability = line[1..end];
-                pokemon.ability = sanitize(trim(ability));
+                pokemon.ability = clean(ability);
             }
             if (std.mem.indexOf(u8, line, "@ ") != null) {
                 var split = std.mem.splitSequence(u8, line, "@ ");
@@ -969,7 +973,7 @@ fn parsePokemonFromLinesNew(lines: [][]const u8, twoDImages: bool) !*Pokemon {
                 const item_opt = split.next();
                 if (item_opt) |item| {
                     const trim_item = trim(item);
-                    pokemon.item = sanitize(trim_item);
+                    pokemon.item = clean(trim_item);
                     const remove_space = std.mem.replaceOwned(u8, allocator, trim_item, " ", "") catch @panic("failed to allocate sprite");
                     defer allocator.free(remove_space);
                     const remove_dash = std.mem.replaceOwned(u8, allocator, remove_space, "-", "") catch @panic("failed to allocate sprite");
@@ -982,7 +986,10 @@ fn parsePokemonFromLinesNew(lines: [][]const u8, twoDImages: bool) !*Pokemon {
                 }
             }
         } else if (line[0] == '-') {
-            const move_name = sanitize(trim(line[1..]));
+            const move_name = clean(line[1..]);
+            if (move_name.len == 0) {
+                continue;
+            }
             const move = try allocator.create(Move);
             const move_slug = try std.mem.replaceOwned(u8, allocator, move_name, " ", "-");
             const move_lookup = try std.ascii.allocLowerString(allocator, move_slug);
@@ -1046,9 +1053,9 @@ fn parsePokemonFromLinesNew(lines: [][]const u8, twoDImages: bool) !*Pokemon {
         } else if (std.mem.startsWith(u8, line, "Level: ")) {
             pokemon.level = try std.fmt.parseInt(usize, trim(line[7..]), 10);
         } else if (std.mem.startsWith(u8, line, "Hidden Power: ")) {
-            pokemon.hidden_power = sanitize(trim(line[12..]));
+            pokemon.hidden_power = clean(line[12..]);
         } else if (std.mem.startsWith(u8, line, "Tera Type: ")) {
-            pokemon.tera_type = sanitize(trim(line[10..]));
+            pokemon.tera_type = clean(line[10..]);
         } else {
             try other_lines.append(allocator, trim(line));
         }
