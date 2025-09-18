@@ -127,6 +127,7 @@ pub fn main() !void {
     router.get("/settings", routes.settings, .{});
     router.get("/recent", routes.recent, .{});
     // router.post("/qr", routes.qrCode, .{});
+    router.get("/api/screenshot", routes.handleScreenshotRequest, .{});
 
     zlog.info("Starting PokeBin!", .{});
     try server.listen();

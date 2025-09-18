@@ -37,6 +37,7 @@ pub fn getMimeType(filename: []const u8) ?httpz.ContentType {
 
 pub const State = struct {
     const Self = @This();
+
     allocator: std.mem.Allocator,
     pgpool: *psql.Pool,
     file_cache: std.StringHashMap(CachedFile),
@@ -44,6 +45,13 @@ pub const State = struct {
     config: lib.EnvConfig,
     conn_rwlock: std.Thread.RwLock,
     connections: usize,
+
+    // Screenshot queue handling
+    maximum_screenshot_jobs: usize = 10,
+    active_screenshot_jobs: usize = 0,
+    screenshot_semaphore: std.Thread.Semaphore = .{ .permits = 10 },
+    screenshot_lock: std.Thread.Mutex = .{},
+    screenshot_cond: std.Thread.Condition = .{},
 
     pub const WebsocketHandler = ws.Client;
 

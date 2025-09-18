@@ -3,6 +3,7 @@ import Watermark from "./watermark";
 import { type Accessor, For, Show, createSignal } from "solid-js";
 import { type Settings, updateSetting } from "./settings";
 import { SettingsForm } from "./settingsForm";
+import { getScreenshot } from "./utils";
 
 type Props = {
   paste: Accessor<Paste | null>;
@@ -44,6 +45,7 @@ export default function PasteViewBase(props: Props) {
   const [showQrModal, setShowQrModal] = createSignal(false);
   const [qrImageUrl, setQrImageUrl] = createSignal("");
   const [copyStatus, setCopyStatus] = createSignal("Copy");
+  const [working, setWorking] = createSignal(false);
 
   return (
     <Show when={paste()}>
@@ -173,46 +175,63 @@ export default function PasteViewBase(props: Props) {
               </div>
             </div>
             <div id="buttons">
-              <button
-                style={{ "user-select": "none" }}
-                type="submit"
-                onClick={async () => {
-                  await copyPaste();
-                  setCopyStatus("Copied!");
-                  setTimeout(() => {
-                    setCopyStatus("Copy");
-                  }, 2000);
-                }}
-                class="cursor-pointer w-[175px] h-[30px] copy-button font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black py-1 rounded"
-              >
-                {copyStatus()}
-              </button>
-              <button
-                class="cursor-pointer h-[30px] font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black w-[175px] py-1 rounded"
-                style={{ "user-select": "none" }}
-                type="button"
-                onClick={() => setShowModal(true)}
-              >
-                Settings
-              </button>
-              <button
-                class="cursor-pointer h-[30px] font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black w-[175px] py-1 rounded"
-                style={{ "user-select": "none" }}
-                type="button"
-                onClick={async () => {
-                  const location = window.location.href;
-                  const id = location.substring(location.lastIndexOf("/") + 1);
-                  const url = `https://pokebin.com/${id}`;
-                  const imgUrl = createQRCode(url);
-                  if (imgUrl === undefined) {
-                    return;
-                  }
-                  setQrImageUrl(imgUrl);
-                  setShowQrModal(true);
-                }}
-              >
-                QR
-              </button>
+              <div class="button-col">
+                <button
+                  style={{ "user-select": "none" }}
+                  type="submit"
+                  disabled={working()}
+                  onClick={() => {
+                    getScreenshot(working, setWorking);
+                  }}
+                  class="cursor-pointer w-[175px] h-[30px] copy-button font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black py-1 rounded"
+                >
+                  Screenshot
+                </button>
+                <button
+                  style={{ "user-select": "none" }}
+                  type="submit"
+                  onClick={async () => {
+                    await copyPaste();
+                    setCopyStatus("Copied!");
+                    setTimeout(() => {
+                      setCopyStatus("Copy");
+                    }, 2000);
+                  }}
+                  class="cursor-pointer w-[175px] h-[30px] copy-button font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black py-1 rounded"
+                >
+                  {copyStatus()}
+                </button>
+              </div>
+              <div class="button-col">
+                <button
+                  class="cursor-pointer h-[30px] font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black w-[175px] py-1 rounded"
+                  style={{ "user-select": "none" }}
+                  type="button"
+                  onClick={() => setShowModal(true)}
+                >
+                  Settings
+                </button>
+                <button
+                  class="cursor-pointer h-[30px] font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black w-[175px] py-1 rounded"
+                  style={{ "user-select": "none" }}
+                  type="button"
+                  onClick={async () => {
+                    const location = window.location.href;
+                    const id = location.substring(
+                      location.lastIndexOf("/") + 1,
+                    );
+                    const url = `https://pokebin.com/${id}`;
+                    const imgUrl = createQRCode(url);
+                    if (imgUrl === undefined) {
+                      return;
+                    }
+                    setQrImageUrl(imgUrl);
+                    setShowQrModal(true);
+                  }}
+                >
+                  QR
+                </button>
+              </div>
             </div>
           </div>
           <div class="main">

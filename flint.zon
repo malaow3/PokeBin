@@ -1,6 +1,14 @@
 .{
     .tasks = .{
         .{
+            .name = "build-debug",
+            .cmd = "zig build compress-wasm --summary all",
+            .watcher = .{
+                "src/.*\\.zig",
+                "wasm/.*\\.zig",
+            },
+        },
+        .{
             .name = "build",
             .cmd = "zig build compress-wasm --release=safe --summary all",
             .watcher = .{

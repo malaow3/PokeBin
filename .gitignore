@@ -15,3 +15,5 @@ extension-build
 
 scripts/.venv
 scripts/.mypy_cache
+
+screenshot/node_modules
