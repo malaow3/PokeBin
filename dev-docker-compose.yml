@@ -1,0 +1,11 @@
+services:
+  app:
+    build: .
+    ports:
+      - "4000:2000"
+    networks:
+      - coolify
+
+networks:
+  coolify:
+    external: true
