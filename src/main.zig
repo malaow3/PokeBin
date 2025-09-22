@@ -80,6 +80,11 @@ pub fn main() !void {
         zlog.info("Cache preload complete!", .{});
     }
 
+    var env = try std.process.getEnvMap(allocator);
+    defer env.deinit();
+    const port_str = env.get("PORT") orelse "2000";
+    const port = try std.fmt.parseInt(u16, port_str, 10);
+
     var server = try httpz.Server(*state.State).init(allocator, .{
         .thread_pool = .{ .count = 25 },
         .websocket = .{
@@ -93,7 +98,7 @@ pub fn main() !void {
             .count = 10,
         },
         .address = "0.0.0.0",
-        .port = 2000,
+        .port = port,
         .request = .{
             .max_form_count = 10,
             .max_param_count = 10,

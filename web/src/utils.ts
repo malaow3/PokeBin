@@ -7,11 +7,11 @@ export function getId(): string {
   return id;
 }
 
-export function getScreenshot(
+export async function getScreenshot(
   working: Accessor<boolean>,
   setWorking: (working: boolean) => void,
 ) {
-  async () => {
+  async function request() {
     if (working()) return;
     setWorking(true);
 
@@ -53,6 +53,8 @@ export function getScreenshot(
       console.error("SSE error:", err);
       evtSource.close();
       setWorking(false);
+      return;
     };
-  };
+  }
+  await request();
 }
