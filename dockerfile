@@ -3,34 +3,24 @@ FROM ubuntu:latest
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl \
-    gnupg \
-    ca-certificates \
-    git \
-    && rm -rf /var/lib/apt/lists/*
+    curl gnupg \
+    libssl3 ca-certificates git \
+    software-properties-common \
+    python3 python3-pip python3-venv \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Install Node.js 18 (LTS)
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN node --version && npm --version
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libnss3 \
-    libatk-bridge2.0-0 \
-    libdrm2 \
-    libxkbcommon0 \
-    libxcomposite1 \
-    libxdamage1 \
-    libxrandr2 \
-    libgbm1 \
-    libasound2 \
-    libgtk-3-0 \
-    libxss1 \
-    libxtst6 \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get install -y nodejs
 
 COPY web/dist web/dist
+COPY screenshot screenshot
+
+workdir /app/screenshot
+RUN npm install
+RUN npx playwright install --with-deps
+workdir /app
+
 COPY home home
 
 COPY dist/pokebin ./pokebin
@@ -38,11 +28,6 @@ COPY .env .
 COPY robots.txt robots.txt
 COPY dist/wasm.wasm.br zig-out/bin/wasm.wasm.br
 COPY dist/web_wasm.wasm.br zig-out/bin/web_wasm.wasm.br
-
-WORKDIR /screenshot
-COPY package.json .
-RUN npm install
-RUN npx playwright install --with-deps chromium
 
 RUN chmod +x ./pokebin
 CMD ["./pokebin"]
