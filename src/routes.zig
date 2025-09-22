@@ -663,9 +663,8 @@ fn generateScreenshot(allocator: std.mem.Allocator, id: []const u8) !void {
 
     const cwd = std.fs.cwd();
     const exe = switch (builtin.os.tag) {
-        .linux => try cwd.realpathAlloc(allocator, "screenshot/bun/linux/bun"),
-        .windows => try cwd.realpathAlloc(allocator, "screenshot/bun/win/bun.exe"),
-        .macos => try cwd.realpathAlloc(allocator, "screenshot/bun/mac/bun"),
+        .linux, .macos => "bun",
+        .windows => "bun.exe",
         else => @panic("Unsupported OS"),
     };
 
