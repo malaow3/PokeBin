@@ -216,8 +216,8 @@ export default function PasteViewNew(props: Props) {
                   style={{ "user-select": "none" }}
                   type="submit"
                   disabled={working()}
-                  onClick={() => {
-                    getScreenshot(working, setWorking);
+                  onClick={async () => {
+                    await getScreenshot(working, setWorking);
                   }}
                   class="cursor-pointer w-[175px] h-[30px] copy-button font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black py-1 rounded"
                 >
