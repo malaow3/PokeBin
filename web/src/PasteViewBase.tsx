@@ -3,7 +3,7 @@ import Watermark from "./watermark";
 import { type Accessor, For, Show, createSignal } from "solid-js";
 import { type Settings, updateSetting } from "./settings";
 import { SettingsForm } from "./settingsForm";
-import { getScreenshot } from "./utils";
+import { getId } from "./utils";
 
 type Props = {
   paste: Accessor<Paste | null>;
@@ -46,6 +46,7 @@ export default function PasteViewBase(props: Props) {
   const [qrImageUrl, setQrImageUrl] = createSignal("");
   const [copyStatus, setCopyStatus] = createSignal("Copy");
   const [working, setWorking] = createSignal(false);
+  const [screenshotStatus, setScreenshotStatus] = createSignal("Screenshot");
 
   return (
     <Show when={paste()}>
@@ -180,12 +181,10 @@ export default function PasteViewBase(props: Props) {
                   style={{ "user-select": "none" }}
                   type="submit"
                   disabled={working()}
-                  onClick={() => {
-                    getScreenshot(working, setWorking);
-                  }}
+                  onClick={async () => {}}
                   class="cursor-pointer w-[175px] h-[30px] copy-button font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black py-1 rounded"
                 >
-                  Screenshot
+                  {screenshotStatus()}
                 </button>
                 <button
                   style={{ "user-select": "none" }}

@@ -3,7 +3,7 @@ import Watermark from "./watermark";
 import { type Accessor, createSignal, For, Show } from "solid-js";
 import { updateSetting, type Settings } from "./settings";
 import { SettingsForm } from "./settingsForm";
-import { getScreenshot } from "./utils";
+import { getId } from "./utils";
 
 type Props = {
   paste: Accessor<Paste | null>;
@@ -77,11 +77,21 @@ export default function PasteViewNew(props: Props) {
   const isEncrypted = props.isEncrypted;
   const handleCreateOts = props.handleCreateOts;
 
-  const [working, setWorking] = createSignal(false);
+  const [working, setWorkingValue] = createSignal(false);
 
   const [showQrModal, setShowQrModal] = createSignal(false);
   const [qrImageUrl, setQrImageUrl] = createSignal("");
   const [copyStatus, setCopyStatus] = createSignal("Copy");
+  const [screenshotStatus, setScreenshotStatusValue] =
+    createSignal("Screenshot");
+
+  function setWorking(working: boolean) {
+    setWorkingValue(working);
+  }
+
+  function setScreenshotStatus(status: string) {
+    setScreenshotStatusValue(status);
+  }
 
   return (
     <Show when={paste()}>
@@ -217,11 +227,65 @@ export default function PasteViewNew(props: Props) {
                   type="submit"
                   disabled={working()}
                   onClick={async () => {
-                    await getScreenshot(working, setWorking);
+                    while (true) {
+                      if (working()) return;
+                      setWorking(true);
+                      setScreenshotStatus("Generating...");
+
+                      const id = getId();
+                      const evtSource = new EventSource(
+                        `/api/screenshot?id=${id}`,
+                      );
+
+                      evtSource.onmessage = (event) => {
+                        console.log(event);
+                        const data = JSON.parse(event.data);
+                        console.log(data);
+
+                        if (data.status === "done") {
+                          // Convert array to bytes → blob
+                          const byteArray = new Uint8Array(data.data);
+                          const blob = new Blob([byteArray], {
+                            type: "image/png",
+                          });
+                          const url = URL.createObjectURL(blob);
+
+                          // Trigger download
+                          const a = document.createElement("a");
+                          a.href = url;
+                          a.download = "screenshot.png";
+                          document.body.appendChild(a);
+                          a.click();
+                          document.body.removeChild(a);
+
+                          // Cleanup
+                          URL.revokeObjectURL(url);
+                          evtSource.close();
+                          setWorking(false);
+                          setScreenshotStatus("Screenshot");
+                          return; // very important, stop handler here
+                        }
+
+                        if (data.status === "waiting") {
+                          alert(
+                            "Your screenshot is queued, don't refresh the page! Your screenshot will be automatically downloaded once ready.",
+                          );
+                          setScreenshotStatus("Waiting...");
+                        }
+                      };
+
+                      evtSource.onerror = (err) => {
+                        console.error("SSE error:", err);
+                        evtSource.close();
+                        setWorking(false);
+                        setScreenshotStatus("Screenshot");
+                        return;
+                      };
+                    }
                   }}
                   class="cursor-pointer w-[175px] h-[30px] copy-button font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black py-1 rounded"
                 >
-                  Screenshot
+                  {screenshotStatus()}
                 </button>
 
                 <button
