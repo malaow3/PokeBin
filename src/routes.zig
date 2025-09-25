@@ -1,4 +1,5 @@
 const build_info = @import("build_info");
+const builtin = @import("builtin");
 const httpz = @import("httpz");
 const std = @import("std");
 const zlog = @import("zlog");
@@ -555,4 +556,129 @@ pub fn qrCode(_: *state.State, req: *httpz.Request, res: *httpz.Response) !void 
         res.body = "No referer header";
         return;
     }
+}
+
+pub fn handleScreenshotRequest(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
+    var query = try req.query();
+    const id = query.get("id") orelse return error.NoId;
+
+    try res.startEventStream(StreamContext{
+        .app = app,
+        .id = id,
+    }, StreamContext.handle);
+    return;
+}
+
+const StreamContext = struct {
+    app: *state.State,
+    id: []const u8,
+
+    const ScreenshotStatus = struct {
+        status: []const u8,
+        data: ?[]u8,
+    };
+
+    fn handle(self: StreamContext, stream: std.net.Stream) void {
+        var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
+        const allocator = arena.allocator();
+        defer arena.deinit();
+
+        var status = ScreenshotStatus{
+            .status = "waiting",
+            .data = null,
+        };
+
+        const app = self.app;
+
+        app.screenshot_lock.lock();
+
+        var msg: []const u8 = undefined;
+        var w = stream.writer(&.{});
+        var writer = &w.interface;
+
+        app.screenshot_semaphore.wait();
+        if (app.active_screenshot_jobs >= app.maximum_screenshot_jobs) {
+            const json_string = std.json.Stringify.valueAlloc(allocator, status, .{}) catch return;
+            msg = std.fmt.allocPrint(allocator, "data: {s}\n\n", .{json_string}) catch return;
+            writer.writeAll(msg) catch return;
+            writer.flush() catch return;
+            app.screenshot_cond.wait(&app.screenshot_lock);
+        }
+        app.screenshot_semaphore.post();
+        app.active_screenshot_jobs += 1;
+
+        // Release lock before doing work to avoid blocking other acquirers.
+        app.screenshot_lock.unlock();
+
+        // Defer the release: Re-lock, decrement, signal.
+        defer {
+            app.screenshot_lock.lock();
+            app.screenshot_semaphore.wait();
+            app.active_screenshot_jobs -= 1;
+            app.screenshot_cond.signal();
+            app.screenshot_semaphore.post();
+            app.screenshot_lock.unlock();
+        }
+        status.status = "generating";
+        var json_string = std.json.Stringify.valueAlloc(allocator, status, .{}) catch return;
+        msg = std.fmt.allocPrint(allocator, "data: {s}\n\n", .{json_string}) catch return;
+        writer.writeAll(msg) catch return;
+        writer.flush() catch return;
+
+        generateScreenshot(allocator, self.id) catch {
+            writer.writeAll("data: {\"status\": \"error\"}") catch return;
+            stream.close();
+            return;
+        };
+
+        const filename = std.fmt.allocPrint(allocator, "{s}.png", .{self.id}) catch return;
+        const filepath = std.fs.cwd().realpathAlloc(allocator, filename) catch return;
+
+        const file = std.fs.openFileAbsolute(filepath, .{}) catch {
+            status.status = "error";
+            json_string = std.json.Stringify.valueAlloc(allocator, status, .{}) catch return;
+            writer.writeAll(json_string) catch return;
+            stream.close();
+            return;
+        };
+        const data = file.readToEndAlloc(allocator, std.math.maxInt(usize)) catch return;
+
+        status.status = "done";
+        status.data = data;
+        json_string = std.json.Stringify.valueAlloc(allocator, status, .{}) catch return;
+        msg = std.fmt.allocPrint(allocator, "data: {s}\n\n", .{json_string}) catch return;
+        writer.writeAll(msg) catch return;
+        writer.flush() catch return;
+
+        file.close();
+        std.fs.deleteFileAbsolute(filepath) catch |err| {
+            zlog.err("Failed to delete file: {s}", .{@errorName(err)});
+        };
+    }
+};
+
+fn generateScreenshot(allocator: std.mem.Allocator, id: []const u8) !void {
+    zlog.pushScope("screenshot") catch @panic("Failed to push scope");
+    defer _ = zlog.popScope() catch @panic("Failed to pop scope");
+
+    const cwd = std.fs.cwd();
+    const exe = switch (builtin.os.tag) {
+        .linux, .macos => "bun",
+        .windows => "bun.exe",
+        else => @panic("Unsupported OS"),
+    };
+
+    const file = try cwd.realpathAlloc(allocator, "screenshot/index.ts");
+    defer allocator.free(file);
+
+    var child = std.process.Child.init(
+        &[_][]const u8{
+            exe,
+            file,
+            id,
+        },
+        allocator,
+    );
+    child.stdout_behavior = .Inherit;
+    _ = try child.spawnAndWait();
 }
