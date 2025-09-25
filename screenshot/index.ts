@@ -30,7 +30,7 @@ async function takeScreenshot(
   } = {},
 ): Promise<void> {
   const {
-    width = 1400,
+    width = 1280,
     height = 1067,
     fullPage = false,
     clip = null,
@@ -255,8 +255,8 @@ if (!id) {
 
 const url = `https://pokebin.com/${id}`;
 await takeScreenshot(url, {
-  width: 1400,
-  height: 1067 - 330,
+  width: 1280,
+  height: 1067 - 465,
   fullPage: true,
   outputPath: `${id}.png`,
   headless: true,
