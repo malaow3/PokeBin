@@ -346,6 +346,7 @@ const App = () => {
                       id="notes"
                       name="notes"
                       rows="4"
+                      maxLength="5000"
                       onDblClick={handleNotesDoubleClick}
                       autocomplete="off"
                       class="flex-1 text-sm rounded border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-700
