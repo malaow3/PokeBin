@@ -55,8 +55,8 @@ export fn savePasteToLastViewed(limit: u32, packed_string: [*]u8, packed_len: us
 
     const pokemon_array = paste.value.object.get("pokemon").?.array;
     for (pokemon_array.items, 0..) |item, i| {
-        const pokemon_objcect = item.object;
-        pokemon[i] = pokemon_objcect.get("name").?.string;
+        const pokemon_object = item.object;
+        pokemon[i] = pokemon_object.get("name").?.string;
     }
 
     newPaste.pokemon = pokemon;
@@ -789,7 +789,7 @@ fn parsePokemonFromLines(lines: [][]const u8, twoDImages: bool, fullMonText: []c
                 defer allocator.free(remove_space);
                 const remove_dash = std.mem.replaceOwned(u8, allocator, remove_space, "-", "") catch @panic("failed to allocate sprite");
                 defer allocator.free(remove_dash);
-                const remove_apos = std.mem.replaceOwned(u8, allocator, remove_space, "'", "") catch @panic("failed to allocate sprite");
+                const remove_apos = std.mem.replaceOwned(u8, allocator, remove_dash, "'", "") catch @panic("failed to allocate sprite");
                 defer allocator.free(remove_apos);
                 const search_item = std.ascii.allocLowerString(
                     allocator,
