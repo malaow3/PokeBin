@@ -255,12 +255,12 @@ if (!id) {
 
 const url = `https://pokebin.com/${id}`;
 await takeScreenshot(url, {
-  width: 1280,
-  height: 1067 - 465,
+  width: 1380,
+  height: 720,
   fullPage: true,
   outputPath: `${id}.png`,
   headless: true,
   hideElements: true,
   waitForSelector: ".main",
-  padding: { top: 100, left: 20, right: 20, bottom: 0 },
+  padding: { top: 20, left: 20, right: 20, bottom: 20 },
 });
