@@ -120,7 +120,6 @@ pub fn build(b: *std.Build) void {
         .name = "pokebin",
         .root_module = exe_mod,
         .use_llvm = use_llvm,
-        // .use_lld = use_llvm_ldd,
     });
     b.installArtifact(exe); // Install the executable
     wasm_compress_step.dependOn(b.getInstallStep());
