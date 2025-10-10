@@ -192,6 +192,7 @@ export default function PasteViewNew(props: Props) {
                   type="submit"
                   disabled={working()}
                   onClick={async () => {
+                    console.log("Fetching screenshot...");
                     while (true) {
                       if (working()) return;
                       setWorking(true);
@@ -204,6 +205,7 @@ export default function PasteViewNew(props: Props) {
 
                       evtSource.onmessage = (event) => {
                         const data = JSON.parse(event.data);
+                        console.log(data);
 
                         if (data.status === "done") {
                           // Convert array to bytes →  blob

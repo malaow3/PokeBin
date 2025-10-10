@@ -69,6 +69,7 @@ pub fn generateScreenshot(allocator: std.mem.Allocator, id: []const u8) !void {
         },
         allocator,
     );
-    child.stdout_behavior = .Ignore;
+    child.stdout_behavior = .Inherit;
+    // child.stdout_behavior = .Ignore;
     _ = try child.spawnAndWait();
 }

@@ -562,7 +562,7 @@ pub fn handleScreenshotRequest(app: *state.State, req: *httpz.Request, res: *htt
 
     try res.startEventStream(StreamContext{
         .app = app,
-        .id = id,
+        .id = try res.arena.dupe(u8, id),
     }, StreamContext.handle);
     return;
 }
@@ -626,6 +626,7 @@ const StreamContext = struct {
         writer.writeAll(msg) catch return;
         writer.flush() catch return;
 
+        zlog.info("Generating screenshot for {s}", .{self.id});
         utils.generateScreenshot(allocator, self.id) catch {
             writer.writeAll("data: {\"status\": \"error\"}") catch return;
             stream.close();
@@ -639,6 +640,7 @@ const StreamContext = struct {
         app.screenshot_lock.unlock();
         unlocked = true;
 
+        zlog.info("Cropping screenshot for {s}", .{self.id});
         const filename = std.fmt.allocPrint(allocator, "{s}.png", .{self.id}) catch return;
         const filepath = std.fs.cwd().realpathAlloc(allocator, filename) catch return;
         utils.cropImage(allocator, filepath) catch return;
@@ -651,6 +653,7 @@ const StreamContext = struct {
             return;
         };
         const data = file.readToEndAlloc(allocator, std.math.maxInt(usize)) catch return;
+        zlog.info("Writing back to client for {s}", .{self.id});
 
         status.status = "done";
         status.data = data;
