@@ -3,6 +3,7 @@ import Watermark from "./watermark";
 import { type Accessor, createSignal, For, Show } from "solid-js";
 import { updateSetting, type Settings } from "./settings";
 import { SettingsForm } from "./settingsForm";
+import { getId } from "./utils";
 
 type Props = {
   paste: Accessor<Paste | null>;
@@ -23,41 +24,6 @@ type Props = {
   handleCreateOts: () => void;
 };
 
-// 0 = hp, 1 = atk, 2 = def, 3 = spa, 4 = spd, 5 = spe
-// const natureMap: { [key: string]: number[] | null } = {
-//   // Neutral
-//   Hardy: null,
-//   Docile: null,
-//   Bashful: null,
-//   Quirky: null,
-//   Serious: null,
-//   // Attack decreasing
-//   Bold: [2, 1],
-//   Modest: [3, 1],
-//   Calm: [4, 1],
-//   Timid: [5, 1],
-//   // Defense decreasing
-//   Lonely: [1, 2],
-//   Mild: [3, 2],
-//   Gentle: [4, 2],
-//   Hasty: [5, 2],
-//   // SpA decreasing
-//   Adamant: [1, 3],
-//   Impish: [2, 3],
-//   Careful: [4, 3],
-//   Jolly: [5, 3],
-//   // SpD decreasing
-//   Naughty: [1, 4],
-//   Lax: [2, 4],
-//   Rash: [3, 4],
-//   Naive: [5, 4],
-//   // Spe decreasing
-//   Brave: [1, 5],
-//   Relaxed: [2, 5],
-//   Quiet: [3, 5],
-//   Sassy: [4, 5],
-// };
-
 export default function PasteViewNew(props: Props) {
   const paste = props.paste;
   const setSelectable = props.setSelectable;
@@ -76,9 +42,21 @@ export default function PasteViewNew(props: Props) {
   const isEncrypted = props.isEncrypted;
   const handleCreateOts = props.handleCreateOts;
 
+  const [working, setWorkingValue] = createSignal(false);
+
   const [showQrModal, setShowQrModal] = createSignal(false);
   const [qrImageUrl, setQrImageUrl] = createSignal("");
   const [copyStatus, setCopyStatus] = createSignal("Copy");
+  const [screenshotStatus, setScreenshotStatusValue] =
+    createSignal("Screenshot");
+
+  function setWorking(working: boolean) {
+    setWorkingValue(working);
+  }
+
+  function setScreenshotStatus(status: string) {
+    setScreenshotStatusValue(status);
+  }
 
   return (
     <Show when={paste()}>
@@ -208,46 +186,116 @@ export default function PasteViewNew(props: Props) {
               </div>
             </div>
             <div id="buttons">
-              <button
-                style={{ "user-select": "none" }}
-                type="submit"
-                onClick={async () => {
-                  await copyPaste();
-                  setCopyStatus("Copied!");
-                  setTimeout(() => {
-                    setCopyStatus("Copy");
-                  }, 2000);
-                }}
-                class="cursor-pointer w-[175px] h-[30px] copy-button font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black py-1 rounded"
-              >
-                {copyStatus()}
-              </button>
-              <button
-                class="cursor-pointer h-[30px] font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black w-[175px] py-1 rounded"
-                style={{ "user-select": "none" }}
-                type="button"
-                onClick={() => setShowModal(true)}
-              >
-                Settings
-              </button>
-              <button
-                class="cursor-pointer h-[30px] font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black w-[175px] py-1 rounded"
-                style={{ "user-select": "none" }}
-                type="button"
-                onClick={async () => {
-                  const location = window.location.href;
-                  const id = location.substring(location.lastIndexOf("/") + 1);
-                  const url = `https://pokebin.com/${id}`;
-                  const imgUrl = createQRCode(url);
-                  if (imgUrl === undefined) {
-                    return;
-                  }
-                  setQrImageUrl(imgUrl);
-                  setShowQrModal(true);
-                }}
-              >
-                QR
-              </button>
+              <div class="button-col">
+                <button
+                  style={{ "user-select": "none" }}
+                  type="submit"
+                  disabled={working()}
+                  onClick={async () => {
+                    while (true) {
+                      if (working()) return;
+                      setWorking(true);
+                      setScreenshotStatus("Generating...");
+
+                      const id = getId();
+                      const evtSource = new EventSource(
+                        `/api/screenshot?id=${id}`,
+                      );
+
+                      evtSource.onmessage = (event) => {
+                        const data = JSON.parse(event.data);
+
+                        if (data.status === "done") {
+                          // Convert array to bytes →  blob
+                          const byteArray = new Uint8Array(data.data);
+                          const blob = new Blob([byteArray], {
+                            type: "image/png",
+                          });
+                          const url = URL.createObjectURL(blob);
+
+                          // Trigger download
+                          const a = document.createElement("a");
+                          a.href = url;
+                          a.download = "screenshot.png";
+                          document.body.appendChild(a);
+                          a.click();
+                          document.body.removeChild(a);
+
+                          // Cleanup
+                          URL.revokeObjectURL(url);
+                          evtSource.close();
+                          setWorking(false);
+                          setScreenshotStatus("Screenshot");
+                          return;
+                        }
+
+                        if (data.status === "waiting") {
+                          alert(
+                            "Your screenshot is queued, don't refresh the page! Your screenshot will be automatically downloaded once ready.",
+                          );
+                          setScreenshotStatus("Waiting...");
+                        }
+                      };
+
+                      evtSource.onerror = (err) => {
+                        console.error("SSE error:", err);
+                        evtSource.close();
+                        setWorking(false);
+                        setScreenshotStatus("Screenshot");
+                        return;
+                      };
+                    }
+                  }}
+                  class="cursor-pointer w-[175px] h-[30px] copy-button font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black py-1 rounded"
+                >
+                  {screenshotStatus()}
+                </button>
+
+                <button
+                  style={{ "user-select": "none" }}
+                  type="submit"
+                  onClick={async () => {
+                    await copyPaste();
+                    setCopyStatus("Copied!");
+                    setTimeout(() => {
+                      setCopyStatus("Copy");
+                    }, 2000);
+                  }}
+                  class="cursor-pointer w-[175px] h-[30px] copy-button font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black py-1 rounded"
+                >
+                  {copyStatus()}
+                </button>
+              </div>
+              <div class="button-col">
+                <button
+                  class="cursor-pointer h-[30px] font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black w-[175px] py-1 rounded"
+                  style={{ "user-select": "none" }}
+                  type="button"
+                  onClick={() => setShowModal(true)}
+                >
+                  Settings
+                </button>
+                <button
+                  class="cursor-pointer h-[30px] font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black w-[175px] py-1 rounded"
+                  style={{ "user-select": "none" }}
+                  type="button"
+                  onClick={async () => {
+                    const location = window.location.href;
+                    const id = location.substring(
+                      location.lastIndexOf("/") + 1,
+                    );
+                    const url = `https://pokebin.com/${id}`;
+                    const imgUrl = createQRCode(url);
+                    if (imgUrl === undefined) {
+                      return;
+                    }
+                    setQrImageUrl(imgUrl);
+                    setShowQrModal(true);
+                  }}
+                >
+                  QR
+                </button>
+              </div>
             </div>
           </div>
           <div class="main">

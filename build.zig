@@ -30,6 +30,7 @@ pub fn build(b: *std.Build) void {
     const zlog = b.dependency("zlog", .{});
     const http = b.dependency("httpz", .{});
     const zul = b.dependency("zul", .{});
+    const zigimg = b.dependency("zigimg", .{});
 
     const pg = b.dependency("pg", .{
         .openssl_lib_name = "ssl",
@@ -49,6 +50,7 @@ pub fn build(b: *std.Build) void {
     exe_mod.addIncludePath(brotli_pkg.path("c/include"));
     exe_mod.addImport("pg", pg.module("pg"));
     exe_mod.addImport("qr", qr.module("qr"));
+    exe_mod.addImport("zigimg", zigimg.module("zigimg"));
 
     lib_mod.addImport("zlog", zlog.module("zlog"));
     lib_mod.addImport("zul", zul.module("zul"));

@@ -3,6 +3,7 @@ import Watermark from "./watermark";
 import { type Accessor, For, Show, createSignal } from "solid-js";
 import { type Settings, updateSetting } from "./settings";
 import { SettingsForm } from "./settingsForm";
+import { getId } from "./utils";
 
 type Props = {
   paste: Accessor<Paste | null>;
@@ -44,6 +45,8 @@ export default function PasteViewBase(props: Props) {
   const [showQrModal, setShowQrModal] = createSignal(false);
   const [qrImageUrl, setQrImageUrl] = createSignal("");
   const [copyStatus, setCopyStatus] = createSignal("Copy");
+  const [working, setWorking] = createSignal(false);
+  const [screenshotStatus, setScreenshotStatus] = createSignal("Screenshot");
 
   return (
     <Show when={paste()}>
@@ -173,46 +176,115 @@ export default function PasteViewBase(props: Props) {
               </div>
             </div>
             <div id="buttons">
-              <button
-                style={{ "user-select": "none" }}
-                type="submit"
-                onClick={async () => {
-                  await copyPaste();
-                  setCopyStatus("Copied!");
-                  setTimeout(() => {
-                    setCopyStatus("Copy");
-                  }, 2000);
-                }}
-                class="cursor-pointer w-[175px] h-[30px] copy-button font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black py-1 rounded"
-              >
-                {copyStatus()}
-              </button>
-              <button
-                class="cursor-pointer h-[30px] font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black w-[175px] py-1 rounded"
-                style={{ "user-select": "none" }}
-                type="button"
-                onClick={() => setShowModal(true)}
-              >
-                Settings
-              </button>
-              <button
-                class="cursor-pointer h-[30px] font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black w-[175px] py-1 rounded"
-                style={{ "user-select": "none" }}
-                type="button"
-                onClick={async () => {
-                  const location = window.location.href;
-                  const id = location.substring(location.lastIndexOf("/") + 1);
-                  const url = `https://pokebin.com/${id}`;
-                  const imgUrl = createQRCode(url);
-                  if (imgUrl === undefined) {
-                    return;
-                  }
-                  setQrImageUrl(imgUrl);
-                  setShowQrModal(true);
-                }}
-              >
-                QR
-              </button>
+              <div class="button-col">
+                <button
+                  style={{ "user-select": "none" }}
+                  type="submit"
+                  disabled={working()}
+                  onClick={async () => {
+                    while (true) {
+                      if (working()) return;
+                      setWorking(true);
+                      setScreenshotStatus("Generating...");
+
+                      const id = getId();
+                      const evtSource = new EventSource(
+                        `/api/screenshot?id=${id}`,
+                      );
+
+                      evtSource.onmessage = (event) => {
+                        const data = JSON.parse(event.data);
+
+                        if (data.status === "done") {
+                          // Convert array to bytes →  blob
+                          const byteArray = new Uint8Array(data.data);
+                          const blob = new Blob([byteArray], {
+                            type: "image/png",
+                          });
+                          const url = URL.createObjectURL(blob);
+
+                          // Trigger download
+                          const a = document.createElement("a");
+                          a.href = url;
+                          a.download = "screenshot.png";
+                          document.body.appendChild(a);
+                          a.click();
+                          document.body.removeChild(a);
+
+                          // Cleanup
+                          URL.revokeObjectURL(url);
+                          evtSource.close();
+                          setWorking(false);
+                          setScreenshotStatus("Screenshot");
+                          return;
+                        }
+
+                        if (data.status === "waiting") {
+                          alert(
+                            "Your screenshot is queued, don't refresh the page! Your screenshot will be automatically downloaded once ready.",
+                          );
+                          setScreenshotStatus("Waiting...");
+                        }
+                      };
+
+                      evtSource.onerror = (err) => {
+                        console.error("SSE error:", err);
+                        evtSource.close();
+                        setWorking(false);
+                        setScreenshotStatus("Screenshot");
+                        return;
+                      };
+                    }
+                  }}
+                  class="cursor-pointer w-[175px] h-[30px] copy-button font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black py-1 rounded"
+                >
+                  {screenshotStatus()}
+                </button>
+                <button
+                  style={{ "user-select": "none" }}
+                  type="submit"
+                  onClick={async () => {
+                    await copyPaste();
+                    setCopyStatus("Copied!");
+                    setTimeout(() => {
+                      setCopyStatus("Copy");
+                    }, 2000);
+                  }}
+                  class="cursor-pointer w-[175px] h-[30px] copy-button font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black py-1 rounded"
+                >
+                  {copyStatus()}
+                </button>
+              </div>
+              <div class="button-col">
+                <button
+                  class="cursor-pointer h-[30px] font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black w-[175px] py-1 rounded"
+                  style={{ "user-select": "none" }}
+                  type="button"
+                  onClick={() => setShowModal(true)}
+                >
+                  Settings
+                </button>
+                <button
+                  class="cursor-pointer h-[30px] font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black w-[175px] py-1 rounded"
+                  style={{ "user-select": "none" }}
+                  type="button"
+                  onClick={async () => {
+                    const location = window.location.href;
+                    const id = location.substring(
+                      location.lastIndexOf("/") + 1,
+                    );
+                    const url = `https://pokebin.com/${id}`;
+                    const imgUrl = createQRCode(url);
+                    if (imgUrl === undefined) {
+                      return;
+                    }
+                    setQrImageUrl(imgUrl);
+                    setShowQrModal(true);
+                  }}
+                >
+                  QR
+                </button>
+              </div>
             </div>
           </div>
           <div class="main">
