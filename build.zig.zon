@@ -27,8 +27,8 @@
             .hash = "zlog-0.0.0-_MGzdQ5KAACOiyZ6PDfF9vzef43EVkL5VUfSxe9FfjQd",
         },
         .httpz = .{
-            .url = "git+https://github.com/karlseguin/http.zig?ref=master#c36e80f9cff70a0e2fc910cf647e2689374df58a",
-            .hash = "httpz-0.0.0-PNVzrFDABgDZtfzmUsdvwogq6pVjIwUUd2WNOl2mJCgk",
+            .url = "git+https://github.com/karlseguin/http.zig?ref=master#18e0f2d2b64fcc8d8351e6b0b734170b46f91024",
+            .hash = "httpz-0.0.0-PNVzrFm5BgBSwbIfjg-nFNI1HAJzzPVFHYInimLC8CfY",
         },
         .zul = .{
             .url = "git+https://github.com/karlseguin/zul?ref=master#9dff2f294807b12944bc1025b121f33c61748767",
@@ -45,6 +45,10 @@
         .qr = .{
             .url = "git+https://github.com/max-legrand/qr?ref=main#bfcd6fd4833e7db0115600e1de135aa0085a38ed",
             .hash = "qr-0.0.0-mHFkTeobAQBeFiQkSGIMVm7LyT1fXlfHo3C5Gd0SAJnf",
+        },
+        .zigimg = .{
+            .url = "git+https://github.com/zigimg/zigimg#d7717b3617d58160635623fe86d4bf86065498e0",
+            .hash = "zigimg-0.1.0-8_eo2vBrFQAvZmO9NzDP85_qC5JFksuMdyI_KMMEr4bq",
         },
     },
     .paths = .{

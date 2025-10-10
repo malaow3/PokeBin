@@ -41,7 +41,13 @@ p {
 	gap: 4px;
 }
 
-#buttons > button {
+#buttons > .button-col {
+	display: flex;
+	flex-direction: row;
+	gap: 4px;
+}
+
+#buttons > .button-col > button {
 	font-size: 0.8rem !important;
 	height: 25px;
 	width: 125px;
