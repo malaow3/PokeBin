@@ -559,6 +559,15 @@ pub fn qrCode(_: *state.State, req: *httpz.Request, res: *httpz.Response) !void 
 pub fn handleScreenshotRequest(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
     var query = try req.query();
     const id = query.get("id") orelse return error.NoId;
+    var referer = req.headers.get("referer") orelse "https://pokebin.com";
+    if (std.mem.startsWith(u8, referer, "https://pokebin.com/")) {
+        referer = "https://pokebin.com";
+    }
+
+    if (std.mem.eql(u8, referer, "https://pokebin.com")) {
+        // Failing to log this usage shouldn't cause the screenshot to NOT be generated.
+        app.pgpool.logFeatureUsage(id, "screenshot") catch {};
+    }
 
     try res.startEventStream(StreamContext{
         .app = app,

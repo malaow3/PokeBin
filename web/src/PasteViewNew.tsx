@@ -193,6 +193,7 @@ export default function PasteViewNew(props: Props) {
                   disabled={working()}
                   onClick={async () => {
                     console.log("Fetching screenshot...");
+                    let alert_sent = false;
                     while (true) {
                       if (working()) return;
                       setWorking(true);
@@ -202,6 +203,12 @@ export default function PasteViewNew(props: Props) {
                       const evtSource = new EventSource(
                         `/api/screenshot?id=${id}`,
                       );
+                      if (!alert_sent) {
+                        alert_sent = true;
+                        alert(
+                          "Generating your screenshot, this may take some time! Please do not refresh or close the page.",
+                        );
+                      }
 
                       evtSource.onmessage = (event) => {
                         const data = JSON.parse(event.data);
@@ -232,9 +239,6 @@ export default function PasteViewNew(props: Props) {
                         }
 
                         if (data.status === "waiting") {
-                          alert(
-                            "Your screenshot is queued, don't refresh the page! Your screenshot will be automatically downloaded once ready.",
-                          );
                           setScreenshotStatus("Waiting...");
                         }
                       };

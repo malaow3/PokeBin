@@ -66,6 +66,14 @@ pub const Pool = struct {
             return error.DBError;
         }
     }
+
+    pub fn logFeatureUsage(
+        self: *Pool,
+        paste_id: []const u8,
+        feature: []const u8,
+    ) !void {
+        _ = try self.pool.exec("INSERT INTO feature_usage (feature, paste_id) VALUES ($1, $2);", .{ feature, paste_id });
+    }
 };
 
 pub fn initDB(
@@ -90,6 +98,13 @@ pub fn initDB(
         \\  content jsonb NOT NULL,
         \\  content_hash text NOT NULL,
         \\  created_at timestamptz NOT NULL DEFAULT NOW()
+        \\ );
+        \\ 
+        \\ CREATE TABLE IF NOT EXISTS feature_usage (
+        \\   id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+        \\   feature text NOT NULL,
+        \\   timestamp timestamptz NOT NULL DEFAULT NOW(),
+        \\   paste_id text REFERENCES pastes(uuid) ON DELETE CASCADE
         \\ );
     ;
     _ = try pool.exec(create_table_query, .{});
