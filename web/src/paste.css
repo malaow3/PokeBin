@@ -506,6 +506,11 @@ body.light .stat-spe {
 	}
 }
 
+@media (min-aspect-ratio: 1.82 / 1) and (max-aspect-ratio: 1.84 / 1) {
+	body {
+		zoom: 1.0;
+	}
+}
 @media (min-aspect-ratio: 1.84 / 1) and (max-aspect-ratio: 1.864 / 1) {
 	body {
 		zoom: 1.0;

@@ -1,26 +1,22 @@
 {
-  "name": "web",
-  "version": "1.0.0",
+  "name": "pokebin-web",
+  "version": "2.2.6",
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "rsbuild build",
-    "check": "biome check --write",
-    "dev": "rsbuild dev --open",
-    "format": "biome format --write",
-    "preview": "rsbuild preview"
+    "build": "vite build"
   },
   "dependencies": {
     "@pkmn/img": "^0.2.39",
     "solid-js": "^1.9.5"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "@rsbuild/core": "^1.3.1",
-    "@rsbuild/plugin-babel": "^1.0.4",
-    "@rsbuild/plugin-solid": "^1.0.5",
+    "@biomejs/biome": "2.2.6",
     "@tailwindcss/postcss": "^4.1.1",
     "tailwindcss": "^4.1.1",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "vite": "^5.4.0",
+    "vite-plugin-html": "^3.2.2",
+    "vite-plugin-solid": "^2.10.0"
   }
 }

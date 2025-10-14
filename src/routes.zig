@@ -74,7 +74,7 @@ pub fn serveHtmlFile(app: *state.State, filepath: []const u8, res: *httpz.Respon
 }
 
 pub fn replay(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
-    return serveHtmlFile(app, "web/dist/replay.html", res);
+    return serveHtmlFile(app, "web/dist/html/replay.html", res);
 }
 
 /// fetchReplay serves as a wrapper around the Showdown API. Because of the CORS restrictions
@@ -220,27 +220,27 @@ pub fn fetchReplay(_: *state.State, req: *httpz.Request, res: *httpz.Response) !
 }
 
 pub fn index(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
-    return serveHtmlFile(app, "web/dist/index.html", res);
+    return serveHtmlFile(app, "web/dist/html/index.html", res);
 }
 
 pub fn about(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
-    return serveHtmlFile(app, "web/dist/about.html", res);
+    return serveHtmlFile(app, "web/dist/html/about.html", res);
 }
 
 pub fn recent(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
-    return serveHtmlFile(app, "web/dist/recent.html", res);
+    return serveHtmlFile(app, "web/dist/html/recent.html", res);
 }
 
 pub fn settings(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
-    return serveHtmlFile(app, "web/dist/settings.html", res);
+    return serveHtmlFile(app, "web/dist/html/settings.html", res);
 }
 
 pub fn tos(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
-    return serveHtmlFile(app, "web/dist/tos.html", res);
+    return serveHtmlFile(app, "web/dist/html/tos.html", res);
 }
 
 pub fn report(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
-    return serveHtmlFile(app, "web/dist/report.html", res);
+    return serveHtmlFile(app, "web/dist/html/report.html", res);
 }
 
 pub fn image(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
@@ -285,7 +285,7 @@ pub fn assets(app: *state.State, req: *httpz.Request, res: *httpz.Response) !voi
     const path = req.url.path;
     const sub_path = path[8..];
     var filepath = try std.fs.path.join(res.arena, &[_][]const u8{
-        "web", "dist", sub_path,
+        "web", "dist", "assets", sub_path,
     });
     if (std.mem.eql(u8, sub_path, "sprites")) {
         res.arena.free(filepath);
@@ -385,7 +385,7 @@ pub fn getUUID(appState: *state.State, req: *httpz.Request, res: *httpz.Response
 
     const exists = try appState.pgpool.uuidExists(user);
     if (exists) {
-        return serveHtmlFile(appState, "web/dist/paste.html", res);
+        return serveHtmlFile(appState, "web/dist/html/paste.html", res);
     } else {
         res.header("Location", "/");
         res.status = 302;
@@ -677,3 +677,18 @@ const StreamContext = struct {
         };
     }
 };
+
+pub fn logo(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
+    const path = req.url.path;
+    const sub_path = path[5..];
+    const filepath = try std.fs.path.join(res.arena, &[_][]const u8{
+        "web", "dist", "logo", sub_path,
+    });
+
+    return serveCachedFile(app, res, filepath, state.getMimeType(sub_path) orelse httpz.ContentType.BINARY, true) catch {
+        res.status = 404;
+        res.content_type = .TEXT;
+        res.body = "Not Found";
+        return;
+    };
+}
