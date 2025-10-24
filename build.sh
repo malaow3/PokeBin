@@ -23,6 +23,6 @@ cp zig-out/bin/pokebin dist/
 cp zig-out/bin/wasm.wasm.br dist/
 cp zig-out/bin/web_wasm.wasm.br dist/
 pushd web
-bun i 
-bun run build
+pnpm i 
+pnpm run build
 popd

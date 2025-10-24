@@ -49,7 +49,6 @@
             cross.openssl
             cross.glibc
             cross.gcc
-            pkgs.brotli
             pkgs.pkg-config
           ];
 

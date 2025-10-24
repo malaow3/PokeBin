@@ -1,137 +1,137 @@
-import { exports, memory } from "./wasm_helpers";
+import { exports, memory } from './wasm_helpers';
 
 export function encrypt(message: string, passphrase: string): string | null {
-  if (!exports || !memory) {
-    return null;
-  }
-  const passphrase_len = passphrase.length;
-  const message_len = message.length;
+    if (!exports || !memory) {
+        return null;
+    }
+    const passphrase_len = passphrase.length;
+    const message_len = message.length;
 
-  // Allocate a single buffer for both strings
-  const buffer_ptr = exports.allocUint8(passphrase_len + message_len);
-  if (!buffer_ptr) {
-    console.error("Failed to allocate memory");
-    return null;
-  }
+    // Allocate a single buffer for both strings
+    const buffer_ptr = exports.allocUint8(passphrase_len + message_len);
+    if (!buffer_ptr) {
+        console.error('Failed to allocate memory');
+        return null;
+    }
 
-  // Get a view of memory
-  let memoryView = new Uint8Array(exports.memory.buffer);
+    // Get a view of memory
+    let memoryView = new Uint8Array(exports.memory.buffer);
 
-  // Copy the passphrase and message into the single buffer
-  const passphraseBuffer = new TextEncoder().encode(passphrase);
-  const messageBuffer = new TextEncoder().encode(message);
+    // Copy the passphrase and message into the single buffer
+    const passphraseBuffer = new TextEncoder().encode(passphrase);
+    const messageBuffer = new TextEncoder().encode(message);
 
-  // Write passphrase at the beginning of the buffer
-  for (let i = 0; i < passphrase_len; i++) {
-    memoryView[buffer_ptr + i] = passphraseBuffer[i];
-  }
+    // Write passphrase at the beginning of the buffer
+    for (let i = 0; i < passphrase_len; i++) {
+        memoryView[buffer_ptr + i] = passphraseBuffer[i];
+    }
 
-  // Write message right after the passphrase
-  for (let i = 0; i < message_len; i++) {
-    memoryView[buffer_ptr + passphrase_len + i] = messageBuffer[i];
-  }
+    // Write message right after the passphrase
+    for (let i = 0; i < message_len; i++) {
+        memoryView[buffer_ptr + passphrase_len + i] = messageBuffer[i];
+    }
 
-  // Single call to encrypt
-  const success = exports.encryptMessage(
-    buffer_ptr,
-    passphrase_len,
-    message_len,
-  );
+    // Single call to encrypt
+    const success = exports.encryptMessage(
+        buffer_ptr,
+        passphrase_len,
+        message_len,
+    );
 
-  if (!success) {
-    console.error("Failed to encrypt message");
+    if (!success) {
+        console.error('Failed to encrypt message');
+        exports.resetArena();
+        return null;
+    }
+
+    // Get result information from separate functions
+    const resultPtr = exports.getResultPtr();
+    const resultLen = exports.getResultLen();
+
+    if (resultPtr === 0 || resultLen === 0) {
+        console.error('Invalid result');
+        exports.resetArena();
+        return null;
+    }
+
+    // Get a fresh view of memory after the WASM function call
+    memoryView = new Uint8Array(exports.memory.buffer);
+
+    const decoder = new TextDecoder();
+    const result_message = decoder.decode(
+        memoryView.slice(resultPtr, resultPtr + resultLen),
+    );
+
+    // Reset the arena instead of individual frees
     exports.resetArena();
-    return null;
-  }
 
-  // Get result information from separate functions
-  const resultPtr = exports.getResultPtr();
-  const resultLen = exports.getResultLen();
-
-  if (resultPtr === 0 || resultLen === 0) {
-    console.error("Invalid result");
-    exports.resetArena();
-    return null;
-  }
-
-  // Get a fresh view of memory after the WASM function call
-  memoryView = new Uint8Array(exports.memory.buffer);
-
-  const decoder = new TextDecoder();
-  const result_message = decoder.decode(
-    memoryView.slice(resultPtr, resultPtr + resultLen),
-  );
-
-  // Reset the arena instead of individual frees
-  exports.resetArena();
-
-  return result_message;
+    return result_message;
 }
 
 export function decrypt(encrypted: string, passphrase: string): string | null {
-  if (!exports || !memory) {
-    return null;
-  }
-  const passphrase_len = passphrase.length;
-  const encrypted_len = encrypted.length;
+    if (!exports || !memory) {
+        return null;
+    }
+    const passphrase_len = passphrase.length;
+    const encrypted_len = encrypted.length;
 
-  // Allocate a single buffer for both strings
-  const buffer_ptr = exports.allocUint8(passphrase_len + encrypted_len);
-  if (!buffer_ptr) {
-    console.error("Failed to allocate memory");
-    return null;
-  }
+    // Allocate a single buffer for both strings
+    const buffer_ptr = exports.allocUint8(passphrase_len + encrypted_len);
+    if (!buffer_ptr) {
+        console.error('Failed to allocate memory');
+        return null;
+    }
 
-  // Get a view of memory
-  let memoryView = new Uint8Array(exports.memory.buffer);
+    // Get a view of memory
+    let memoryView = new Uint8Array(exports.memory.buffer);
 
-  // Copy the passphrase and message into the single buffer
-  const passphraseBuffer = new TextEncoder().encode(passphrase);
-  const encryptedBuffer = new TextEncoder().encode(encrypted);
+    // Copy the passphrase and message into the single buffer
+    const passphraseBuffer = new TextEncoder().encode(passphrase);
+    const encryptedBuffer = new TextEncoder().encode(encrypted);
 
-  // Write passphrase at the beginning of the buffer
-  for (let i = 0; i < passphrase_len; i++) {
-    memoryView[buffer_ptr + i] = passphraseBuffer[i];
-  }
+    // Write passphrase at the beginning of the buffer
+    for (let i = 0; i < passphrase_len; i++) {
+        memoryView[buffer_ptr + i] = passphraseBuffer[i];
+    }
 
-  // Write message right after the passphrase
-  for (let i = 0; i < encrypted_len; i++) {
-    memoryView[buffer_ptr + passphrase_len + i] = encryptedBuffer[i];
-  }
+    // Write message right after the passphrase
+    for (let i = 0; i < encrypted_len; i++) {
+        memoryView[buffer_ptr + passphrase_len + i] = encryptedBuffer[i];
+    }
 
-  // Single call to encrypt
-  const success = exports.decryptMessage(
-    buffer_ptr,
-    passphrase_len,
-    encrypted_len,
-  );
+    // Single call to encrypt
+    const success = exports.decryptMessage(
+        buffer_ptr,
+        passphrase_len,
+        encrypted_len,
+    );
 
-  if (!success) {
-    console.error("Failed to encrypt message");
+    if (!success) {
+        console.error('Failed to encrypt message');
+        exports.resetArena();
+        return null;
+    }
+
+    // Get result information from separate functions
+    const resultPtr = exports.getResultPtr();
+    const resultLen = exports.getResultLen();
+
+    if (resultPtr === 0 || resultLen === 0) {
+        console.error('Invalid result');
+        exports.resetArena();
+        return null;
+    }
+
+    // Get a fresh view of memory after the WASM function call
+    memoryView = new Uint8Array(exports.memory.buffer);
+
+    const decoder = new TextDecoder();
+    const result_message = decoder.decode(
+        memoryView.slice(resultPtr, resultPtr + resultLen),
+    );
+
+    // Reset the arena instead of individual frees
     exports.resetArena();
-    return null;
-  }
 
-  // Get result information from separate functions
-  const resultPtr = exports.getResultPtr();
-  const resultLen = exports.getResultLen();
-
-  if (resultPtr === 0 || resultLen === 0) {
-    console.error("Invalid result");
-    exports.resetArena();
-    return null;
-  }
-
-  // Get a fresh view of memory after the WASM function call
-  memoryView = new Uint8Array(exports.memory.buffer);
-
-  const decoder = new TextDecoder();
-  const result_message = decoder.decode(
-    memoryView.slice(resultPtr, resultPtr + resultLen),
-  );
-
-  // Reset the arena instead of individual frees
-  exports.resetArena();
-
-  return result_message;
+    return result_message;
 }

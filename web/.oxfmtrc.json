@@ -1,0 +1,23 @@
+{
+  "indentStyle": "space",
+  "indentWidth": 4,
+  "lineWidth": 80,
+  "lineEnding": "lf",
+  "quoteStyle": "single",
+  "jsxQuoteStyle": "double",
+  "quoteProperties": "as-needed",
+  "trailingCommas": "all",
+  "semicolons": "always",
+  "arrowParentheses": "always",
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "attributePosition": "auto",
+  "expand": "auto",
+  "experimentalSortImports": {
+    "partitionByNewline": false,
+    "partitionByComment": false,
+    "sortSideEffects": false,
+    "order": "asc",
+    "ignoreCase": true
+  }
+}
