@@ -1,6 +1,6 @@
-import { createSignal, For, onMount, createEffect } from 'solid-js';
-import { render } from 'solid-js/web';
-import './app.css';
+import { createSignal, For, onMount, createEffect } from "solid-js";
+import { render } from "solid-js/web";
+import "./app.css";
 
 type Replay = {
     id: string;
@@ -12,8 +12,8 @@ type Replay = {
 };
 
 export default function ReplayFetcher() {
-    const [name, setName] = createSignal('');
-    const [pass, setPass] = createSignal('');
+    const [name, setName] = createSignal("");
+    const [pass, setPass] = createSignal("");
     const [loading, setLoading] = createSignal(false);
     const [error, setError] = createSignal<string | null>(null);
     const [replays, setReplays] = createSignal<Replay[]>([]);
@@ -97,11 +97,11 @@ export default function ReplayFetcher() {
 
     function getChallstr() {
         return new Promise((resolve, reject) => {
-            const ws = new WebSocket('wss://sim3.psim.us/showdown/websocket');
+            const ws = new WebSocket("wss://sim3.psim.us/showdown/websocket");
             ws.onmessage = (event) => {
-                const lines = event.data.split('\n');
+                const lines = event.data.split("\n");
                 for (const line of lines) {
-                    if (line.startsWith('|challstr|')) {
+                    if (line.startsWith("|challstr|")) {
                         const challstr = line.slice(10);
                         ws.close();
                         resolve(challstr);
@@ -109,7 +109,7 @@ export default function ReplayFetcher() {
                 }
             };
             ws.onerror = (_err) => {
-                reject(new Error('WebSocket error'));
+                reject(new Error("WebSocket error"));
             };
             ws.onclose = () => {};
         });
@@ -121,9 +121,9 @@ export default function ReplayFetcher() {
         setReplays([]);
         try {
             const challstr = await getChallstr();
-            const resp = await fetch('/api/fetch-replays', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+            const resp = await fetch("/api/fetch-replays", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     name: name(),
                     pass: pass(),
@@ -132,7 +132,7 @@ export default function ReplayFetcher() {
             });
             if (!resp.ok) {
                 alert(
-                    'Unable to fetch replays, please double check your username & password!',
+                    "Unable to fetch replays, please double check your username & password!",
                 );
                 throw new Error(await resp.text());
             }
@@ -151,26 +151,26 @@ export default function ReplayFetcher() {
 
     function copyAll() {
         const selectedSet = new Set(selectedIds());
-        const urls = replays()
+        const urls = orderedReplays()
             .filter((replay) => selectedSet.has(replay.id))
             .map((replay) => {
                 let url = `https://replay.pokemonshowdown.com/${replay.id}`;
                 if (replay.password) url += `-${replay.password}pw`;
                 return url;
             });
-        navigator.clipboard.writeText(urls.join('\n'));
+        navigator.clipboard.writeText(urls.join("\n"));
     }
 
     onMount(() => {
-        const wsUrl = '/ws';
+        const wsUrl = "/ws";
         const socket = new WebSocket(wsUrl);
         socket.onopen = async () => {
-            console.log('WebSocket connected to:', wsUrl);
+            console.log("WebSocket connected to:", wsUrl);
         };
     });
 
     return (
-        <div class="container mx-auto px-4" style={{ color: 'white' }}>
+        <div class="container mx-auto px-4" style={{ color: "white" }}>
             <div class="max-w-3xl mx-auto py-8">
                 <h1 class="text-4xl font-bold mb-4">
                     Fetch <span class="text-[#c2a8d4]">Showdown</span> Private
@@ -178,11 +178,11 @@ export default function ReplayFetcher() {
                 </h1>
                 <div class="mb-6 bg-[#c2a8d4] border rounded-lg p-4 text-black">
                     <strong>Privacy Notice:</strong> Your Showdown username and
-                    password are <span class="font-semibold">never stored</span>{' '}
+                    password are <span class="font-semibold">never stored</span>{" "}
                     on this site. To fetch your private replays, your
                     credentials must be securely sent to our server, which acts
                     as a proxy to bypass Showdown’s CORS restrictions. All data
-                    is transmitted over{' '}
+                    is transmitted over{" "}
                     <span class="font-semibold">encrypted HTTPS</span> and is
                     used only for this request.
                 </div>
@@ -225,7 +225,7 @@ export default function ReplayFetcher() {
                         class="bg-[#c2a8d4] hover:bg-[#9770b6] text-black font-bold py-2 px-4 rounded"
                         disabled={loading()}
                     >
-                        {loading() ? 'Loading...' : 'Fetch Replays'}
+                        {loading() ? "Loading..." : "Fetch Replays"}
                     </button>
                 </form>
                 {error() && (
@@ -379,7 +379,7 @@ export default function ReplayFetcher() {
     );
 }
 
-const root = document.getElementById('root');
+const root = document.getElementById("root");
 if (root) {
     render(() => <ReplayFetcher />, root);
 }

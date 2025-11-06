@@ -1,9 +1,9 @@
-import { updateSetting, type Settings } from './settings';
-import { SettingsForm } from './settingsForm';
-import { getId } from './utils';
-import Watermark from './watermark';
-import { type Paste, createQRCode } from './web_wasm_helpers';
-import { type Accessor, createSignal, For, Show } from 'solid-js';
+import { updateSetting, type Settings } from "./settings";
+import { SettingsForm } from "./settingsForm";
+import { getId } from "./utils";
+import Watermark from "./watermark";
+import { type Paste, createQRCode } from "./web_wasm_helpers";
+import { type Accessor, createSignal, For, Show } from "solid-js";
 
 type Props = {
     paste: Accessor<Paste | null>;
@@ -45,10 +45,10 @@ export default function PasteViewNew(props: Props) {
     const [working, setWorkingValue] = createSignal(false);
 
     const [showQrModal, setShowQrModal] = createSignal(false);
-    const [qrImageUrl, setQrImageUrl] = createSignal('');
-    const [copyStatus, setCopyStatus] = createSignal('Copy');
+    const [qrImageUrl, setQrImageUrl] = createSignal("");
+    const [copyStatus, setCopyStatus] = createSignal("Copy");
     const [screenshotStatus, setScreenshotStatusValue] =
-        createSignal('Screenshot');
+        createSignal("Screenshot");
 
     function setWorking(working: boolean) {
         setWorkingValue(working);
@@ -66,10 +66,10 @@ export default function PasteViewNew(props: Props) {
                         <div class="sidebar-inner md:ml-10 md:mr-2">
                             <Show
                                 when={
-                                    currentPaste().title !== '' ||
-                                    currentPaste().author !== '' ||
-                                    currentPaste().format !== '' ||
-                                    currentPaste().rental !== ''
+                                    currentPaste().title !== "" ||
+                                    currentPaste().author !== "" ||
+                                    currentPaste().format !== "" ||
+                                    currentPaste().rental !== ""
                                 }
                             >
                                 <div
@@ -77,53 +77,53 @@ export default function PasteViewNew(props: Props) {
                                     class="metadata"
                                     id="metadata"
                                     style={{
-                                        'user-select': 'none',
-                                        'min-width': '125px',
+                                        "user-select": "none",
+                                        "min-width": "125px",
                                     }}
                                     onMouseOver={() =>
-                                        setSelectable(true, 'metadata')
+                                        setSelectable(true, "metadata")
                                     }
                                     onFocus={() =>
-                                        setSelectable(true, 'metadata')
+                                        setSelectable(true, "metadata")
                                     }
                                     onMouseOut={() =>
-                                        setSelectable(false, 'metadata')
+                                        setSelectable(false, "metadata")
                                     }
                                     onBlur={() =>
-                                        setSelectable(false, 'metadata')
+                                        setSelectable(false, "metadata")
                                     }
                                 >
-                                    <Show when={currentPaste().title !== ''}>
+                                    <Show when={currentPaste().title !== ""}>
                                         <h1
                                             class="text-[#c2a8d4] text-2xl font-semibold"
                                             id="title"
-                                            style={{ 'user-select': 'none' }}
+                                            style={{ "user-select": "none" }}
                                             aria-label={currentPaste().title}
                                             innerHTML={currentPaste().title}
                                         />
                                     </Show>
-                                    <Show when={currentPaste().author !== ''}>
+                                    <Show when={currentPaste().author !== ""}>
                                         <p
                                             class="text-base"
                                             id="author"
-                                            style={{ 'user-select': 'none' }}
+                                            style={{ "user-select": "none" }}
                                             innerHTML={`By: ${currentPaste().author}`}
                                         />
                                     </Show>
-                                    <Show when={currentPaste().format !== ''}>
+                                    <Show when={currentPaste().format !== ""}>
                                         <p
                                             class="text-base"
                                             id="format"
-                                            style={{ 'user-select': 'none' }}
+                                            style={{ "user-select": "none" }}
                                         >
                                             Format: {currentPaste().format}
                                         </p>
                                     </Show>
-                                    <Show when={currentPaste().rental !== ''}>
+                                    <Show when={currentPaste().rental !== ""}>
                                         <p
                                             class="text-base"
                                             id="rental"
-                                            style={{ 'user-select': 'none' }}
+                                            style={{ "user-select": "none" }}
                                         >
                                             Rental: {currentPaste().rental}
                                         </p>
@@ -131,7 +131,7 @@ export default function PasteViewNew(props: Props) {
                                 </div>
                             </Show>
                             <div class="notes-section my-1">
-                                <Show when={currentPaste().notes !== ''}>
+                                <Show when={currentPaste().notes !== ""}>
                                     <button
                                         class="cursor-pointer h-[30px] font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black w-[175px] mt-1 py-1 border-none rounded"
                                         type="button"
@@ -139,7 +139,7 @@ export default function PasteViewNew(props: Props) {
                                             setShowNotes(!showNotes());
                                             const notes =
                                                 document.getElementsByClassName(
-                                                    'notes-content',
+                                                    "notes-content",
                                                 );
                                             if (notes.length > 0) {
                                                 const notes_obj =
@@ -148,7 +148,7 @@ export default function PasteViewNew(props: Props) {
                                                     notes_obj.getBoundingClientRect()
                                                         .top < 0
                                                 ) {
-                                                    notes_obj.style.top = '0px';
+                                                    notes_obj.style.top = "0px";
                                                 }
                                             }
 
@@ -158,8 +158,8 @@ export default function PasteViewNew(props: Props) {
                                         }}
                                     >
                                         {showNotes()
-                                            ? 'Hide notes'
-                                            : 'Show notes'}
+                                            ? "Hide notes"
+                                            : "Show notes"}
                                     </button>
                                     <Show when={showNotes()}>
                                         <div
@@ -167,33 +167,33 @@ export default function PasteViewNew(props: Props) {
                                             class="notes-content bg-zinc-600 border border-ccc p-5 rounded shadow-lg z-20"
                                             onMouseOver={() => {
                                                 makeOpaqueOnFocus();
-                                                setSelectable(true, 'notes');
+                                                setSelectable(true, "notes");
                                             }}
                                             onFocus={() => {
                                                 makeOpaqueOnFocus();
-                                                setSelectable(true, 'notes');
+                                                setSelectable(true, "notes");
                                             }}
                                             onMouseOut={() => {
                                                 makeTransparentOnMouseover();
-                                                setSelectable(false, 'notes');
+                                                setSelectable(false, "notes");
                                             }}
                                             onBlur={() => {
                                                 makeTransparentOnMouseover();
-                                                setSelectable(false, 'notes');
+                                                setSelectable(false, "notes");
                                             }}
                                             style={{
                                                 width: notesWidth(),
                                                 opacity: notesOpacity(),
-                                                'user-select': 'none',
-                                                'z-index': 2,
+                                                "user-select": "none",
+                                                "z-index": 2,
                                             }}
                                         >
                                             <p
                                                 id="notes"
-                                                class="!text-white"
+                                                class="text-white!"
                                                 innerHTML={currentPaste().notes.replace(
                                                     /\n/g,
-                                                    '<br />',
+                                                    "<br />",
                                                 )}
                                             />
                                         </div>
@@ -204,17 +204,17 @@ export default function PasteViewNew(props: Props) {
                         <div id="buttons">
                             <div class="button-col">
                                 <button
-                                    style={{ 'user-select': 'none' }}
+                                    style={{ "user-select": "none" }}
                                     type="submit"
                                     disabled={working()}
                                     onClick={async () => {
-                                        console.log('Fetching screenshot...');
+                                        console.log("Fetching screenshot...");
                                         let alert_sent = false;
                                         while (true) {
                                             if (working()) return;
                                             setWorking(true);
                                             setScreenshotStatus(
-                                                'Generating...',
+                                                "Generating...",
                                             );
 
                                             const id = getId();
@@ -224,7 +224,7 @@ export default function PasteViewNew(props: Props) {
                                             if (!alert_sent) {
                                                 alert_sent = true;
                                                 alert(
-                                                    'Generating your screenshot, this may take some time! Please do not refresh or close the page.',
+                                                    "Generating your screenshot, this may take some time! Please do not refresh or close the page.",
                                                 );
                                             }
 
@@ -234,7 +234,7 @@ export default function PasteViewNew(props: Props) {
                                                 );
                                                 console.log(data);
 
-                                                if (data.status === 'done') {
+                                                if (data.status === "done") {
                                                     // Convert array to bytes →  blob
                                                     const byteArray =
                                                         new Uint8Array(
@@ -243,7 +243,7 @@ export default function PasteViewNew(props: Props) {
                                                     const blob = new Blob(
                                                         [byteArray],
                                                         {
-                                                            type: 'image/png',
+                                                            type: "image/png",
                                                         },
                                                     );
                                                     const url =
@@ -254,11 +254,11 @@ export default function PasteViewNew(props: Props) {
                                                     // Trigger download
                                                     const a =
                                                         document.createElement(
-                                                            'a',
+                                                            "a",
                                                         );
                                                     a.href = url;
                                                     a.download =
-                                                        'screenshot.png';
+                                                        "screenshot.png";
                                                     document.body.appendChild(
                                                         a,
                                                     );
@@ -272,27 +272,27 @@ export default function PasteViewNew(props: Props) {
                                                     evtSource.close();
                                                     setWorking(false);
                                                     setScreenshotStatus(
-                                                        'Screenshot',
+                                                        "Screenshot",
                                                     );
                                                     return;
                                                 }
 
-                                                if (data.status === 'waiting') {
+                                                if (data.status === "waiting") {
                                                     setScreenshotStatus(
-                                                        'Waiting...',
+                                                        "Waiting...",
                                                     );
                                                 }
                                             };
 
                                             evtSource.onerror = (err) => {
                                                 console.error(
-                                                    'SSE error:',
+                                                    "SSE error:",
                                                     err,
                                                 );
                                                 evtSource.close();
                                                 setWorking(false);
                                                 setScreenshotStatus(
-                                                    'Screenshot',
+                                                    "Screenshot",
                                                 );
                                                 return;
                                             };
@@ -304,13 +304,13 @@ export default function PasteViewNew(props: Props) {
                                 </button>
 
                                 <button
-                                    style={{ 'user-select': 'none' }}
+                                    style={{ "user-select": "none" }}
                                     type="submit"
                                     onClick={async () => {
                                         await copyPaste();
-                                        setCopyStatus('Copied!');
+                                        setCopyStatus("Copied!");
                                         setTimeout(() => {
-                                            setCopyStatus('Copy');
+                                            setCopyStatus("Copy");
                                         }, 2000);
                                     }}
                                     class="cursor-pointer w-[175px] h-[30px] copy-button font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black py-1 rounded"
@@ -321,7 +321,7 @@ export default function PasteViewNew(props: Props) {
                             <div class="button-col">
                                 <button
                                     class="cursor-pointer h-[30px] font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black w-[175px] py-1 rounded"
-                                    style={{ 'user-select': 'none' }}
+                                    style={{ "user-select": "none" }}
                                     type="button"
                                     onClick={() => setShowModal(true)}
                                 >
@@ -329,18 +329,25 @@ export default function PasteViewNew(props: Props) {
                                 </button>
                                 <button
                                     class="cursor-pointer h-[30px] font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black w-[175px] py-1 rounded"
-                                    style={{ 'user-select': 'none' }}
+                                    style={{ "user-select": "none" }}
                                     type="button"
                                     onClick={async () => {
                                         const location = window.location.href;
                                         const id = location.substring(
-                                            location.lastIndexOf('/') + 1,
+                                            location.lastIndexOf("/") + 1,
                                         );
                                         const url = `https://pokebin.com/${id}`;
                                         const imgUrl = createQRCode(url);
                                         if (imgUrl === undefined) {
                                             return;
                                         }
+                                        await fetch("/api/feature", {
+                                            method: "POST",
+                                            body: JSON.stringify({
+                                                feature: "qr_code",
+                                                id: id,
+                                            }),
+                                        });
                                         setQrImageUrl(imgUrl);
                                         setShowQrModal(true);
                                     }}
@@ -354,11 +361,11 @@ export default function PasteViewNew(props: Props) {
                         <For each={currentPaste().pokemon}>
                             {(pokemon) => {
                                 const stats: string[] = pokemon.evs.map((x) =>
-                                    x !== 0 ? x.toString() : '',
+                                    x !== 0 ? x.toString() : "",
                                 );
                                 let allEmpty = true;
                                 for (const stat of stats) {
-                                    if (stat !== '') {
+                                    if (stat !== "") {
                                         allEmpty = false;
                                     }
                                 }
@@ -404,7 +411,7 @@ export default function PasteViewNew(props: Props) {
                                     <article>
                                         <div class="img mr-2">
                                             <Show
-                                                when={pokemon.item_image !== ''}
+                                                when={pokemon.item_image !== ""}
                                             >
                                                 <span
                                                     class="img-item"
@@ -422,7 +429,7 @@ export default function PasteViewNew(props: Props) {
                                             <div id="mon_title">
                                                 <Show
                                                     when={
-                                                        pokemon.nickname !== ''
+                                                        pokemon.nickname !== ""
                                                     }
                                                     fallback={
                                                         <>
@@ -434,7 +441,7 @@ export default function PasteViewNew(props: Props) {
                                                             <Show
                                                                 when={
                                                                     pokemon.gender !==
-                                                                    ''
+                                                                    ""
                                                                 }
                                                             >
                                                                 <span
@@ -454,7 +461,7 @@ export default function PasteViewNew(props: Props) {
                                                     <Show
                                                         when={
                                                             pokemon.gender !==
-                                                            ''
+                                                            ""
                                                         }
                                                     >
                                                         <span
@@ -465,15 +472,15 @@ export default function PasteViewNew(props: Props) {
                                             </div>
                                             <Show
                                                 when={
-                                                    pokemon.ability !== '' ||
-                                                    pokemon.item !== ''
+                                                    pokemon.ability !== "" ||
+                                                    pokemon.item !== ""
                                                 }
                                             >
                                                 <div class="attribute-line">
                                                     <Show
                                                         when={
                                                             pokemon.ability !==
-                                                            ''
+                                                            ""
                                                         }
                                                     >
                                                         <span>
@@ -482,7 +489,7 @@ export default function PasteViewNew(props: Props) {
                                                     </Show>
                                                     <Show
                                                         when={
-                                                            pokemon.item !== ''
+                                                            pokemon.item !== ""
                                                         }
                                                     >
                                                         <span> @ </span>
@@ -510,10 +517,10 @@ export default function PasteViewNew(props: Props) {
                                                                     </span>
                                                                     <span
                                                                         style={{
-                                                                            color: 'white',
+                                                                            color: "white",
                                                                         }}
                                                                     >
-                                                                        {' '}
+                                                                        {" "}
                                                                         {
                                                                             move.name
                                                                         }
@@ -539,7 +546,7 @@ export default function PasteViewNew(props: Props) {
                                                 <div class="attribute-line">
                                                     <span>EVs: </span>
                                                     <Show
-                                                        when={stats[0] !== ''}
+                                                        when={stats[0] !== ""}
                                                     >
                                                         <span class="stat-hp">
                                                             {stats[0]} HP
@@ -547,14 +554,14 @@ export default function PasteViewNew(props: Props) {
                                                         <Show
                                                             when={
                                                                 pokemon.last_stat_ev !==
-                                                                'hp'
+                                                                "hp"
                                                             }
                                                         >
                                                             /
                                                         </Show>
                                                     </Show>
                                                     <Show
-                                                        when={stats[1] !== ''}
+                                                        when={stats[1] !== ""}
                                                     >
                                                         <span class="stat-atk">
                                                             {stats[1]} Atk
@@ -562,14 +569,14 @@ export default function PasteViewNew(props: Props) {
                                                         <Show
                                                             when={
                                                                 pokemon.last_stat_ev !==
-                                                                'atk'
+                                                                "atk"
                                                             }
                                                         >
                                                             /
                                                         </Show>
                                                     </Show>
                                                     <Show
-                                                        when={stats[2] !== ''}
+                                                        when={stats[2] !== ""}
                                                     >
                                                         <span class="stat-def">
                                                             {stats[2]} Def
@@ -577,14 +584,14 @@ export default function PasteViewNew(props: Props) {
                                                         <Show
                                                             when={
                                                                 pokemon.last_stat_ev !==
-                                                                'def'
+                                                                "def"
                                                             }
                                                         >
                                                             /
                                                         </Show>
                                                     </Show>
                                                     <Show
-                                                        when={stats[3] !== ''}
+                                                        when={stats[3] !== ""}
                                                     >
                                                         <span class="stat-spa">
                                                             {stats[3]} SpA
@@ -592,14 +599,14 @@ export default function PasteViewNew(props: Props) {
                                                         <Show
                                                             when={
                                                                 pokemon.last_stat_ev !==
-                                                                'spa'
+                                                                "spa"
                                                             }
                                                         >
                                                             /
                                                         </Show>
                                                     </Show>
                                                     <Show
-                                                        when={stats[4] !== ''}
+                                                        when={stats[4] !== ""}
                                                     >
                                                         <span class="stat-spd">
                                                             {stats[4]} SpD
@@ -607,14 +614,14 @@ export default function PasteViewNew(props: Props) {
                                                         <Show
                                                             when={
                                                                 pokemon.last_stat_ev !==
-                                                                'spd'
+                                                                "spd"
                                                             }
                                                         >
                                                             /
                                                         </Show>
                                                     </Show>
                                                     <Show
-                                                        when={stats[5] !== ''}
+                                                        when={stats[5] !== ""}
                                                     >
                                                         <span class="stat-spe">
                                                             {stats[5]} Spe
@@ -622,11 +629,11 @@ export default function PasteViewNew(props: Props) {
                                                     </Show>
                                                 </div>
                                                 <Show
-                                                    when={pokemon.nature !== ''}
+                                                    when={pokemon.nature !== ""}
                                                 >
                                                     <Show
                                                         when={pokemon.nature.endsWith(
-                                                            'Nature',
+                                                            "Nature",
                                                         )}
                                                     >
                                                         <div class="attribute-line">
@@ -638,13 +645,13 @@ export default function PasteViewNew(props: Props) {
                                                     <Show
                                                         when={
                                                             !pokemon.nature.endsWith(
-                                                                'Nature',
+                                                                "Nature",
                                                             )
                                                         }
                                                     >
                                                         <div class="attribute-line">
                                                             <span>
-                                                                {pokemon.nature}{' '}
+                                                                {pokemon.nature}{" "}
                                                                 Nature
                                                             </span>
                                                         </div>
@@ -653,7 +660,7 @@ export default function PasteViewNew(props: Props) {
                                                 <Show
                                                     when={
                                                         pokemon.last_stat_iv !==
-                                                        ''
+                                                        ""
                                                     }
                                                 >
                                                     <div class="attribute-line">
@@ -666,21 +673,21 @@ export default function PasteViewNew(props: Props) {
                                                             }
                                                         >
                                                             <span>
-                                                                {pokemon.ivs[0]}{' '}
+                                                                {pokemon.ivs[0]}{" "}
                                                                 HP
                                                             </span>
                                                             <Show
                                                                 when={
                                                                     pokemon.last_stat_iv !==
-                                                                    'hp'
+                                                                    "hp"
                                                                 }
                                                             >
                                                                 <span style="font-size: 1px;">
-                                                                    {' '}
+                                                                    {" "}
                                                                 </span>
                                                                 <span>/</span>
                                                                 <span style="font-size: 1px;">
-                                                                    {' '}
+                                                                    {" "}
                                                                 </span>
                                                             </Show>
                                                         </Show>
@@ -692,21 +699,21 @@ export default function PasteViewNew(props: Props) {
                                                             }
                                                         >
                                                             <span>
-                                                                {pokemon.ivs[1]}{' '}
+                                                                {pokemon.ivs[1]}{" "}
                                                                 Atk
                                                             </span>
                                                             <Show
                                                                 when={
                                                                     pokemon.last_stat_iv !==
-                                                                    'atk'
+                                                                    "atk"
                                                                 }
                                                             >
                                                                 <span style="font-size: 1px;">
-                                                                    {' '}
+                                                                    {" "}
                                                                 </span>
                                                                 <span>/</span>
                                                                 <span style="font-size: 1px;">
-                                                                    {' '}
+                                                                    {" "}
                                                                 </span>
                                                             </Show>
                                                         </Show>
@@ -718,21 +725,21 @@ export default function PasteViewNew(props: Props) {
                                                             }
                                                         >
                                                             <span>
-                                                                {pokemon.ivs[2]}{' '}
+                                                                {pokemon.ivs[2]}{" "}
                                                                 Def
                                                             </span>
                                                             <Show
                                                                 when={
                                                                     pokemon.last_stat_iv !==
-                                                                    'def'
+                                                                    "def"
                                                                 }
                                                             >
                                                                 <span style="font-size: 1px;">
-                                                                    {' '}
+                                                                    {" "}
                                                                 </span>
                                                                 <span>/</span>
                                                                 <span style="font-size: 1px;">
-                                                                    {' '}
+                                                                    {" "}
                                                                 </span>
                                                             </Show>
                                                         </Show>
@@ -744,21 +751,21 @@ export default function PasteViewNew(props: Props) {
                                                             }
                                                         >
                                                             <span>
-                                                                {pokemon.ivs[3]}{' '}
+                                                                {pokemon.ivs[3]}{" "}
                                                                 SpA
                                                             </span>
                                                             <Show
                                                                 when={
                                                                     pokemon.last_stat_iv !==
-                                                                    'spa'
+                                                                    "spa"
                                                                 }
                                                             >
                                                                 <span style="font-size: 1px;">
-                                                                    {' '}
+                                                                    {" "}
                                                                 </span>
                                                                 <span>/</span>
                                                                 <span style="font-size: 1px;">
-                                                                    {' '}
+                                                                    {" "}
                                                                 </span>
                                                             </Show>
                                                         </Show>
@@ -770,21 +777,21 @@ export default function PasteViewNew(props: Props) {
                                                             }
                                                         >
                                                             <span>
-                                                                {pokemon.ivs[4]}{' '}
+                                                                {pokemon.ivs[4]}{" "}
                                                                 SpD
                                                             </span>
                                                             <Show
                                                                 when={
                                                                     pokemon.last_stat_iv !==
-                                                                    'spd'
+                                                                    "spd"
                                                                 }
                                                             >
                                                                 <span style="font-size: 1px;">
-                                                                    {' '}
+                                                                    {" "}
                                                                 </span>
                                                                 <span>/</span>
                                                                 <span style="font-size: 1px;">
-                                                                    {' '}
+                                                                    {" "}
                                                                 </span>
                                                             </Show>
                                                         </Show>
@@ -796,7 +803,7 @@ export default function PasteViewNew(props: Props) {
                                                             }
                                                         >
                                                             <span>
-                                                                {pokemon.ivs[5]}{' '}
+                                                                {pokemon.ivs[5]}{" "}
                                                                 Spe
                                                             </span>
                                                         </Show>
@@ -808,27 +815,27 @@ export default function PasteViewNew(props: Props) {
                                                 <div class="attribute-line">
                                                     <span class="attr">
                                                         Level:
-                                                    </span>{' '}
+                                                    </span>{" "}
                                                     {pokemon.level}
                                                 </div>
                                             </Show>
-                                            <Show when={pokemon.shiny !== ''}>
+                                            <Show when={pokemon.shiny !== ""}>
                                                 <div class="attribute-line">
                                                     <span class="attr">
                                                         Shiny:
-                                                    </span>{' '}
+                                                    </span>{" "}
                                                     {pokemon.shiny}
                                                 </div>
                                             </Show>
                                             <Show
                                                 when={
-                                                    pokemon.hidden_power !== ''
+                                                    pokemon.hidden_power !== ""
                                                 }
                                             >
                                                 <div class="attribute-line">
                                                     <span class="attr">
                                                         Hidden Power:
-                                                    </span>{' '}
+                                                    </span>{" "}
                                                     <span
                                                         class={`type-${pokemon.hidden_power}`}
                                                     >
@@ -837,12 +844,12 @@ export default function PasteViewNew(props: Props) {
                                                 </div>
                                             </Show>
                                             <Show
-                                                when={pokemon.tera_type !== ''}
+                                                when={pokemon.tera_type !== ""}
                                             >
                                                 <div class="attribute-line">
                                                     <span class="attr">
                                                         Tera Type:
-                                                    </span>{' '}
+                                                    </span>{" "}
                                                     <span
                                                         class={`type-${pokemon.tera_type}`}
                                                     >
@@ -853,7 +860,7 @@ export default function PasteViewNew(props: Props) {
                                             <br
                                                 class="display-none"
                                                 style={{
-                                                    'line-height': '-10px',
+                                                    "line-height": "-10px",
                                                 }}
                                             />
                                         </div>
@@ -866,7 +873,7 @@ export default function PasteViewNew(props: Props) {
                     <Watermark />
                     <Show when={showModal()}>
                         <div
-                            class="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-100 !text-white"
+                            class="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-100 text-white!"
                             onClick={() => setShowModal(false)}
                             onKeyDown={(e) => e.stopPropagation()}
                             tabindex="-1"
@@ -927,7 +934,7 @@ export default function PasteViewNew(props: Props) {
                                 setShowQrModal(false);
                                 // Clean up the object URL
                                 URL.revokeObjectURL(qrImageUrl());
-                                setQrImageUrl('');
+                                setQrImageUrl("");
                             }}
                             tabindex="-1"
                         >
@@ -943,7 +950,7 @@ export default function PasteViewNew(props: Props) {
                                     onClick={() => {
                                         setShowQrModal(false);
                                         URL.revokeObjectURL(qrImageUrl());
-                                        setQrImageUrl('');
+                                        setQrImageUrl("");
                                     }}
                                     aria-label="Close QR modal"
                                 >

@@ -80,7 +80,9 @@ pub fn replay(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void 
 /// fetchReplay serves as a wrapper around the Showdown API. Because of the CORS restrictions
 /// we cannot fetch this info directly from the client. User credentials are not saved and are only
 /// used for this single request. Data is sent over HTTPS and is encrypted.
-pub fn fetchReplay(_: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
+pub fn fetchReplay(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
+    app.pgpool.logFeatureUsage("", "replay") catch {};
+
     const data = req.body();
     const allocator = res.arena;
 
@@ -378,6 +380,8 @@ pub fn getUUID(appState: *state.State, req: *httpz.Request, res: *httpz.Response
         res.body = "Not Found";
         return;
     };
+
+    appState.pgpool.logFeatureUsage(user, "get_paste") catch {};
 
     // Content should NEVER change, so let's make the cache a long time
     // 60 sec * 60 min * 24 hours * 365 days = 31536000 seconds
@@ -691,4 +695,22 @@ pub fn logo(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void 
         res.body = "Not Found";
         return;
     };
+}
+
+const FeatureInfo = struct {
+    feature: []const u8,
+    id: []const u8,
+};
+
+pub fn feature(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
+    const body_opt = req.body();
+    if (body_opt == null) {
+        return error.NoBody;
+    }
+    const body = body_opt.?;
+    const feature_info: FeatureInfo = try std.json.parseFromSliceLeaky(FeatureInfo, res.arena, body, .{});
+
+    try app.pgpool.logFeatureUsage(feature_info.id, feature_info.feature);
+    res.status = 200;
+    res.body = "OK";
 }

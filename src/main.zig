@@ -133,6 +133,7 @@ pub fn main() !void {
     router.get("/recent", routes.recent, .{});
     router.get("/api/screenshot", routes.handleScreenshotRequest, .{});
     router.get("/logo/*", routes.logo, .{});
+    router.post("/api/feature", routes.feature, .{});
 
     zlog.info("Starting PokeBin!", .{});
     try server.listen();
