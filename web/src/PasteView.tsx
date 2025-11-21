@@ -1,17 +1,17 @@
-import PasteViewBase from './PasteViewBase';
-import './app.css';
-import './paste.css';
-import PasteViewNew from './PasteViewNew';
-import { initSettings } from './settings';
-import { getId } from './utils';
-import { decrypt, initWasm } from './wasm_helpers';
+import PasteViewBase from "./PasteViewBase";
+import "./app.css";
+import "./paste.css";
+import PasteViewNew from "./PasteViewNew";
+import { initSettings } from "./settings";
+import { getId } from "./utils";
+import { decrypt, initWasm } from "./wasm_helpers";
 import {
     initWasm as initWebWasm,
     parsePaste,
     type Paste,
     utf8ToBase64,
     SavePasteToLastVisited,
-} from './web_wasm_helpers';
+} from "./web_wasm_helpers";
 import {
     createSignal,
     createEffect,
@@ -19,30 +19,33 @@ import {
     onMount,
     Switch,
     Match,
-} from 'solid-js';
+} from "solid-js";
 
 function stripIvsEvs(pasteText: string): string {
     // Remove lines that start with "IVs:" or "EVs:" (case-insensitive, optional whitespace)
     return pasteText
-        .split('\n')
+        .split("\n")
         .filter((line) => !/^\s*(IVs:|EVs:)/i.test(line))
-        .join('\n');
+        .join("\n");
 }
 
 const PasteView = () => {
     const [paste, setPaste] = createSignal<Paste | null>(null);
     const [isEncrypted, setIsEncrypted] = createSignal(false);
-    const [data, setData] = createSignal('');
+    const [data, setData] = createSignal("");
     const [title, setTitle] = createSignal<string | null>(null);
     const [showNotes, setShowNotes] = createSignal(false);
     const [notesOpacity, setNotesOpacity] = createSignal(1.0);
-    const [notesWidth, setNotesWidth] = createSignal('300px');
+    const [notesWidth, setNotesWidth] = createSignal("300px");
     const [showModal, setShowModal] = createSignal(false);
 
+    const aspect_ratio = window.innerWidth / window.innerHeight;
+    console.log(aspect_ratio);
+
     function updateThemeColor(darkMode: boolean) {
-        const meta = document.getElementById('theme-color-meta');
+        const meta = document.getElementById("theme-color-meta");
         if (meta) {
-            meta.setAttribute('content', darkMode ? '#000000' : '#f9f9f9');
+            meta.setAttribute("content", darkMode ? "#000000" : "#f9f9f9");
         }
     }
 
@@ -78,15 +81,15 @@ const PasteView = () => {
         pasteObj.data.content = stripIvsEvs(pasteObj.data.content);
 
         // Prepare form data
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '/create';
-        form.style.display = 'none';
+        const form = document.createElement("form");
+        form.method = "POST";
+        form.action = "/create";
+        form.style.display = "none";
 
         // Helper to add a field
         function addField(name: string, value: string) {
-            const input = document.createElement('input');
-            input.type = 'hidden';
+            const input = document.createElement("input");
+            input.type = "hidden";
             input.name = name;
             input.value = value;
             form.appendChild(input);
@@ -94,7 +97,7 @@ const PasteView = () => {
 
         // Add all relevant fields
         const encoded = utf8ToBase64(JSON.stringify(pasteObj));
-        addField('data', encoded);
+        addField("data", encoded);
 
         document.body.appendChild(form);
         form.submit();
@@ -111,7 +114,7 @@ const PasteView = () => {
     }
 
     function decodeHtmlEntities(str: string): string {
-        const txt = document.createElement('textarea');
+        const txt = document.createElement("textarea");
         txt.innerHTML = str;
         const decoded = txt.value;
         txt.remove(); // remove from DOM (if it was ever attached)
@@ -119,13 +122,13 @@ const PasteView = () => {
     }
 
     function updateWidths() {
-        const main = document.getElementsByTagName('main')[0];
-        const sidebar = document.getElementById('sidebar');
-        const notes = document.getElementById('notes');
+        const main = document.getElementsByTagName("main")[0];
+        const sidebar = document.getElementById("sidebar");
+        const notes = document.getElementById("notes");
 
         if (!main && !sidebar && !notes) return;
 
-        const articles = document.getElementsByTagName('article');
+        const articles = document.getElementsByTagName("article");
         let end = articles.length;
         if (articles.length > 4) {
             end = 4;
@@ -141,7 +144,7 @@ const PasteView = () => {
 
         if (windowWidth <= 1024) {
             // Mobile layout
-            setNotesWidth('300px');
+            setNotesWidth("300px");
         } else {
             // Desktop layout
             const calculatedWidth = windowWidth - 420;
@@ -158,9 +161,9 @@ const PasteView = () => {
 
         // First update the style
         if (value) {
-            element.style.userSelect = 'text';
+            element.style.userSelect = "text";
         } else {
-            element.style.userSelect = 'auto';
+            element.style.userSelect = "auto";
         }
 
         // Set the style to be selectable for ALL children recursively
@@ -184,93 +187,93 @@ const PasteView = () => {
             if (value) {
                 // Set the style to be unselectable
                 for (let i = 0; i < children.length; i++) {
-                    child.style.userSelect = 'auto';
+                    child.style.userSelect = "auto";
                 }
             } else {
                 for (let i = 0; i < children.length; i++) {
-                    child.style.userSelect = 'none';
+                    child.style.userSelect = "none";
                 }
             }
         }
     }
 
     async function copyPasteBase() {
-        console.log('Copying paste to clipboard...');
-        const main = document.getElementsByClassName('main')[0];
+        console.log("Copying paste to clipboard...");
+        const main = document.getElementsByClassName("main")[0];
 
         if (!main) {
             return;
         }
 
-        let text = '';
-        const articles = main.querySelectorAll('article');
+        let text = "";
+        const articles = main.querySelectorAll("article");
 
         articles.forEach((article, _) => {
-            const monTitle = article.querySelector('#mon_title');
+            const monTitle = article.querySelector("#mon_title");
             if (monTitle) {
                 text += `${monTitle.textContent?.trim()}\n`;
             }
 
             // Extract ability, level, shiny, tera type, etc.
-            const attributeDivs = article.querySelectorAll('.attribute-line');
+            const attributeDivs = article.querySelectorAll(".attribute-line");
             attributeDivs.forEach((div, _) => {
                 text += `${div.textContent?.trim()}\n`;
             });
 
-            const moves = article.querySelectorAll('.move-line');
+            const moves = article.querySelectorAll(".move-line");
             moves.forEach((move, _) => {
                 text += `${move.textContent?.trim()}\n`;
             });
 
-            text += '\n'; // Add a newline between Pokemon entries
+            text += "\n"; // Add a newline between Pokemon entries
         });
 
         // Copy the data to the clipboard.
         console.log(text.trim());
         await navigator.clipboard.writeText(text.trim());
-        console.log('Paste copied to clipboard.');
+        console.log("Paste copied to clipboard.");
     }
 
     async function copyPasteNew() {
-        console.log('Copying paste to clipboard...');
-        const main = document.getElementsByClassName('main')[0];
+        console.log("Copying paste to clipboard...");
+        const main = document.getElementsByClassName("main")[0];
 
         if (!main) {
             return;
         }
 
-        let text = '';
-        const articles = main.querySelectorAll('article');
+        let text = "";
+        const articles = main.querySelectorAll("article");
 
         articles.forEach((article, _) => {
-            const monTitle = article.querySelector('#mon_title');
+            const monTitle = article.querySelector("#mon_title");
             if (monTitle) {
                 text += `${monTitle.textContent?.trim()}\n`;
             }
 
-            const abilityItem = article.querySelector('#ability-item');
+            const abilityItem = article.querySelector("#ability-item");
             if (abilityItem) {
                 text += `${abilityItem.textContent?.trim()}\n`;
             }
 
-            const moves = article.querySelectorAll('.move-line');
+            const moves = article.querySelectorAll(".move-line");
             moves.forEach((move, _) => {
                 text += `${move.textContent?.trim()}\n`;
             });
 
             // Extract ability, level, shiny, tera type, etc.
-            const attributeDivs = article.querySelectorAll('.attribute-line');
+            const attributeDivs = article.querySelectorAll(".attribute-line");
             attributeDivs.forEach((div, _) => {
                 text += `${div.textContent?.trim()}\n`;
             });
 
-            text += '\n'; // Add a newline between Pokemon entries
+            text += "\n"; // Add a newline between Pokemon entries
         });
 
         // Copy the data to the clipboard.
         console.log(text.trim());
         await navigator.clipboard.writeText(text.trim());
-        console.log('Paste copied to clipboard.');
+        console.log("Paste copied to clipboard.");
     }
 
     // Update document title when title changes
@@ -280,7 +283,7 @@ const PasteView = () => {
             document.title = decodeHtmlEntities(currentTitle);
         }
 
-        window.addEventListener('resize', updateWidths);
+        window.addEventListener("resize", updateWidths);
     });
 
     createEffect(() => {
@@ -295,13 +298,13 @@ const PasteView = () => {
     });
 
     function darkModeToggle() {
-        const body = document.getElementsByTagName('body')[0];
+        const body = document.getElementsByTagName("body")[0];
         if (sett().darkMode) {
-            body.classList.add('dark');
-            body.classList.remove('light');
+            body.classList.add("dark");
+            body.classList.remove("light");
         } else {
-            body.classList.add('light');
-            body.classList.remove('dark');
+            body.classList.add("light");
+            body.classList.remove("dark");
         }
         updateThemeColor(sett().darkMode);
     }
@@ -317,26 +320,26 @@ const PasteView = () => {
 
         await initWasm();
         await initWebWasm();
-        const wsUrl = '/ws';
+        const wsUrl = "/ws";
         const socket = new WebSocket(wsUrl);
         socket.onopen = async () => {
-            console.log('WebSocket connected to:', wsUrl);
+            console.log("WebSocket connected to:", wsUrl);
         };
 
         if (json.encrypted) {
             setIsEncrypted(true);
             // Get user input via popup.
             let done = false;
-            let promptMsg = 'Enter password';
+            let promptMsg = "Enter password";
             while (!done) {
-                let passkey = prompt(promptMsg, '');
-                while (passkey === '' || passkey === null) {
-                    promptMsg = 'Enter password';
-                    passkey = prompt(promptMsg, '');
+                let passkey = prompt(promptMsg, "");
+                while (passkey === "" || passkey === null) {
+                    promptMsg = "Enter password";
+                    passkey = prompt(promptMsg, "");
                 }
                 const decrypted = decrypt(json.data, passkey as string);
                 if (decrypted == null) {
-                    promptMsg = 'Invalid password';
+                    promptMsg = "Invalid password";
                 } else {
                     setData(decrypted);
                     done = true;
@@ -348,25 +351,25 @@ const PasteView = () => {
 
         darkModeToggle();
 
-        window.addEventListener('resize', updateWidths);
+        window.addEventListener("resize", updateWidths);
         updateWidths();
 
         onCleanup(() => {
-            window.removeEventListener('resize', updateWidths);
+            window.removeEventListener("resize", updateWidths);
         });
 
         const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'Escape') {
+            if (e.key === "Escape") {
                 setShowModal(false);
             }
         };
-        window.addEventListener('keydown', handleKeyDown);
-        onCleanup(() => window.removeEventListener('keydown', handleKeyDown));
+        window.addEventListener("keydown", handleKeyDown);
+        onCleanup(() => window.removeEventListener("keydown", handleKeyDown));
 
-        const root = document.getElementById('root');
+        const root = document.getElementById("root");
         if (root) {
             if (root.clientHeight <= window.innerHeight) {
-                root.style.overflowY = 'hidden';
+                root.style.overflowY = "hidden";
             }
         }
 
