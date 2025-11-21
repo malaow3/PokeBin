@@ -73,7 +73,7 @@ const Import = ({ newUI = false }: ImportProps) => {
         usfw.PS.room.team.name = title;
       }
       console.log("POKEBIN: ", paste.content);
-      const sets = usfw.PSTeambuilder.importTeam(paste.content);
+      const sets = usfw.Teams.import(paste.content);
       const packed = usfw.Teams.pack(sets);
       usfw.PS.room.team.packedTeam = packed;
       usfw.PS.teams.push(usfw.PS.room.team);
