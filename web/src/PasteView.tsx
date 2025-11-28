@@ -40,7 +40,8 @@ const PasteView = () => {
     const [showModal, setShowModal] = createSignal(false);
 
     const aspect_ratio = window.innerWidth / window.innerHeight;
-    console.log(aspect_ratio);
+    console.log("Aspect ratio:", aspect_ratio);
+    console.log("Window width:", window.innerWidth);
 
     function updateThemeColor(darkMode: boolean) {
         const meta = document.getElementById("theme-color-meta");
