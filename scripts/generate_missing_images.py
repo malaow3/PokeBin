@@ -24,6 +24,12 @@ def main():
         id = f.split(".")[0]
         missing_dict[id] = None
 
+    with open("../wasm/pokemon.json", "r") as file:
+        pokemon_data = json.load(file)
+    for pokemon in pokemon_data.values():
+        if not pokemon["has_shiny"]:
+            missing_dict[pokemon["id"]] = None
+
     with open("../wasm/missing_shiny.json", "w") as file:
         json.dump(missing_dict, file, indent=2)
 
