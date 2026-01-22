@@ -1,22 +1,24 @@
 {
-  "name": "pokebin-web",
-  "version": "2.2.6",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "build": "vite build"
-  },
-  "dependencies": {
-    "@pkmn/img": "^0.2.39",
-    "solid-js": "^1.9.5"
-  },
-  "devDependencies": {
-    "oxlint": "^1.23.0",
-    "@tailwindcss/postcss": "^4.1.1",
-    "tailwindcss": "^4.1.1",
-    "typescript": "^5.8.2",
-    "vite": "^5.4.0",
-    "vite-plugin-html": "^3.2.2",
-    "vite-plugin-solid": "^2.10.0"
-  }
+    "name": "pokebin-web",
+    "version": "2.2.6",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "vite build"
+    },
+    "dependencies": {
+        "@pkmn/img": "^0.2.41",
+        "solid-js": "^1.9.10",
+        "seroval": ">=1.4.1"
+    },
+    "devDependencies": {
+        "@tailwindcss/postcss": "^4.1.18",
+        "oxlint": "^1.41.0",
+        "tailwindcss": "^4.1.18",
+        "typescript": "^5.9.3",
+        "vite": "^5.4.21",
+        "vite-plugin-html": "^3.2.2",
+        "vite-plugin-solid": "^2.11.10",
+        "esbuild": ">=0.25.0"
+    }
 }
