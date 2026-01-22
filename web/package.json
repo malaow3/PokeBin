@@ -8,17 +8,23 @@
     },
     "dependencies": {
         "@pkmn/img": "^0.2.41",
-        "solid-js": "^1.9.10",
-        "seroval": ">=1.4.1"
+        "seroval": "^1.4.2",
+        "solid-js": "^1.9.10"
     },
     "devDependencies": {
         "@tailwindcss/postcss": "^4.1.18",
+        "esbuild": "^0.27.2",
         "oxlint": "^1.41.0",
         "tailwindcss": "^4.1.18",
         "typescript": "^5.9.3",
         "vite": "^5.4.21",
         "vite-plugin-html": "^3.2.2",
-        "vite-plugin-solid": "^2.11.10",
-        "esbuild": ">=0.25.0"
+        "vite-plugin-solid": "^2.11.10"
+    },
+    "pnpm": {
+        "overrides": {
+            "esbuild": ">=0.25.0",
+            "seroval": ">=1.4.1"
+        }
     }
 }
