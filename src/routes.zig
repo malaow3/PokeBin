@@ -9,6 +9,25 @@ const constants = @import("constants.zig");
 
 const VERSION = @import("main.zig").version;
 
+const allowed_origins = [_][]const u8{
+    "https://play.pokemonshowdown.com",
+    "https://showdown.malaow3.com",
+};
+
+fn setCorsOrigin(req: *httpz.Request, res: *httpz.Response) void {
+    const origin = req.headers.get("origin") orelse return;
+    for (&allowed_origins) |allowed| {
+        if (std.mem.eql(u8, origin, allowed)) {
+            res.headers.add("Access-Control-Allow-Origin", origin);
+            return;
+        }
+    }
+    // Allow any localhost origin (any port)
+    if (std.mem.startsWith(u8, origin, "http://localhost")) {
+        res.headers.add("Access-Control-Allow-Origin", origin);
+    }
+}
+
 fn serveCachedFile(
     app: *state.State,
     res: *httpz.Response,
@@ -319,8 +338,8 @@ pub fn static(app: *state.State, req: *httpz.Request, res: *httpz.Response) !voi
     };
 }
 
-fn serveWasmFile(filename: []const u8, app: *state.State, res: *httpz.Response) !void {
-    res.headers.add("Access-Control-Allow-Origin", "https://play.pokemonshowdown.com");
+fn serveWasmFile(filename: []const u8, app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
+    setCorsOrigin(req, res);
     return serveCachedFile(app, res, filename, .WASM, true) catch {
         res.status = 404;
         res.content_type = .TEXT;
@@ -329,8 +348,8 @@ fn serveWasmFile(filename: []const u8, app: *state.State, res: *httpz.Response) 
     };
 }
 
-pub fn web_wasm(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
-    return serveWasmFile("zig-out/bin/web_wasm.wasm.br", app, res) catch {
+pub fn web_wasm(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
+    return serveWasmFile("zig-out/bin/web_wasm.wasm.br", app, req, res) catch {
         res.status = 404;
         res.content_type = .TEXT;
         res.body = "Not Found";
@@ -338,8 +357,8 @@ pub fn web_wasm(app: *state.State, _: *httpz.Request, res: *httpz.Response) !voi
     };
 }
 
-pub fn wasm(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
-    return serveWasmFile("zig-out/bin/wasm.wasm.br", app, res) catch {
+pub fn wasm(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
+    return serveWasmFile("zig-out/bin/wasm.wasm.br", app, req, res) catch {
         res.status = 404;
         res.content_type = .TEXT;
         res.body = "Not Found";
@@ -357,7 +376,7 @@ pub fn robots(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void 
 }
 
 pub fn getUUIDJson(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
-    res.headers.add("Access-Control-Allow-Origin", "https://play.pokemonshowdown.com");
+    setCorsOrigin(req, res);
     const user = req.params.get("uuid") orelse {
         res.status = 404;
         res.body = "Not Found";
