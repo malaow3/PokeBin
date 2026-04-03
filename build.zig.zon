@@ -23,32 +23,36 @@
 
     .dependencies = .{
         .zlog = .{
-            .url = "git+https://github.com/max-legrand/zlog?ref=main#859f8c69ba356fdd2d369e7b02a5e1f91f13406f",
-            .hash = "zlog-0.0.0-_MGzdQ5KAACOiyZ6PDfF9vzef43EVkL5VUfSxe9FfjQd",
-        },
-        .httpz = .{
-            .url = "git+https://github.com/karlseguin/http.zig?ref=master#18e0f2d2b64fcc8d8351e6b0b734170b46f91024",
-            .hash = "httpz-0.0.0-PNVzrFm5BgBSwbIfjg-nFNI1HAJzzPVFHYInimLC8CfY",
+            .url = "git+https://github.com/max-legrand/zlog?ref=zig-0.16#af664ed3a2cfc7515315c837d448aeebb70566fe",
+            .hash = "zlog-0.0.0-_MGzdf9RAAAtlclQast1dJvU00Z88c8S-mE1qi2E2gAq",
         },
         .zul = .{
-            .url = "git+https://github.com/karlseguin/zul?ref=master#9dff2f294807b12944bc1025b121f33c61748767",
-            .hash = "zul-0.0.0-1oDot06QBwAogVwyG0VAUIUbJnOOfsK7f25t66lFJZi7",
+            .url = "git+https://github.com/max-legrand/zul?ref=zig-0.16#187d6a91fd123699ead6ebdbe6811d3aa6f88bc2",
+            .hash = "zul-0.0.0-1oDot6iiBwDxma1CS2D3kjBf5Y-m8LUPifQ7DjWQes8B",
         },
         .brotli = .{
-            .url = "git+https://github.com/max-legrand/brotli?ref=zig-build#b25c56611c1273f874e329cba353fcba45e3e81e",
-            .hash = "brotli-0.0.0-lm3Mvx51IQD3catHxcBaVun4pL5zAcWxrbB0pSKVQVf8",
+            .url = "git+https://github.com/max-legrand/brotli?ref=zig-0.16#ea28442a456b0ba5076dd13713fd666e47a31022",
+            .hash = "brotli-0.0.0-lm3MvxZ1IQDEhAcg0C8dLD3R-J0dkPIWZfTxf6hzVbQP",
         },
         .pg = .{
-            .url = "git+https://github.com/karlseguin/pg.zig?ref=master#4c2602bad095f9d85b16711d12aa3a2bc7e169cc",
-            .hash = "pg-0.0.0-Wp_7gQ8FBgCRArfpYn9OdkUhGOUHVRXxB6h9S6lYu7bC",
+            .url = "git+https://github.com/max-legrand/pg.zig?ref=zig-0.16#47bd110a2f1fc858586a39146f23bfc949b50916",
+            .hash = "pg-0.0.0-Wp_7gSiCBgDw_xGPm4ptgg9v3ZQ_sHXeKnlP9nktRFuP",
         },
         .qr = .{
             .url = "git+https://github.com/max-legrand/qr?ref=main#bfcd6fd4833e7db0115600e1de135aa0085a38ed",
             .hash = "qr-0.0.0-mHFkTeobAQBeFiQkSGIMVm7LyT1fXlfHo3C5Gd0SAJnf",
         },
-        .zigimg = .{
-            .url = "git+https://github.com/zigimg/zigimg#d7717b3617d58160635623fe86d4bf86065498e0",
-            .hash = "zigimg-0.1.0-8_eo2vBrFQAvZmO9NzDP85_qC5JFksuMdyI_KMMEr4bq",
+        .tanuki = .{
+            .url = "git+https://github.com/max-legrand/tanuki?ref=zig-0.16#e5e66607f9da658f5cc0cef7675053c85fca7831",
+            .hash = "tanuki-0.1.0-KEer8Sd1AAC8YTbgYvtvWBnlMUMMzLIlfHH6pduFTD5z",
+        },
+        .httpz = .{
+            .url = "git+https://github.com/max-legrand/http.zig?ref=zig-0.16#e6dba90560f3e805c0293a33e69f55c661009862",
+            .hash = "httpz-0.0.0-PNVzrDyUBwCnbGgTu8cZw42eG85omyNgwwKiEVnFKIM2",
+        },
+        .websocket = .{
+            .url = "git+https://github.com/max-legrand/websocket.zig?ref=dev-0.16#76974a8a9f4e19b49a4e737e27d530d0a447cde6",
+            .hash = "websocket-0.1.0-ZPISdYZ_AwCtqZB0Ua9avVJ0rK7NMWRSBzguysYG4m4i",
         },
     },
     .paths = .{

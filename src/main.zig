@@ -31,18 +31,15 @@ pub const version = getVersion() orelse @panic("Failed to get version");
 pub var state_ptr: ?*state.State = null;
 pub var server_instance: ?*httpz.Server(*state.State) = null;
 
-pub fn main() !void {
+pub fn main(init: std.process.Init) !void {
     shutdown.initSigHandler();
 
-    // Allocator setup
-    var arena = std.heap.ArenaAllocator.init(std.heap.smp_allocator);
-    defer arena.deinit();
-    const allocator = arena.allocator();
-    // End allocator setup
+    const allocator = init.arena.allocator();
+    const io = init.io;
 
     var skip_preload = false;
     var verbose = false;
-    var args = std.process.args();
+    var args = init.minimal.args.iterate();
     while (args.next()) |arg| {
         if (std.mem.eql(u8, arg, "--skip-preload") or std.mem.eql(u8, arg, "-s")) {
             skip_preload = true;
@@ -53,20 +50,20 @@ pub fn main() !void {
     }
 
     // Logging setup
-    const log_level = if (verbose) zlog.Logger.Level.DEBUG else zlog.Logger.Level.INFO;
-    try zlog.initGlobalLogger(
-        log_level,
-        true,
-        "PokeBin",
-        null,
-        null,
+    try zlog.initGlogDefault(
         allocator,
+        io,
     );
+    if (verbose) {
+        zlog.setLevel(zlog.Logger.Level.DEBUG);
+    }
+
     defer zlog.deinitGlobalLogger();
     // End logging setup
     zlog.info("Initializing PokeBin - v{s}", .{version});
 
-    var appState = try state.State.init(allocator);
+    var env = init.environ_map;
+    var appState = try state.State.init(allocator, io, env);
     state_ptr = &appState;
     defer appState.deinit();
 
@@ -80,8 +77,6 @@ pub fn main() !void {
         zlog.info("Cache preload complete!", .{});
     }
 
-    var env = try std.process.getEnvMap(allocator);
-    defer env.deinit();
     const port_str = env.get("PORT") orelse "2000";
     const port = try std.fmt.parseInt(u16, port_str, 10);
 
@@ -97,8 +92,7 @@ pub fn main() !void {
             .max_conn = 100,
             .count = 10,
         },
-        .address = "0.0.0.0",
-        .port = port,
+        .address = .all(port),
         .request = .{
             .max_form_count = 10,
             .max_param_count = 10,
@@ -135,6 +129,7 @@ pub fn main() !void {
     router.get("/logo/*", routes.logo, .{});
     router.post("/api/feature", routes.feature, .{});
 
-    zlog.info("Starting PokeBin!", .{});
+    const addr = try std.fmt.allocPrint(allocator, "http://127.0.0.1:{d}", .{port});
+    zlog.info("Starting PokeBin @ {s}!", .{addr});
     try server.listen();
 }

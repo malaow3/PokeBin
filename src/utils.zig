@@ -1,9 +1,11 @@
 const std = @import("std");
 const builtin = @import("builtin");
-const zigimg = @import("zigimg");
 const c = @cImport({
     @cInclude("brotli/encode.h");
 });
+
+const png_utils = @import("png_utils.zig");
+
 
 pub fn compressData(allocator: std.mem.Allocator, data: []const u8) ![]u8 {
     // Estimate max compressed size (Brotli doc: worst case is input + 600 bytes)
@@ -35,41 +37,28 @@ pub fn compressData(allocator: std.mem.Allocator, data: []const u8) ![]u8 {
     return result;
 }
 
-pub fn cropImage(allocator: std.mem.Allocator, img_file: []const u8) !void {
-    var read_buffer: [1024]u8 = undefined;
-    var image = try zigimg.Image.fromFilePath(allocator, img_file, &read_buffer);
-    defer image.deinit(allocator);
-    var cropped = try image.crop(allocator, .{ .x = 0, .y = 0, .width = image.width - 200, .height = image.height });
-    defer cropped.deinit(allocator);
-    var write_buffer: [1024]u8 = undefined;
-    try cropped.writeToFilePath(
-        allocator,
-        img_file,
-        &write_buffer,
-        .{ .png = .{} },
-    );
+pub fn cropImage(allocator: std.mem.Allocator, io: std.Io, img_file: []const u8) !void {
+    try png_utils.cropFile(allocator, io, img_file, 200);
 }
 
-pub fn generateScreenshot(allocator: std.mem.Allocator, id: []const u8) !void {
-    const cwd = std.fs.cwd();
+
+pub fn generateScreenshot(allocator: std.mem.Allocator, io: std.Io, id: []const u8) !void {
+    const cwd = std.Io.Dir.cwd();
     const exe = switch (builtin.os.tag) {
         .linux, .macos => "bun",
         .windows => "bun.exe",
         else => @panic("Unsupported OS"),
     };
 
-    const file = try cwd.realpathAlloc(allocator, "screenshot/index.ts");
+    const file = try cwd.realPathFileAlloc(io, "screenshot/index.ts", allocator);
     defer allocator.free(file);
 
-    var child = std.process.Child.init(
-        &[_][]const u8{
+    var child = try std.process.spawn(io, .{
+        .argv = &[_][]const u8{
             exe,
             file,
             id,
         },
-        allocator,
-    );
-    child.stdout_behavior = .Inherit;
-    // child.stdout_behavior = .Ignore;
-    _ = try child.spawnAndWait();
+    });
+    _ = try child.wait(io);
 }

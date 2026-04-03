@@ -3,6 +3,8 @@
 
 **/*zig-out/
 **/*.zig-cache/
+zig-pkg/
+
 .direnv/
 
 web/node_modules/

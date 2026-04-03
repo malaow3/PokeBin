@@ -23,9 +23,9 @@ pub const Client = struct {
     }
 
     pub fn afterInit(client: *Client) !void {
-        client.appState.conn_rwlock.lock();
+        client.appState.conn_rwlock.lockUncancelable(client.appState.io);
         client.appState.connections += 1;
-        client.appState.conn_rwlock.unlock();
+        client.appState.conn_rwlock.unlock(client.appState.io);
     }
 
     const Message = struct {
@@ -39,8 +39,8 @@ pub const Client = struct {
     }
 
     pub fn close(self: *Client) void {
-        self.appState.conn_rwlock.lock();
+        self.appState.conn_rwlock.lockUncancelable(self.appState.io);
         self.appState.connections -= 1;
-        self.appState.conn_rwlock.unlock();
+        self.appState.conn_rwlock.unlock(self.appState.io);
     }
 };

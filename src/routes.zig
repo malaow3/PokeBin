@@ -1,4 +1,3 @@
-const httpz = @import("httpz");
 const std = @import("std");
 const zlog = @import("zlog");
 const state = @import("state.zig");
@@ -6,6 +5,7 @@ const ws = @import("ws.zig");
 const qr = @import("qr");
 const utils = @import("utils.zig");
 const constants = @import("constants.zig");
+const httpz = @import("httpz");
 
 const VERSION = @import("main.zig").version;
 
@@ -74,7 +74,7 @@ pub fn version(_: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
 }
 
 pub fn serveHtmlFile(app: *state.State, filepath: []const u8, res: *httpz.Response) !void {
-    const data = app.getOrLoadFile(filepath, .HTML) catch {
+    const data = app.getOrLoadFile(filepath, .TEXT) catch {
         return error.FileError;
     };
 
@@ -120,6 +120,7 @@ pub fn fetchReplay(app: *state.State, req: *httpz.Request, res: *httpz.Response)
 
         var client = std.http.Client{
             .allocator = allocator,
+            .io = app.io,
         };
         defer client.deinit();
 
@@ -271,7 +272,7 @@ pub fn image(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void
         "home", sub_path,
     });
 
-    return serveCachedFile(app, res, filepath, state.getMimeType(sub_path) orelse httpz.ContentType.BINARY, true) catch {
+    return serveCachedFile(app, res, filepath, state.getMimeType(sub_path) orelse .BINARY, true) catch {
         res.status = 404;
         res.content_type = .TEXT;
         res.body = "Not Found";
@@ -294,7 +295,7 @@ pub fn favicon(app: *state.State, req: *httpz.Request, res: *httpz.Response) !vo
         "web", "dist", path,
     });
 
-    return serveCachedFile(app, res, filepath, state.getMimeType(filepath) orelse httpz.ContentType.BINARY, true) catch {
+    return serveCachedFile(app, res, filepath, state.getMimeType(filepath) orelse .BINARY, true) catch {
         res.status = 404;
         res.content_type = .TEXT;
         res.body = "Not Found";
@@ -315,7 +316,7 @@ pub fn assets(app: *state.State, req: *httpz.Request, res: *httpz.Response) !voi
         });
     }
 
-    return serveCachedFile(app, res, filepath, state.getMimeType(sub_path) orelse httpz.ContentType.BINARY, true) catch {
+    return serveCachedFile(app, res, filepath, state.getMimeType(sub_path) orelse .BINARY, true) catch {
         res.status = 404;
         res.content_type = .TEXT;
         res.body = "Not Found";
@@ -330,7 +331,7 @@ pub fn static(app: *state.State, req: *httpz.Request, res: *httpz.Response) !voi
         "web", "dist", "static", sub_path,
     });
 
-    return serveCachedFile(app, res, filepath, state.getMimeType(sub_path) orelse httpz.ContentType.BINARY, true) catch {
+    return serveCachedFile(app, res, filepath, state.getMimeType(sub_path) orelse .BINARY, true) catch {
         res.status = 404;
         res.content_type = .TEXT;
         res.body = "Not Found";
@@ -468,6 +469,7 @@ pub fn createReport(s: *state.State, req: *httpz.Request, res: *httpz.Response) 
     const data = req.body();
     if (data) |d| {
         var client = std.http.Client{
+            .io = s.io,
             .allocator = allocator,
         };
 
@@ -551,12 +553,15 @@ pub fn wsFn(appState: *state.State, req: *httpz.Request, res: *httpz.Response) !
 }
 
 pub fn active(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
-    app.conn_rwlock.lockShared();
+    app.conn_rwlock.lockSharedUncancelable(app.io);
     var result = app.connections;
-    app.conn_rwlock.unlockShared();
+    app.conn_rwlock.unlockShared(app.io);
     result += app.config.live_offset;
 
-    var prng = std.Random.DefaultPrng.init(@intCast(std.time.milliTimestamp()));
+    const clock = std.Io.Clock.real;
+    const now = clock.now(app.io);
+    const timestamp = now.toMilliseconds();
+    var prng = std.Random.DefaultPrng.init(@intCast(timestamp));
     const rng = prng.random();
     result += rng.intRangeAtMost(usize, 0, app.config.live_offset);
 
@@ -608,7 +613,8 @@ const StreamContext = struct {
         data: ?[]u8,
     };
 
-    fn handle(self: StreamContext, stream: std.net.Stream) void {
+    const Stream = @typeInfo(@typeInfo(@TypeOf(httpz.Response.startEventStreamSync)).@"fn".return_type.?).error_union.payload;
+    fn handle(self: StreamContext, stream: Stream) void {
         var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
         const allocator = arena.allocator();
         defer arena.deinit();
@@ -620,36 +626,36 @@ const StreamContext = struct {
 
         const app = self.app;
 
-        app.screenshot_lock.lock();
+        app.screenshot_lock.lockUncancelable(app.io);
 
         var msg: []const u8 = undefined;
         var w = stream.writer(&.{});
         var writer = &w.interface;
 
-        app.screenshot_semaphore.wait();
+        app.screenshot_semaphore.waitUncancelable(app.io);
         if (app.active_screenshot_jobs >= app.maximum_screenshot_jobs) {
             const json_string = std.json.Stringify.valueAlloc(allocator, status, .{}) catch return;
             msg = std.fmt.allocPrint(allocator, "data: {s}\n\n", .{json_string}) catch return;
             writer.writeAll(msg) catch return;
             writer.flush() catch return;
-            app.screenshot_cond.wait(&app.screenshot_lock);
+            app.screenshot_cond.waitUncancelable(app.io, &app.screenshot_lock);
         }
-        app.screenshot_semaphore.post();
+        app.screenshot_semaphore.post(app.io);
         app.active_screenshot_jobs += 1;
 
         // Release lock before doing work to avoid blocking other acquirers.
-        app.screenshot_lock.unlock();
+        app.screenshot_lock.unlock(app.io);
 
         // Defer the release: Re-lock, decrement, signal.
         var unlocked = false;
         defer {
             if (!unlocked) {
-                app.screenshot_lock.lock();
-                app.screenshot_semaphore.wait();
+                app.screenshot_lock.lockUncancelable(app.io);
+                app.screenshot_semaphore.waitUncancelable(app.io);
                 app.active_screenshot_jobs -= 1;
-                app.screenshot_cond.signal();
-                app.screenshot_semaphore.post();
-                app.screenshot_lock.unlock();
+                app.screenshot_cond.signal(app.io);
+                app.screenshot_semaphore.post(app.io);
+                app.screenshot_lock.unlock(app.io);
             }
         }
         status.status = "generating";
@@ -659,32 +665,34 @@ const StreamContext = struct {
         writer.flush() catch return;
 
         zlog.info("Generating screenshot for {s}", .{self.id});
-        utils.generateScreenshot(allocator, self.id) catch {
+        utils.generateScreenshot(allocator, app.io, self.id) catch {
             writer.writeAll("data: {\"status\": \"error\"}") catch return;
             stream.close();
             return;
         };
-        app.screenshot_lock.lock();
-        app.screenshot_semaphore.wait();
+        app.screenshot_lock.lockUncancelable(app.io);
+        app.screenshot_semaphore.waitUncancelable(app.io);
         app.active_screenshot_jobs -= 1;
-        app.screenshot_cond.signal();
-        app.screenshot_semaphore.post();
-        app.screenshot_lock.unlock();
+        app.screenshot_cond.signal(app.io);
+        app.screenshot_semaphore.post(app.io);
+        app.screenshot_lock.unlock(app.io);
         unlocked = true;
 
         zlog.info("Cropping screenshot for {s}", .{self.id});
         const filename = std.fmt.allocPrint(allocator, "{s}.png", .{self.id}) catch return;
-        const filepath = std.fs.cwd().realpathAlloc(allocator, filename) catch return;
-        utils.cropImage(allocator, filepath) catch return;
+        const filepath = std.Io.Dir.cwd().realPathFileAlloc(app.io, filename, allocator) catch return;
+        utils.cropImage(allocator, app.io, filepath) catch return;
 
-        const file = std.fs.openFileAbsolute(filepath, .{}) catch {
+        const file = std.Io.Dir.openFileAbsolute(app.io, filepath, .{}) catch {
             status.status = "error";
             json_string = std.json.Stringify.valueAlloc(allocator, status, .{}) catch return;
             writer.writeAll(json_string) catch return;
             stream.close();
             return;
         };
-        const data = file.readToEndAlloc(allocator, std.math.maxInt(usize)) catch return;
+        var read_buf: [8192]u8 = undefined;
+        var rdr = file.reader(app.io, &read_buf);
+        const data = rdr.interface.readAlloc(allocator, std.math.maxInt(usize)) catch return;
         zlog.info("Writing back to client for {s}", .{self.id});
 
         status.status = "done";
@@ -694,8 +702,8 @@ const StreamContext = struct {
         writer.writeAll(msg) catch return;
         writer.flush() catch return;
 
-        file.close();
-        std.fs.deleteFileAbsolute(filepath) catch |err| {
+        file.close(app.io);
+        std.Io.Dir.deleteFileAbsolute(app.io, filepath) catch |err| {
             zlog.err("Failed to delete file: {s}", .{@errorName(err)});
         };
     }

@@ -17,7 +17,7 @@ pub const Pool = struct {
         const result = try self.pool.query("SELECT COUNT(*) FROM pastes;", .{});
         defer result.deinit();
         const row: pg.Row = try result.next() orelse return error.NoRows;
-        const total = row.get(?i64, 0);
+        const total = try row.get(?i64, 0);
         if (total) |t| {
             return @intCast(t);
         }
@@ -32,7 +32,8 @@ pub const Pool = struct {
         const result = try self.pool.query("SELECT content FROM pastes WHERE uuid = $1;", .{uuid});
         defer result.deinit();
         const row: pg.Row = try result.next() orelse return error.NoRows;
-        return try self.allocator.dupe(u8, row.get([]u8, 0));
+        const value = try row.get([]u8, 0);
+        return try self.allocator.dupe(u8, value);
     }
 
     pub fn uuidExists(self: *Pool, uuid: []const u8) !bool {
@@ -46,7 +47,8 @@ pub const Pool = struct {
         const result = try self.pool.query("SELECT uuid FROM pastes WHERE content_hash = $1;", .{hash});
         defer result.deinit();
         const row = try result.next() orelse return error.NoRows;
-        const uuid = try self.allocator.dupe(u8, row.get([]u8, 0));
+        const value = try row.get([]u8, 0);
+        const uuid = try self.allocator.dupe(u8, value);
         return uuid;
     }
 
@@ -78,9 +80,10 @@ pub const Pool = struct {
 
 pub fn initDB(
     allocator: std.mem.Allocator,
+    io: std.Io,
     config: lib.DBConfig,
 ) !*Pool {
-    const pool = try pg.Pool.init(allocator, .{ .size = 5, .connect = .{
+    const pool = try pg.Pool.init(allocator, io, .{ .size = 5, .connect = .{
         .port = config.port,
         .host = config.host,
     }, .auth = .{

@@ -28,9 +28,9 @@ pub fn build(b: *std.Build) void {
     });
 
     const zlog = b.dependency("zlog", .{});
-    const http = b.dependency("httpz", .{});
+    const httpz = b.dependency("httpz", .{});
+    const websocket = b.dependency("websocket", .{});
     const zul = b.dependency("zul", .{});
-    const zigimg = b.dependency("zigimg", .{});
 
     const pg = b.dependency("pg", .{
         .openssl_lib_name = "ssl",
@@ -43,14 +43,14 @@ pub fn build(b: *std.Build) void {
 
     // Add imports to modules
     exe_mod.addImport("pokebin_lib", lib_mod);
+    exe_mod.addImport("httpz", httpz.module("httpz"));
+    exe_mod.addImport("websocket", websocket.module("websocket"));
     exe_mod.addImport("zlog", zlog.module("zlog"));
-    exe_mod.addImport("httpz", http.module("httpz"));
     exe_mod.addImport("zul", zul.module("zul"));
     exe_mod.linkLibrary(brotli_lib);
     exe_mod.addIncludePath(brotli_pkg.path("c/include"));
     exe_mod.addImport("pg", pg.module("pg"));
     exe_mod.addImport("qr", qr.module("qr"));
-    exe_mod.addImport("zigimg", zigimg.module("zigimg"));
 
     lib_mod.addImport("zlog", zlog.module("zlog"));
     lib_mod.addImport("zul", zul.module("zul"));
@@ -158,12 +158,14 @@ pub fn build(b: *std.Build) void {
 // Function to compress the WASM file
 fn makeWasm(step: *std.Build.Step, _: std.Build.Step.MakeOptions) anyerror!void {
     const b = step.owner;
-    const allocator = b.allocator;
-    //
+
     std.debug.print("Compressing WASM file\n", .{});
-    var child = std.process.Child.init(
-        &.{ "bash", "compress-wasm.sh" },
-        allocator,
-    );
-    _ = try child.spawnAndWait();
+
+    var child = try std.process.spawn(b.graph.io, .{
+        .argv = &.{ "bash", "compress-wasm.sh" },
+        .stdin = .inherit,
+        .stdout = .inherit,
+        .stderr = .inherit,
+    });
+    _ = try child.wait(b.graph.io);
 }

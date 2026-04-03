@@ -3,7 +3,7 @@ const builtin = @import("builtin");
 const httpz = @import("httpz");
 const main = @import("main.zig");
 
-fn shutdown(_: c_int) callconv(.c) void {
+fn shutdown(_: std.c.SIG) callconv(.c) void {
     if (main.server_instance) |server| {
         main.server_instance = null;
         server.stop();

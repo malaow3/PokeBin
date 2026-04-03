@@ -211,6 +211,7 @@ fn deriveKey(allocator: std.mem.Allocator, passphrase: []const u8, salt: []const
             .p = 2, // Parallelism factor
         },
         .argon2id,
+        @as(std.Io, undefined), // unused in single-threaded WASM
     );
 }
 

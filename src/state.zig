@@ -39,34 +39,36 @@ pub const State = struct {
     const Self = @This();
 
     allocator: std.mem.Allocator,
+    io: std.Io,
     pgpool: *psql.Pool,
     file_cache: std.StringHashMap(CachedFile),
-    rwlock: std.Thread.RwLock,
+    rwlock: std.Io.RwLock,
     config: lib.EnvConfig,
-    conn_rwlock: std.Thread.RwLock,
+    conn_rwlock: std.Io.RwLock,
     connections: usize,
 
     // Screenshot queue handling
     maximum_screenshot_jobs: usize = 10,
     active_screenshot_jobs: usize = 0,
-    screenshot_semaphore: std.Thread.Semaphore = .{ .permits = 10 },
-    screenshot_lock: std.Thread.Mutex = .{},
-    screenshot_cond: std.Thread.Condition = .{},
+    screenshot_semaphore: std.Io.Semaphore = .{ .permits = 10 },
+    screenshot_lock: std.Io.Mutex = .init,
+    screenshot_cond: std.Io.Condition = .init,
 
     pub const WebsocketHandler = ws.Client;
 
-    pub fn init(allocator: std.mem.Allocator) !State {
-        const config = try lib.parseEnv(allocator);
+    pub fn init(allocator: std.mem.Allocator, io: std.Io, env: *std.process.Environ.Map) !State {
+        const config = try lib.parseEnv(allocator, io, env);
 
-        const pgPool = try psql.initDB(allocator, config.db_config);
+        const pgPool = try psql.initDB(allocator, io, config.db_config);
 
         return Self{
             .allocator = allocator,
+            .io = io,
             .pgpool = pgPool,
             .file_cache = std.StringHashMap(CachedFile).init(allocator),
-            .rwlock = std.Thread.RwLock{},
+            .rwlock = .init,
             .config = config,
-            .conn_rwlock = std.Thread.RwLock{},
+            .conn_rwlock = .init,
             .connections = 0,
         };
     }
@@ -105,9 +107,10 @@ pub const State = struct {
         res: *httpz.Response,
     ) !void {
         const method_string = statusToString(req.method);
-        var timer = try std.time.Timer.start();
+        const clock = std.Io.Clock.real;
+        const start = clock.now(self.io);
         defer {
-            const elapsed = timer.lap() / 1000;
+            const elapsed = clock.now(self.io).toMicroseconds() - start.toMicroseconds();
             if (res.status == 404) {
                 zlog.warn(
                     "[{d}] {s} {s} - {d}μs",
@@ -129,21 +132,24 @@ pub const State = struct {
 
     pub fn preloadFile(self: *Self, path: []const u8, content_type: ?httpz.ContentType, precompressed: bool) !void {
         // Load the file
-        const cwd = std.fs.cwd();
-        const file = try cwd.openFile(path, .{});
-        defer file.close();
+        const cwd = std.Io.Dir.cwd();
+        const io = self.io;
+        const file = try cwd.openFile(io, path, .{});
+        defer file.close(io);
 
         // Get file size for better allocation
-        const stat = try file.stat();
+        const stat = try file.stat(io);
         const file_size = stat.size;
 
         // Allocate memory and read file
         const data = try self.allocator.alloc(u8, file_size);
-        const bytes_read = try file.readAll(data);
-        if (bytes_read != file_size) {
+        var buffer: [1024]u8 = undefined;
+        var file_reader = file.reader(io, &buffer);
+        var reader = &file_reader.interface;
+        reader.readSliceAll(data) catch {
             self.allocator.free(data);
             return error.IncompleteRead;
-        }
+        };
         const actual_content_type = content_type orelse .BINARY;
         // Compress the data
         var compressed_data: ?[]u8 = null;
@@ -156,12 +162,12 @@ pub const State = struct {
         const cached_file = if (!precompressed) CachedFile{
             .data = data,
             .content_type = content_type orelse .BINARY,
-            .last_modified = stat.mtime,
+            .last_modified = stat.mtime.toMilliseconds(),
             .compressed_data = compressed_data,
         } else CachedFile{
             .data = &[_]u8{},
             .content_type = content_type orelse .BINARY,
-            .last_modified = stat.mtime,
+            .last_modified = stat.mtime.toMilliseconds(),
             .compressed_data = data,
         };
 
@@ -172,12 +178,12 @@ pub const State = struct {
     }
 
     pub fn preloadDirectory(self: *Self, dir_path: []const u8) !void {
-        const cwd = std.fs.cwd();
-        var dir = try cwd.openDir(dir_path, .{ .iterate = true });
-        defer dir.close();
+        const cwd = std.Io.Dir.cwd();
+        var dir = try cwd.openDir(self.io, dir_path, .{ .iterate = true });
+        defer dir.close(self.io);
 
         var it = dir.iterate();
-        while (try it.next()) |entry| {
+        while (try it.next(self.io)) |entry| {
             if (entry.kind != .file) continue;
 
             const full_path = try std.fs.path.join(
@@ -199,16 +205,16 @@ pub const State = struct {
 
     pub fn preloadHTML(self: *Self, dir_path: []const u8) !void {
         // Find all HTML files in the directory
-        var dir = try std.fs.cwd().openDir(dir_path, .{ .iterate = true });
-        const files = try std.ArrayList([]const u8).init(self.allocator);
-        defer files.deinit();
-        var walker = try dir.walk();
-        while (try walker.next()) |entry| {
-            if (entry.kind == .file and std.mem.endsWith(u8, entry.name, ".html")) {
-                const file = try dir.openFile(.name, .{});
-                defer file.close();
+        var dir = try std.Io.Dir.cwd().openDir(self.io, dir_path, .{ .iterate = true });
+        var walker = try dir.walk(self.allocator);
+        while (try walker.next(self.io)) |entry| {
+            if (entry.kind == .file and std.mem.endsWith(u8, entry.basename, ".html")) {
+                const file = try entry.dir.openFile(self.io, entry.basename, .{});
+                defer file.close(self.io);
 
-                const file_contents = try std.fs.readToEndAlloc(self.allocator, file, std.math.maxInt(usize));
+                var read_buf: [8192]u8 = undefined;
+                var rdr = file.reader(self.io, &read_buf);
+                const file_contents = try rdr.interface.readAlloc(self.allocator, std.math.maxInt(usize));
                 var output = try std.mem.replaceOwned(u8, self.allocator, file_contents, "{{GOOGLE_ADSENSE}}", self.config.google_adsense);
                 defer self.allocator.free(output);
                 while (std.mem.indexOf(u8, output, "{{G_TAG_ID}}") != null) {
@@ -220,11 +226,12 @@ pub const State = struct {
                     return error.CompressionError;
                 };
 
-                const filepath = try std.fs.path.join(self.allocator, &[_][]const u8{ dir_path, entry.name });
+                const stat = try file.stat(self.io);
+                const filepath = try std.fs.path.join(self.allocator, &[_][]const u8{ dir_path, entry.basename });
                 try self.file_cache.put(filepath, CachedFile{
                     .data = file_contents,
                     .content_type = .HTML,
-                    .last_modified = entry.mtime,
+                    .last_modified = stat.mtime,
                     .compressed_data = compressed,
                 });
             }
@@ -232,12 +239,12 @@ pub const State = struct {
     }
 
     fn preloadDirectoryRecursiveInternal(self: *Self, base_path: []const u8, current_path: []const u8, precompressed: bool) !void {
-        const cwd = std.fs.cwd();
-        var dir = try cwd.openDir(current_path, .{ .iterate = true });
-        defer dir.close();
+        const cwd = std.Io.Dir.cwd();
+        var dir = try cwd.openDir(self.io, current_path, .{ .iterate = true });
+        defer dir.close(self.io);
 
         var it = dir.iterate();
-        while (try it.next()) |entry| {
+        while (try it.next(self.io)) |entry| {
             const full_path = try std.fs.path.join(
                 self.allocator,
                 &[_][]const u8{ current_path, entry.name },
@@ -275,36 +282,37 @@ pub const State = struct {
     }
 
     pub fn getOrLoadFile(self: *Self, path: []const u8, content_type: ?httpz.ContentType) !CachedFile {
-        self.rwlock.lockShared();
+        self.rwlock.lockSharedUncancelable(self.io);
 
         // Load the file
-        const cwd = std.fs.cwd();
-        const file = cwd.openFile(path, .{}) catch |err| {
-            self.rwlock.unlockShared();
+        const cwd = std.Io.Dir.cwd();
+        const io = self.io;
+        const file = cwd.openFile(io, path, .{}) catch |err| {
+            self.rwlock.unlockShared(self.io);
             zlog.err("Error opening file: {s} ({})", .{ path, err });
             return err;
         };
-        defer file.close();
+        defer file.close(io);
 
         // Get file size for better allocation
-        const stat = try file.stat();
+        const stat = try file.stat(io);
         const file_size = stat.size;
 
-        const current_mod_time = stat.mtime;
+        const current_mod_time = stat.mtime.toMilliseconds();
 
         // Check if file is already cached and up to date
         if (self.file_cache.get(path)) |cached| {
             if (cached.last_modified == current_mod_time) {
                 // File hasn't changed, use cached version
-                defer self.rwlock.unlockShared();
+                defer self.rwlock.unlockShared(self.io);
                 return cached;
             }
         }
-        self.rwlock.unlockShared();
+        self.rwlock.unlockShared(self.io);
 
         // Need to modify the cache, upgrade to write lock
-        self.rwlock.lock();
-        defer self.rwlock.unlock();
+        self.rwlock.lockUncancelable(self.io);
+        defer self.rwlock.unlock(self.io);
         // Check again inside exclusive lock
         if (self.file_cache.get(path)) |cached| {
             if (cached.last_modified == current_mod_time) {
@@ -319,11 +327,13 @@ pub const State = struct {
 
         // Allocate memory and read file
         const data = try self.allocator.alloc(u8, file_size);
-        const bytes_read = try file.readAll(data);
-        if (bytes_read != file_size) {
+        var buffer: [1024]u8 = undefined;
+        var file_reader = file.reader(io, &buffer);
+        var reader = &file_reader.interface;
+        reader.readSliceAll(data) catch {
             self.allocator.free(data);
             return error.IncompleteRead;
-        }
+        };
         const actual_content_type = content_type orelse .BINARY;
         // Compress the data
         var compressed_data: ?[]u8 = null;
@@ -346,20 +356,20 @@ pub const State = struct {
         return cached_file;
     }
 
-    fn getFileModTime(path: []const u8) !i128 {
-        const cwd = std.fs.cwd();
-        const file = try cwd.openFile(path, .{});
-        defer file.close();
-        const stat = try file.stat();
+    fn getFileModTime(self: *State, path: []const u8) !i128 {
+        const cwd = std.Io.Dir.cwd();
+        const file = try cwd.openFile(self.io, path, .{});
+        defer file.close(self.io);
+        const stat = try file.stat(self.io);
         return stat.mtime;
     }
 
     pub fn getNewUUID(self: *State, allocator: std.mem.Allocator) ![]const u8 {
-        var uuid = zul.UUID.v4();
+        var uuid = zul.UUID.v4(self.io);
         var id = lib.uuidToPasteID(uuid);
         var value = try self.pgpool.uuidExists(&id);
         while (value) {
-            uuid = zul.UUID.v4();
+            uuid = zul.UUID.v4(self.io);
             id = lib.uuidToPasteID(uuid);
             value = try self.pgpool.uuidExists(&id);
         }
