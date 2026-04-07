@@ -145,7 +145,7 @@ img.img-pokemon {
 	display: block;
 }
 
-span.img-item {
+.img-item {
 	position: absolute;
 	right: 25px;
 	bottom: 0px;

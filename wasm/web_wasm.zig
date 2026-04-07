@@ -397,13 +397,10 @@ fn searchLike(search: []const u8) ?SearchValue {
 }
 
 fn getImageLink(item: []const u8) [*:0]const u8 {
-    const missing = ("background: transparent url(\"assets/missing.png\") no-repeat; height: 64px !important; width: 64px!important; background-position: 5px 10px");
+    const missing: [*:0]const u8 = "/assets/missing.png";
     const value = data.ITEMS.get(item);
-    if (value) |v| {
-        const sprite_num: i64 = v.spritenum;
-        const top: i64 = @divFloor(sprite_num, 16) * 24 * 2;
-        const left: i64 = @mod(sprite_num, 16) * 24 * 2;
-        return std.fmt.allocPrintSentinel(allocator, "background: transparent url(\"assets/sprites\") -{d}px -{d}px no-repeat;", .{ left, top }, 0) catch @panic("failed to allocate sprite");
+    if (value) |_| {
+        return std.fmt.allocPrintSentinel(allocator, "/items/{s}.png", .{item}, 0) catch @panic("failed to allocate sprite");
     } else {
         return missing;
     }

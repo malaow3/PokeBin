@@ -280,6 +280,21 @@ pub fn image(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void
     };
 }
 
+pub fn itemImage(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
+    const path = req.url.path;
+    const sub_path = try std.fmt.allocPrint(res.arena, "{s}.br", .{path[7..]});
+    const filepath = try std.fs.path.join(res.arena, &[_][]const u8{
+        "items", sub_path,
+    });
+
+    return serveCachedFile(app, res, filepath, state.getMimeType(sub_path) orelse .BINARY, true) catch {
+        res.status = 404;
+        res.content_type = .TEXT;
+        res.body = "Not Found";
+        return;
+    };
+}
+
 pub fn totalPastes(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
     var result = try app.pgpool.getCount();
     // TODO: Remove this once data starts coming in!

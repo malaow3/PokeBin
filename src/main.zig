@@ -74,6 +74,7 @@ pub fn main(init: std.process.Init) !void {
         try appState.preloadFile("zig-out/bin/web_wasm.wasm.br", .WASM, true);
         try appState.preloadFile("robots.txt", .TEXT, false);
         try appState.preloadDirectoryRecursive("home/", true);
+        try appState.preloadDirectoryRecursive("items/", true);
         zlog.info("Cache preload complete!", .{});
     }
 
@@ -115,6 +116,7 @@ pub fn main(init: std.process.Init) !void {
     router.get("/report", routes.report, .{});
     router.post("/report", routes.createReport, .{});
     router.get("/home/*", routes.image, .{});
+    router.get("/items/*", routes.itemImage, .{});
     router.get("/total", routes.totalPastes, .{});
     router.get("/live", routes.active, .{});
     router.get("/ws", routes.wsFn, .{});

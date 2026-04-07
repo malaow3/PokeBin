@@ -354,9 +354,10 @@ export default function PasteViewBase(props: Props) {
                                             <Show
                                                 when={pokemon.item_image !== ""}
                                             >
-                                                <span
+                                                <img
                                                     class="img-item"
-                                                    style={pokemon.item_image}
+                                                    src={pokemon.item_image}
+                                                    alt=""
                                                 />
                                             </Show>
                                             <img
