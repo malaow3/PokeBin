@@ -22,7 +22,9 @@ def brotli_encode_file(filepath):
 
 def main():
     response = requests.get(
-        "https://github.com/PokeAPI/sprites/archive/refs/heads/master.zip"
+        # "https://github.com/PokeAPI/sprites/archive/refs/heads/master.zip"
+        # While waiting for pokeapi to add the new Legends ZA mega images, this fork has them.
+        "https://github.com/Joya-s-Org/sprites/archive/refs/heads/master.zip"
     )
 
     data = response.content
