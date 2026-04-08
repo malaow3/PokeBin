@@ -1,8 +1,8 @@
 name: Build, publish, and cleanup docker image
 
 on:
-  # push:
-  #   branches: ["main"]
+  push:
+    branches: ["main"]
   workflow_dispatch:
 
 jobs:
@@ -13,6 +13,19 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
+
+      - name: Install Zig
+        uses: mlugg/setup-zig@v2
+        with:
+          version: 0.16.0-dev.3066+da78940dd
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Build
+        run: ./build.sh --release
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
