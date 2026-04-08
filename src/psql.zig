@@ -74,7 +74,9 @@ pub const Pool = struct {
         paste_id: []const u8,
         feature: []const u8,
     ) !void {
-        _ = try self.pool.exec("INSERT INTO feature_usage (feature, paste_id) VALUES ($1, $2);", .{ feature, paste_id });
+        // Convert empty string to null for paste_id (foreign key constraint)
+        const pid = if (paste_id.len == 0) null else paste_id;
+        _ = try self.pool.exec("INSERT INTO feature_usage (feature, paste_id) VALUES ($1, $2);", .{ feature, pid });
     }
 };
 
