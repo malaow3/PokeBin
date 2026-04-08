@@ -70,8 +70,8 @@ pub fn main(init: std.process.Init) !void {
     if (!skip_preload) {
         zlog.info("Preloading cache!", .{});
         try appState.preloadDirectoryRecursive("web/dist/", false);
-        try appState.preloadFile("zig-out/bin/wasm.wasm.br", .WASM, true);
-        try appState.preloadFile("zig-out/bin/web_wasm.wasm.br", .WASM, true);
+        try appState.preloadFile("zig-out/bin/wasm.wasm", .WASM, false);
+        try appState.preloadFile("zig-out/bin/web_wasm.wasm", .WASM, false);
         try appState.preloadFile("robots.txt", .TEXT, false);
         try appState.preloadDirectoryRecursive("home/", true);
         try appState.preloadDirectoryRecursive("items/", true);

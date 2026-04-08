@@ -1,22 +1,22 @@
-import './app.css';
-import logo from '../public/logo/large_logo_cropped.webp';
-import PatreonButton from './patreon.tsx';
-import { encrypt, initWasm } from './wasm_helpers.ts';
+import "./app.css";
+import logo from "../public/logo/large_logo_cropped.webp";
+import PatreonButton from "./patreon.tsx";
+import { encrypt, initWasm } from "./wasm_helpers.ts";
 import {
     initWasm as initWebWasm,
     validatePaste,
     utf8ToBase64,
-} from './web_wasm_helpers.ts';
-import { onMount, createSignal, Show, createEffect } from 'solid-js';
+} from "./web_wasm_helpers.ts";
+import { onMount, createSignal, Show, createEffect } from "solid-js";
 
 function updateThemeColor(dark: boolean) {
     let meta = document.querySelector('meta[name="theme-color"]');
     if (!meta) {
-        meta = document.createElement('meta');
-        meta.setAttribute('name', 'theme-color');
+        meta = document.createElement("meta");
+        meta.setAttribute("name", "theme-color");
         document.head.appendChild(meta);
     }
-    meta.setAttribute('content', dark ? '#000000' : '#f9f9f9');
+    meta.setAttribute("content", dark ? "#000000" : "#f9f9f9");
 }
 
 const App = () => {
@@ -40,11 +40,11 @@ const App = () => {
     const [belowNotes, setBelowNotes] = createSignal<
         HTMLDivElement | undefined
     >();
-    const [total, setTotal] = createSignal<string>('');
-    const [live, setLive] = createSignal<string>('');
+    const [total, setTotal] = createSignal<string>("");
+    const [live, setLive] = createSignal<string>("");
     const [isReady, setIsReady] = createSignal(false);
 
-    const darkModeString = localStorage.getItem('darkMode');
+    const darkModeString = localStorage.getItem("darkMode");
     let darkMode = true;
     if (darkModeString !== null) {
         darkMode = JSON.parse(darkModeString);
@@ -55,13 +55,13 @@ const App = () => {
     });
 
     function darkModeToggle() {
-        const body = document.getElementsByTagName('body')[0];
+        const body = document.getElementsByTagName("body")[0];
         if (sett().darkMode) {
-            body.classList.add('dark');
-            body.classList.remove('light');
+            body.classList.add("dark");
+            body.classList.remove("light");
         } else {
-            body.classList.add('light');
-            body.classList.remove('dark');
+            body.classList.add("light");
+            body.classList.remove("dark");
         }
         updateThemeColor(sett().darkMode);
     }
@@ -73,7 +73,7 @@ const App = () => {
     function handleNotesDoubleClick() {
         const notesEl = notes();
         if (notesEl) {
-            notesEl.style.height = 'auto';
+            notesEl.style.height = "auto";
         }
     }
 
@@ -99,26 +99,26 @@ const App = () => {
 
     onMount(async () => {
         darkModeToggle();
-        const wsUrl = '/ws';
+        const wsUrl = "/ws";
         const socket = new WebSocket(wsUrl);
         socket.onopen = async () => {
-            console.log('WebSocket connected to:', wsUrl);
-            setLive(await fetch('/live').then((r) => r.text()));
+            console.log("WebSocket connected to:", wsUrl);
+            setLive(await fetch("/live").then((r) => r.text()));
         };
 
-        setTotal(await fetch('/total').then((r) => r.text()));
+        setTotal(await fetch("/total").then((r) => r.text()));
 
         await initWebWasm();
         await initWasm();
         setIsReady(true);
 
-        const version = await fetch('/version');
+        const version = await fetch("/version");
         const versionText = await version.text();
         console.log(versionText);
     });
 
     createEffect(() => {
-        if (isReady() && total() !== '' && live() !== '') {
+        if (isReady() && total() !== "" && live() !== "") {
             resizeNotes();
         }
     });
@@ -131,8 +131,8 @@ const App = () => {
 
         if (!pasteEl) return false;
 
-        if (pasteEl.value === '') {
-            alert('Paste cannot be empty!');
+        if (pasteEl.value === "") {
+            alert("Paste cannot be empty!");
             return false;
         }
 
@@ -141,16 +141,16 @@ const App = () => {
         if (valid !== 0) {
             if (valid === -1) {
                 alert(
-                    'PokeBin encountered an issue! Please refresh and try again!',
+                    "PokeBin encountered an issue! Please refresh and try again!",
                 );
                 return false;
             }
             if (valid === 6) {
-                alert('PokeBin contains too many Pokemon!');
+                alert("PokeBin contains too many Pokemon!");
                 return false;
             }
             alert(
-                'Not a valid PokeBin! If you believe this is incorrect, try re-copying from Showdown and please file an issue on GitHub.',
+                "Not a valid PokeBin! If you believe this is incorrect, try re-copying from Showdown and please file an issue on GitHub.",
             );
             return false;
         }
@@ -207,7 +207,7 @@ const App = () => {
             data: base_data,
         };
 
-        if (passwordEl.value === '') {
+        if (passwordEl.value === "") {
             const jsonString = JSON.stringify(form_data);
             const encoded = utf8ToBase64(jsonString);
             dataEl.value = encoded;
@@ -225,7 +225,7 @@ const App = () => {
             form_data.encrypted = true;
             form_data.data = encrypted;
         } else {
-            throw new Error('Encryption failed');
+            throw new Error("Encryption failed");
         }
 
         const jsonString = JSON.stringify(form_data);
@@ -239,7 +239,7 @@ const App = () => {
     }
 
     return (
-        <Show when={total() !== '' && live() !== ''}>
+        <Show when={total() !== "" && live() !== ""}>
             <main class="min-h-screen flex flex-col overflow-auto bg-[#f9f9f9] dark:bg-zinc-950 text-black dark:text-white">
                 <form
                     ref={setForm}
@@ -265,8 +265,8 @@ const App = () => {
                                         <img
                                             src={logo}
                                             style={{
-                                                height: '125px',
-                                                width: '290px',
+                                                height: "125px",
+                                                width: "290px",
                                             }}
                                             class="border-none outline-none shadow-none"
                                             alt="PokeBin Logo"
@@ -327,7 +327,7 @@ const App = () => {
                                             class="flex-1 rounded border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-700
                         text-black dark:text-white outline-none focus:border-zinc-500 px-2 py-1"
                                             minLength="6"
-                                            maxLength="6"
+                                            maxLength="10"
                                         />
                                     </div>
 
@@ -417,12 +417,12 @@ const App = () => {
                             ref={setFooter}
                             class="mt-8 pt-6 flex flex-col items-center space-y-1"
                         >
-                            <Show when={live() !== ''}>
+                            <Show when={live() !== ""}>
                                 <h1 class="text-sm font-bold text-[#c2a8d4]">
                                     {live()} active PokeBin users!
                                 </h1>
                             </Show>
-                            <Show when={total() !== ''}>
+                            <Show when={total() !== ""}>
                                 <h1 class="text-sm font-bold text-[#c2a8d4]">
                                     {total()} total PokeBins created!
                                 </h1>

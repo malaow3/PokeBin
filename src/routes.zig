@@ -28,8 +28,16 @@ fn setCorsOrigin(req: *httpz.Request, res: *httpz.Response) void {
     }
 }
 
+fn acceptsBrotli(req: *httpz.Request) bool {
+    if (req.header("accept-encoding")) |ae| {
+        if (std.mem.indexOf(u8, ae, "br") != null) return true;
+    }
+    return false;
+}
+
 fn serveCachedFile(
     app: *state.State,
+    req: *httpz.Request,
     res: *httpz.Response,
     filepath: []const u8,
     content_type: httpz.ContentType,
@@ -42,23 +50,23 @@ fn serveCachedFile(
         res.header("Cache-Control", "public, max-age=31536000");
     }
     res.content_type = content_type;
-    if (cached.compressed_data) |compressed_data| {
+    const client_accepts_br = acceptsBrotli(req);
+    if (client_accepts_br and cached.compressed_data != null) {
+        res.header("Content-Encoding", "br");
+        res.body = cached.compressed_data.?;
+    } else if (cached.data.len > 0) {
+        res.body = cached.data;
+    } else if (cached.compressed_data) |compressed_data| {
+        // Pre-compressed file with no uncompressed fallback — send as-is
         res.header("Content-Encoding", "br");
         res.body = compressed_data;
-    } else {
-        if (std.mem.eql(u8, std.fs.path.extension(filepath), ".gz")) {
-            res.header("Content-Encoding", "gzip");
-        } else if (std.mem.eql(u8, std.fs.path.extension(filepath), ".br")) {
-            res.header("Content-Encoding", "br");
-        }
-        res.body = cached.data;
     }
 }
 
-pub fn siteWebmanifest(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
+pub fn siteWebmanifest(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
     const file = try app.getOrLoadFile("web/dist/favicon/site.webmanifest", .TEXT);
-    if (file.compressed_data) |compressed_data| {
-        res.body = compressed_data;
+    if (acceptsBrotli(req) and file.compressed_data != null) {
+        res.body = file.compressed_data.?;
         res.header("Content-Encoding", "br");
     } else {
         res.body = file.data;
@@ -73,7 +81,7 @@ pub fn version(_: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
     res.content_type = .TEXT;
 }
 
-pub fn serveHtmlFile(app: *state.State, filepath: []const u8, res: *httpz.Response) !void {
+pub fn serveHtmlFile(app: *state.State, req: *httpz.Request, filepath: []const u8, res: *httpz.Response) !void {
     const data = app.getOrLoadFile(filepath, .TEXT) catch {
         return error.FileError;
     };
@@ -82,8 +90,8 @@ pub fn serveHtmlFile(app: *state.State, filepath: []const u8, res: *httpz.Respon
     // 60 sec * 60 min * 24 hours * 365 days = 31536000 seconds
     res.header("Cache-Control", "public, max-age=31536000");
 
-    if (data.compressed_data) |compressed_data| {
-        res.body = compressed_data;
+    if (acceptsBrotli(req) and data.compressed_data != null) {
+        res.body = data.compressed_data.?;
         res.header("Content-Encoding", "br");
     } else {
         res.body = data.data;
@@ -92,8 +100,8 @@ pub fn serveHtmlFile(app: *state.State, filepath: []const u8, res: *httpz.Respon
     return;
 }
 
-pub fn replay(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
-    return serveHtmlFile(app, "web/dist/html/replay.html", res);
+pub fn replay(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
+    return serveHtmlFile(app, req, "web/dist/html/replay.html", res);
 }
 
 /// fetchReplay serves as a wrapper around the Showdown API. Because of the CORS restrictions
@@ -241,28 +249,28 @@ pub fn fetchReplay(app: *state.State, req: *httpz.Request, res: *httpz.Response)
     }
 }
 
-pub fn index(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
-    return serveHtmlFile(app, "web/dist/html/index.html", res);
+pub fn index(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
+    return serveHtmlFile(app, req, "web/dist/html/index.html", res);
 }
 
-pub fn about(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
-    return serveHtmlFile(app, "web/dist/html/about.html", res);
+pub fn about(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
+    return serveHtmlFile(app, req, "web/dist/html/about.html", res);
 }
 
-pub fn recent(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
-    return serveHtmlFile(app, "web/dist/html/recent.html", res);
+pub fn recent(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
+    return serveHtmlFile(app, req, "web/dist/html/recent.html", res);
 }
 
-pub fn settings(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
-    return serveHtmlFile(app, "web/dist/html/settings.html", res);
+pub fn settings(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
+    return serveHtmlFile(app, req, "web/dist/html/settings.html", res);
 }
 
-pub fn tos(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
-    return serveHtmlFile(app, "web/dist/html/tos.html", res);
+pub fn tos(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
+    return serveHtmlFile(app, req, "web/dist/html/tos.html", res);
 }
 
-pub fn report(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
-    return serveHtmlFile(app, "web/dist/html/report.html", res);
+pub fn report(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
+    return serveHtmlFile(app, req, "web/dist/html/report.html", res);
 }
 
 pub fn image(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
@@ -272,7 +280,7 @@ pub fn image(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void
         "home", sub_path,
     });
 
-    return serveCachedFile(app, res, filepath, state.getMimeType(sub_path) orelse .BINARY, true) catch {
+    return serveCachedFile(app, req, res, filepath, state.getMimeType(sub_path) orelse .BINARY, true) catch {
         res.status = 404;
         res.content_type = .TEXT;
         res.body = "Not Found";
@@ -287,7 +295,7 @@ pub fn itemImage(app: *state.State, req: *httpz.Request, res: *httpz.Response) !
         "items", sub_path,
     });
 
-    return serveCachedFile(app, res, filepath, state.getMimeType(sub_path) orelse .BINARY, true) catch {
+    return serveCachedFile(app, req, res, filepath, state.getMimeType(sub_path) orelse .BINARY, true) catch {
         res.status = 404;
         res.content_type = .TEXT;
         res.body = "Not Found";
@@ -310,7 +318,7 @@ pub fn favicon(app: *state.State, req: *httpz.Request, res: *httpz.Response) !vo
         "web", "dist", path,
     });
 
-    return serveCachedFile(app, res, filepath, state.getMimeType(filepath) orelse .BINARY, true) catch {
+    return serveCachedFile(app, req, res, filepath, state.getMimeType(filepath) orelse .BINARY, true) catch {
         res.status = 404;
         res.content_type = .TEXT;
         res.body = "Not Found";
@@ -331,7 +339,7 @@ pub fn assets(app: *state.State, req: *httpz.Request, res: *httpz.Response) !voi
         });
     }
 
-    return serveCachedFile(app, res, filepath, state.getMimeType(sub_path) orelse .BINARY, true) catch {
+    return serveCachedFile(app, req, res, filepath, state.getMimeType(sub_path) orelse .BINARY, true) catch {
         res.status = 404;
         res.content_type = .TEXT;
         res.body = "Not Found";
@@ -346,7 +354,7 @@ pub fn static(app: *state.State, req: *httpz.Request, res: *httpz.Response) !voi
         "web", "dist", "static", sub_path,
     });
 
-    return serveCachedFile(app, res, filepath, state.getMimeType(sub_path) orelse .BINARY, true) catch {
+    return serveCachedFile(app, req, res, filepath, state.getMimeType(sub_path) orelse .BINARY, true) catch {
         res.status = 404;
         res.content_type = .TEXT;
         res.body = "Not Found";
@@ -356,7 +364,7 @@ pub fn static(app: *state.State, req: *httpz.Request, res: *httpz.Response) !voi
 
 fn serveWasmFile(filename: []const u8, app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
     setCorsOrigin(req, res);
-    return serveCachedFile(app, res, filename, .WASM, true) catch {
+    return serveCachedFile(app, req, res, filename, .WASM, true) catch {
         res.status = 404;
         res.content_type = .TEXT;
         res.body = "Not Found";
@@ -365,7 +373,7 @@ fn serveWasmFile(filename: []const u8, app: *state.State, req: *httpz.Request, r
 }
 
 pub fn web_wasm(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
-    return serveWasmFile("zig-out/bin/web_wasm.wasm.br", app, req, res) catch {
+    return serveWasmFile("zig-out/bin/web_wasm.wasm", app, req, res) catch {
         res.status = 404;
         res.content_type = .TEXT;
         res.body = "Not Found";
@@ -374,7 +382,7 @@ pub fn web_wasm(app: *state.State, req: *httpz.Request, res: *httpz.Response) !v
 }
 
 pub fn wasm(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
-    return serveWasmFile("zig-out/bin/wasm.wasm.br", app, req, res) catch {
+    return serveWasmFile("zig-out/bin/wasm.wasm", app, req, res) catch {
         res.status = 404;
         res.content_type = .TEXT;
         res.body = "Not Found";
@@ -382,8 +390,8 @@ pub fn wasm(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void 
     };
 }
 
-pub fn robots(app: *state.State, _: *httpz.Request, res: *httpz.Response) !void {
-    return serveCachedFile(app, res, "robots.txt", .TEXT, true) catch {
+pub fn robots(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
+    return serveCachedFile(app, req, res, "robots.txt", .TEXT, true) catch {
         res.status = 404;
         res.content_type = .TEXT;
         res.body = "Not Found";
@@ -424,7 +432,7 @@ pub fn getUUID(appState: *state.State, req: *httpz.Request, res: *httpz.Response
 
     const exists = try appState.pgpool.uuidExists(user);
     if (exists) {
-        return serveHtmlFile(appState, "web/dist/html/paste.html", res);
+        return serveHtmlFile(appState, req, "web/dist/html/paste.html", res);
     } else {
         res.header("Location", "/");
         res.status = 302;
@@ -696,7 +704,16 @@ const StreamContext = struct {
         zlog.info("Cropping screenshot for {s}", .{self.id});
         const filename = std.fmt.allocPrint(allocator, "{s}.png", .{self.id}) catch return;
         const filepath = std.Io.Dir.cwd().realPathFileAlloc(app.io, filename, allocator) catch return;
-        utils.cropImage(allocator, app.io, filepath) catch return;
+        utils.cropImage(allocator, app.io, filepath) catch |err| {
+            zlog.err("Failed to crop screenshot: {s}", .{@errorName(err)});
+            status.status = "error";
+            json_string = std.json.Stringify.valueAlloc(allocator, status, .{}) catch return;
+            msg = std.fmt.allocPrint(allocator, "data: {s}\n\n", .{json_string}) catch return;
+            writer.writeAll(msg) catch return;
+            writer.flush() catch return;
+            stream.close();
+            return;
+        };
 
         const file = std.Io.Dir.openFileAbsolute(app.io, filepath, .{}) catch {
             status.status = "error";
@@ -705,9 +722,12 @@ const StreamContext = struct {
             stream.close();
             return;
         };
+        const file_stat = file.stat(app.io) catch return;
+        const file_size: usize = file_stat.size;
+        const data = allocator.alloc(u8, file_size) catch return;
         var read_buf: [8192]u8 = undefined;
         var rdr = file.reader(app.io, &read_buf);
-        const data = rdr.interface.readAlloc(allocator, std.math.maxInt(usize)) catch return;
+        rdr.interface.readSliceAll(data) catch return;
         zlog.info("Writing back to client for {s}", .{self.id});
 
         status.status = "done";
@@ -731,7 +751,7 @@ pub fn logo(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void 
         "web", "dist", "logo", sub_path,
     });
 
-    return serveCachedFile(app, res, filepath, state.getMimeType(sub_path) orelse httpz.ContentType.BINARY, true) catch {
+    return serveCachedFile(app, req, res, filepath, state.getMimeType(sub_path) orelse httpz.ContentType.BINARY, true) catch {
         res.status = 404;
         res.content_type = .TEXT;
         res.body = "Not Found";

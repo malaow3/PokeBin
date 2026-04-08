@@ -41,10 +41,13 @@ pub fn cropFile(allocator: std.mem.Allocator, io: std.Io, img_file: []const u8, 
     const file = try cwd.openFile(io, img_file, .{});
     defer file.close(io);
 
+    const stat = try file.stat(io);
+    const file_size: usize = stat.size;
+    const data = try allocator.alloc(u8, file_size);
+    defer allocator.free(data);
     var read_buf: [8192]u8 = undefined;
     var rdr = file.reader(io, &read_buf);
-    const data = try rdr.interface.readAlloc(allocator, 50 * 1024 * 1024);
-    defer allocator.free(data);
+    try rdr.interface.readSliceAll(data);
 
     const cropped = try crop(allocator, data, 0, 0, crop_right, 0);
     defer allocator.free(cropped);
@@ -120,7 +123,9 @@ pub fn crop(
     var in_reader = std.Io.Reader.fixed(idat_buf.items);
     var decomp_buf: [std.compress.flate.max_window_len]u8 = undefined;
     var decomp = std.compress.flate.Decompress.init(&in_reader, .zlib, &decomp_buf);
+    const expected_size = height * (src_row_bytes + 1);
     var raw_pixels: std.ArrayList(u8) = .empty;
+    raw_pixels.ensureTotalCapacity(allocator, expected_size) catch return Error.InvalidPngChunk;
     defer raw_pixels.deinit(allocator);
     // Read decompressed data
     {
@@ -160,6 +165,7 @@ pub fn crop(
 
     // Recompress zlib
     var out_buf: std.ArrayList(u8) = .empty;
+    out_buf.ensureTotalCapacity(allocator, cropped_pixels.items.len) catch return Error.InvalidPngChunk;
     defer out_buf.deinit(allocator);
     {
         var out_writer = std.Io.Writer.fromArrayList(&out_buf);

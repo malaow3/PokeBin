@@ -8,6 +8,8 @@ fn shutdown(_: std.c.SIG) callconv(.c) void {
         main.server_instance = null;
         server.stop();
     }
+    // Force exit to avoid hanging on CLOSE_WAIT connections or pool cleanup.
+    std.process.exit(0);
 }
 
 pub fn initSigHandler() void {

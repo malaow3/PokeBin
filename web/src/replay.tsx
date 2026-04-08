@@ -138,6 +138,7 @@ export default function ReplayFetcher() {
             }
             const data = await resp.json();
             setReplays(data);
+            trackFeature("replay_fetch");
         } catch (e) {
             if (e instanceof Error) {
                 console.error(e.message);
@@ -147,6 +148,13 @@ export default function ReplayFetcher() {
         } finally {
             setLoading(false);
         }
+    }
+
+    function trackFeature(feature: string) {
+        fetch("/api/feature", {
+            method: "POST",
+            body: JSON.stringify({ feature, id: "" }),
+        }).catch(() => {});
     }
 
     function copyAll() {
@@ -159,6 +167,7 @@ export default function ReplayFetcher() {
                 return url;
             });
         navigator.clipboard.writeText(urls.join("\n"));
+        trackFeature("replay_copy_urls");
     }
 
     onMount(() => {
