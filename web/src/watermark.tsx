@@ -1,40 +1,40 @@
-import logo from '../public/logo/large_logo_cropped.webp';
-import { createEffect, createSignal, onMount } from 'solid-js';
+import logo from "../public/logo/large_logo_cropped.webp";
+import { createEffect, createSignal, onMount } from "solid-js";
 
 function Watermark() {
     const [isFixed, setIsFixed] = createSignal(false);
-    const [dir, setDir] = createSignal('shrink');
+    const [dir, setDir] = createSignal("shrink");
     const [prevSize, setPrevSize] = createSignal(window.innerWidth);
-    const [height, setHeight] = createSignal('50px');
-    const [width, setWidth] = createSignal('100px');
-    const [bottom, setBottom] = createSignal('10px');
-    const [padding, setPadding] = createSignal('0px');
+    const [height, setHeight] = createSignal("50px");
+    const [width, setWidth] = createSignal("100px");
+    const [bottom, setBottom] = createSignal("10px");
+    const [padding, setPadding] = createSignal("0px");
 
     function check() {
         const aspectRatio = window.innerWidth / window.innerHeight;
 
         if (aspectRatio >= 1.84 && aspectRatio <= 1.864) {
-            setWidth('75px');
-            setHeight('35px');
-            setBottom('55px');
+            setWidth("75px");
+            setHeight("35px");
+            setBottom("55px");
         } else if (window.innerWidth <= 450) {
-            setWidth('75px');
-            setHeight('35px');
-            setBottom('55px');
+            setWidth("75px");
+            setHeight("35px");
+            setBottom("55px");
         } else if (window.innerWidth <= 1290) {
-            setWidth('75px');
-            setHeight('35px');
-            setBottom('60px');
+            setWidth("75px");
+            setHeight("35px");
+            setBottom("60px");
         } else if (window.innerWidth <= 1400) {
-            setWidth('75px');
-            setHeight('35px');
-            setBottom('60px');
+            setWidth("75px");
+            setHeight("35px");
+            setBottom("30px");
         } else {
-            setBottom('20px');
-            setPadding('15px');
+            setBottom("20px");
+            setPadding("15px");
         }
         if (window.innerWidth <= 1290) {
-            if (dir() === 'shrink') {
+            if (dir() === "shrink") {
                 setIsFixed(true);
             }
         } else {
@@ -45,10 +45,10 @@ function Watermark() {
     onMount(() => {
         window.onresize = () => {
             if (window.innerWidth < prevSize()) {
-                setDir('shrink');
+                setDir("shrink");
                 setPrevSize(window.innerWidth);
             } else {
-                setDir('grow');
+                setDir("grow");
                 setPrevSize(window.innerWidth);
             }
             check();
@@ -108,24 +108,24 @@ function Watermark() {
         <div
             id="NOCOPY"
             style={{
-                position: isFixed() ? 'fixed' : 'relative',
-                display: 'flex',
+                position: isFixed() ? "fixed" : "relative",
+                display: "flex",
                 bottom: bottom(),
-                'padding-bottom': padding(),
-                right: isFixed() ? '30px' : undefined, // Only set right when fixed
-                left: isFixed() ? undefined : '30px', // Only set left when not fixed
-                'flex-direction': isFixed() ? 'column' : 'row',
-                'pointer-events': 'none',
-                'z-index': 9999,
-                'transform-origin': 'bottom right',
-                'user-select': 'none',
-                '-webkit-user-select': 'none',
-                '-moz-user-select': 'none',
-                '-ms-user-select': 'none',
-                'align-items': 'center',
-                'white-space': 'nowrap',
-                width: '100px',
-                height: '0px',
+                "padding-bottom": padding(),
+                right: isFixed() ? "30px" : undefined, // Only set right when fixed
+                left: isFixed() ? undefined : "30px", // Only set left when not fixed
+                "flex-direction": isFixed() ? "column" : "row",
+                "pointer-events": "none",
+                "z-index": 9999,
+                "transform-origin": "bottom right",
+                "user-select": "none",
+                "-webkit-user-select": "none",
+                "-moz-user-select": "none",
+                "-ms-user-select": "none",
+                "align-items": "center",
+                "white-space": "nowrap",
+                width: "100px",
+                height: "0px",
             }}
         >
             <img
@@ -133,7 +133,7 @@ function Watermark() {
                 style={{
                     height: height(),
                     width: width(),
-                    transform: 'scale(1.5)', // 1.5x bigger visually
+                    transform: "scale(1.5)", // 1.5x bigger visually
                 }}
                 class="border-none outline-none shadow-none"
                 alt="PokeBin Logo"

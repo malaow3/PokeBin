@@ -21,3 +21,4 @@ scripts/.mypy_cache
 screenshot/node_modules
 
 dist/
+web/dist/
