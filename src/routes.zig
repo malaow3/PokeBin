@@ -373,7 +373,7 @@ fn serveWasmFile(filename: []const u8, app: *state.State, req: *httpz.Request, r
 }
 
 pub fn web_wasm(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
-    return serveWasmFile("zig-out/bin/web_wasm.wasm", app, req, res) catch {
+    return serveWasmFile("zig-out/bin/web_wasm.wasm.br", app, req, res) catch {
         res.status = 404;
         res.content_type = .TEXT;
         res.body = "Not Found";
@@ -382,7 +382,7 @@ pub fn web_wasm(app: *state.State, req: *httpz.Request, res: *httpz.Response) !v
 }
 
 pub fn wasm(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
-    return serveWasmFile("zig-out/bin/wasm.wasm", app, req, res) catch {
+    return serveWasmFile("zig-out/bin/wasm.wasm.br", app, req, res) catch {
         res.status = 404;
         res.content_type = .TEXT;
         res.body = "Not Found";
