@@ -32,9 +32,12 @@ pub fn build(b: *std.Build) void {
     const websocket = b.dependency("websocket", .{});
     const zul = b.dependency("zul", .{});
 
-    const pg = b.dependency("pg", .{
-        .openssl_lib_name = "ssl",
-    });
+    const pg = if (target.query.os_tag == .linux)
+        b.dependency("pg", .{})
+    else
+        b.dependency("pg", .{
+            .openssl_lib_name = "ssl",
+        });
     const qr = b.dependency("qr", .{});
 
     var options = std.Build.Step.Options.create(b);

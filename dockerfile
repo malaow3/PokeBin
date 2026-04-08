@@ -23,6 +23,7 @@ RUN bunx playwright install --with-deps
 workdir /app
 
 COPY home home
+COPY items items
 
 COPY dist/pokebin ./pokebin
 COPY robots.txt robots.txt

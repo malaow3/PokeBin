@@ -47,8 +47,8 @@
             .hash = "tanuki-0.1.0-KEer8Sd1AAC8YTbgYvtvWBnlMUMMzLIlfHH6pduFTD5z",
         },
         .httpz = .{
-            .url = "git+https://github.com/max-legrand/http.zig?ref=zig-0.16#e6dba90560f3e805c0293a33e69f55c661009862",
-            .hash = "httpz-0.0.0-PNVzrDyUBwCnbGgTu8cZw42eG85omyNgwwKiEVnFKIM2",
+            .url = "git+https://github.com/max-legrand/http.zig?ref=zig-0.16#5107673dd7453dfb23b3ffc8119af7a8c580c303",
+            .hash = "httpz-0.0.0-PNVzrOSUBwC9145o8X4--rdr1oyfGDBOUDggl4hkZ1ax",
         },
         .websocket = .{
             .url = "git+https://github.com/max-legrand/websocket.zig?ref=dev-0.16#76974a8a9f4e19b49a4e737e27d530d0a447cde6",
