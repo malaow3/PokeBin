@@ -262,6 +262,7 @@ const Paste = extern struct {
     pokemon_len: usize,
     pokemon: [*]*Pokemon,
     isOts: u32,
+    showSPs: u32,
 };
 
 export fn destroyPaste(pointer: usize) void {
@@ -851,7 +852,7 @@ fn parsePokemonFromLines(lines: [][]const u8, twoDImages: bool, fullMonText: []c
             allocator.free(move_lookup);
 
             moves.append(allocator, move) catch @panic("failed to append move");
-        } else if (std.mem.startsWith(u8, line, "EVs:")) {
+        } else if (std.mem.startsWith(u8, line, "EVs:") or std.mem.startsWith(u8, line, "SPs:")) {
             pokemon.evs = try parseEvIvLine(line, 0);
             var idx: i64 = 5;
             while (idx > 0) {
@@ -1002,7 +1003,7 @@ fn parsePokemonFromLinesNew(lines: [][]const u8, twoDImages: bool) !*Pokemon {
             allocator.free(move_lookup);
 
             try moves.append(allocator, move);
-        } else if (std.mem.startsWith(u8, line, "EVs: ")) {
+        } else if (std.mem.startsWith(u8, line, "EVs: ") or std.mem.startsWith(u8, line, "SPs: ")) {
             const evStats = try parseEvIvLineNew(line, 0);
             pokemon.evs = evStats.stats;
             pokemon.nature = sanitize(trim(evStats.nature));
@@ -1164,9 +1165,13 @@ export fn parsePaste(buffer: [*]u8, buffer_len: usize, twoDimages: bool) *Paste 
         EXPECTED_POKEMON_COUNT,
     ) catch @panic("failed to allocate pokemon list");
 
+    var has_sp_lines = false;
     var iter = std.mem.splitSequence(u8, value.content, "\n\n");
     while (iter.next()) |item| {
         if (item.len == 0) continue;
+        if (std.mem.indexOf(u8, item, "SPs:") != null) {
+            has_sp_lines = true;
+        }
         const pokemon = parsePokemon(
             std.mem.trim(u8, item, "\n \t"),
             twoDimages,
@@ -1191,6 +1196,7 @@ export fn parsePaste(buffer: [*]u8, buffer_len: usize, twoDimages: bool) *Paste 
         }
     }
     paste.isOts = @intFromBool(is_ots);
+    paste.showSPs = @intFromBool(has_sp_lines);
 
     return paste;
 }

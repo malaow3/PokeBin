@@ -200,6 +200,7 @@ export type Paste = {
     pokemon_len: number;
     pokemon: Pokemon[];
     isOts: boolean;
+    showSPs: boolean;
 };
 
 function decodeMove(movePtr: number): Move {
@@ -523,24 +524,21 @@ function decodePaste(pastePtr: number): Paste {
         const rentalPtr = rentalSlice[0];
         const rental = decodeNullTerminatedString(instance, rentalPtr);
 
-        const pokemonLenPtr = pastePtr + sizeOfUint32 * 5;
+        // pokemon_len is at offset 20 (after 5 pointers)
         const pokemonLenSlice = new Uint32Array(
             memory.buffer,
-            pokemonLenPtr,
+            pastePtr + sizeOfUint32 * 5,
             1,
         );
         const pokemon_len = pokemonLenSlice[0];
 
-        // Decode items array pointer - ensure 4-byte alignment
-        const pokemonArrayPtrPointer = alignTo4Bytes(
-            pastePtr + sizeOfUint32 * 6,
-        );
-        const pokemonArrayPtrSlice = new Uint32Array(
+        // pokemon pointer is at offset 24
+        const pokemonPtrSlice = new Uint32Array(
             memory.buffer,
-            pokemonArrayPtrPointer,
+            pastePtr + sizeOfUint32 * 6,
             1,
         );
-        const pokemonArrayPointer = pokemonArrayPtrSlice[0];
+        const pokemonArrayPointer = pokemonPtrSlice[0];
 
         // Decode each item - ensure the pointer is properly aligned
         const pokemon: Pokemon[] = [];
@@ -557,9 +555,15 @@ function decodePaste(pastePtr: number): Paste {
             pokemon.push(mon);
         }
 
-        const isOtsOffset = pokemonArrayPtrPointer + sizeOfUint32;
+        // isOts is at offset 28 (after pokemon pointer)
+        const isOtsOffset = pastePtr + sizeOfUint32 * 7;
         const isOtsValue = new Uint32Array(memory.buffer, isOtsOffset, 1)[0];
         const isOts = isOtsValue === 1;
+
+        // showSPs is at offset 32
+        const showSPsOffset = pastePtr + sizeOfUint32 * 8;
+        const showSPsValue = new Uint32Array(memory.buffer, showSPsOffset, 1)[0];
+        const showSPs = showSPsValue === 1;
 
         const paste = {
             title,
@@ -570,6 +574,7 @@ function decodePaste(pastePtr: number): Paste {
             pokemon_len,
             pokemon,
             isOts,
+            showSPs,
         };
 
         return paste;

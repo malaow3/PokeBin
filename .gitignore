@@ -22,3 +22,5 @@ screenshot/node_modules
 
 dist/
 web/dist/
+
+tmp/

@@ -48,6 +48,8 @@ export default function PasteViewBase(props: Props) {
     const [working, setWorking] = createSignal(false);
     const [screenshotStatus, setScreenshotStatus] = createSignal("Screenshot");
 
+    const showSPs = () => paste()?.showSPs ?? false;
+
     return (
         <Show when={paste()}>
             {(currentPaste) => (
@@ -483,98 +485,54 @@ export default function PasteViewBase(props: Props) {
                                             >
                                                 <div class="attribute-line">
                                                     <span class="attr">
-                                                        EVs:{" "}
+                                                        <Show
+                                                            when={showSPs()}
+                                                            fallback={"EVs: "}
+                                                        >
+                                                            {"SPs: "}
+                                                        </Show>
                                                     </span>
-                                                    <Show
-                                                        when={
-                                                            pokemon.evs[0] !== 0
-                                                        }
-                                                    >
+                                                    <Show when={pokemon.evs[0] !== 0}>
                                                         <span class="stat-hp">
                                                             {pokemon.evs[0]} HP
                                                         </span>
-                                                        <Show
-                                                            when={
-                                                                pokemon.last_stat_ev !==
-                                                                "hp"
-                                                            }
-                                                        >
+                                                        <Show when={pokemon.last_stat_ev !== "hp"}>
                                                             /
                                                         </Show>
                                                     </Show>
-                                                    <Show
-                                                        when={
-                                                            pokemon.evs[1] !== 0
-                                                        }
-                                                    >
+                                                    <Show when={pokemon.evs[1] !== 0}>
                                                         <span class="stat-atk">
                                                             {pokemon.evs[1]} Atk
                                                         </span>
-                                                        <Show
-                                                            when={
-                                                                pokemon.last_stat_ev !==
-                                                                "atk"
-                                                            }
-                                                        >
+                                                        <Show when={pokemon.last_stat_ev !== "atk"}>
                                                             /
                                                         </Show>
                                                     </Show>
-                                                    <Show
-                                                        when={
-                                                            pokemon.evs[2] !== 0
-                                                        }
-                                                    >
+                                                    <Show when={pokemon.evs[2] !== 0}>
                                                         <span class="stat-def">
                                                             {pokemon.evs[2]} Def
                                                         </span>
-                                                        <Show
-                                                            when={
-                                                                pokemon.last_stat_ev !==
-                                                                "def"
-                                                            }
-                                                        >
+                                                        <Show when={pokemon.last_stat_ev !== "def"}>
                                                             /
                                                         </Show>
                                                     </Show>
-                                                    <Show
-                                                        when={
-                                                            pokemon.evs[3] !== 0
-                                                        }
-                                                    >
+                                                    <Show when={pokemon.evs[3] !== 0}>
                                                         <span class="stat-spa">
                                                             {pokemon.evs[3]} SpA
                                                         </span>
-                                                        <Show
-                                                            when={
-                                                                pokemon.last_stat_ev !==
-                                                                "spa"
-                                                            }
-                                                        >
+                                                        <Show when={pokemon.last_stat_ev !== "spa"}>
                                                             /
                                                         </Show>
                                                     </Show>
-                                                    <Show
-                                                        when={
-                                                            pokemon.evs[4] !== 0
-                                                        }
-                                                    >
+                                                    <Show when={pokemon.evs[4] !== 0}>
                                                         <span class="stat-spd">
                                                             {pokemon.evs[4]} SpD
                                                         </span>
-                                                        <Show
-                                                            when={
-                                                                pokemon.last_stat_ev !==
-                                                                "spd"
-                                                            }
-                                                        >
+                                                        <Show when={pokemon.last_stat_ev !== "spd"}>
                                                             /
                                                         </Show>
                                                     </Show>
-                                                    <Show
-                                                        when={
-                                                            pokemon.evs[5] !== 0
-                                                        }
-                                                    >
+                                                    <Show when={pokemon.evs[5] !== 0}>
                                                         <span class="stat-spe">
                                                             {pokemon.evs[5]} Spe
                                                         </span>
