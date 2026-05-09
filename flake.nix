@@ -31,6 +31,7 @@
                     pkgs.openssl
                     pkgs.zig
                     pkgs.zls
+                    pkgs.pnpm
                 ] else [])
             ++ (if isDarwin then [ pkgs.openssl ] else []); # or rely on Homebrew
 
