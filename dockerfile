@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:24.04
 
 WORKDIR /app
 
@@ -9,8 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 python3-pip python3-venv \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install Node.js 18 (LTS)
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
     && apt-get install -y nodejs
 RUN npm install -g bun
 
