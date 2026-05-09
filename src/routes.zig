@@ -636,8 +636,7 @@ const StreamContext = struct {
         data: ?[]u8,
     };
 
-    const Stream = @typeInfo(@typeInfo(@TypeOf(httpz.Response.startEventStreamSync)).@"fn".return_type.?).error_union.payload;
-    fn handle(self: StreamContext, stream: Stream) void {
+    fn handle(self: StreamContext, stream: std.Io.net.Stream) void {
         var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
         const allocator = arena.allocator();
         defer arena.deinit();
@@ -652,7 +651,7 @@ const StreamContext = struct {
         app.screenshot_lock.lockUncancelable(app.io);
 
         var msg: []const u8 = undefined;
-        var w = stream.writer(&.{});
+        var w = stream.writer(self.app.io, &.{});
         var writer = &w.interface;
 
         app.screenshot_semaphore.waitUncancelable(app.io);
@@ -690,7 +689,7 @@ const StreamContext = struct {
         zlog.info("Generating screenshot for {s}", .{self.id});
         utils.generateScreenshot(allocator, app.io, self.id) catch {
             writer.writeAll("data: {\"status\": \"error\"}") catch return;
-            stream.close();
+            stream.close(self.app.io);
             return;
         };
         app.screenshot_lock.lockUncancelable(app.io);
@@ -711,7 +710,7 @@ const StreamContext = struct {
             msg = std.fmt.allocPrint(allocator, "data: {s}\n\n", .{json_string}) catch return;
             writer.writeAll(msg) catch return;
             writer.flush() catch return;
-            stream.close();
+            stream.close(self.app.io);
             return;
         };
 
@@ -719,7 +718,7 @@ const StreamContext = struct {
             status.status = "error";
             json_string = std.json.Stringify.valueAlloc(allocator, status, .{}) catch return;
             writer.writeAll(json_string) catch return;
-            stream.close();
+            stream.close(self.app.io);
             return;
         };
         const file_stat = file.stat(app.io) catch return;

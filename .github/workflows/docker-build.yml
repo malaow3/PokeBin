@@ -17,7 +17,7 @@ jobs:
       - name: Install Zig
         uses: mlugg/setup-zig@v2
         with:
-          version: 0.16.0-dev.3066+da78940dd
+          version: 0.16.0
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4

@@ -32,7 +32,7 @@ pub fn build(b: *std.Build) void {
     const websocket = b.dependency("websocket", .{});
     const zul = b.dependency("zul", .{});
 
-    const pg = if (target.query.os_tag == .linux)
+    const pg = if (target.result.os.tag == .linux)
         b.dependency("pg", .{})
     else
         b.dependency("pg", .{

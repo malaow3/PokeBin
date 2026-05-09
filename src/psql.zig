@@ -85,7 +85,7 @@ pub fn initDB(
     io: std.Io,
     config: lib.DBConfig,
 ) !*Pool {
-    const pool = try pg.Pool.init(allocator, io, .{ .size = 5, .connect = .{
+    const pool = try pg.Pool.init(io, allocator, .{ .size = 5, .connect = .{
         .port = config.port,
         .host = config.host,
     }, .auth = .{

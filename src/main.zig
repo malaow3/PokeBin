@@ -81,7 +81,7 @@ pub fn main(init: std.process.Init) !void {
     const port_str = env.get("PORT") orelse "2000";
     const port = try std.fmt.parseInt(u16, port_str, 10);
 
-    var server = try httpz.Server(*state.State).init(allocator, .{
+    var server = try httpz.Server(*state.State).init(io, allocator, .{
         .thread_pool = .{ .count = 25 },
         .websocket = .{
             .large_buffer_pool = 100,
