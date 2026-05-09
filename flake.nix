@@ -27,7 +27,11 @@
               pkgs.brotli
               pkgs.pkg-config
             ]
-            ++ (if isLinux then [ pkgs.openssl ] else [])
+            ++ (if isLinux then [
+                    pkgs.openssl
+                    pkgs.zig
+                    pkgs.zls
+                ] else [])
             ++ (if isDarwin then [ pkgs.openssl ] else []); # or rely on Homebrew
 
           shellHook = ''
