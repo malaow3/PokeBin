@@ -17,9 +17,11 @@ export default function ReplayFetcher() {
     const [loading, setLoading] = createSignal(false);
     const [loadingMore, setLoadingMore] = createSignal(false);
     const [error, setError] = createSignal<string | null>(null);
-    const [replays, setReplays] = createSignal<Replay[]>([]);
+    const [pages, setPages] = createSignal<Record<number, Replay[]>>({});
+    const [currentPage, setCurrentPage] = createSignal(1);
     const [nextPage, setNextPage] = createSignal(1);
     const [hasMore, setHasMore] = createSignal(false);
+    const replays = () => pages()[currentPage()] ?? [];
 
     const [orderAsc, setOrderAsc] = createSignal(true);
 
@@ -143,12 +145,14 @@ export default function ReplayFetcher() {
     async function fetchReplays() {
         setLoading(true);
         setError(null);
-        setReplays([]);
+        setPages({});
+        setCurrentPage(1);
         setNextPage(1);
         setHasMore(false);
         try {
             const data = await fetchReplayPage(1);
-            setReplays(data);
+            setPages({ 1: data });
+            setCurrentPage(1);
             setNextPage(2);
             setHasMore(data.length > 0);
             trackFeature("replay_fetch");
@@ -170,12 +174,29 @@ export default function ReplayFetcher() {
         setError(null);
         try {
             const page = nextPage();
+            const cached = pages()[page];
+            if (cached !== undefined) {
+                setCurrentPage(page);
+                setNextPage(page + 1);
+                return;
+            }
+
             const data = await fetchReplayPage(page);
             if (data.length === 0) {
                 setHasMore(false);
                 return;
             }
-            setReplays((current) => [...current, ...data]);
+
+            const previousIds = new Set(Object.values(pages()).flat().map((r) => r.id));
+            const uniqueData = data.filter((r) => !previousIds.has(r.id));
+            if (uniqueData.length === 0) {
+                setHasMore(false);
+                setError("No more unique replay results were returned.");
+                return;
+            }
+
+            setPages((current) => ({ ...current, [page]: uniqueData }));
+            setCurrentPage(page);
             setNextPage(page + 1);
             trackFeature("replay_fetch_next_page");
         } catch (e) {
@@ -189,6 +210,18 @@ export default function ReplayFetcher() {
         } finally {
             setLoadingMore(false);
         }
+    }
+
+    function goToPreviousPage() {
+        const page = currentPage();
+        if (page <= 1) return;
+        setCurrentPage(page - 1);
+    }
+
+    function goToNextLoadedPage() {
+        const page = currentPage() + 1;
+        if (pages()[page] === undefined) return;
+        setCurrentPage(page);
     }
 
     function trackFeature(feature: string) {
@@ -285,7 +318,11 @@ export default function ReplayFetcher() {
                 )}
                 {replays().length > 0 && (
                     <div>
-                        <div class="flex gap-2 mb-4">
+                        <div class="mb-3 text-sm text-gray-300">
+                            Page {currentPage()} · {replays().length} replay
+                            {replays().length === 1 ? "" : "s"}
+                        </div>
+                        <div class="flex gap-2 mb-4 flex-wrap">
                             <button
                                 type="button"
                                 class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
@@ -314,7 +351,23 @@ export default function ReplayFetcher() {
                             >
                                 Flip Order
                             </button>
-                            {hasMore() && (
+                            <button
+                                type="button"
+                                class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
+                                onClick={goToPreviousPage}
+                                disabled={currentPage() <= 1}
+                            >
+                                Previous Page
+                            </button>
+                            <button
+                                type="button"
+                                class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
+                                onClick={goToNextLoadedPage}
+                                disabled={pages()[currentPage() + 1] === undefined}
+                            >
+                                Next Loaded Page
+                            </button>
+                            {hasMore() && currentPage() + 1 >= nextPage() && (
                                 <button
                                     type="button"
                                     class="bg-[#c2a8d4] hover:bg-[#9770b6] text-black font-bold py-2 px-4 rounded"
