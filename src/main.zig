@@ -91,7 +91,9 @@ pub fn main(init: std.process.Init) !void {
         .workers = .{
             .min_conn = 10,
             .max_conn = 100,
-            .count = 2,
+            // Keep enough HTTP workers for long-lived websocket/SSE clients.
+            // Dropping this to 2 can starve normal requests when two clients hold /ws.
+            .count = 10,
         },
         .address = .all(port),
         .request = .{
