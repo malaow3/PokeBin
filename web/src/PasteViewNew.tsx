@@ -205,106 +205,108 @@ export default function PasteViewNew(props: Props) {
                         </div>
                         <div id="buttons">
                             <div class="button-col">
-                                <button
-                                    style={{ "user-select": "none" }}
-                                    type="submit"
-                                    disabled={working()}
-                                    onClick={async () => {
-                                        console.log("Fetching screenshot...");
-                                        let alert_sent = false;
-                                        while (true) {
-                                            if (working()) return;
-                                            setWorking(true);
-                                            setScreenshotStatus(
-                                                "Generating...",
-                                            );
-
-                                            const id = getId();
-                                            const evtSource = new EventSource(
-                                                `/api/screenshot?id=${id}`,
-                                            );
-                                            if (!alert_sent) {
-                                                alert_sent = true;
-                                                alert(
-                                                    "Generating your screenshot, this may take some time! Please do not refresh or close the page.",
-                                                );
-                                            }
-
-                                            evtSource.onmessage = (event) => {
-                                                const data = JSON.parse(
-                                                    event.data,
-                                                );
-                                                console.log(data);
-
-                                                if (data.status === "done") {
-                                                    // Convert array to bytes →  blob
-                                                    const byteArray =
-                                                        new Uint8Array(
-                                                            data.data,
-                                                        );
-                                                    const blob = new Blob(
-                                                        [byteArray],
-                                                        {
-                                                            type: "image/png",
-                                                        },
-                                                    );
-                                                    const url =
-                                                        URL.createObjectURL(
-                                                            blob,
-                                                        );
-
-                                                    // Trigger download
-                                                    const a =
-                                                        document.createElement(
-                                                            "a",
-                                                        );
-                                                    a.href = url;
-                                                    a.download =
-                                                        "screenshot.png";
-                                                    document.body.appendChild(
-                                                        a,
-                                                    );
-                                                    a.click();
-                                                    document.body.removeChild(
-                                                        a,
-                                                    );
-
-                                                    // Cleanup
-                                                    URL.revokeObjectURL(url);
-                                                    evtSource.close();
-                                                    setWorking(false);
-                                                    setScreenshotStatus(
-                                                        "Screenshot",
-                                                    );
-                                                    return;
-                                                }
-
-                                                if (data.status === "waiting") {
-                                                    setScreenshotStatus(
-                                                        "Waiting...",
-                                                    );
-                                                }
-                                            };
-
-                                            evtSource.onerror = (err) => {
-                                                console.error(
-                                                    "SSE error:",
-                                                    err,
-                                                );
-                                                evtSource.close();
-                                                setWorking(false);
-                                                setScreenshotStatus(
-                                                    "Screenshot",
-                                                );
-                                                return;
-                                            };
-                                        }
-                                    }}
-                                    class="cursor-pointer w-[175px] h-[30px] copy-button font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black py-1 rounded"
-                                >
-                                    {screenshotStatus()}
-                                </button>
-
+                                {/* Screenshot generation is disabled for now.
+                                //                                 <button
+                                //                                     style={{ "user-select": "none" }}
+                                //                                     type="submit"
+                                //                                     disabled={working()}
+                                //                                     onClick={async () => {
+                                //                                         console.log("Fetching screenshot...");
+                                //                                         let alert_sent = false;
+                                //                                         while (true) {
+                                //                                             if (working()) return;
+                                //                                             setWorking(true);
+                                //                                             setScreenshotStatus(
+                                //                                                 "Generating...",
+                                //                                             );
+                                // 
+                                //                                             const id = getId();
+                                //                                             const evtSource = new EventSource(
+                                //                                                 `/api/screenshot?id=${id}`,
+                                //                                             );
+                                //                                             if (!alert_sent) {
+                                //                                                 alert_sent = true;
+                                //                                                 alert(
+                                //                                                     "Generating your screenshot, this may take some time! Please do not refresh or close the page.",
+                                //                                                 );
+                                //                                             }
+                                // 
+                                //                                             evtSource.onmessage = (event) => {
+                                //                                                 const data = JSON.parse(
+                                //                                                     event.data,
+                                //                                                 );
+                                //                                                 console.log(data);
+                                // 
+                                //                                                 if (data.status === "done") {
+                                //                                                     // Convert array to bytes →  blob
+                                //                                                     const byteArray =
+                                //                                                         new Uint8Array(
+                                //                                                             data.data,
+                                //                                                         );
+                                //                                                     const blob = new Blob(
+                                //                                                         [byteArray],
+                                //                                                         {
+                                //                                                             type: "image/png",
+                                //                                                         },
+                                //                                                     );
+                                //                                                     const url =
+                                //                                                         URL.createObjectURL(
+                                //                                                             blob,
+                                //                                                         );
+                                // 
+                                //                                                     // Trigger download
+                                //                                                     const a =
+                                //                                                         document.createElement(
+                                //                                                             "a",
+                                //                                                         );
+                                //                                                     a.href = url;
+                                //                                                     a.download =
+                                //                                                         "screenshot.png";
+                                //                                                     document.body.appendChild(
+                                //                                                         a,
+                                //                                                     );
+                                //                                                     a.click();
+                                //                                                     document.body.removeChild(
+                                //                                                         a,
+                                //                                                     );
+                                // 
+                                //                                                     // Cleanup
+                                //                                                     URL.revokeObjectURL(url);
+                                //                                                     evtSource.close();
+                                //                                                     setWorking(false);
+                                //                                                     setScreenshotStatus(
+                                //                                                         "Screenshot",
+                                //                                                     );
+                                //                                                     return;
+                                //                                                 }
+                                // 
+                                //                                                 if (data.status === "waiting") {
+                                //                                                     setScreenshotStatus(
+                                //                                                         "Waiting...",
+                                //                                                     );
+                                //                                                 }
+                                //                                             };
+                                // 
+                                //                                             evtSource.onerror = (err) => {
+                                //                                                 console.error(
+                                //                                                     "SSE error:",
+                                //                                                     err,
+                                //                                                 );
+                                //                                                 evtSource.close();
+                                //                                                 setWorking(false);
+                                //                                                 setScreenshotStatus(
+                                //                                                     "Screenshot",
+                                //                                                 );
+                                //                                                 return;
+                                //                                             };
+                                //                                         }
+                                //                                     }}
+                                //                                     class="cursor-pointer w-[175px] h-[30px] copy-button font-bold bg-[#c2a8d4] hover:bg-[#9770b6] text-black py-1 rounded"
+                                //                                 >
+                                //                                     {screenshotStatus()}
+                                //                                 </button>
+                                // 
+                                */}
                                 <button
                                     style={{ "user-select": "none" }}
                                     type="submit"

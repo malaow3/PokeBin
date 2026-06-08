@@ -43,13 +43,17 @@ p {
 
 #buttons > .button-col {
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	gap: 4px;
 }
 
 #buttons > .button-col > button {
-	font-size: 0.8rem !important;
-	height: 25px;
+	font-size: 0.75rem !important;
+	height: 22px !important;
+	min-height: 22px !important;
+	line-height: 1 !important;
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
 	width: 125px;
 }
 

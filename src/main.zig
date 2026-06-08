@@ -82,7 +82,7 @@ pub fn main(init: std.process.Init) !void {
     const port = try std.fmt.parseInt(u16, port_str, 10);
 
     var server = try httpz.Server(*state.State).init(io, allocator, .{
-        .thread_pool = .{ .count = 25 },
+        .thread_pool = .{ .count = 4 },
         .websocket = .{
             .large_buffer_pool = 100,
             .small_buffer_pool = 25,
@@ -91,7 +91,7 @@ pub fn main(init: std.process.Init) !void {
         .workers = .{
             .min_conn = 10,
             .max_conn = 100,
-            .count = 10,
+            .count = 2,
         },
         .address = .all(port),
         .request = .{
@@ -127,7 +127,9 @@ pub fn main(init: std.process.Init) !void {
     router.post("/api/fetch-replays", routes.fetchReplay, .{});
     router.get("/settings", routes.settings, .{});
     router.get("/recent", routes.recent, .{});
-    router.get("/api/screenshot", routes.handleScreenshotRequest, .{});
+    // Screenshot generation is CPU-heavy (spawns Bun + Playwright/Chromium).
+    // Disabled for now; keep nginx returning 404/410 rather than pegging the VPS.
+    // router.get("/api/screenshot", routes.handleScreenshotRequest, .{});
     router.get("/logo/*", routes.logo, .{});
     router.post("/api/feature", routes.feature, .{});
 

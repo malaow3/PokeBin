@@ -15,8 +15,11 @@ export default function ReplayFetcher() {
     const [name, setName] = createSignal("");
     const [pass, setPass] = createSignal("");
     const [loading, setLoading] = createSignal(false);
+    const [loadingMore, setLoadingMore] = createSignal(false);
     const [error, setError] = createSignal<string | null>(null);
     const [replays, setReplays] = createSignal<Replay[]>([]);
+    const [nextPage, setNextPage] = createSignal(1);
+    const [hasMore, setHasMore] = createSignal(false);
 
     const [orderAsc, setOrderAsc] = createSignal(true);
 
@@ -115,38 +118,76 @@ export default function ReplayFetcher() {
         });
     }
 
+    async function fetchReplayPage(page: number): Promise<Replay[]> {
+        const challstr = await getChallstr();
+        const resp = await fetch("/api/fetch-replays", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                name: name(),
+                pass: pass(),
+                challstr: challstr,
+                page,
+                max_pages: 1,
+            }),
+        });
+        if (!resp.ok) {
+            alert(
+                "Unable to fetch replays, please double check your username & password!",
+            );
+            throw new Error(await resp.text());
+        }
+        return await resp.json();
+    }
+
     async function fetchReplays() {
         setLoading(true);
         setError(null);
         setReplays([]);
+        setNextPage(1);
+        setHasMore(false);
         try {
-            const challstr = await getChallstr();
-            const resp = await fetch("/api/fetch-replays", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    name: name(),
-                    pass: pass(),
-                    challstr: challstr,
-                }),
-            });
-            if (!resp.ok) {
-                alert(
-                    "Unable to fetch replays, please double check your username & password!",
-                );
-                throw new Error(await resp.text());
-            }
-            const data = await resp.json();
+            const data = await fetchReplayPage(1);
             setReplays(data);
+            setNextPage(2);
+            setHasMore(data.length > 0);
             trackFeature("replay_fetch");
         } catch (e) {
             if (e instanceof Error) {
+                setError(e.message);
                 console.error(e.message);
             } else {
+                setError(String(e));
                 console.error(String(e));
             }
         } finally {
             setLoading(false);
+        }
+    }
+
+    async function fetchNextPage() {
+        setLoadingMore(true);
+        setError(null);
+        try {
+            const page = nextPage();
+            const data = await fetchReplayPage(page);
+            if (data.length === 0) {
+                setHasMore(false);
+                return;
+            }
+            setReplays((current) => [...current, ...data]);
+            setNextPage(page + 1);
+            trackFeature("replay_fetch_next_page");
+        } catch (e) {
+            if (e instanceof Error) {
+                setError(e.message);
+                console.error(e.message);
+            } else {
+                setError(String(e));
+                console.error(String(e));
+            }
+        } finally {
+            setLoadingMore(false);
         }
     }
 
@@ -273,6 +314,18 @@ export default function ReplayFetcher() {
                             >
                                 Flip Order
                             </button>
+                            {hasMore() && (
+                                <button
+                                    type="button"
+                                    class="bg-[#c2a8d4] hover:bg-[#9770b6] text-black font-bold py-2 px-4 rounded"
+                                    onClick={fetchNextPage}
+                                    disabled={loadingMore()}
+                                >
+                                    {loadingMore()
+                                        ? "Loading..."
+                                        : `Fetch Page ${nextPage()}`}
+                                </button>
+                            )}
                         </div>
                         <div class="overflow-x-auto">
                             <table class="min-w-full bg-gray-900 rounded-lg">

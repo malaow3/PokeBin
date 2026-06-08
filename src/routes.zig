@@ -117,6 +117,10 @@ pub fn fetchReplay(app: *state.State, req: *httpz.Request, res: *httpz.Response)
         name: []const u8,
         pass: []const u8,
         challstr: []const u8,
+        // Pagination/safety valve: fetch one page by default. Clients can ask
+        // for subsequent pages until the API returns an empty array.
+        page: ?usize = null,
+        max_pages: ?usize = null,
     };
 
     if (data) |d| {
@@ -177,7 +181,9 @@ pub fn fetchReplay(app: *state.State, req: *httpz.Request, res: *httpz.Response)
         var all_replays = std.ArrayList(u8).empty;
         try all_replays.append(allocator, '[');
 
-        var page: usize = 1;
+        var page: usize = @max(user.value.page orelse 1, 1);
+        const max_pages = @min(user.value.max_pages orelse 1, 25);
+        const last_page = page + max_pages - 1;
         var first = true;
         const cookie_value = try std.fmt.allocPrint(allocator, "sid={s}", .{sid});
         const replay_headers = &[_]std.http.Header{
@@ -189,7 +195,7 @@ pub fn fetchReplay(app: *state.State, req: *httpz.Request, res: *httpz.Response)
         // If the username has spaces, remove them
         const cleaned_username = try std.mem.replaceOwned(u8, res.arena, username, " ", "");
 
-        while (true) {
+        while (page <= last_page) {
             const replay_url = try std.fmt.allocPrint(
                 allocator,
                 "https://replay.pokemonshowdown.com/api/replays/searchprivate?username={s}&format=&page={d}",

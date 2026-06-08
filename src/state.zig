@@ -282,7 +282,15 @@ pub const State = struct {
     }
 
     pub fn getOrLoadFile(self: *Self, path: []const u8, content_type: ?httpz.ContentType) !CachedFile {
+        // Production assets are immutable in the container. If an entry exists in
+        // memory, return it directly instead of open/stat'ing the file on every
+        // request. This avoids repeated filesystem work for hot static assets.
         self.rwlock.lockSharedUncancelable(self.io);
+        if (self.file_cache.get(path)) |cached| {
+            defer self.rwlock.unlockShared(self.io);
+            return cached;
+        }
+        self.rwlock.unlockShared(self.io);
 
         // Load the file
         const cwd = std.Io.Dir.cwd();
@@ -300,29 +308,12 @@ pub const State = struct {
 
         const current_mod_time = stat.mtime.toMilliseconds();
 
-        // Check if file is already cached and up to date
-        if (self.file_cache.get(path)) |cached| {
-            if (cached.last_modified == current_mod_time) {
-                // File hasn't changed, use cached version
-                defer self.rwlock.unlockShared(self.io);
-                return cached;
-            }
-        }
-        self.rwlock.unlockShared(self.io);
-
         // Need to modify the cache, upgrade to write lock
         self.rwlock.lockUncancelable(self.io);
         defer self.rwlock.unlock(self.io);
-        // Check again inside exclusive lock
+        // Check again inside exclusive lock in case another request filled it.
         if (self.file_cache.get(path)) |cached| {
-            if (cached.last_modified == current_mod_time) {
-                return cached;
-            }
-            // else, remove outdated cache entry
-            const old_path = self.file_cache.fetchRemove(path).?.key;
-            self.allocator.free(old_path);
-            self.allocator.free(cached.data);
-            if (cached.compressed_data) |cd| self.allocator.free(cd);
+            return cached;
         }
 
         // Allocate memory and read file
