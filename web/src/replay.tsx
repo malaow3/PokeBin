@@ -154,7 +154,7 @@ export default function ReplayFetcher() {
             setPages({ 1: data });
             setCurrentPage(1);
             setNextPage(2);
-            setHasMore(data.length > 0);
+            setHasMore(data.length >= 50);
             trackFeature("replay_fetch");
         } catch (e) {
             if (e instanceof Error) {
@@ -198,6 +198,7 @@ export default function ReplayFetcher() {
             setPages((current) => ({ ...current, [page]: uniqueData }));
             setCurrentPage(page);
             setNextPage(page + 1);
+            setHasMore(data.length >= 50);
             trackFeature("replay_fetch_next_page");
         } catch (e) {
             if (e instanceof Error) {
