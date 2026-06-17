@@ -15,7 +15,7 @@ pub fn compressData(allocator: std.mem.Allocator, data: []const u8) ![]u8 {
     var out_size: usize = max_compressed_size;
 
     const ok = c.BrotliEncoderCompress(
-        c.BROTLI_DEFAULT_QUALITY, // quality: 0..11 (default 11 is slowest/best)
+        4, // quality: 0..11; default is slow and can spike CPU during cache warmup
         c.BROTLI_DEFAULT_WINDOW, // window: 10..24 (default 22)
         c.BROTLI_MODE_GENERIC, // mode: GENERIC, TEXT, FONT
         data.len, // input size
