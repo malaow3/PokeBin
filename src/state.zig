@@ -296,7 +296,7 @@ pub const State = struct {
         const cwd = std.Io.Dir.cwd();
         const io = self.io;
         const file = cwd.openFile(io, path, .{}) catch |err| {
-            self.rwlock.unlockShared(self.io);
+            // Shared lock was already released above before filesystem I/O.
             zlog.err("Error opening file: {s} ({})", .{ path, err });
             return err;
         };
