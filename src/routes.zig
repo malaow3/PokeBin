@@ -63,6 +63,28 @@ fn serveCachedFile(
     }
 }
 
+fn serveUncachedPrecompressedFile(
+    app: *state.State,
+    res: *httpz.Response,
+    filepath: []const u8,
+    content_type: httpz.ContentType,
+) !void {
+    const cwd = std.Io.Dir.cwd();
+    const file = try cwd.openFile(app.io, filepath, .{});
+    defer file.close(app.io);
+
+    const stat = try file.stat(app.io);
+    const data = try res.arena.alloc(u8, stat.size);
+    var buffer: [8192]u8 = undefined;
+    var file_reader = file.reader(app.io, &buffer);
+    try file_reader.interface.readSliceAll(data);
+
+    res.header("Cache-Control", "public, max-age=31536000");
+    res.header("Content-Encoding", "br");
+    res.content_type = content_type;
+    res.body = data;
+}
+
 pub fn siteWebmanifest(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void {
     const file = try app.getOrLoadFile("web/dist/favicon/site.webmanifest", .TEXT);
     if (acceptsBrotli(req) and file.compressed_data != null) {
@@ -286,7 +308,9 @@ pub fn image(app: *state.State, req: *httpz.Request, res: *httpz.Response) !void
         "home", sub_path,
     });
 
-    return serveCachedFile(app, req, res, filepath, state.getMimeType(sub_path) orelse .BINARY, true) catch {
+    // home/ is a large sprite corpus (~730MB). Do not store these files in the
+    // app heap; serve per-request and let the OS page cache handle hot files.
+    return serveUncachedPrecompressedFile(app, res, filepath, state.getMimeType(sub_path) orelse .BINARY) catch {
         res.status = 404;
         res.content_type = .TEXT;
         res.body = "Not Found";

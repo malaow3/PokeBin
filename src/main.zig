@@ -73,7 +73,11 @@ pub fn main(init: std.process.Init) !void {
         try appState.preloadFile("zig-out/bin/wasm.wasm.br", .WASM, true);
         try appState.preloadFile("zig-out/bin/web_wasm.wasm.br", .WASM, true);
         try appState.preloadFile("robots.txt", .TEXT, false);
-        try appState.preloadDirectoryRecursive("home/", true);
+        // Do not preload the large Pokemon sprite corpus. home/ is ~730MB and
+        // ~6.5k files, so reading it all at startup causes multi-core CPU +
+        // disk-read spikes on small VPS instances. These files are immutable and
+        // are cached lazily on first request via getOrLoadFile.
+        // try appState.preloadDirectoryRecursive("home/", true);
         try appState.preloadDirectoryRecursive("items/", true);
         zlog.info("Cache preload complete!", .{});
     }
