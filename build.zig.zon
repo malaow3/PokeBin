@@ -43,8 +43,8 @@
             .hash = "qr-0.0.0-mHFkTeobAQBeFiQkSGIMVm7LyT1fXlfHo3C5Gd0SAJnf",
         },
         .httpz = .{
-            .url = "git+https://github.com/karlseguin/http.zig?ref=master#569bba10f22afd4ea1815416b546a8065905f820",
-            .hash = "httpz-0.0.0-PNVzrJUWCADf96eygXxMPMSWJ-SMNkGDB1B6BUEP7dZZ",
+            .url = "git+https://github.com/karlseguin/http.zig?ref=master#86a44b63bda353338f2dbddc35eeb260f0f5c299",
+            .hash = "httpz-0.0.0-PNVzrEnoCADpf8B42EMPO2WmIlvsQJ0dJ8oCWjnl6CIX",
         },
         .websocket = .{
             .url = "git+https://github.com/karlseguin/websocket.zig?ref=master#d823a7d8cb3e43b3789208ae499bfe1d077de8ee",
