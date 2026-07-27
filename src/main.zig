@@ -26,7 +26,13 @@ pub fn getVersion() ?[]const u8 {
     return null;
 }
 
-pub const version = getVersion() orelse @panic("Failed to get version");
+/// The short commit this binary was built from, or "unknown".
+pub const git_hash = build_zig_zon.git_hash;
+
+/// The version from build.zig.zon with the build's commit appended, e.g.
+/// "2.3.2-a1b2c3d". `-` rather than `+` because this is also used as the
+/// cache-busting query param for the wasm bundles.
+pub const version = (getVersion() orelse @panic("Failed to get version")) ++ "-" ++ git_hash;
 
 pub var state_ptr: ?*state.State = null;
 pub var server_instance: ?*httpz.Server(*state.State) = null;

@@ -42,6 +42,7 @@ pub fn build(b: *std.Build) void {
 
     var options = std.Build.Step.Options.create(b);
     options.addOption([]const u8, "contents", build_zig_zon);
+    options.addOption([]const u8, "git_hash", gitHash(b));
     exe_mod.addOptions("build.zig.zon", options);
 
     // Add imports to modules
@@ -155,6 +156,26 @@ pub fn build(b: *std.Build) void {
     check.dependOn(&exe_check.step);
     check.dependOn(&wasm_check.step);
     check.dependOn(&web_wasm_check.step);
+}
+
+// -----------------------------------------------------------------------
+// The short commit the binary was built from, baked into the version string.
+// Can be overridden with -Dgit-hash=... for builds where the .git directory
+// isn't available; falls back to "unknown" if git can't tell us.
+fn gitHash(b: *std.Build) []const u8 {
+    if (b.option([]const u8, "git-hash", "Short git commit to bake into the version")) |hash| {
+        return hash;
+    }
+
+    var code: u8 = undefined;
+    const stdout = b.runAllowFail(
+        &.{ "git", "-C", b.pathFromRoot("."), "rev-parse", "--short", "HEAD" },
+        &code,
+        .ignore,
+    ) catch return "unknown";
+
+    const hash = std.mem.trim(u8, stdout, " \t\n\r");
+    return if (hash.len == 0) "unknown" else hash;
 }
 
 // -----------------------------------------------------------------------
