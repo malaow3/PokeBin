@@ -90,7 +90,7 @@ export fn validatePaste(pastePtr: [*]u8, paste_len: usize) usize {
                     name_part = sanitize(trim(name_part[0 .. name_part.len - 3]));
                 }
 
-                var name: [*:0]const u8 = allocator.dupeZ(u8, "") catch @panic("failed to allocate memory");
+                var name: [*:0]const u8 = allocator.dupeSentinel(u8, "", 0) catch @panic("failed to allocate memory");
                 if (name_part[name_part.len - 1] == ')') {
                     // Nickname present
                     const start = findLastInstance(name_part, '(');
@@ -226,7 +226,7 @@ fn sanitize(str: []const u8) [:0]const u8 {
         }
     }
 
-    return allocator.dupeZ(u8, output.items) catch @panic("failed to allocate sanitized string");
+    return allocator.dupeSentinel(u8, output.items, 0) catch @panic("failed to allocate sanitized string");
 }
 
 fn initPokemon() *Pokemon {
@@ -240,8 +240,8 @@ fn initPokemon() *Pokemon {
         .pokemon_image = &[_:0]u8{0},
         .moves_len = 0,
         .moves = &[_]*Move{},
-        .evs = [_]usize{0} ** 6,
-        .ivs = [_]usize{31} ** 6,
+        .evs = @splat(0),
+        .ivs = @splat(31),
         .lines_count = 0,
         .lines = &[_][*:0]const u8{},
         .last_stat_ev = "\x00",
@@ -476,7 +476,7 @@ const statResult = struct {
     nature: []const u8,
 };
 fn parseEvIvLineNew(line: []const u8, base_value: usize) !statResult {
-    var values: [6]usize = [_]usize{base_value} ** 6;
+    var values: [6]usize = @splat(base_value);
     var iter = std.mem.splitSequence(u8, line, ": ");
     _ = iter.next();
 
@@ -544,7 +544,7 @@ fn parseEvIvLineNew(line: []const u8, base_value: usize) !statResult {
 }
 
 fn parseEvIvLine(line: []const u8, base_value: usize) ![6]usize {
-    var values: [6]usize = [_]usize{base_value} ** 6;
+    var values: [6]usize = @splat(base_value);
     var iter = std.mem.splitSequence(u8, line, ": ");
     _ = iter.next();
     const stats = iter.rest();
@@ -689,9 +689,9 @@ fn parsePokemonFromLines(lines: [][]const u8, twoDImages: bool, fullMonText: []c
 
             const value = searchLike(lower);
             if (value) |v| {
-                pokemon.type1 = try allocator.dupeZ(u8, v.value.type1);
+                pokemon.type1 = try allocator.dupeSentinel(u8, v.value.type1, 0);
                 if (v.value.type2.len > 0) {
-                    pokemon.type2 = try allocator.dupeZ(u8, v.value.type2);
+                    pokemon.type2 = try allocator.dupeSentinel(u8, v.value.type2, 0);
                 }
             }
 
@@ -710,7 +710,7 @@ fn parsePokemonFromLines(lines: [][]const u8, twoDImages: bool, fullMonText: []c
             };
 
             if (data.MOVES.get(move_lookup)) |v| {
-                move.type1 = try allocator.dupeZ(u8, v.type1);
+                move.type1 = try allocator.dupeSentinel(u8, v.type1, 0);
             }
             allocator.free(move_lookup);
 
@@ -860,7 +860,7 @@ fn parsePokemonFromLinesNew(lines: [][]const u8, twoDImages: bool) !*Pokemon {
             };
 
             if (data.MOVES.get(move_lookup)) |v| {
-                move.type1 = try allocator.dupeZ(u8, v.type1);
+                move.type1 = try allocator.dupeSentinel(u8, v.type1, 0);
             }
             allocator.free(move_lookup);
 
@@ -929,9 +929,9 @@ fn parsePokemonFromLinesNew(lines: [][]const u8, twoDImages: bool) !*Pokemon {
 
     const value = searchLike(lower);
     if (value) |v| {
-        pokemon.type1 = try allocator.dupeZ(u8, v.value.type1);
+        pokemon.type1 = try allocator.dupeSentinel(u8, v.value.type1, 0);
         if (v.value.type2.len > 0) {
-            pokemon.type2 = try allocator.dupeZ(u8, v.value.type2);
+            pokemon.type2 = try allocator.dupeSentinel(u8, v.value.type2, 0);
         }
     }
 

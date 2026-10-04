@@ -59,7 +59,7 @@ pub fn encryptMessage(
     var ciphertext = allocator.alloc(u8, total_len) catch return false;
 
     // Encrypt using AES-CTR mode with encryptWide where possible
-    var counter = [_]u8{0} ** 16;
+    var counter: [16]u8 = @splat(0);
     @memcpy(counter[0..12], &nonce);
 
     var i: usize = 0;
@@ -144,7 +144,7 @@ pub fn encryptMessage(
 
     // Calculate authentication tag (simplified GMAC)
     var tag: [16]u8 = undefined;
-    var auth_data = [_]u8{0} ** 16;
+    var auth_data: [16]u8 = @splat(0);
     aes.encrypt(&tag, &auth_data);
 
     // XOR tag with first block of ciphertext (simplified)
@@ -280,7 +280,7 @@ fn decryptGCM(allocator: std.mem.Allocator, passphrase: []u8, encrypted: []const
     var plaintext = allocator.alloc(u8, ciphertext_len) catch return false;
 
     // Initialize counter for CTR mode - exactly as in encryption
-    var counter = [_]u8{0} ** 16;
+    var counter: [16]u8 = @splat(0);
     @memcpy(counter[0..12], &nonce);
 
     // Decrypt using AES-CTR mode - mirror the encryption logic exactly
@@ -366,7 +366,7 @@ fn decryptGCM(allocator: std.mem.Allocator, passphrase: []u8, encrypted: []const
 
     // Verify authentication tag (simplified GMAC)
     var calculated_tag: [16]u8 = undefined;
-    var auth_data = [_]u8{0} ** 16;
+    var auth_data: [16]u8 = @splat(0);
     aes.encrypt(&calculated_tag, &auth_data);
 
     // XOR tag with first block of ciphertext (simplified)
@@ -492,7 +492,7 @@ fn decryptCBC(allocator: std.mem.Allocator, passphrase: []u8, encrypted: []const
     // Verify authentication tag (simplified HMAC)
     const aes_enc = crypto.core.aes.Aes256.initEnc(key);
     var calculated_tag: [16]u8 = undefined;
-    var auth_data = [_]u8{0} ** 16;
+    var auth_data: [16]u8 = @splat(0);
     aes_enc.encrypt(&calculated_tag, &auth_data);
 
     // XOR tag with first block of ciphertext (simplified)

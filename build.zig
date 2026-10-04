@@ -1,4 +1,5 @@
 const std = @import("std");
+const Translator = @import("translate_c").Translator;
 const build_zig_zon = @embedFile("build.zig.zon");
 
 const wasm_file_name = "wasm";
@@ -13,6 +14,12 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
     const brotli_lib = brotli_pkg.artifact("brotli");
+    const brotli_c: Translator = .init(b.dependency("translate_c", .{}), .{
+        .c_source_file = b.path("src/brotli_c.h"),
+        .target = target,
+        .optimize = optimize,
+    });
+    brotli_c.addIncludePath(brotli_pkg.path("c/include"));
 
     // -----------------------------------------------------------------------
     // Create modules (lib_mod, exe_mod)
@@ -53,6 +60,7 @@ pub fn build(b: *std.Build) void {
     exe_mod.addImport("zul", zul.module("zul"));
     exe_mod.linkLibrary(brotli_lib);
     exe_mod.addIncludePath(brotli_pkg.path("c/include"));
+    exe_mod.addImport("brotli_c", brotli_c.mod);
     exe_mod.addImport("pg", pg.module("pg"));
     exe_mod.addImport("qr", qr.module("qr"));
 
@@ -108,8 +116,12 @@ pub fn build(b: *std.Build) void {
     // Create the WASM compression step
     const wasm_compress_step = b.step("compress-wasm", "Compress WASM files with gzip");
 
-    // Create a custom step for compression
-    wasm_compress_step.makeFn = makeWasm;
+    // Run the compression script after install
+    const compress_cmd = b.addSystemCommand(&.{ "bash", "compress-wasm.sh" });
+    compress_cmd.setCwd(b.path("."));
+    compress_cmd.has_side_effects = true;
+    compress_cmd.step.dependOn(b.getInstallStep());
+    wasm_compress_step.dependOn(&compress_cmd.step);
 
     // -----------------------------------------------------------------------
     // Create the main executable (pokebin)
@@ -126,7 +138,6 @@ pub fn build(b: *std.Build) void {
         .use_llvm = use_llvm,
     });
     b.installArtifact(exe); // Install the executable
-    wasm_compress_step.dependOn(b.getInstallStep());
 
     // -----------------------------------------------------------------------
     // Standard build steps (run, test, check) - keep these at the end
@@ -135,9 +146,7 @@ pub fn build(b: *std.Build) void {
     const run_cmd = b.addRunArtifact(exe);
     run_cmd.step.dependOn(b.getInstallStep());
     run_cmd.step.dependOn(wasm_compress_step);
-    if (b.args) |args| {
-        run_cmd.addArgs(args);
-    }
+    run_cmd.addPassthruArgs();
     const run_step = b.step("run", "Run the app");
     run_step.dependOn(&run_cmd.step);
 
@@ -167,29 +176,16 @@ fn gitHash(b: *std.Build) []const u8 {
         return hash;
     }
 
+    // The result depends on git state that the configure cache cannot track.
+    b.graph.poisonCache();
     var code: u8 = undefined;
+    const root = b.root.joinString(b.allocator, ".") catch @panic("OOM");
     const stdout = b.runAllowFail(
-        &.{ "git", "-C", b.pathFromRoot("."), "rev-parse", "--short", "HEAD" },
+        &.{ "git", "-C", root, "rev-parse", "--short", "HEAD" },
         &code,
         .ignore,
     ) catch return "unknown";
 
     const hash = std.mem.trim(u8, stdout, " \t\n\r");
     return if (hash.len == 0) "unknown" else hash;
-}
-
-// -----------------------------------------------------------------------
-// Function to compress the WASM file
-fn makeWasm(step: *std.Build.Step, _: std.Build.Step.MakeOptions) anyerror!void {
-    const b = step.owner;
-
-    std.debug.print("Compressing WASM file\n", .{});
-
-    var child = try std.process.spawn(b.graph.io, .{
-        .argv = &.{ "bash", "compress-wasm.sh" },
-        .stdin = .inherit,
-        .stdout = .inherit,
-        .stderr = .inherit,
-    });
-    _ = try child.wait(b.graph.io);
 }

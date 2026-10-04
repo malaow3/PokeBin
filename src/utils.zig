@@ -1,11 +1,8 @@
 const std = @import("std");
 const builtin = @import("builtin");
-const c = @cImport({
-    @cInclude("brotli/encode.h");
-});
+const c = @import("brotli_c");
 
 const png_utils = @import("png_utils.zig");
-
 
 pub fn compressData(allocator: std.mem.Allocator, data: []const u8) ![]u8 {
     // Estimate max compressed size (Brotli doc: worst case is input + 600 bytes)
@@ -40,7 +37,6 @@ pub fn compressData(allocator: std.mem.Allocator, data: []const u8) ![]u8 {
 pub fn cropImage(allocator: std.mem.Allocator, io: std.Io, img_file: []const u8) !void {
     try png_utils.cropFile(allocator, io, img_file, 200);
 }
-
 
 pub fn generateScreenshot(allocator: std.mem.Allocator, io: std.Io, id: []const u8) !void {
     const cwd = std.Io.Dir.cwd();

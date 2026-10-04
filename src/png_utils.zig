@@ -108,7 +108,7 @@ pub fn crop(
     if (interlace != 0) return Error.UnsupportedInterlace;
     if (bit_depth_u8 != 8) return Error.UnsupportedBitDepth;
 
-    const color_type: ColorType = @enumFromInt(color_type_val);
+    const color_type: ColorType = @fromBackingInt(@intCast(color_type_val));
     const ch = color_type.channels();
     const bpp = ch * (bit_depth_u8 / 8);
 
@@ -148,7 +148,7 @@ pub fn crop(
     for (0..height) |y| {
         const row_start = y * (src_row_bytes + 1);
         const filt_row = raw_pixels.items[row_start .. row_start + 1 + src_row_bytes];
-        const filt_type: Filter = @enumFromInt(filt_row[0]);
+        const filt_type: Filter = @fromBackingInt(@intCast(filt_row[0]));
         const filt_data = filt_row[1..];
 
         if (y > 0) @memcpy(above_row, this_row);
@@ -159,7 +159,7 @@ pub fn crop(
         if (y >= height - bottom) continue;
 
         const cropped_row = this_row[left * bpp .. left * bpp + dst_row_bytes];
-        cropped_pixels.append(allocator, @intFromEnum(Filter.None)) catch return Error.InvalidPngChunk;
+        cropped_pixels.append(allocator, @backingInt(Filter.None)) catch return Error.InvalidPngChunk;
         cropped_pixels.appendSlice(allocator, cropped_row) catch return Error.InvalidPngChunk;
     }
 
